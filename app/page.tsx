@@ -4,16 +4,16 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="div">
-      <div className="banner bg-black text-white h-svh w-full grid place-content-center place-items-center p- sm:p-6 md:p-10">
-        <div className="inner grid md:grid-cols-[0.7fr_0.3fr] gap-4 md:gap-14 items-center justify-center">
-          <div className="info space-y-6">
-            <h1 className="title text-[96px] leading-[100px] tracking-[-2px] font-fredoka font-semibold uppercase">
+      <div className="banner bg-black text-white min-h-svh size-full grid place-items-center p-4 sm:p-6 md:p-10">
+        <div className="inner flex flex-wrap gap-4 md:gap-14 items-center justify-center">
+          <div className="info md:space-y-6 space-y-4">
+            <h1 className="title md:text-[96px] text-6xl md:leading-[100px] tracking-[-2px] font-fredoka font-semibold uppercase">
               MetaDawgs
               <br />
               For the bold &<br />
               the grinders.
             </h1>
-            <p className="text-2xl text-[#ACACAC] leading-[35px] max-w-[620px]">
+            <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[600px]">
               This is for all the dawgs, this is for all the grinders on X,
               spreading good vibes and energy, believing in a brighter day and a
               brighter future.
@@ -36,6 +36,7 @@ export default function Home() {
           </div>
           <div className="dog mx-auto">
             <Image
+              className="md:w-[400px] md:min-w-[300px] w-[250px]"
               src="/images/dog.png"
               alt="MetaDawgs"
               width={400}
