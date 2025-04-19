@@ -1,103 +1,49 @@
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <div className="div">
+      <div className="banner bg-black text-white h-svh w-full grid place-content-center place-items-center p- sm:p-6 md:p-10">
+        <div className="inner grid md:grid-cols-[0.7fr_0.3fr] gap-4 md:gap-14 items-center justify-center">
+          <div className="info space-y-6">
+            <h1 className="title text-[96px] leading-[100px] tracking-[-2px] font-fredoka font-semibold uppercase">
+              MetaDawgs
+              <br />
+              For the bold &<br />
+              the grinders.
+            </h1>
+            <p className="text-2xl text-[#ACACAC] leading-[35px] max-w-[620px]">
+              This is for all the dawgs, this is for all the grinders on X,
+              spreading good vibes and energy, believing in a brighter day and a
+              brighter future.
+            </p>
+            <Button className="bg-[#9D4EDD] rounded-full px-5! py-6! text-base cursor-pointer">
+              <svg
+                width="20"
+                height="14"
+                viewBox="0 0 20 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.0041 0.335449C15.0667 0.335449 19.1708 2.57402 19.1708 5.33544V8.66877C19.1708 11.4302 15.0667 13.6688 10.0041 13.6688C5.03187 13.6688 0.984286 11.5094 0.841311 8.81619L0.837402 8.66877V5.33544C0.837402 2.57402 4.94146 0.335449 10.0041 0.335449ZM10.0041 10.3354C6.90369 10.3354 4.16281 9.49586 2.50389 8.21086L2.50407 8.66877C2.50407 10.2373 5.73959 12.0021 10.0041 12.0021C14.1797 12.0021 17.3688 10.31 17.4999 8.76702L17.5041 8.66877L17.5051 8.21019C15.8463 9.49561 13.105 10.3354 10.0041 10.3354ZM10.0041 2.00212C5.73959 2.00212 2.50407 3.76695 2.50407 5.33544C2.50407 6.90394 5.73959 8.66877 10.0041 8.66877C14.2686 8.66877 17.5041 6.90394 17.5041 5.33544C17.5041 3.76695 14.2686 2.00212 10.0041 2.00212Z"
+                  fill="white"
+                />
+              </svg>
+              <span>Claim Airdrop</span>
+            </Button>
+          </div>
+          <div className="dog mx-auto">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src="/images/dog.png"
+              alt="MetaDawgs"
+              width={400}
+              height={690}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
