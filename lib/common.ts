@@ -61,3 +61,10 @@ export function generateRandomString(length: number): string {
   }
   return result;
 }
+
+// Function to hash an address by showing the first and last n (6) characters
+export function hashAddress(address: string, at: number = 6): string {
+  const start = address.slice(0, at);
+  const end = address.slice(-at);
+  return `${start}...${end}`;
+}
