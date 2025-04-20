@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import Quests from "@/views/Quests";
+import HomeQuests from "@/views/HomeQuests";
 import Image from "next/image";
 
 export default function Home() {
@@ -46,7 +46,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Quests/>
+      <HomeQuests />
     </div>
   );
 }
