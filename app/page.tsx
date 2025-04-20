@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import HomeLeaderboard from "@/views/HomeLeaderboard";
 import HomeQuests from "@/views/HomeQuests";
 import Image from "next/image";
 
@@ -47,6 +48,7 @@ export default function Home() {
         </div>
       </div>
       <HomeQuests />
+      <HomeLeaderboard />
     </div>
   );
 }
