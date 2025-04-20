@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Fredoka, Josefin_Sans } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/custom/Navbar";
-import Footer from "@/components/custom/Footer";
+import MainLayout from "./MainLayout";
 
 const josefinSans = Josefin_Sans({
   variable: "--font-josefin-sans",
@@ -34,9 +33,7 @@ export default function RootLayout({
       <body
         className={`${josefinSans.variable} ${geistMono.variable} ${fredoka.variable} antialiased`}
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <MainLayout>{children}</MainLayout>
       </body>
     </html>
   );

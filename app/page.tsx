@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="div">
-      <div className="banner bg-black text-white min-h-svh size-full grid place-items-center p-4 sm:p-6 md:p-10">
+      <div className="banner bg-black text-white md:min-h-[calc(100vh_-_88px)] size-full grid place-items-center p-4 sm:p-6 md:p-10">
         <div className="inner flex flex-wrap gap-4 md:gap-14 items-center justify-center">
           <div className="info md:space-y-6 space-y-4">
             <h1 className="title md:text-[86px] text-5xl md:leading-[80px] tracking-[-2px] font-fredoka font-semibold uppercase">
@@ -20,7 +20,7 @@ export default function Home() {
               spreading good vibes and energy, believing in a brighter day and a
               brighter future.
             </p>
-            <Button className="bg-[#9D4EDD] rounded-full px-5! py-6! text-base cursor-pointer">
+            <Button className="bg-[#9D4EDD] rounded-full px-5! py-6! text-base cursor-pointer hover:bg-[#9D4EDD]/80!">
               <svg
                 width="20"
                 height="14"

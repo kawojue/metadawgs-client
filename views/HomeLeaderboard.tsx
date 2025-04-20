@@ -6,7 +6,7 @@ import Image from "next/image";
 function HomeLeaderboard() {
   return (
     <div
-      className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-20 min-h-svh relative bg-black text-white z-1"
+      className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-20 py-15 min-h-svh relative bg-black text-white z-1"
       id="Leaderboard"
     >
       <div className="div relative">
@@ -30,7 +30,7 @@ function HomeLeaderboard() {
         future.
       </p>
 
-      <Button className="bg-[#FFBE00] text-black rounded-full px-5! py-6! text-sm cursor-pointer mb-3">
+      <Button className="bg-[#FFBE00] text-black rounded-full px-5! py-6! text-sm cursor-pointer mb-3 hover:bg-[#FFBE00]/80!">
         <WalletIcon size={12} />
         <span>Connect Wallet</span>
       </Button>

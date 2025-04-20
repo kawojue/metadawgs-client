@@ -36,7 +36,7 @@ export const QuestTile = ({ quest }: Props) => {
       </div>
 
       <a href={quest.link} className="block">
-        <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! sm:py-[22px]! py-[20px]! cursor-pointer hover:text-white!">
+        <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! sm:py-[22px]! py-[20px]! cursor-pointer hover:bg-[#FFBE00]/80!">
           <span className="sm:block hidden">Verify</span>
           <ArrowUpRightIcon size={10} />
         </Button>

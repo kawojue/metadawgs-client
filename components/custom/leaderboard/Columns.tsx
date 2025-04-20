@@ -7,7 +7,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
   {
     accessorKey: "rank",
     header: () => (
-      <div className="text-white flex gap-0.5 items-center">
+      <div className="text-white flex items-center">
         Rank
         <InfoIcon className="ml-2 h-4 w-4" />
       </div>

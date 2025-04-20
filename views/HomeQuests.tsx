@@ -7,7 +7,7 @@ import Image from "next/image";
 function Quests() {
   return (
     <div
-      className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-20 min-h-svh text-center relative"
+      className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-20 py-15 min-h-svh text-center relative"
       id="Quest"
     >
       <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-semibold uppercase">
@@ -25,7 +25,7 @@ function Quests() {
         <AvatarGroup />
         <p className="text-xs font-semibold">30K Have Participated</p>
       </div>
-      <Button className="bg-[black] shadow-[rgba(255,_255,_255,_0.4)] rounded-full px-5! py-6! text-sm cursor-pointer">
+      <Button className="bg-[black] shadow-[rgba(255,_255,_255,_0.4)] rounded-full px-5! py-6! text-sm cursor-pointer hover:bg-[black]/80!">
         <svg
           width="15"
           height="12"

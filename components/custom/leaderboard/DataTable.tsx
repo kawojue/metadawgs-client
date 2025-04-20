@@ -47,7 +47,7 @@ export function DataTable<TData, TValue>({
       <Table>
         <TableHeader className="bg-[#101928]">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="hover:bg-transparent">
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
