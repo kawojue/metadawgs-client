@@ -11,7 +11,9 @@ import {
 } from "@/components/ui/dialog";
 import { copyToClipboard, generateRandomString } from "@/lib/common";
 import { TelegramIcon, TwitterIcon } from "@/lib/icons";
-import { ArrowUpRightIcon, CopyIcon } from "lucide-react";
+import { XUserToken } from "@/lib/values";
+import { ArrowUpRightIcon, CircleX, CopyIcon } from "lucide-react";
+import useLocalStorage from "use-local-storage";
 
 function ProfileModal({
   open,
@@ -20,13 +22,34 @@ function ProfileModal({
   open: boolean;
   onClose: () => void;
 }) {
+  const [, setUserToken] = useLocalStorage<string>(XUserToken, "");
   const referralCode = generateRandomString(10);
 
   return (
-    <Dialog open={open}>
-      <DialogContent className="sm:max-w-[425px] bg-black text-white shadow-sm border  border-white/20">
-        <DialogHeader>
+    <Dialog
+      open={open}
+      onOpenChange={(x) => {
+        if (!x) {
+          onClose();
+        }
+      }}
+    >
+      <DialogContent
+        className="sm:max-w-[456px] bg-black text-white shadow-sm border  border-white/20"
+        showCloseButton={false}
+      >
+        <DialogHeader className="flex flex-row justify-between gap-4 items-center">
           <DialogTitle className="font-fredoka text-2xl">Profile</DialogTitle>
+          <button
+            className="cursor-pointer p-1"
+            id="Close"
+            onClick={() => {
+              onClose();
+            }}
+          >
+            <CircleX size={18} />
+            <span className="sr-only">Close</span>
+          </button>
         </DialogHeader>
         <div className="grid gap-5 py-4">
           <div className="profile flex flex-col gap-2 items-center justify-center">
@@ -45,21 +68,21 @@ function ProfileModal({
             </div>
           </div>
           <div className="stats grid grid-cols-3 gap-3">
-            <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
+            <div className="grid gap-0.5 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
               <span className="font-semibold text-lg">0</span>
               <span className="text-xs">Tasks Completed</span>
             </div>
-            <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
+            <div className="grid gap-0.5 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
               <span className="font-semibold text-lg">0</span>
               <span className="text-xs">Overall Points</span>
             </div>
-            <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
+            <div className="grid gap-0.5 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
               <span className="font-semibold text-lg">0</span>
               <span className="text-xs">Rank Number</span>
             </div>
           </div>
           <div className="links grid gap-4">
-            <div className="link rounded-full h-16 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 border border-white/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg.png')] after:bg-no-repeat after:bg-cover">
+            <div className="link rounded-full h-16 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 border border-white/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-no-repeat after:bg-center after:bg-cover">
               <div className="lint flex gap-4 items-center">
                 <div className="app-icon max-[340px]:hidden">
                   <TwitterIcon />
@@ -76,7 +99,7 @@ function ProfileModal({
                 </Button>
               </a>
             </div>
-            <div className="link rounded-full h-16 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 border border-white/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg.png')] after:bg-no-repeat after:bg-cover">
+            <div className="link rounded-full h-16 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 border border-white/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-no-repeat after:bg-center after:bg-cover">
               <div className="lint flex gap-4 items-center">
                 <div className="app-icon max-[340px]:hidden">
                   <TelegramIcon />
@@ -98,9 +121,12 @@ function ProfileModal({
         <DialogFooter className="">
           <Button
             type="submit"
-            className="w-full bg-transparent py-6! rounded-full"
+            className="w-full bg-transparent py-6! rounded-full cursor-pointer"
             variant={"outline"}
-            onClick={() => onClose()}
+            onClick={() => {
+              setUserToken("");
+              onClose();
+            }}
           >
             Log Out{" "}
             <svg
