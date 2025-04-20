@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Quests from "@/views/Quests";
 import Image from "next/image";
 
 export default function Home() {
@@ -7,7 +8,7 @@ export default function Home() {
       <div className="banner bg-black text-white min-h-svh size-full grid place-items-center p-4 sm:p-6 md:p-10">
         <div className="inner flex flex-wrap gap-4 md:gap-14 items-center justify-center">
           <div className="info md:space-y-6 space-y-4">
-            <h1 className="title md:text-[96px] text-6xl md:leading-[100px] tracking-[-2px] font-fredoka font-semibold uppercase">
+            <h1 className="title md:text-[86px] text-5xl md:leading-[80px] tracking-[-2px] font-fredoka font-semibold uppercase">
               MetaDawgs
               <br />
               For the bold &<br />
@@ -37,14 +38,15 @@ export default function Home() {
           <div className="dog mx-auto">
             <Image
               className="md:w-[400px] md:min-w-[300px] w-[250px]"
-              src="/images/dog.png"
+              src="/images/dog.svg"
               alt="MetaDawgs"
-              width={400}
-              height={690}
+              width={360}
+              height={600}
             />
           </div>
         </div>
       </div>
+      <Quests/>
     </div>
   );
 }
