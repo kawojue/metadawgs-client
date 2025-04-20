@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, MenuIcon, WalletIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import useLocalStorage from "use-local-storage";
-import { XMenuisOpen } from "@/lib/values";
+import { XMenuisOpen, XUserToken } from "@/lib/values";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { generateRandomString, hashAddress } from "@/lib/common";
+import ProfileModal from "@/components/custom/modals/ProfileModal";
 
 function Navbar() {
   const pathname = usePathname();
@@ -18,7 +19,9 @@ function Navbar() {
     XMenuisOpen,
     false
   );
-  const [isLoggedIn] = useState<boolean>(true);
+  const [userToken] = useLocalStorage<string>(XUserToken, "");
+  const [isLoggedIn] = useState<boolean>(!!userToken);
+  const [profileIsOpen, setProfileIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (menuIsOpen) {
@@ -213,6 +216,11 @@ function Navbar() {
           </Button>
         </div>
       </div>
+
+      <ProfileModal
+        open={profileIsOpen}
+        onClose={() => setProfileIsOpen(false)}
+      />
     </div>
   );
 }
