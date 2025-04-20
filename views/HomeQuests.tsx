@@ -10,13 +10,13 @@ function Quests() {
       className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-20 py-15 min-h-svh text-center relative"
       id="Quest"
     >
-      <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-semibold uppercase">
+      <h2 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-semibold uppercase">
         Complete Quests,
         <br />
         Collect Sparks & Earn
         <br />
         MetaDawgs Token
-      </h1>
+      </h2>
       <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px]">
         Complete the following tasks to stand a chance to earn more metadawgs as
         an early participant in the ecosystem

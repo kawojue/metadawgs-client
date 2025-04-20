@@ -8,8 +8,10 @@ import useLocalStorage from "use-local-storage";
 import { XMenuisOpen } from "@/lib/values";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 function Navbar() {
+  const pathname = usePathname();
   const [menuIsOpen, setMenuIsOpen] = useLocalStorage<boolean>(
     XMenuisOpen,
     false
@@ -37,7 +39,10 @@ function Navbar() {
           <li>
             <Link
               href={"/quests"}
-              className="text-lg capitalize hover:opacity-85"
+              className={cn(
+                "text-lg capitalize hover:opacity-85",
+                pathname.startsWith("/quests") && "text-[#FFBE00]"
+              )}
             >
               quests
             </Link>
@@ -45,7 +50,10 @@ function Navbar() {
           <li>
             <Link
               href={"/presale"}
-              className="text-lg capitalize hover:opacity-85"
+              className={cn(
+                "text-lg capitalize hover:opacity-85",
+                pathname.startsWith("/presale") && "text-[#FFBE00]"
+              )}
             >
               presale
             </Link>
@@ -53,7 +61,10 @@ function Navbar() {
           <li>
             <Link
               href={"/leaderboard"}
-              className="text-lg capitalize hover:opacity-85"
+              className={cn(
+                "text-lg capitalize hover:opacity-85",
+                pathname.startsWith("/leaderboard") && "text-[#FFBE00]"
+              )}
             >
               leaderboard
             </Link>
@@ -92,7 +103,7 @@ function Navbar() {
 
       <div
         className={cn(
-          "fixed top-[88px] left-0 xl:hidden transition-all z-[990] w-full h-[calc(100svh_-_88px)] flex justify-center items-center flex-col",
+          "fixed top-[88px] left-0 xl:hidden transition-all z-[990] w-full h-dch flex justify-center items-center flex-col",
           !menuIsOpen && "-translate-y-full opacity-0 invisible",
           menuIsOpen && "translate-y-0 opacity-100"
         )}
@@ -101,24 +112,36 @@ function Navbar() {
           <ul className="flex flex-col items-center justify-center select-none">
             <li>
               <Link
+                onClick={() => setMenuIsOpen(false)}
                 href={"/quests"}
-                className="block text-4xl font-fredoka hover:opacity-85 py-6 p-4 uppercase font-bold"
+                className={cn(
+                  "block sm:text-4xl text-3xl font-fredoka hover:opacity-85 py-6 p-4 uppercase font-bold",
+                  pathname.startsWith("/quests") && "text-[#FFBE00]"
+                )}
               >
                 quests
               </Link>
             </li>
             <li>
               <Link
+                onClick={() => setMenuIsOpen(false)}
                 href={"/presale"}
-                className="block text-4xl font-fredoka hover:opacity-85 py-6 p-4 uppercase font-bold"
+                className={cn(
+                  "block sm:text-4xl text-3xl font-fredoka hover:opacity-85 py-6 p-4 uppercase font-bold",
+                  pathname.startsWith("/presale") && "text-[#FFBE00]"
+                )}
               >
                 presale
               </Link>
             </li>
             <li>
               <Link
+                onClick={() => setMenuIsOpen(false)}
                 href={"/leaderboard"}
-                className="block text-4xl font-fredoka hover:opacity-85 py-6 p-4 uppercase font-bold"
+                className={cn(
+                  "block sm:text-4xl text-3xl font-fredoka hover:opacity-85 py-6 p-4 uppercase font-bold",
+                  pathname.startsWith("/leaderboard") && "text-[#FFBE00]"
+                )}
               >
                 leaderboard
               </Link>
@@ -126,7 +149,10 @@ function Navbar() {
           </ul>
         </div>
         <div className="others md:hidden flex flex-col gap-6 mt-4">
-          <Button className="bg-white text-black rounded-full w-fit mx-auto px-6! py-6! cursor-pointer hover:bg-white/80!">
+          <Button
+            onClick={() => setMenuIsOpen(false)}
+            className="bg-white text-black rounded-full w-fit mx-auto px-6! py-6! cursor-pointer hover:bg-white/80!"
+          >
             <svg
               width="14"
               height="12"
@@ -142,7 +168,10 @@ function Navbar() {
 
             <span>Sign In with X</span>
           </Button>
-          <Button className="bg-[#FFBE00] text-black rounded-full w-fit mx-auto px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!">
+          <Button
+            onClick={() => setMenuIsOpen(false)}
+            className="bg-[#FFBE00] text-black rounded-full w-fit mx-auto px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
+          >
             <WalletIcon size={12} />
             <span>Connect wallet</span>
           </Button>

@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { WalletIcon } from "lucide-react";
 import Image from "next/image";
 
-function HomeLeaderboard() {
+function page() {
   return (
     <div
-      className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-20 py-15 min-h-svh relative bg-black text-white z-1"
+      className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-10 py-5 min-h-svh relative bg-black text-white z-1"
       id="Leaderboard"
     >
       <div className="div relative">
@@ -40,4 +40,4 @@ function HomeLeaderboard() {
   );
 }
 
-export default HomeLeaderboard;
+export default page;

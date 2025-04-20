@@ -7,7 +7,7 @@ function MainLayout({ children }: { children: ReactNode }) {
   return (
     <div>
       <Navbar />
-      {children}
+      <div className="content min-h-dch">{children}</div>
       <Footer />
       <Veil />
     </div>
