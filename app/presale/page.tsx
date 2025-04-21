@@ -32,7 +32,7 @@ function Page() {
           </div>
           <div className="progress-value">
             <p className="text-lg">
-              Raised: <strong>$89,353,663 / $34,535,636</strong>
+              Raised: <strong>89,353,663 SOL / 34,535,636 SOL</strong>
             </p>
           </div>
           <div className="balance shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] z-1 rounded-2xl p-3 text-white text-center overflow-hidden relative">
