@@ -77,7 +77,6 @@ export function DataTable<TData, TValue>({
               </TableCell>
             </TableRow>
           )}
-
           {!isLoading && (
             <>
               {table.getRowModel().rows?.length ? (

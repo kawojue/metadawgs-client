@@ -1,9 +1,8 @@
-export interface Quest {
+export interface PostType {
   id: number;
-  point: number;
-  todo: string;
-  app_name: string;
-  link: string;
+  title: string;
+  points: number;
+  url: string;
 }
 
 export interface ProfileType {

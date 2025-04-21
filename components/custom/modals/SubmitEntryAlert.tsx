@@ -63,7 +63,7 @@ export function SubmitEntryAlert({
           <AlertDialogAction
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
             onClick={() => {
-              router.push("/quests");
+              router.push("/quests#Posts");
               onClose?.();
             }}
           >

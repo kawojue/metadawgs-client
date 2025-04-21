@@ -1,9 +1,9 @@
-import { Quest } from "@/lib/type";
 import { TelegramIcon, TwitterIcon } from "@/lib/icons";
 import { ArrowUpRightIcon, PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { QuestType } from "@/lib/type";
 
-type Props = { quest: Quest };
+type Props = { quest: QuestType };
 
 export const QuestTile = ({ quest }: Props) => {
   function renderQuestIcon(app_name: string) {

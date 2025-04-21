@@ -1,6 +1,6 @@
 "use client";
 
-import { XUserAddress, XUserProfile, XUserToken } from "./values";
+import { XUserAddress, XUserProfile, XUserToken } from "@/lib/values";
 
 async function xFetch<T, K = undefined>(
   endpoint: string,
@@ -40,9 +40,10 @@ async function xFetch<T, K = undefined>(
   }
 
   return fetch(`${apiUrl}${endpoint}`, mergedOptions)
-    .then((response) => {
+    .then(async (response) => {
       if (!response.ok) {
-        throw new Error(`Request failed: ${response.statusText}`);
+        const res = await response.json();
+        throw new Error(res.message);
       }
       return response.json();
     })

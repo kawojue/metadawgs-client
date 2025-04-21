@@ -2,13 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-  ChevronDown,
-  ChevronUp,
-  MenuIcon,
-  WalletIcon,
-  XIcon,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Loader, MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import useLocalStorage from "use-local-storage";
 import { XMenuisOpen, XUserProfile, XUserToken } from "@/lib/values";
@@ -16,18 +10,15 @@ import { authWithTwitter, cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { hashAddress } from "@/lib/common";
 import ProfileModal from "@/components/custom/modals/ProfileModal";
 import { fetchWithAuth } from "@/lib/api";
 import { ProfileType } from "@/lib/type";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { SignupAlert } from "./modals/SignupAlert";
+import AddressButton from "@/components/custom/AddressButton";
 
 function Navbar() {
   const pathname = usePathname();
-  const { publicKey, disconnect } = useWallet();
-  const { setVisible } = useWalletModal();
+  const { disconnect } = useWallet();
 
   const [menuIsOpen, setMenuIsOpen] = useLocalStorage<boolean>(
     XMenuisOpen,
@@ -38,8 +29,8 @@ function Navbar() {
     XUserProfile,
     null
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [profileIsOpen, setProfileIsOpen] = useState<boolean>(false);
-  const [openSignUpAlert, setOpenSignUpAlert] = useState<boolean>(false);
 
   useEffect(() => {
     if (menuIsOpen) {
@@ -54,23 +45,29 @@ function Navbar() {
   }, [menuIsOpen]);
 
   useEffect(() => {
-    if (!userToken) {
-      return;
-    }
-
     async function getProfile() {
       try {
+        setIsLoading(true);
         const { data: profile } = await fetchWithAuth<ProfileType>(
           "/auth/profile"
         );
         console.log("profile", profile);
         setUserProfile(profile);
       } catch (error) {
+        setUserProfile(null);
+        setUserToken("");
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     }
 
-    getProfile();
+    if (!userToken) {
+      setUserProfile(null);
+      return;
+    } else {
+      getProfile();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userToken]);
 
@@ -82,20 +79,6 @@ function Navbar() {
   function logOut() {
     setUserProfile(null);
     setUserToken(undefined);
-    disconnect();
-  }
-
-  function connectWallet() {
-    if (!userToken) {
-      setOpenSignUpAlert(true);
-
-      return;
-    }
-
-    setVisible(true);
-  }
-
-  function disconnectWallet() {
     disconnect();
   }
 
@@ -168,57 +151,31 @@ function Navbar() {
             className="bg-transparent text-white border rounded-full px-2! py-6! cursor-pointer hover:opacity-80"
             onClick={() => setProfileIsOpen(true)}
           >
-            <Avatar
-              className="w-8 h-8 min-w-8 min-h-8"
-              suppressHydrationWarning
-            >
-              <AvatarImage src={userProfile?.user.avatar} />
-              <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
-            </Avatar>
-            <span className="text-sm line-clamp-1">
-              {userProfile?.user.username}
-            </span>
-            {!profileIsOpen && <ChevronDown size={10} />}
-            {profileIsOpen && <ChevronUp size={10} />}
+            {isLoading && (
+              <div className="px-2">
+                <Loader className="animate-spin" size={32} />
+              </div>
+            )}
+            {!isLoading && (
+              <>
+                <Avatar
+                  className="w-8 h-8 min-w-8 min-h-8"
+                  suppressHydrationWarning
+                >
+                  <AvatarImage src={userProfile?.user.avatar} />
+                  <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
+                </Avatar>
+                <span className="text-sm line-clamp-1">
+                  {userProfile?.user.username}
+                </span>
+                {!profileIsOpen && <ChevronDown size={10} />}
+                {profileIsOpen && <ChevronUp size={10} />}
+              </>
+            )}
           </Button>
         )}
 
-        {!publicKey && (
-          <Button
-            className="bg-[#FFBE00] text-black rounded-full px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
-            onClick={connectWallet}
-          >
-            <WalletIcon size={12} />
-            <span>Connect wallet</span>
-          </Button>
-        )}
-
-        {publicKey && (
-          <Button
-            className="bg-[#FFBE00] text-black rounded-full px-3! pl-2! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
-            onClick={disconnectWallet}
-          >
-            <Avatar
-              className="w-9 h-9 min-w-9 min-h-9"
-              suppressHydrationWarning
-            >
-              <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
-            </Avatar>
-            <span>{hashAddress(publicKey.toBase58())}</span>
-            <svg
-              width="15"
-              height="14"
-              viewBox="0 0 15 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7.00004 13.6666C3.31814 13.6666 0.333374 10.6818 0.333374 6.99992C0.333374 3.31802 3.31814 0.333252 7.00004 0.333252C9.18091 0.333252 11.1172 1.38044 12.3335 2.99941L10.5273 2.99946C9.58718 2.16991 8.35238 1.66659 7.00004 1.66659C4.05452 1.66659 1.66671 4.0544 1.66671 6.99992C1.66671 9.94545 4.05452 12.3333 7.00004 12.3333C8.35271 12.3333 9.58778 11.8297 10.528 10.9998H12.334C11.1177 12.6191 9.18118 13.6666 7.00004 13.6666ZM11.6667 9.66658V7.66658H6.33338V6.33325H11.6667V4.33325L15 6.99992L11.6667 9.66658Z"
-                fill="#FF0000"
-              />
-            </svg>
-          </Button>
-        )}
+        <AddressButton />
       </div>
       <div className="xl:hidden flex gap-2 items-center">
         <button
@@ -235,13 +192,17 @@ function Navbar() {
               setProfileIsOpen(true);
             }}
           >
-            <Avatar
-              className="w-9 h-9 min-w-9 min-h-9"
-              suppressHydrationWarning
-            >
-              <AvatarImage src={userProfile?.user.avatar} />
-              <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
-            </Avatar>
+            {isLoading && <Loader className="animate-spin" size={24} />}
+
+            {!isLoading && (
+              <Avatar
+                className="w-9 h-9 min-w-9 min-h-9"
+                suppressHydrationWarning
+              >
+                <AvatarImage src={userProfile?.user.avatar} />
+                <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
+              </Avatar>
+            )}
           </button>
         )}
       </div>
@@ -315,38 +276,7 @@ function Navbar() {
               <span>Sign In with X</span>
             </Button>
           )}
-          {!publicKey && (
-            <Button
-              className="bg-[#FFBE00] text-black rounded-full px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
-              onClick={connectWallet}
-            >
-              <WalletIcon size={12} />
-              <span>Connect wallet</span>
-            </Button>
-          )}
-          {!!publicKey && (
-            <Button
-              className="bg-[#FFBE00] text-black rounded-full px-3! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
-              onClick={disconnectWallet}
-            >
-              <Avatar className="w-8 h-8 min-w-8 min-h-8">
-                <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
-              </Avatar>
-              <span>{hashAddress(publicKey.toBase58())}</span>
-              <svg
-                width="15"
-                height="14"
-                viewBox="0 0 15 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.00004 13.6666C3.31814 13.6666 0.333374 10.6818 0.333374 6.99992C0.333374 3.31802 3.31814 0.333252 7.00004 0.333252C9.18091 0.333252 11.1172 1.38044 12.3335 2.99941L10.5273 2.99946C9.58718 2.16991 8.35238 1.66659 7.00004 1.66659C4.05452 1.66659 1.66671 4.0544 1.66671 6.99992C1.66671 9.94545 4.05452 12.3333 7.00004 12.3333C8.35271 12.3333 9.58778 11.8297 10.528 10.9998H12.334C11.1177 12.6191 9.18118 13.6666 7.00004 13.6666ZM11.6667 9.66658V7.66658H6.33338V6.33325H11.6667V4.33325L15 6.99992L11.6667 9.66658Z"
-                  fill="#FF0000"
-                />
-              </svg>
-            </Button>
-          )}
+          <AddressButton />
         </div>
       </div>
 
@@ -354,10 +284,6 @@ function Navbar() {
         open={profileIsOpen}
         onClose={() => setProfileIsOpen(false)}
         logout={logOut}
-      />
-      <SignupAlert
-        open={openSignUpAlert}
-        onClose={() => setOpenSignUpAlert(false)}
       />
     </div>
   );

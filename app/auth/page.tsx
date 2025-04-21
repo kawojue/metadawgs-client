@@ -45,10 +45,10 @@ export default function AuthHandler() {
   }, [token]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-black px-4">
       <div className="text-center space-y-4">
-        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-        <h1 className="text-3xl font-semibold text-gray-800 font-fredoka">
+        <div className="w-10 h-10 border-4 border-[##FFBE00] border-t-transparent rounded-full animate-spin mx-auto" />
+        <h1 className="text-3xl font-semibold text-white font-fredoka">
           Authenticating...
         </h1>
       </div>
