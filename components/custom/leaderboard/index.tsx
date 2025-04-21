@@ -8,7 +8,7 @@ import { LeaderboardType } from "@/lib/type";
 
 export default function LeaderboardTable() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardType[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function getLeaderboard() {
@@ -19,7 +19,6 @@ export default function LeaderboardTable() {
         } = await fetchWithAuth<{ data: LeaderboardType[] }>(
           "/user/leaderboard"
         );
-        console.log("leaderboard", data);
 
         setLeaderboard(data);
       } catch (error) {
