@@ -1,9 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { LeaderboardEntry } from ".";
 import { InfoIcon } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LeaderboardType } from "@/lib/type";
+import { formatNumberWithCommas, getNumberSuffix } from "@/lib/common";
 
-export const columns: ColumnDef<LeaderboardEntry>[] = [
+export const columns: ColumnDef<LeaderboardType>[] = [
   {
     accessorKey: "rank",
     header: () => (
@@ -15,29 +16,36 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
         <Avatar className="w-7 h-7 min-w-7 min-h-7">
+          <AvatarImage src={row.getValue("avatar")} />
           <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
         </Avatar>
-        <span className="text-white font-medium">{row.getValue("rank")}</span>
+        <span className="text-white font-medium">
+          {row.getValue("rank")}
+          {getNumberSuffix(row.getValue("rank"))} Place
+        </span>
       </div>
     ),
   },
   {
-    accessorKey: "user",
+    accessorKey: "username",
     header: () => <div className="text-white">User</div>,
-    cell: ({ row }) => <div className="text-white">{row.getValue("user")}</div>,
+    cell: ({ row }) => (
+      <div className="text-white">{row.getValue("username")}</div>
+    ),
   },
   {
-    accessorKey: "tasksCompleted",
+    accessorKey: "tasks",
     header: () => <div className="text-white">Tasks Completed</div>,
     cell: ({ row }) => (
-      <div className="text-white">{row.getValue("tasksCompleted")} Tasks</div>
+      <div className="text-white">{row.getValue("tasks")} Tasks</div>
     ),
   },
   {
     accessorKey: "points",
     header: () => <div className="text-white">Points</div>,
     cell: ({ row }) => {
-      const color = row.original.color;
+      const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF"];
+      const color = colors[Math.floor(Math.random() * colors.length)];
 
       return (
         <div className="flex items-center gap-2">
@@ -54,7 +62,9 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
             />
           </svg>
 
-          <span className="text-white">{row.getValue("points")}</span>
+          <span className="text-white">
+            {formatNumberWithCommas(row.getValue("points"))}
+          </span>
         </div>
       );
     },

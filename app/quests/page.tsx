@@ -1,3 +1,5 @@
+"use client";
+
 import AvatarGroup from "@/components/custom/AvatarGroup";
 import QuestCard from "@/components/custom/QuestCard";
 import { QuestTile } from "@/components/custom/QuestTile";
@@ -7,10 +9,33 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { quests } from "@/lib/dummydata";
+import { fetchWithAuth } from "@/lib/api";
+import { QuestType } from "@/lib/type";
 import HomeLeaderboard from "@/views/HomeLeaderboard";
+import { useEffect, useState } from "react";
 
 function Page() {
+  const [quests, setQuests] = useState<QuestType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function getQuests() {
+      try {
+        setLoading(true);
+        const { data } = await fetchWithAuth<QuestType[]>("/posts");
+        console.log("Quests", data, loading);
+
+        setQuests(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getQuests();
+  }, []);
+
   return (
     <div className="">
       <div className="bg-black text-white p-4 sm:p-6 md:p-10 py-5 flex flex-col gap-5 justify-center items-center min-h-dch">

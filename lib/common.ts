@@ -68,3 +68,26 @@ export function hashAddress(address: string, at: number = 6): string {
   const end = address.slice(-at);
   return `${start}...${end}`;
 }
+
+// Function to get the ordinal suffix of a number
+export function getNumberSuffix(num: number): string {
+  const remainder = num % 100;
+  if (remainder >= 11 && remainder <= 13) {
+    return "th";
+  }
+  switch (num % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}
+
+// Function to format a number with commas as thousand separators
+export function formatNumberWithCommas(num: number): string {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

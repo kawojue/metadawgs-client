@@ -11,13 +11,15 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import useLocalStorage from "use-local-storage";
-import { XMenuisOpen, XUserToken } from "@/lib/values";
+import { XMenuisOpen, XUserProfile, XUserToken } from "@/lib/values";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { generateRandomString, hashAddress } from "@/lib/common";
 import ProfileModal from "@/components/custom/modals/ProfileModal";
+import { fetchWithAuth } from "@/lib/api";
+import { ProfileType } from "@/lib/type";
 
 function Navbar() {
   const pathname = usePathname();
@@ -26,6 +28,10 @@ function Navbar() {
     false
   );
   const [userToken, setUserToken] = useLocalStorage<string>(XUserToken, "");
+  const [userProfile, setUserProfile] = useLocalStorage<ProfileType | null>(
+    XUserProfile,
+    null
+  );
   const [profileIsOpen, setProfileIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -39,6 +45,61 @@ function Navbar() {
       document.body.style.overflow = "";
     };
   }, [menuIsOpen]);
+
+  useEffect(() => {
+    if (!userToken) {
+      return;
+    }
+
+    async function getProfile() {
+      try {
+        const { data: profile } = await fetchWithAuth<ProfileType>(
+          "/auth/profile"
+        );
+        console.log("profile", profile);
+        setUserProfile(profile);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userToken]);
+
+  function logOut() {
+    setUserProfile(null);
+    setUserToken(undefined);
+  }
+
+  function authWithTwitter() {
+    setMenuIsOpen(false);
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
+    const authUrl = `${apiUrl}/auth/x/`;
+
+    const width = 600;
+    const height = 700;
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
+
+    const authWindow = window.open(
+      authUrl,
+      "AuthWithX",
+      `width=${width},height=${height},top=${top},left=${left},resizable,scrollbars=yes,status=1`
+    );
+
+    if (authWindow) {
+      const timer = setInterval(() => {
+        if (authWindow.closed) {
+          clearInterval(timer);
+          console.log("Authentication window closed");
+        }
+      }, 500);
+    } else {
+      console.error("Failed to open authentication window");
+    }
+  }
 
   return (
     <div className="navbar bg-black text-white md:px-[8%] px-4 py-5 flex justify-between gap-4 items-center w-full sticky top-0 z-[999]">
@@ -85,7 +146,10 @@ function Navbar() {
       <div className="others md:flex hidden gap-4">
         {!userToken && (
           <>
-            <Button className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!">
+            <Button
+              className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
+              onClick={authWithTwitter}
+            >
               <svg
                 width="14"
                 height="12"
@@ -117,17 +181,18 @@ function Navbar() {
                 className="w-8 h-8 min-w-8 min-h-8"
                 suppressHydrationWarning
               >
+                <AvatarImage src={userProfile?.user.avatar} />
                 <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
               </Avatar>
-              <span className="text-sm line-clamp-1">theboviuwani</span>
+              <span className="text-sm line-clamp-1">
+                {userProfile?.user.username}
+              </span>
               {!profileIsOpen && <ChevronDown size={10} />}
               {profileIsOpen && <ChevronUp size={10} />}
             </Button>
             <Button
               className="bg-[#FFBE00] text-black rounded-full px-3! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
-              onClick={() => {
-                setUserToken("");
-              }}
+              onClick={() => logOut()}
             >
               <Avatar
                 className="w-8 h-8 min-w-8 min-h-8"
@@ -152,13 +217,31 @@ function Navbar() {
           </>
         )}
       </div>
-      <button
-        className="p-2 xl:hidden cursor-pointer"
-        onClick={() => setMenuIsOpen(!menuIsOpen)}
-      >
-        {menuIsOpen && <XIcon size={32} />}
-        {!menuIsOpen && <MenuIcon size={32} />}
-      </button>
+      <div className="flex gap-2 items-center">
+        <button
+          className="p-2 xl:hidden cursor-pointer"
+          onClick={() => setMenuIsOpen(!menuIsOpen)}
+        >
+          {menuIsOpen && <XIcon size={32} />}
+          {!menuIsOpen && <MenuIcon size={32} />}
+        </button>
+        {!!userToken && (
+          <button
+            className="p-2 xl:hidden cursor-pointer"
+            onClick={() => {
+              logOut();
+            }}
+          >
+            <Avatar
+              className="w-8 h-8 min-w-8 min-h-8"
+              suppressHydrationWarning
+            >
+              <AvatarImage src={userProfile?.user.avatar} />
+              <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
+            </Avatar>
+          </button>
+        )}
+      </div>
 
       <div
         className={cn(
@@ -210,7 +293,10 @@ function Navbar() {
         <div className="others md:hidden flex flex-col gap-6 mt-4 w-fit">
           {!userToken && (
             <>
-              <Button className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!">
+              <Button
+                className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
+                onClick={authWithTwitter}
+              >
                 <svg
                   width="14"
                   height="12"
@@ -234,30 +320,31 @@ function Navbar() {
           )}
           {!!userToken && (
             <>
-              <Button
+              {/* <Button
                 className="bg-transparent text-white border rounded-full px-2! py-6! cursor-pointer hover:opacity-80"
-                onClick={() => setProfileIsOpen(true)}
-              >
-                <Avatar
-                  className="w-8 h-8 min-w-8 min-h-8"
-                  suppressHydrationWarning
-                >
-                  <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
-                </Avatar>
-                <span className="text-sm line-clamp-1">theboviuwani</span>
-                {!profileIsOpen && <ChevronDown size={10} />}
-                {profileIsOpen && <ChevronUp size={10} />}
-              </Button>
-              <Button
-                className="bg-[#FFBE00] text-black rounded-full px-3! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
                 onClick={() => {
-                  setUserToken("");
+                  setMenuIsOpen(false);
+                  setProfileIsOpen(true);
                 }}
               >
                 <Avatar
                   className="w-8 h-8 min-w-8 min-h-8"
                   suppressHydrationWarning
                 >
+                  <AvatarImage src={userProfile?.user.avatar} />
+                  <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
+                </Avatar>
+                <span className="text-sm line-clamp-1">
+                  {userProfile?.user.username}
+                </span>
+                {!profileIsOpen && <ChevronDown size={10} />}
+                {profileIsOpen && <ChevronUp size={10} />}
+              </Button> */}
+              <Button
+                className="bg-[#FFBE00] text-black rounded-full px-3! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
+                onClick={() => logOut()}
+              >
+                <Avatar className="w-8 h-8 min-w-8 min-h-8">
                   <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
                 </Avatar>
                 <span>{hashAddress(generateRandomString(16))}</span>

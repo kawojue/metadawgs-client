@@ -22,11 +22,13 @@ import { useState } from "react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -65,23 +67,7 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody className="bg-[#101928]">
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                className="hover:bg-[#1a1f2e]/50 transition-colors"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className="p-4 px-6 border-r-2 border-t-2 last:border-r-0 rounded-2xl border-[#E4E4E4]/10"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
+          {isLoading && (
             <TableRow>
               <TableCell
                 colSpan={columns.length}
@@ -91,6 +77,37 @@ export function DataTable<TData, TValue>({
               </TableCell>
             </TableRow>
           )}
+
+          {!isLoading &&
+            (table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  className="hover:bg-[#1a1f2e]/50 transition-colors"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className="p-4 px-6 border-r-2 border-t-2 last:border-r-0 rounded-2xl border-[#E4E4E4]/10"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center text-white"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,9 +9,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { copyToClipboard, generateRandomString } from "@/lib/common";
+import { copyToClipboard } from "@/lib/common";
 import { TelegramIcon, TwitterIcon } from "@/lib/icons";
-import { XUserToken } from "@/lib/values";
+import { ProfileType } from "@/lib/type";
+import { XUserProfile, XUserToken } from "@/lib/values";
 import { ArrowUpRightIcon, CircleX, CopyIcon } from "lucide-react";
 import useLocalStorage from "use-local-storage";
 
@@ -23,8 +24,15 @@ function ProfileModal({
   onClose: () => void;
 }) {
   const [, setUserToken] = useLocalStorage<string>(XUserToken, "");
-  const referralCode = generateRandomString(10);
+  const [userProfile, setUserProfile] = useLocalStorage<ProfileType | null>(
+    XUserProfile,
+    null
+  );
 
+  function logOut() {
+    setUserProfile(null);
+    setUserToken(undefined);
+  }
   return (
     <Dialog
       open={open}
@@ -54,35 +62,38 @@ function ProfileModal({
         <div className="grid gap-5 py-4">
           <div className="profile flex flex-col gap-2 items-center justify-center">
             <Avatar className="w-20 h-20 min-w-20 min-h-20">
+              <AvatarImage src={userProfile?.user.avatar} />
               <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
             </Avatar>
-            <p className="text-sm text-[#ACACAC]">theboviuwani</p>
+            <p className="text-sm text-[#ACACAC]">
+              {userProfile?.user.username}
+            </p>
             <div className="flex gap-3 items-center">
               <span className="text-[#ACACAC] text-sm">Referral Code:</span>
               <Button
                 className="bg-[#A078FF] p-1.5 px-2.5 rounded-full cursor-pointer"
-                onClick={() => copyToClipboard(referralCode)}
+                onClick={() => copyToClipboard(userProfile?.referralCode ?? "")}
               >
-                {referralCode} <CopyIcon />
+                {userProfile?.referralCode} <CopyIcon />
               </Button>
             </div>
           </div>
           <div className="stats grid grid-cols-3 gap-3">
-            <div className="grid gap-0.5 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
-              <span className="font-semibold text-lg">0</span>
+            <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
+              <span className="font-semibold text-xl">0</span>
               <span className="text-xs">Tasks Completed</span>
             </div>
-            <div className="grid gap-0.5 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
-              <span className="font-semibold text-lg">0</span>
+            <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
+              <span className="font-semibold text-xl">0</span>
               <span className="text-xs">Overall Points</span>
             </div>
-            <div className="grid gap-0.5 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
-              <span className="font-semibold text-lg">0</span>
+            <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
+              <span className="font-semibold text-xl">0</span>
               <span className="text-xs">Rank Number</span>
             </div>
           </div>
-          <div className="links grid gap-4">
-            <div className="link rounded-full h-16 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 border border-white/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-no-repeat after:bg-center after:bg-cover">
+          <div className="links grid gap-3">
+            <div className="link rounded-full h-17 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-no-repeat after:bg-center after:bg-cover">
               <div className="lint flex gap-4 items-center">
                 <div className="app-icon max-[340px]:hidden">
                   <TwitterIcon />
@@ -99,7 +110,7 @@ function ProfileModal({
                 </Button>
               </a>
             </div>
-            <div className="link rounded-full h-16 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 border border-white/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-no-repeat after:bg-center after:bg-cover">
+            <div className="link rounded-full h-17 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-no-repeat after:bg-center after:bg-cover">
               <div className="lint flex gap-4 items-center">
                 <div className="app-icon max-[340px]:hidden">
                   <TelegramIcon />
@@ -124,7 +135,7 @@ function ProfileModal({
             className="w-full bg-transparent py-6! rounded-full cursor-pointer"
             variant={"outline"}
             onClick={() => {
-              setUserToken("");
+              logOut();
               onClose();
             }}
           >
