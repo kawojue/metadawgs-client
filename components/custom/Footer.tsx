@@ -1,13 +1,22 @@
 import Image from "next/image";
+import Link from "next/link";
+import { FadeIn } from "./ScrollAnimation";
 
 function Footer() {
   return (
     <div className="bg-black text-white flex justify-between flex-wrap gap-x-6 gap-y-2 p-4 md:px-[5%] md:py-6 px-6">
-      <div className="logo">
-        <Image src="/images/logo.svg" alt="MetaDawgs" width={225} height={40} />
-      </div>
+      <FadeIn>
+        <Link href={"/"} className="logo">
+          <Image
+            src="/images/logo.svg"
+            alt="MetaDawgs"
+            width={225}
+            height={40}
+          />
+        </Link>
+      </FadeIn>
 
-      <div className="social-links flex items-center gap-4">
+      <FadeIn className="social-links flex items-center gap-4">
         <a
           href=""
           className="w-10 h-10 rounded-full bg-white grid place-content-center place-items-center"
@@ -43,7 +52,7 @@ function Footer() {
             />
           </svg>
         </a>
-      </div>
+      </FadeIn>
     </div>
   );
 }

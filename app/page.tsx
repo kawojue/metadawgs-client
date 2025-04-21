@@ -1,10 +1,8 @@
-"use client";
-
+import { FadeInUp, ZoomInLeft } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import HomeLeaderboard from "@/views/HomeLeaderboard";
 import HomeQuests from "@/views/HomeQuests";
 import Image from "next/image";
-import { motion } from "motion/react";
 
 export default function Home() {
   return (
@@ -12,27 +10,15 @@ export default function Home() {
       <div className="banner bg-black text-white md:min-h-dch size-full grid place-items-center p-4 sm:p-6 md:p-10">
         <div className="inner flex flex-wrap gap-4 md:gap-14 items-center justify-center">
           <div className="info md:space-y-6 space-y-4">
-            <motion.h1
-              initial={{ translateY: -50 }}
-              animate={{ translateY: 0 }}
-              transition={{
-                duration: 0.3,
-              }}
-              className="title md:text-[86px] text-5xl md:leading-[80px] tracking-[-2px] font-fredoka font-semibold uppercase"
-            >
-              MetaDawgs
-              <br />
-              For the bold &<br />
-              the grinders.
-            </motion.h1>
-            <motion.div
-              initial={{ translateY: 50, opacity: 0.8 }}
-              animate={{ translateY: 0, opacity: 1 }}
-              transition={{
-                duration: 0.3,
-              }}
-              className="md:space-y-6 space-y-4"
-            >
+            <FadeInUp>
+              <h1 className="title md:text-[86px] text-5xl md:leading-[80px] tracking-[-2px] font-fredoka font-semibold uppercase">
+                MetaDawgs
+                <br />
+                For the bold &<br />
+                the grinders.
+              </h1>
+            </FadeInUp>
+            <FadeInUp className="md:space-y-6 space-y-4">
               <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[600px]">
                 This is for all the dawgs, this is for all the grinders on X,
                 spreading good vibes and energy, believing in a brighter day and
@@ -53,16 +39,9 @@ export default function Home() {
                 </svg>
                 <span>Claim Airdrop</span>
               </Button>
-            </motion.div>
+            </FadeInUp>
           </div>
-          <motion.div
-            className="dog mx-auto"
-            initial={{ translateX: 50 }}
-            animate={{ translateX: 0 }}
-            transition={{
-              duration: 0.3,
-            }}
-          >
+          <ZoomInLeft className="dog mx-auto">
             <Image
               className="md:w-[360px] md:min-w-[300px] w-[250px]"
               src="/images/dog.svg"
@@ -70,7 +49,7 @@ export default function Home() {
               width={360}
               height={600}
             />
-          </motion.div>
+          </ZoomInLeft>
         </div>
       </div>
       <HomeQuests />

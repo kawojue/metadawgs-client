@@ -1,4 +1,5 @@
 import LeaderboardTable from "@/components/custom/leaderboard";
+import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import { WalletIcon } from "lucide-react";
 import Image from "next/image";
@@ -9,7 +10,7 @@ function page() {
       className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-10 py-5 min-h-dch relative bg-black text-white z-1"
       id="Leaderboard"
     >
-      <div className="div relative">
+      <FadeInUp className="div relative">
         <h2 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka text-center font-semibold uppercase">
           Community
           <br />
@@ -23,19 +24,24 @@ function page() {
           height={225}
           className="badge absolute -top-2 md:-left-30 -left-15 -z-1 md:w-[160px] w-[80px]"
         />
-      </div>
-      <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px] text-center">
-        This is for all the dwags, this is for all the grinders on X, spreading
-        good vibes and energy, believing in a brighter day and a brighter
-        future.
-      </p>
+      </FadeInUp>
+      <FadeInUp>
+        <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px] text-center">
+          This is for all the dwags, this is for all the grinders on X,
+          spreading good vibes and energy, believing in a brighter day and a
+          brighter future.
+        </p>
+      </FadeInUp>
+      <FadeInUp>
+        <Button className="bg-[#FFBE00] text-black rounded-full px-5! py-6! text-sm cursor-pointer mb-3 hover:bg-[#FFBE00]/80!">
+          <WalletIcon size={12} />
+          <span>Connect Wallet</span>
+        </Button>
+      </FadeInUp>
 
-      <Button className="bg-[#FFBE00] text-black rounded-full px-5! py-6! text-sm cursor-pointer mb-3 hover:bg-[#FFBE00]/80!">
-        <WalletIcon size={12} />
-        <span>Connect Wallet</span>
-      </Button>
-
-      <LeaderboardTable />
+      <FadeInUp className="w-full flex justify-center items-center">
+        <LeaderboardTable />
+      </FadeInUp>
     </div>
   );
 }

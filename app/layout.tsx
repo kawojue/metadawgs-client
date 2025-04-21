@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist_Mono, Fredoka, Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import MainLayout from "./MainLayout";
+import { SocketProvider } from "./SocketProvider";
+import WalletConnectionProvider from "./WalletProvider";
 
 const josefinSans = Josefin_Sans({
   variable: "--font-josefin-sans",
@@ -33,7 +35,11 @@ export default function RootLayout({
       <body
         className={`${josefinSans.variable} ${geistMono.variable} ${fredoka.variable} antialiased`}
       >
-        <MainLayout>{children}</MainLayout>
+        <WalletConnectionProvider>
+          <SocketProvider>
+            <MainLayout>{children}</MainLayout>
+          </SocketProvider>
+        </WalletConnectionProvider>
       </body>
     </html>
   );

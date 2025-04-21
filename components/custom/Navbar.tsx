@@ -12,17 +12,23 @@ import {
 import Link from "next/link";
 import useLocalStorage from "use-local-storage";
 import { XMenuisOpen, XUserProfile, XUserToken } from "@/lib/values";
-import { cn } from "@/lib/utils";
+import { authWithTwitter, cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { generateRandomString, hashAddress } from "@/lib/common";
+import { hashAddress } from "@/lib/common";
 import ProfileModal from "@/components/custom/modals/ProfileModal";
 import { fetchWithAuth } from "@/lib/api";
 import { ProfileType } from "@/lib/type";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { SignupAlert } from "./modals/SignupAlert";
 
 function Navbar() {
   const pathname = usePathname();
+  const { publicKey, disconnect } = useWallet();
+  const { setVisible } = useWalletModal();
+
   const [menuIsOpen, setMenuIsOpen] = useLocalStorage<boolean>(
     XMenuisOpen,
     false
@@ -33,6 +39,7 @@ function Navbar() {
     null
   );
   const [profileIsOpen, setProfileIsOpen] = useState<boolean>(false);
+  const [openSignUpAlert, setOpenSignUpAlert] = useState<boolean>(false);
 
   useEffect(() => {
     if (menuIsOpen) {
@@ -67,38 +74,29 @@ function Navbar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userToken]);
 
+  function authWithX() {
+    setMenuIsOpen(false);
+    authWithTwitter();
+  }
+
   function logOut() {
     setUserProfile(null);
     setUserToken(undefined);
+    disconnect();
   }
 
-  function authWithTwitter() {
-    setMenuIsOpen(false);
+  function connectWallet() {
+    if (!userToken) {
+      setOpenSignUpAlert(true);
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
-    const authUrl = `${apiUrl}/auth/x/`;
-
-    const width = 600;
-    const height = 700;
-    const left = window.screen.width / 2 - width / 2;
-    const top = window.screen.height / 2 - height / 2;
-
-    const authWindow = window.open(
-      authUrl,
-      "AuthWithX",
-      `width=${width},height=${height},top=${top},left=${left},resizable,scrollbars=yes,status=1`
-    );
-
-    if (authWindow) {
-      const timer = setInterval(() => {
-        if (authWindow.closed) {
-          clearInterval(timer);
-          console.log("Authentication window closed");
-        }
-      }, 500);
-    } else {
-      console.error("Failed to open authentication window");
+      return;
     }
+
+    setVisible(true);
+  }
+
+  function disconnectWallet() {
+    disconnect();
   }
 
   return (
@@ -145,79 +143,84 @@ function Navbar() {
       </div>
       <div className="others md:flex hidden gap-4">
         {!userToken && (
-          <>
-            <Button
-              className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
-              onClick={authWithTwitter}
+          <Button
+            className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
+            onClick={authWithX}
+          >
+            <svg
+              width="14"
+              height="12"
+              viewBox="0 0 14 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                width="14"
-                height="12"
-                viewBox="0 0 14 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
-                  fill="black"
-                />
-              </svg>
+              <path
+                d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
+                fill="black"
+              />
+            </svg>
 
-              <span>Sign In with X</span>
-            </Button>
-            <Button className="bg-[#FFBE00] text-black rounded-full px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!">
-              <WalletIcon size={12} />
-              <span>Connect wallet</span>
-            </Button>
-          </>
+            <span>Sign In with X</span>
+          </Button>
         )}
         {!!userToken && (
-          <>
-            <Button
-              className="bg-transparent text-white border rounded-full px-2! py-6! cursor-pointer hover:opacity-80"
-              onClick={() => setProfileIsOpen(true)}
+          <Button
+            className="bg-transparent text-white border rounded-full px-2! py-6! cursor-pointer hover:opacity-80"
+            onClick={() => setProfileIsOpen(true)}
+          >
+            <Avatar
+              className="w-8 h-8 min-w-8 min-h-8"
+              suppressHydrationWarning
             >
-              <Avatar
-                className="w-8 h-8 min-w-8 min-h-8"
-                suppressHydrationWarning
-              >
-                <AvatarImage src={userProfile?.user.avatar} />
-                <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
-              </Avatar>
-              <span className="text-sm line-clamp-1">
-                {userProfile?.user.username}
-              </span>
-              {!profileIsOpen && <ChevronDown size={10} />}
-              {profileIsOpen && <ChevronUp size={10} />}
-            </Button>
-            <Button
-              className="bg-[#FFBE00] text-black rounded-full px-3! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
-              onClick={() => logOut()}
+              <AvatarImage src={userProfile?.user.avatar} />
+              <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
+            </Avatar>
+            <span className="text-sm line-clamp-1">
+              {userProfile?.user.username}
+            </span>
+            {!profileIsOpen && <ChevronDown size={10} />}
+            {profileIsOpen && <ChevronUp size={10} />}
+          </Button>
+        )}
+
+        {!publicKey && (
+          <Button
+            className="bg-[#FFBE00] text-black rounded-full px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
+            onClick={connectWallet}
+          >
+            <WalletIcon size={12} />
+            <span>Connect wallet</span>
+          </Button>
+        )}
+
+        {publicKey && (
+          <Button
+            className="bg-[#FFBE00] text-black rounded-full px-3! pl-2! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
+            onClick={disconnectWallet}
+          >
+            <Avatar
+              className="w-9 h-9 min-w-9 min-h-9"
+              suppressHydrationWarning
             >
-              <Avatar
-                className="w-8 h-8 min-w-8 min-h-8"
-                suppressHydrationWarning
-              >
-                <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
-              </Avatar>
-              <span>{hashAddress(generateRandomString(16))}</span>
-              <svg
-                width="15"
-                height="14"
-                viewBox="0 0 15 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.00004 13.6666C3.31814 13.6666 0.333374 10.6818 0.333374 6.99992C0.333374 3.31802 3.31814 0.333252 7.00004 0.333252C9.18091 0.333252 11.1172 1.38044 12.3335 2.99941L10.5273 2.99946C9.58718 2.16991 8.35238 1.66659 7.00004 1.66659C4.05452 1.66659 1.66671 4.0544 1.66671 6.99992C1.66671 9.94545 4.05452 12.3333 7.00004 12.3333C8.35271 12.3333 9.58778 11.8297 10.528 10.9998H12.334C11.1177 12.6191 9.18118 13.6666 7.00004 13.6666ZM11.6667 9.66658V7.66658H6.33338V6.33325H11.6667V4.33325L15 6.99992L11.6667 9.66658Z"
-                  fill="#FF0000"
-                />
-              </svg>
-            </Button>
-          </>
+              <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
+            </Avatar>
+            <span>{hashAddress(publicKey.toBase58())}</span>
+            <svg
+              width="15"
+              height="14"
+              viewBox="0 0 15 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.00004 13.6666C3.31814 13.6666 0.333374 10.6818 0.333374 6.99992C0.333374 3.31802 3.31814 0.333252 7.00004 0.333252C9.18091 0.333252 11.1172 1.38044 12.3335 2.99941L10.5273 2.99946C9.58718 2.16991 8.35238 1.66659 7.00004 1.66659C4.05452 1.66659 1.66671 4.0544 1.66671 6.99992C1.66671 9.94545 4.05452 12.3333 7.00004 12.3333C8.35271 12.3333 9.58778 11.8297 10.528 10.9998H12.334C11.1177 12.6191 9.18118 13.6666 7.00004 13.6666ZM11.6667 9.66658V7.66658H6.33338V6.33325H11.6667V4.33325L15 6.99992L11.6667 9.66658Z"
+                fill="#FF0000"
+              />
+            </svg>
+          </Button>
         )}
       </div>
-      <div className="flex gap-2 items-center">
+      <div className="xl:hidden flex gap-2 items-center">
         <button
           className="p-2 xl:hidden cursor-pointer"
           onClick={() => setMenuIsOpen(!menuIsOpen)}
@@ -227,13 +230,13 @@ function Navbar() {
         </button>
         {!!userToken && (
           <button
-            className="p-2 xl:hidden cursor-pointer"
+            className="p-2 md:hidden cursor-pointer"
             onClick={() => {
-              logOut();
+              setProfileIsOpen(true);
             }}
           >
             <Avatar
-              className="w-8 h-8 min-w-8 min-h-8"
+              className="w-9 h-9 min-w-9 min-h-9"
               suppressHydrationWarning
             >
               <AvatarImage src={userProfile?.user.avatar} />
@@ -292,76 +295,57 @@ function Navbar() {
         </div>
         <div className="others md:hidden flex flex-col gap-6 mt-4 w-fit">
           {!userToken && (
-            <>
-              <Button
-                className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
-                onClick={authWithTwitter}
+            <Button
+              className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
+              onClick={authWithX}
+            >
+              <svg
+                width="14"
+                height="12"
+                viewBox="0 0 14 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  width="14"
-                  height="12"
-                  viewBox="0 0 14 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
-                    fill="black"
-                  />
-                </svg>
+                <path
+                  d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
+                  fill="black"
+                />
+              </svg>
 
-                <span>Sign In with X</span>
-              </Button>
-              <Button className="bg-[#FFBE00] text-black rounded-full px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!">
-                <WalletIcon size={12} />
-                <span>Connect wallet</span>
-              </Button>
-            </>
+              <span>Sign In with X</span>
+            </Button>
           )}
-          {!!userToken && (
-            <>
-              {/* <Button
-                className="bg-transparent text-white border rounded-full px-2! py-6! cursor-pointer hover:opacity-80"
-                onClick={() => {
-                  setMenuIsOpen(false);
-                  setProfileIsOpen(true);
-                }}
+          {!publicKey && (
+            <Button
+              className="bg-[#FFBE00] text-black rounded-full px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
+              onClick={connectWallet}
+            >
+              <WalletIcon size={12} />
+              <span>Connect wallet</span>
+            </Button>
+          )}
+          {!!publicKey && (
+            <Button
+              className="bg-[#FFBE00] text-black rounded-full px-3! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
+              onClick={disconnectWallet}
+            >
+              <Avatar className="w-8 h-8 min-w-8 min-h-8">
+                <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
+              </Avatar>
+              <span>{hashAddress(publicKey.toBase58())}</span>
+              <svg
+                width="15"
+                height="14"
+                viewBox="0 0 15 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <Avatar
-                  className="w-8 h-8 min-w-8 min-h-8"
-                  suppressHydrationWarning
-                >
-                  <AvatarImage src={userProfile?.user.avatar} />
-                  <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
-                </Avatar>
-                <span className="text-sm line-clamp-1">
-                  {userProfile?.user.username}
-                </span>
-                {!profileIsOpen && <ChevronDown size={10} />}
-                {profileIsOpen && <ChevronUp size={10} />}
-              </Button> */}
-              <Button
-                className="bg-[#FFBE00] text-black rounded-full px-3! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
-                onClick={() => logOut()}
-              >
-                <Avatar className="w-8 h-8 min-w-8 min-h-8">
-                  <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
-                </Avatar>
-                <span>{hashAddress(generateRandomString(16))}</span>
-                <svg
-                  width="15"
-                  height="14"
-                  viewBox="0 0 15 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.00004 13.6666C3.31814 13.6666 0.333374 10.6818 0.333374 6.99992C0.333374 3.31802 3.31814 0.333252 7.00004 0.333252C9.18091 0.333252 11.1172 1.38044 12.3335 2.99941L10.5273 2.99946C9.58718 2.16991 8.35238 1.66659 7.00004 1.66659C4.05452 1.66659 1.66671 4.0544 1.66671 6.99992C1.66671 9.94545 4.05452 12.3333 7.00004 12.3333C8.35271 12.3333 9.58778 11.8297 10.528 10.9998H12.334C11.1177 12.6191 9.18118 13.6666 7.00004 13.6666ZM11.6667 9.66658V7.66658H6.33338V6.33325H11.6667V4.33325L15 6.99992L11.6667 9.66658Z"
-                    fill="#FF0000"
-                  />
-                </svg>
-              </Button>
-            </>
+                <path
+                  d="M7.00004 13.6666C3.31814 13.6666 0.333374 10.6818 0.333374 6.99992C0.333374 3.31802 3.31814 0.333252 7.00004 0.333252C9.18091 0.333252 11.1172 1.38044 12.3335 2.99941L10.5273 2.99946C9.58718 2.16991 8.35238 1.66659 7.00004 1.66659C4.05452 1.66659 1.66671 4.0544 1.66671 6.99992C1.66671 9.94545 4.05452 12.3333 7.00004 12.3333C8.35271 12.3333 9.58778 11.8297 10.528 10.9998H12.334C11.1177 12.6191 9.18118 13.6666 7.00004 13.6666ZM11.6667 9.66658V7.66658H6.33338V6.33325H11.6667V4.33325L15 6.99992L11.6667 9.66658Z"
+                  fill="#FF0000"
+                />
+              </svg>
+            </Button>
           )}
         </div>
       </div>
@@ -369,6 +353,11 @@ function Navbar() {
       <ProfileModal
         open={profileIsOpen}
         onClose={() => setProfileIsOpen(false)}
+        logout={logOut}
+      />
+      <SignupAlert
+        open={openSignUpAlert}
+        onClose={() => setOpenSignUpAlert(false)}
       />
     </div>
   );

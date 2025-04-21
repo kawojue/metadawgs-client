@@ -1,37 +1,43 @@
 "use client";
 
-import { XUserProfile, XUserToken } from "./values";
+import { XUserAddress, XUserProfile, XUserToken } from "./values";
 
-export async function fetchWithAuth<T>(
+async function xFetch<T, K = undefined>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  body?: K,
+  requiresAuth: boolean = true
 ): Promise<{ success: boolean; message: string; data: T }> {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!apiUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not defined");
+    throw new Error("API URL is not defined");
   }
 
-  const authToken = localStorage.getItem(XUserToken);
-  if (!authToken) {
-    throw new Error("Authentication token is not available in localStorage");
-  }
-
-  const defaultOptions: RequestInit = {
-    // credentials: "include",
-    headers: {
-      Authorization: `Bearer ${JSON.parse(authToken)}`,
-    },
+  const headers: Record<string, string> = {
+    ...(options.headers as Record<string, string>),
   };
 
-  const mergedOptions = {
-    ...defaultOptions,
+  if (requiresAuth) {
+    const authToken = localStorage.getItem(XUserToken);
+    if (!authToken) {
+      throw new Error("Unauthorized");
+    }
+    headers.Authorization = `Bearer ${JSON.parse(authToken)}`;
+  }
+
+  if (body && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const mergedOptions: RequestInit = {
     ...options,
-    headers: {
-      ...defaultOptions.headers,
-      ...options.headers,
-    },
+    headers,
   };
+
+  if (body) {
+    mergedOptions.body = JSON.stringify(body);
+  }
 
   return fetch(`${apiUrl}${endpoint}`, mergedOptions)
     .then((response) => {
@@ -46,7 +52,23 @@ export async function fetchWithAuth<T>(
     });
 }
 
+export async function fetchWithAuth<T>(
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<{ success: boolean; message: string; data: T }> {
+  return xFetch<T>(endpoint, options, undefined, true);
+}
+
+export async function postWithAuth<T, K>(
+  endpoint: string,
+  body: K,
+  options: RequestInit = {}
+): Promise<{ success: boolean; message: string; data: T }> {
+  return xFetch<T, K>(endpoint, options, body, true);
+}
+
 export function logoutUser() {
   localStorage.removeItem(XUserToken);
   localStorage.removeItem(XUserProfile);
+  localStorage.removeItem(XUserAddress);
 }

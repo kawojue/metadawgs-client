@@ -12,27 +12,20 @@ import {
 import { copyToClipboard } from "@/lib/common";
 import { TelegramIcon, TwitterIcon } from "@/lib/icons";
 import { ProfileType } from "@/lib/type";
-import { XUserProfile, XUserToken } from "@/lib/values";
+import { XUserProfile } from "@/lib/values";
 import { ArrowUpRightIcon, CircleX, CopyIcon } from "lucide-react";
 import useLocalStorage from "use-local-storage";
 
 function ProfileModal({
   open,
   onClose,
+  logout,
 }: {
   open: boolean;
   onClose: () => void;
+  logout: () => void;
 }) {
-  const [, setUserToken] = useLocalStorage<string>(XUserToken, "");
-  const [userProfile, setUserProfile] = useLocalStorage<ProfileType | null>(
-    XUserProfile,
-    null
-  );
-
-  function logOut() {
-    setUserProfile(null);
-    setUserToken(undefined);
-  }
+  const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
   return (
     <Dialog
       open={open}
@@ -135,7 +128,7 @@ function ProfileModal({
             className="w-full bg-transparent py-6! rounded-full cursor-pointer"
             variant={"outline"}
             onClick={() => {
-              logOut();
+              logout();
               onClose();
             }}
           >

@@ -3,6 +3,7 @@
 import AvatarGroup from "@/components/custom/AvatarGroup";
 import QuestCard from "@/components/custom/QuestCard";
 import { QuestTile } from "@/components/custom/QuestTile";
+import { FadeInUp, SlideInLeft } from "@/components/custom/ScrollAnimation";
 import {
   Accordion,
   AccordionContent,
@@ -34,29 +35,34 @@ function Page() {
     }
 
     getQuests();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="">
       <div className="bg-black text-white p-4 sm:p-6 md:p-10 py-5 flex flex-col gap-5 justify-center items-center min-h-dch">
-        <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
-          Complete Quests,
-          <br />
-          Collect Sparks & Earn
-          <br />
-          MetaDawgs Token
-        </h1>
-        <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px] text-center">
-          Complete the following tasks to stand a chance to earn more metadawgs
-          as an early participant in the ecosystem
-        </p>
-        <div className="pips flex gap-x-4 gap-y-2 flex-wrap items-center justify-center">
+        <FadeInUp>
+          <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
+            Complete Quests,
+            <br />
+            Collect Sparks & Earn
+            <br />
+            MetaDawgs Token
+          </h1>
+        </FadeInUp>
+        <FadeInUp>
+          <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px] text-center">
+            Complete the following tasks to stand a chance to earn more
+            metadawgs as an early participant in the ecosystem
+          </p>
+        </FadeInUp>
+        <FadeInUp className="pips flex gap-x-4 gap-y-2 flex-wrap items-center justify-center">
           <AvatarGroup />
           <p className="text-xs font-semibold">30K Have Participated</p>
-        </div>
+        </FadeInUp>
       </div>
       <div className="conquests space-y-14 md:py-[5%] p-6">
-        <div className="onboarding md:mx-[20%]">
+        <SlideInLeft className="onboarding md:mx-[20%]">
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="onboarding">
               <AccordionTrigger className="cursor-pointer">
@@ -77,8 +83,8 @@ function Page() {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </div>
-        <div className="social_quests md:mx-[20%]">
+        </SlideInLeft>
+        <SlideInLeft className="social_quests md:mx-[20%]">
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="social_quests">
               <AccordionTrigger className="cursor-pointer">
@@ -99,7 +105,7 @@ function Page() {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </div>
+        </SlideInLeft>
       </div>
       <HomeLeaderboard />
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import CountdownTimer from "@/components/custom/Countdown";
+import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import Image from "next/image";
@@ -10,12 +11,14 @@ function Page() {
   const [amount, setAmount] = useState<string>("");
   return (
     <div>
-      <div className="bg-black text-white p-4 sm:p-6 md:p-10 py-5 flex flex-col gap-5 justify-center items-center">
-        <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
-          Buy $MetaDawgs
-          <br />
-          Token Now
-        </h1>
+      <div className="bg-black text-white p-4 sm:p-6 md:p-15 py-5 flex flex-col gap-5 justify-center items-center">
+        <FadeInUp>
+          <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
+            Buy $MetaDawgs
+            <br />
+            Token Now
+          </h1>
+        </FadeInUp>
       </div>
 
       <div className="box p-[10%] md:pt-[5%] pt-15">

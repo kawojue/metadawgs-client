@@ -21,11 +21,13 @@ export interface ProfileType {
 
 export interface LeaderboardType {
   userId: string;
-  displayName: string;
   username: string;
-  tasks: number;
   points: number;
-  rank: number;
+  messages: number;
+  reactions: number;
+  invites: number;
+  tasks: number; // not sure about this thou
+  rank: number; // not sure about this thou
 }
 
 export interface MetaType {

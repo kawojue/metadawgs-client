@@ -3,33 +3,27 @@
 import { useEffect, useState } from "react";
 import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
-import { fetchWithAuth } from "@/lib/api";
 import { LeaderboardType } from "@/lib/type";
+import { useSocket } from "@/app/SocketProvider";
 
 export default function LeaderboardTable() {
+  const socket = useSocket();
   const [leaderboard, setLeaderboard] = useState<LeaderboardType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    async function getLeaderboard() {
-      try {
-        setLoading(true);
-        const {
-          data: { data },
-        } = await fetchWithAuth<{ data: LeaderboardType[] }>(
-          "/user/leaderboard"
-        );
+    if (!socket) return;
 
-        setLeaderboard(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    }
+    socket.on("leaderboard", (data) => {
+      // console.log('found leaderboard', data)
+      setLeaderboard(data);
+      setLoading(false);
+    });
 
-    getLeaderboard();
-  }, []);
+    return () => {
+      socket.off("leaderboard");
+    };
+  }, [socket]);
 
   return (
     <div className="w-full max-w-3xl">
