@@ -11,10 +11,7 @@ import Image from "next/image";
 
 function Quests() {
   return (
-    <div
-      className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-20 py-15 min-h-svh text-center relative"
-      id="Quests"
-    >
+    <div className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-20 py-15 min-h-svh text-center relative">
       <FadeInUp>
         <h2 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-semibold uppercase">
           Complete Quests,
@@ -36,7 +33,7 @@ function Quests() {
         <p className="text-xs font-semibold">30K Have Participated</p>
       </FadeInUp>
       <FadeInUp>
-       <AuthUserButton/>
+        <AuthUserButton />
       </FadeInUp>
 
       <div className="quests-box w-full max-w-3xl sm:mt-4 mt-2">

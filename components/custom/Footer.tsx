@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FadeIn } from "@/components/custom/ScrollAnimation";
+import siteConfig from "@/lib/siteConfig";
 
 function Footer() {
   return (
@@ -19,7 +20,7 @@ function Footer() {
 
       <FadeIn className="social-links flex items-center gap-4">
         <a
-          href=""
+          href={siteConfig.socialLinks.telegram}
           className="sm:w-10 sm:h-10 w-8 h-8 rounded-full bg-white grid place-content-center place-items-center"
         >
           <svg
@@ -35,10 +36,12 @@ function Footer() {
               fill="black"
             />
           </svg>
+
+          <span className="sr-only">Telegram</span>
         </a>
 
         <a
-          href=""
+          href={siteConfig.socialLinks.twitter}
           className="sm:w-10 sm:h-10 w-8 h-8 rounded-full bg-white grid place-content-center place-items-center"
         >
           <svg
@@ -54,6 +57,8 @@ function Footer() {
               fill="black"
             />
           </svg>
+
+          <span className="sr-only">Twitter</span>
         </a>
       </FadeIn>
     </div>

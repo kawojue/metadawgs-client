@@ -55,6 +55,7 @@ export default function Home() {
           </ZoomInLeft>
         </div>
       </div>
+      <div id="Quests" className="p-4"></div>
       <HomeQuests />
       <HomeLeaderboard />
     </div>
