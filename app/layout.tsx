@@ -29,8 +29,9 @@ export const metadata: Metadata = {
   twitter: {
     site: siteConfig.socialLinks.twitter,
     images: ["/images/paw.svg"],
-    card: "app",
+    card: "summary",
   },
+
   openGraph: {
     type: "website",
     url: siteConfig.url,
