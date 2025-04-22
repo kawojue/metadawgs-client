@@ -18,7 +18,7 @@ function Footer() {
         </Link>
       </FadeIn>
 
-      <FadeIn className="social-links flex items-center gap-4">
+      <FadeIn className="social-links flex items-center sm:gap-4 gap-2">
         <a
           href={siteConfig.socialLinks.telegram}
           className="sm:w-10 sm:h-10 w-8 h-8 rounded-full bg-white grid place-content-center place-items-center"
