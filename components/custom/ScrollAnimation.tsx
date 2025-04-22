@@ -1,9 +1,8 @@
-'use client'
+"use client";
 
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
-// Base component with common props
 interface AnimateOnScrollProps {
   children: ReactNode;
   className?: string;
@@ -60,7 +59,6 @@ const AnimateOnScroll = ({
   );
 };
 
-// Export convenience components
 export const FadeInUp = (props: Omit<AnimateOnScrollProps, "variant">) => (
   <AnimateOnScroll variant="fadeInUp" {...props} />
 );

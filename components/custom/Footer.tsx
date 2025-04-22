@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/custom/ScrollAnimation";
 
 function Footer() {
   return (
-    <div className="bg-black text-white flex justify-between flex-wrap gap-x-6 gap-y-2 p-4 md:px-[5%] md:py-6 px-6">
+    <div className="bg-black text-white flex justify-between items-center flex-wrap gap-x-6 gap-y-2 p-4 md:px-[5%] md:py-6 px-6">
       <FadeIn>
         <Link href={"/"} className="logo">
           <Image
@@ -12,6 +12,7 @@ function Footer() {
             alt="MetaDawgs"
             width={225}
             height={40}
+            className="sm:w-[225px] w-[135px]"
           />
         </Link>
       </FadeIn>
@@ -19,11 +20,12 @@ function Footer() {
       <FadeIn className="social-links flex items-center gap-4">
         <a
           href=""
-          className="w-10 h-10 rounded-full bg-white grid place-content-center place-items-center"
+          className="sm:w-10 sm:h-10 w-8 h-8 rounded-full bg-white grid place-content-center place-items-center"
         >
           <svg
             width="30"
             height="30"
+            className="sm:w-[30px] sm:h-[30px] w-[22px] h-[22px]"
             viewBox="0 0 34 34"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -37,11 +39,12 @@ function Footer() {
 
         <a
           href=""
-          className="w-10 h-10 rounded-full bg-white grid place-content-center place-items-center"
+          className="sm:w-10 sm:h-10 w-8 h-8 rounded-full bg-white grid place-content-center place-items-center"
         >
           <svg
             width="24"
             height="24"
+            className="sm:w-[24px] sm:h-[24px] w-[16px] h-[16px]"
             viewBox="0 0 34 32"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

@@ -61,13 +61,10 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
       setTimeRemaining({ days, hours, minutes, seconds });
     };
 
-    // Calculate immediately
     calculateTimeRemaining();
 
-    // Set up interval to update every second
     const interval = setInterval(calculateTimeRemaining, 1000);
 
-    // Clean up interval on unmount
     return () => clearInterval(interval);
   }, [targetDate]);
 
