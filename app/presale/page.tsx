@@ -5,7 +5,7 @@ import { FadeIn } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import Image from "next/image";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   PublicKey,
   Transaction,
@@ -16,6 +16,7 @@ import {
 import { Buffer } from "buffer";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { postWithAuth } from "@/lib/api";
+import { debounce } from "@/lib/common";
 
 const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS as string;
 
@@ -23,6 +24,7 @@ function Page() {
   const { connection } = useConnection();
   const { publicKey, sendTransaction, signTransaction } = useWallet();
   const [amount, setAmount] = useState<string>("");
+  const [exchangedAmount, setExchangedAmount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -33,13 +35,7 @@ function Page() {
       return;
     }
 
-    if (isNaN(Number(amount))) {
-      setError("Please enter a valid number for the amount.");
-      return;
-    }
-
-    const solAmount = parseFloat(amount);
-    if (solAmount <= 0) {
+    if (isNaN(Number(amount)) || parseFloat(amount) <= 0) {
       setError("Please enter a valid SOL amount.");
       return;
     }
@@ -48,13 +44,13 @@ function Page() {
     setStatusMessage("Processing purchase...");
     setError("");
 
-    let solTxSig: string | null = null;
-    let partiallySignedTokenTxBase64: string | null = null;
-    let finalTokenTxSig: string | null = null;
+    let solTxSig = null;
+    let partiallySignedTokenTxBase64 = null;
+    let finalTokenTxSig = null;
 
     try {
       setStatusMessage("Step 1/4: Preparing SOL payment...");
-      const lamportsToSend = Math.round(solAmount * LAMPORTS_PER_SOL);
+      const lamportsToSend = Math.round(parseFloat(amount) * LAMPORTS_PER_SOL);
       const treasuryPublicKey = new PublicKey(TREASURY_ADDRESS);
 
       const solTransferTransaction = new Transaction().add(
@@ -76,20 +72,16 @@ function Page() {
       setStatusMessage("Step 2/4: Confirming payment with backend...");
       const payload = {
         buyerPublicKeyStr: publicKey.toBase58(),
-        solTxSig: solTxSig,
-        amountSol: solAmount,
+        solTxSig,
+        amountSol: parseFloat(amount),
       };
 
       const response = await postWithAuth<
-        {
-          partiallySignedTokenTx: string;
-        },
-        {
-          buyerPublicKeyStr: string;
-          solTxSig: string;
-          amountSol: number;
-        }
-      >("/presale", payload);
+        { partiallySignedTokenTx: string },
+        { buyerPublicKeyStr: string; solTxSig: string; amountSol: number }
+      >("/confirm-purchase-and-prepare-claim", payload, {
+        baseUrl: process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT,
+      });
 
       if (!response.success || !response.data?.partiallySignedTokenTx) {
         throw new Error(`Backend confirmation failed: ${response.message}`);
@@ -99,7 +91,6 @@ function Page() {
       setStatusMessage(
         "Step 2/4: Backend confirmed. Preparing token transaction..."
       );
-
       setStatusMessage(
         "Step 3/4: Please approve token claim transaction in your wallet..."
       );
@@ -117,7 +108,7 @@ function Page() {
         `Step 4/4: Token claim transaction sent. Signature: ${finalTokenTxSig}. Waiting for confirmation...`
       );
 
-      await new Promise((resolve) => setTimeout(resolve, 5_000));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
 
       const confirmation = await connection.confirmTransaction(
         {
@@ -143,10 +134,10 @@ function Page() {
       );
     } catch (err: unknown) {
       console.error("Presale Purchase Error:", err);
-      let displayError = "An unknown error occurred.";
-      if (err instanceof Error && err.message) {
-        displayError = err.message;
-      }
+      const displayError =
+        err instanceof Error && err.message
+          ? err.message
+          : "An unknown error occurred.";
       setError(`Purchase failed: ${displayError}`);
       if (solTxSig) console.error("SOL Tx Sig:", solTxSig);
       if (finalTokenTxSig) console.error("Token Tx Sig:", finalTokenTxSig);
@@ -154,6 +145,35 @@ function Page() {
       setIsLoading(false);
     }
   }, [publicKey, sendTransaction, signTransaction, connection, amount]);
+
+  useEffect(() => {
+    const fetchExchangeRate = debounce(async () => {
+      console.log("amount", amount);
+      try {
+        if (isNaN(Number(amount)) || Number(amount) <= 0) return null;
+
+        const response = await postWithAuth<
+          { rate: number },
+          { amountSOL: number }
+        >(
+          "/calculate",
+          { amountSOL: Number(amount) },
+          { baseUrl: process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT }
+        );
+
+        if (response.success && response.data?.rate) {
+          setExchangedAmount(response.data.rate);
+        } else {
+          throw new Error(response.message);
+        }
+      } catch (err) {
+        console.error("Error fetching exchange rate:", err);
+      }
+    }, 500);
+
+    fetchExchangeRate();
+    return () => fetchExchangeRate.cancel?.();
+  }, [amount]);
 
   return (
     <div>
@@ -196,11 +216,13 @@ function Page() {
               type="number"
               value={amount}
               placeholder="0"
-              onChange={(x) => {
-                setAmount(x.target.value);
-              }}
+              onInput={(x) => setAmount(x.currentTarget.value)}
               disabled={isLoading || !publicKey}
             />
+
+            {!!exchangedAmount && (
+              <p className="flex">Exchange: {exchangedAmount}</p>
+            )}
           </div>
           <Button
             className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed!"

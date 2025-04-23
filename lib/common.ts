@@ -2,12 +2,22 @@
 export function debounce<T extends (...args: T[]) => void>(
   func: T,
   wait: number
-): (...args: Parameters<T>) => void {
+): { (...args: Parameters<T>): void; cancel: () => void } {
   let timeout: ReturnType<typeof setTimeout> | null = null;
-  return (...args: Parameters<T>) => {
+
+  const debounced = (...args: Parameters<T>) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };
+
+  debounced.cancel = () => {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
 }
 
 // Throttle function to ensure a function is executed at most once in a specified time

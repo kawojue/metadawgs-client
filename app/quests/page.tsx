@@ -3,6 +3,7 @@
 import AvatarGroup from "@/components/custom/AvatarGroup";
 import PostCard from "@/components/custom/PostCard";
 import { QuestTile } from "@/components/custom/QuestTile";
+import ReferralTile from "@/components/custom/ReferralTile";
 import { FadeInUp, SlideInLeft } from "@/components/custom/ScrollAnimation";
 import {
   Accordion,
@@ -82,6 +83,9 @@ function Page() {
                 <AccordionContent>
                   <div className="quests-box w-full sm:mt-8 mt-4">
                     <ul className="grid grid-cols-1 md:gap-5 gap-3">
+                      <li>
+                        <ReferralTile />
+                      </li>
                       {quests.map((quest) => (
                         <li key={quest.id}>
                           <QuestTile quest={quest} />

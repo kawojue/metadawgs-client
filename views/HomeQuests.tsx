@@ -1,6 +1,7 @@
 import AuthUserButton from "@/components/AuthUserButton";
 import AvatarGroup from "@/components/custom/AvatarGroup";
 import { QuestTile } from "@/components/custom/QuestTile";
+import ReferralTile from "@/components/custom/ReferralTile";
 import {
   FadeInUp,
   SlideInLeft,
@@ -38,6 +39,9 @@ function Quests() {
 
       <div className="quests-box w-full max-w-3xl sm:mt-4 mt-2">
         <ul className="grid grid-cols-1 md:gap-5 gap-3">
+          <li>
+            <ReferralTile/>
+          </li>
           {quests.map((quest) => (
             <li key={quest.id}>
               <SlideInLeft>

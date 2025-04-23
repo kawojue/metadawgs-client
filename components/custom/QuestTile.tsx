@@ -1,11 +1,16 @@
-import { TelegramIcon, TwitterIcon } from "@/lib/icons";
+import { DawgIcon, TelegramIcon, TwitterIcon } from "@/lib/icons";
 import { ArrowUpRightIcon, PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { QuestType } from "@/lib/type";
+import { ReactNode } from "react";
 
-type Props = { quest: QuestType };
+type Props = {
+  quest: QuestType;
+  func?: () => void;
+  funcText?: string | ReactNode;
+};
 
-export const QuestTile = ({ quest }: Props) => {
+export const QuestTile = ({ quest, func, funcText }: Props) => {
   function renderQuestIcon(app_name: string) {
     switch (app_name) {
       case "instagram":
@@ -14,6 +19,8 @@ export const QuestTile = ({ quest }: Props) => {
         return <TwitterIcon />;
       case "telegram":
         return <TelegramIcon />;
+      case "dawg":
+        return <DawgIcon />;
 
       default:
         return <TwitterIcon />;
@@ -35,12 +42,36 @@ export const QuestTile = ({ quest }: Props) => {
         </div>
       </div>
 
-      <a href={quest.link} className="block">
-        <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! sm:py-[22px]! py-[20px]! cursor-pointer hover:bg-[#FFBE00]/80!">
-          <span className="sm:block hidden">Verify</span>
-          <ArrowUpRightIcon size={10} />
+      {!!func && (
+        <Button
+          className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! sm:py-[22px]! py-[20px]! cursor-pointer hover:bg-[#FFBE00]/80!"
+          onClick={func}
+        >
+          {!funcText && (
+            <>
+              <span className="sm:block hidden">Verify</span>
+              <ArrowUpRightIcon size={10} />
+            </>
+          )}
+
+          {!!funcText && funcText}
         </Button>
-      </a>
+      )}
+
+      {!func && (
+        <a href={quest.link} className="block">
+          <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! sm:py-[22px]! py-[20px]! cursor-pointer hover:bg-[#FFBE00]/80!">
+            {!funcText && (
+              <>
+                <span className="sm:block hidden">Verify</span>
+                <ArrowUpRightIcon size={10} />
+              </>
+            )}
+
+            {!!funcText && funcText}
+          </Button>
+        </a>
+      )}
     </div>
   );
 };

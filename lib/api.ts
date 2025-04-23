@@ -4,11 +4,11 @@ import { XUserAddress, XUserProfile, XUserToken } from "@/lib/values";
 
 async function xFetch<T, K = undefined>(
   endpoint: string,
-  options: RequestInit = {},
+  options: RequestInit & { baseUrl?: string } = {},
   body?: K,
   requiresAuth: boolean = true
 ): Promise<{ success: boolean; message: string; data: T }> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const apiUrl = options.baseUrl || process.env.NEXT_PUBLIC_API_URL;
 
   if (!apiUrl) {
     throw new Error("API URL is not defined");
@@ -55,7 +55,7 @@ async function xFetch<T, K = undefined>(
 
 export async function fetchWithAuth<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit & { baseUrl?: string } = {}
 ): Promise<{ success: boolean; message: string; data: T }> {
   return xFetch<T>(endpoint, options, undefined, true);
 }
@@ -63,7 +63,7 @@ export async function fetchWithAuth<T>(
 export async function postWithAuth<T, K>(
   endpoint: string,
   body: K,
-  options: RequestInit = {}
+  options: RequestInit & { baseUrl?: string } = {}
 ): Promise<{ success: boolean; message: string; data: T }> {
   return xFetch<T, K>(endpoint, options, body, true);
 }

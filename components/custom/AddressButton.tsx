@@ -9,15 +9,17 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useState } from "react";
 import useLocalStorage from "use-local-storage";
-import { XUserToken } from "@/lib/values";
+import { XMenuisOpen, XUserToken } from "@/lib/values";
 
 function AddressButton() {
   const [userToken] = useLocalStorage<string>(XUserToken, "");
+  const [, setMenuIsOpen] = useLocalStorage<boolean>(XMenuisOpen, false);
   const { publicKey, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
   const [openSignUpAlert, setOpenSignUpAlert] = useState<boolean>(false);
 
   function connectWallet() {
+    setMenuIsOpen(false);
     if (!userToken) {
       setOpenSignUpAlert(true);
 
@@ -28,6 +30,7 @@ function AddressButton() {
   }
 
   function disconnectWallet() {
+    setMenuIsOpen(false);
     disconnect();
   }
 

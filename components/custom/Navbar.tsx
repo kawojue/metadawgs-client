@@ -56,6 +56,7 @@ function Navbar() {
       } catch (error) {
         setUserProfile(null);
         setUserToken("");
+        disconnect();
         console.error(error);
       } finally {
         setIsLoading(false);
@@ -64,7 +65,7 @@ function Navbar() {
 
     if (!userToken) {
       setUserProfile(null);
-      return;
+      disconnect();
     } else {
       getProfile();
     }
@@ -190,6 +191,7 @@ function Navbar() {
             className="p-2 md:hidden cursor-pointer"
             onClick={() => {
               setProfileIsOpen(true);
+              setMenuIsOpen(false)
             }}
           >
             {isLoading && <Loader className="animate-spin" size={24} />}
