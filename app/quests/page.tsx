@@ -18,6 +18,7 @@ import { PostType } from "@/lib/type";
 import { authWithTwitter } from "@/lib/utils";
 import { XUserToken } from "@/lib/values";
 import HomeLeaderboard from "@/views/HomeLeaderboard";
+import HomeLeaderboardX from "@/views/HomeLeaderboardX";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
@@ -175,6 +176,7 @@ function Page() {
           </div>
         </div>
       )}
+      <HomeLeaderboardX />
       <HomeLeaderboard />
     </div>
   );

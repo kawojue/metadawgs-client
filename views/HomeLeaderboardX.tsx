@@ -3,12 +3,12 @@ import LeaderboardTable from "@/components/custom/leaderboard";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import Image from "next/image";
 
-function HomeLeaderboard() {
+function HomeLeaderboardX() {
   return (
     <div className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-20 py-15 min-h-dch relative bg-black text-white z-1">
       <FadeInUp className="div relative">
         <h2 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka text-center font-semibold uppercase">
-          Telegram
+          Community
           <br />
           Leaderboard
         </h2>
@@ -23,7 +23,7 @@ function HomeLeaderboard() {
       </FadeInUp>
       <FadeInUp>
         <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px] text-center">
-          This is for all the dwags, this is for all the grinders on Telegram,
+          This is for all the dwags, this is for all the grinders on X,
           spreading good vibes and energy, believing in a brighter day and a
           brighter future.
         </p>
@@ -39,4 +39,4 @@ function HomeLeaderboard() {
   );
 }
 
-export default HomeLeaderboard;
+export default HomeLeaderboardX;

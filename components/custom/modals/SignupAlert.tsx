@@ -16,9 +16,11 @@ import Image from "next/image";
 export function SignupAlert({
   open,
   onClose,
+  message,
 }: {
   open?: boolean;
   onClose?: () => void;
+  message?: string;
 }) {
   return (
     <AlertDialog
@@ -43,8 +45,9 @@ export function SignupAlert({
             Signup Required!
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
-            You need to sign up first before connecting your wallet. Create an
-            account to unlock all features and start your journey!
+            {!message &&
+              "You need to sign up first before connecting your wallet. Create an account to unlock all features and start your journey!"}
+            {!!message && message}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="grid! grid-cols-2! gap-4 mt-2">

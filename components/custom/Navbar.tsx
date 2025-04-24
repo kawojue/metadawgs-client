@@ -150,7 +150,10 @@ function Navbar() {
         {!!userToken && (
           <Button
             className="bg-transparent text-white border rounded-full px-2! py-6! cursor-pointer hover:opacity-80"
-            onClick={() => setProfileIsOpen(true)}
+            onClick={() => {
+              setMenuIsOpen(false);
+              setProfileIsOpen(true);
+            }}
           >
             {isLoading && (
               <div className="px-2">
@@ -191,7 +194,7 @@ function Navbar() {
             className="p-2 md:hidden cursor-pointer"
             onClick={() => {
               setProfileIsOpen(true);
-              setMenuIsOpen(false)
+              setMenuIsOpen(false);
             }}
           >
             {isLoading && <Loader className="animate-spin" size={24} />}

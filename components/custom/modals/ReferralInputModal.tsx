@@ -28,7 +28,7 @@ function ReferralInputModal({
   async function validateCode() {
     setLoading(true);
     try {
-      await postWithAuth("/validate", {
+      await postWithAuth("/auth/referral-code", {
         code: code,
       });
       setSuccess(true);

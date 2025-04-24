@@ -65,7 +65,7 @@ export async function postWithAuth<T, K>(
   body: K,
   options: RequestInit & { baseUrl?: string } = {}
 ): Promise<{ success: boolean; message: string; data: T }> {
-  return xFetch<T, K>(endpoint, options, body, true);
+  return xFetch<T, K>(endpoint, { ...options, method: "POST" }, body, true);
 }
 
 export function logoutUser() {

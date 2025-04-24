@@ -1,6 +1,7 @@
 import { FadeInUp, ZoomInLeft } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import HomeLeaderboard from "@/views/HomeLeaderboard";
+import HomeLeaderboardX from "@/views/HomeLeaderboardX";
 import HomeQuests from "@/views/HomeQuests";
 import Image from "next/image";
 import Link from "next/link";
@@ -57,6 +58,7 @@ export default function Home() {
       </div>
       <div id="Quests" className="p-4"></div>
       <HomeQuests />
+      <HomeLeaderboardX />
       <HomeLeaderboard />
     </div>
   );
