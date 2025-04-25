@@ -41,7 +41,9 @@ export const columns: ColumnDef<UserType>[] = [
     accessorKey: "points",
     header: () => <div className="">Total Points</div>,
     cell: ({ row }) => (
-      <div className="">{formatNumberWithCommas(row.getValue("points"))}</div>
+      <div className="">
+        {formatNumberWithCommas(row.getValue("points") ?? "")}
+      </div>
     ),
   },
   {
@@ -49,7 +51,7 @@ export const columns: ColumnDef<UserType>[] = [
     header: () => <div className="">Tasks Completed</div>,
     cell: ({ row }) => (
       <div className="">
-        {formatNumberWithCommas(row.getValue("tasks"))} Tasks
+        {formatNumberWithCommas(row.getValue("tasks") ?? "")} Tasks
       </div>
     ),
   },
@@ -58,7 +60,7 @@ export const columns: ColumnDef<UserType>[] = [
     header: () => <div className="">Invites</div>,
     cell: ({ row }) => (
       <div className="">
-        {formatNumberWithCommas(row.getValue("invites"))} Tasks
+        {formatNumberWithCommas(row.getValue("invites") ?? "")} Tasks
       </div>
     ),
   },
