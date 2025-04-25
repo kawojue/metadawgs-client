@@ -64,7 +64,17 @@ export interface QuestType {
 
 export interface UserType {
   id: number;
-  isBanned: boolean;
+  avatar: string;
+  username: string;
+  walletAddress: string | null;
+  tasks: number;
+  banned: boolean;
+  displayName: string;
+  providerId: string;
+  deletedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  totalPoints: number;
 }
 
 export interface EntryType {

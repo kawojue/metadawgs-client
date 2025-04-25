@@ -31,10 +31,10 @@ export const columns: ColumnDef<UserType>[] = [
     ),
   },
   {
-    accessorKey: "wallet_address",
+    accessorKey: "walletAddress",
     header: () => <div className="">Wallet Address</div>,
     cell: ({ row }) => (
-      <div className="">{hashAddress(row.getValue("wallet_address"))}</div>
+      <div className="">{hashAddress(row.getValue("walletAddress") ?? "")}</div>
     ),
   },
   {
@@ -68,7 +68,7 @@ export const columns: ColumnDef<UserType>[] = [
     cell: ({ row }) => {
       return (
         <>
-          {row.original.isBanned == true ? (
+          {row.original.banned == true ? (
             <Button>Ban</Button>
           ) : (
             <Button>Unban</Button>
