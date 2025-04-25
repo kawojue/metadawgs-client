@@ -1,14 +1,13 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import React from "react";
-import { login } from "@/app/actions";
+import { useSearchParams } from "next/navigation";
 
-type SearchParams = Promise<{ error?: string }>;
-
-async function Page({ searchParams }: { searchParams: SearchParams }) {
-  const { error } = await searchParams;
-
-  console.log("error", error);
+function Page() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
 
   return (
     <div className="size-full flex flex-col justify-center items-center p-4 min-h-full">
@@ -19,7 +18,9 @@ async function Page({ searchParams }: { searchParams: SearchParams }) {
             {decodeURIComponent(error)}
           </div>
         )}
-        <form className="space-y-5 w-full" action={login}>
+        <form className="space-y-5 w-full" action="/api/login">
+          {" "}
+          {/* replace with correct endpoint */}
           <div className="div space-y-2">
             <label htmlFor="name" className="text-sm block font-fredoka">
               Quest Name
@@ -56,7 +57,6 @@ async function Page({ searchParams }: { searchParams: SearchParams }) {
               required
             />
           </div>
-
           <div className="div space-y-2">
             <label htmlFor="image_url" className="text-sm block font-fredoka">
               Cover Image URL
@@ -69,7 +69,6 @@ async function Page({ searchParams }: { searchParams: SearchParams }) {
               required
             />
           </div>
-
           <Button
             className="bg-[#FFBE00] text-black font-medium w-full !py-7 tracking-wide rounded-full cursor-pointer disabled:cursor-not-allowed"
             type="submit"

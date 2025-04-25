@@ -1,3 +1,5 @@
+"use client";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { UserType } from "@/lib/type";
 import { formatNumberWithCommas, hashAddress } from "@/lib/common";

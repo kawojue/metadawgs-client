@@ -9,8 +9,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { AdminProfileType } from "@/lib/type";
-import { XAdminProfile, XAdminToken } from "@/lib/values";
+// import { AdminProfileType } from "@/lib/type";
+import { XAdminToken } from "@/lib/values";
 import LoginPage from "@/views/AdminLoginPage";
 
 import { ReactNode, useEffect, useState } from "react";
@@ -18,32 +18,28 @@ import useLocalStorage from "use-local-storage";
 
 function DashboardLayout({ children }: { children: ReactNode }) {
   const [adminToken] = useLocalStorage<string | null>(XAdminToken, null);
-  const [adminProfile, setAdminProfile] =
-    useLocalStorage<AdminProfileType | null>(XAdminProfile, null);
+  // const [adminProfile, setAdminProfile] =
+  //   useLocalStorage<AdminProfileType | null>(XAdminProfile, null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function validateAdminToken() {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-        const response = await fetch(`${apiUrl}/auth/profile`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error("Something unexpected occurred");
-        }
-
-        setAdminProfile(data.data);
+        // const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        // const response = await fetch(`${apiUrl}/admin/auth/profile`, {
+        //   method: "GET",
+        //   headers: {
+        //     Authorization: `Bearer ${adminToken}`,
+        //   },
+        // });
+        // const data = await response.json();
+        // if (!response.ok) {
+        //   throw new Error("Something unexpected occurred");
+        // }
+        // setAdminProfile({ token: adminToken });
       } catch (error) {
         console.error("Profile error:", error);
-        setAdminProfile(null);
+        // setAdminProfile(null);
       } finally {
         setIsLoading(false);
       }
@@ -61,7 +57,7 @@ function DashboardLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  if (!isLoading && !adminProfile) {
+  if (!isLoading && !adminToken) {
     return <LoginPage />;
   }
 

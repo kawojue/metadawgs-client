@@ -1,10 +1,15 @@
 "use client";
 
-import { XUserAddress, XUserProfile, XUserToken } from "@/lib/values";
+import {
+  XAdminToken,
+  XUserAddress,
+  XUserProfile,
+  XUserToken,
+} from "@/lib/values";
 
 async function xFetch<T, K = undefined>(
   endpoint: string,
-  options: RequestInit & { baseUrl?: string } = {},
+  options: RequestInit & { baseUrl?: string; isAdmin?: boolean } = {},
   body?: K,
   requiresAuth: boolean = true
 ): Promise<{ success: boolean; message: string; data: T }> {
@@ -20,10 +25,21 @@ async function xFetch<T, K = undefined>(
 
   if (requiresAuth) {
     const authToken = localStorage.getItem(XUserToken);
-    if (!authToken) {
-      throw new Error("Unauthorized");
+    const adminAuthToken = localStorage.getItem(XAdminToken);
+
+    if (options.isAdmin) {
+      if (!adminAuthToken) {
+        throw new Error("Unauthorized");
+      }
+
+      headers.Authorization = `Bearer ${JSON.parse(adminAuthToken)}`;
+    } else {
+      if (!authToken) {
+        throw new Error("Unauthorized");
+      }
+
+      headers.Authorization = `Bearer ${JSON.parse(authToken)}`;
     }
-    headers.Authorization = `Bearer ${JSON.parse(authToken)}`;
   }
 
   if (body && !headers["Content-Type"]) {
@@ -55,7 +71,7 @@ async function xFetch<T, K = undefined>(
 
 export async function fetchWithAuth<T>(
   endpoint: string,
-  options: RequestInit & { baseUrl?: string } = {}
+  options: RequestInit & { baseUrl?: string; isAdmin?: boolean } = {}
 ): Promise<{ success: boolean; message: string; data: T }> {
   return xFetch<T>(endpoint, options, undefined, true);
 }
@@ -63,7 +79,7 @@ export async function fetchWithAuth<T>(
 export async function postWithAuth<T, K>(
   endpoint: string,
   body: K,
-  options: RequestInit & { baseUrl?: string } = {}
+  options: RequestInit & { baseUrl?: string; isAdmin?: boolean } = {}
 ): Promise<{ success: boolean; message: string; data: T }> {
   return xFetch<T, K>(endpoint, { ...options, method: "POST" }, body, true);
 }

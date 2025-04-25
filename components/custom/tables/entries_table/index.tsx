@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
-import { EntryType } from "@/lib/type";
-import { useSocket } from "@/app/SocketProvider";
+import { EntryType, MetaType } from "@/lib/type";
 
 import {
   Pagination,
@@ -15,25 +14,32 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { fetchWithAuth } from "@/lib/api";
 
 export default function EntriesTable() {
-  const socket = useSocket();
   const [entries, setEntries] = useState<EntryType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!socket) return;
+    async function getEntries() {
+      try {
+        const resEntries = await fetchWithAuth<{
+          entries: EntryType[];
+          meta: MetaType;
+        }>("/Entries", {
+          isAdmin: true,
+        });
 
-    socket.on("Entries", (data) => {
-      // console.log('found Entries', data)
-      setEntries(data);
-      setLoading(false);
-    });
+        setEntries(resEntries.data.entries);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-    return () => {
-      socket.off("Entries");
-    };
-  }, [socket]);
+    getEntries();
+  }, []);
 
   return (
     <div className="w-full space-y-8">

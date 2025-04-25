@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
-import { UserType } from "@/lib/type";
-import { useSocket } from "@/app/SocketProvider";
+import { MetaType, UserType } from "@/lib/type";
 
 import {
   Pagination,
@@ -15,25 +14,32 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { fetchWithAuth } from "@/lib/api";
 
 export default function UsersTable() {
-  const socket = useSocket();
   const [users, setUsers] = useState<UserType[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (!socket) return;
+    async function getUsers() {
+      try {
+        const resUsers = await fetchWithAuth<{
+          users: UserType[];
+          meta: MetaType;
+        }>("/users", {
+          isAdmin: true,
+        });
 
-    socket.on("users", (data) => {
-      // console.log('found Users', data)
-      setUsers(data);
-      setLoading(false);
-    });
+        setUsers(resUsers.data.users);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-    return () => {
-      socket.off("Users");
-    };
-  }, [socket]);
+    getUsers();
+  }, []);
 
   return (
     <div className="w-full space-y-8">

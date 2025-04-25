@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
-import { Quest } from "@/lib/type";
-import { useSocket } from "@/app/SocketProvider";
+import { MetaType, Quest } from "@/lib/type";
 
 import {
   Pagination,
@@ -15,25 +14,32 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { fetchWithAuth } from "@/lib/api";
 
 export default function QuestsTable() {
-  const socket = useSocket();
   const [quests, setQuests] = useState<Quest[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!socket) return;
+    async function getQuests() {
+      try {
+        const resUsers = await fetchWithAuth<{
+          quests: Quest[];
+          meta: MetaType;
+        }>("/users", {
+          isAdmin: true,
+        });
 
-    socket.on("quests", (data) => {
-      // console.log('found quests', data)
-      setQuests(data);
-      setLoading(false);
-    });
+        setQuests(resUsers.data.quests);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-    return () => {
-      socket.off("quests");
-    };
-  }, [socket]);
+    getQuests();
+  }, []);
 
   return (
     <div className="w-full space-y-8">

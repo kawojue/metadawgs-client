@@ -69,6 +69,19 @@ export interface UserType {
 
 export interface EntryType {
   id: number;
+  postId: string;
+  postUrl: string;
+  deletedAt: null;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+  pointId: string;
+  user: {
+    username: string;
+  };
+  point: {
+    value: string;
+  };
 }
 
 export interface Quest {

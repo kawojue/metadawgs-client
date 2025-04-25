@@ -1,15 +1,41 @@
+"use client";
+
 import UsersTable from "@/components/custom/tables/users_table";
 import { Button } from "@/components/ui/button";
+import { fetchWithAuth } from "@/lib/api";
 import { formatNumberWithCommas } from "@/lib/common";
 import { SearchIcon, TrashIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+
+type Metrics = {
+  totalPoints: string;
+  totalUsers: number;
+  totalPostEntries: number;
+  totalEngaged: number;
+  totalReferred: number;
+};
 
 const Page = () => {
+  const [metrics, setMetrics] = useState<Metrics | null>(null);
+
+  useEffect(() => {
+    async function getData() {
+      const resMetrics = await fetchWithAuth<Metrics>("/stats", {
+        isAdmin: true,
+      });
+
+      setMetrics(resMetrics.data);
+    }
+
+    getData();
+  }, []);
+
   return (
     <div className="space-y-8">
       <div className="space-y-5">
         <h1 className="text-2xl font-semibold font-fredoka">Dashboard</h1>
         <div className="flex flex-wrap gap-4">
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#000000] text-white w-full max-w-[380px]">
+          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#000000] text-white w-full lg:max-w-[380px] max-w-[300px] mx-auto">
             <svg
               width="32"
               height="32"
@@ -25,10 +51,10 @@ const Page = () => {
 
             <p className="text-sm">Total Point Accumulated</p>
             <span className="total font-extrabold text-3xl">
-              {formatNumberWithCommas(1000)}
+              {metrics?.totalPoints || 0}
             </span>
           </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full max-w-[380px]">
+          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full lg:max-w-[380px] max-w-[300px] mx-auto">
             <svg
               width="32"
               height="32"
@@ -44,10 +70,10 @@ const Page = () => {
 
             <p className="text-sm">Total Users</p>
             <span className="total font-extrabold text-3xl">
-              {formatNumberWithCommas(1000)}
+              {formatNumberWithCommas(metrics?.totalUsers || 0)}
             </span>
           </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full max-w-[380px]">
+          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full lg:max-w-[380px] max-w-[300px] mx-auto">
             <svg
               width="30"
               height="22"
@@ -63,10 +89,10 @@ const Page = () => {
 
             <p className="text-sm">Total Post Entries</p>
             <span className="total font-extrabold text-3xl">
-              {formatNumberWithCommas(1000)}
+              {formatNumberWithCommas(metrics?.totalPostEntries || 0)}
             </span>
           </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full max-w-[380px]">
+          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full lg:max-w-[380px] max-w-[300px] mx-auto">
             <svg
               width="32"
               height="32"
@@ -82,10 +108,10 @@ const Page = () => {
 
             <p className="text-sm">Total Engaged</p>
             <span className="total font-extrabold text-3xl">
-              {formatNumberWithCommas(1000)}
+              {formatNumberWithCommas(metrics?.totalEngaged || 0)}
             </span>
           </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full max-w-[380px]">
+          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full lg:max-w-[380px] max-w-[300px] mx-auto">
             <svg
               width="26"
               height="29"
@@ -101,7 +127,7 @@ const Page = () => {
 
             <p className="text-sm">Total Users Referral</p>
             <span className="total font-extrabold text-3xl">
-              {formatNumberWithCommas(1000)}
+              {formatNumberWithCommas(metrics?.totalReferred || 0)}
             </span>
           </div>
         </div>
@@ -126,7 +152,10 @@ const Page = () => {
               />
             </div>
 
-            <Button variant={"ghost"} className="cursor-pointer rounded-full hover:bg-red-500 hover:text-white">
+            <Button
+              variant={"ghost"}
+              className="cursor-pointer rounded-full hover:bg-red-500 hover:text-white"
+            >
               <TrashIcon />
               Trash
             </Button>

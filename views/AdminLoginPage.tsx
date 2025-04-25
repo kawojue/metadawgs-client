@@ -47,7 +47,11 @@ function LoginPage() {
         }),
       });
 
-      const data = await response.json();
+      const data = (await response.json()) as {
+        success: boolean;
+        message: string;
+        data: { token: string };
+      };
 
       if (!response.ok) {
         const errorMessage =
@@ -57,8 +61,8 @@ function LoginPage() {
         return;
       }
 
-      if (data.token) {
-        setAdminToken(data.token);
+      if (data.data.token) {
+        setAdminToken(data.data.token);
 
         if (rememberMe) {
           const thirtyDaysFromNow = new Date();
