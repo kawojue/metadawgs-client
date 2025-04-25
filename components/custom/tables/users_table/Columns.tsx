@@ -38,11 +38,11 @@ export const columns: ColumnDef<UserType>[] = [
     ),
   },
   {
-    accessorKey: "points",
+    accessorKey: "totalPoints",
     header: () => <div className="">Total Points</div>,
     cell: ({ row }) => (
       <div className="">
-        {formatNumberWithCommas(row.getValue("points") ?? "")}
+        {formatNumberWithCommas(row.getValue("totalPoints") ?? "")}
       </div>
     ),
   },
@@ -55,26 +55,14 @@ export const columns: ColumnDef<UserType>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: "invites",
-    header: () => <div className="">Invites</div>,
-    cell: ({ row }) => (
-      <div className="">
-        {formatNumberWithCommas(row.getValue("invites") ?? "")} Tasks
-      </div>
-    ),
-  },
+
   {
     accessorKey: "actions",
     header: () => <div className="">Action</div>,
     cell: ({ row }) => {
       return (
         <>
-          {row.original.banned == true ? (
-            <Button>Ban</Button>
-          ) : (
-            <Button>Unban</Button>
-          )}
+          {!row.original.banned ? <Button>Ban</Button> : <Button>Unban</Button>}
         </>
       );
     },

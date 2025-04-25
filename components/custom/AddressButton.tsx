@@ -37,7 +37,7 @@ function AddressButton() {
 
   useEffect(() => {
     async function updateUserWallet() {
-      if (!publicKey) {
+      if (!publicKey || !userToken) {
         return;
       }
 
@@ -51,7 +51,7 @@ function AddressButton() {
     }
 
     updateUserWallet();
-  }, [publicKey]);
+  }, [publicKey, userToken]);
 
   return (
     <>

@@ -13,17 +13,12 @@ import {
   VersionedTransaction,
 } from "@solana/web3.js";
 import { Buffer } from "buffer";
-import {
-  useConnection,
-  useLocalStorage,
-  useWallet,
-} from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { postWithAuth } from "@/lib/api";
 import { debounce, formatNumberWithCommas } from "@/lib/common";
 import NumberInput from "@/components/custom/NumberInput";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { XUserToken } from "@/lib/values";
-import { SignupAlert } from "@/components/custom/modals/SignupAlert";
+// import { SignupAlert } from "@/components/custom/modals/SignupAlert";
 
 type Metrics = {
   totalSoldSol: number;
@@ -42,7 +37,6 @@ function PresaleForm() {
   const { setVisible } = useWalletModal();
   const { publicKey, sendTransaction, signTransaction } = useWallet();
 
-  const [userToken] = useLocalStorage<string>(XUserToken, "");
   const [amount, setAmount] = useState<string>("");
   const [exchangedToken, setExchangedToken] = useState<number>(0);
   const [exchanging, setExchanging] = useState<boolean>(false);
@@ -52,7 +46,7 @@ function PresaleForm() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [isInitializing, setIsInitializing] = useState<boolean>(true);
   const [walletBalance, setWalletBalance] = useState<number>(0);
-  const [openSignUpAlert, setOpenSignUpAlert] = useState<boolean>(false);
+  // const [openSignUpAlert, setOpenSignUpAlert] = useState<boolean>(false);
 
   const handlePurchase = useCallback(async () => {
     if (!publicKey || !sendTransaction || !signTransaction) {
@@ -94,7 +88,7 @@ function PresaleForm() {
         `Step 1/4: SOL payment sent. Signature: ${solTxSig}. Waiting for confirmation...`
       );
 
-      setStatusMessage("Step 2/4: Confirming payment with backend...");
+      setStatusMessage("Step 2/4: Confirming payment with server...");
       const payload = {
         buyerPublicKeyStr: publicKey.toBase58(),
         solTxSig,
@@ -109,12 +103,13 @@ function PresaleForm() {
       });
 
       if (!response.success || !response.data?.partiallySignedTokenTx) {
-        throw new Error(`Backend confirmation failed: ${response.message}`);
+        console.log("response");
+        throw new Error(`Server confirmation failed`);
       }
 
       partiallySignedTokenTxBase64 = response.data.partiallySignedTokenTx;
       setStatusMessage(
-        "Step 2/4: Backend confirmed. Preparing token transaction..."
+        "Step 2/4: Server confirmed. Preparing token transaction..."
       );
       setStatusMessage(
         "Step 3/4: Please approve token claim transaction in your wallet..."
@@ -227,7 +222,7 @@ function PresaleForm() {
     const intervalId = setInterval(getWalletBalance, 30000); // Every 30 seconds
 
     return () => clearInterval(intervalId); // Clean up on unmount
-  }, [publicKey, connection]);
+  }, [publicKey]);
 
   useEffect(() => {
     async function getMetrics() {
@@ -258,12 +253,6 @@ function PresaleForm() {
   }, []);
 
   function connectWallet() {
-    if (!userToken) {
-      setOpenSignUpAlert(true);
-
-      return;
-    }
-
     setVisible(true);
   }
 
@@ -369,12 +358,12 @@ function PresaleForm() {
           {!publicKey && <p>Please connect your wallet.</p>}
         </form>
 
-        {openSignUpAlert && (
+        {/* {openSignUpAlert && (
           <SignupAlert
             open={openSignUpAlert}
             onClose={() => setOpenSignUpAlert(false)}
           />
-        )}
+        )} */}
       </>
     );
 }
