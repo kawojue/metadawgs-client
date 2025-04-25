@@ -7,9 +7,10 @@ import { hashAddress } from "@/lib/common";
 import { SignupAlert } from "@/components/custom/modals/SignupAlert";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
 import { XMenuisOpen, XUserToken } from "@/lib/values";
+import { postWithAuth } from "@/lib/api";
 
 function AddressButton() {
   const [userToken] = useLocalStorage<string>(XUserToken, "");
@@ -33,6 +34,24 @@ function AddressButton() {
     setMenuIsOpen(false);
     disconnect();
   }
+
+  useEffect(() => {
+    async function updateUserWallet() {
+      if (!publicKey) {
+        return;
+      }
+
+      try {
+        await postWithAuth("/user/link-wallet", {
+          walletAddress: publicKey.toBase58(),
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    updateUserWallet();
+  }, [publicKey]);
 
   return (
     <>

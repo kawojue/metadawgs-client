@@ -9,15 +9,60 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { AdminProfileType } from "@/lib/type";
+import { XAdminProfile, XAdminToken } from "@/lib/values";
+import LoginPage from "@/views/AdminLoginPage";
 
-import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import useLocalStorage from "use-local-storage";
 
 function DashboardLayout({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
+  const [adminToken] = useLocalStorage<string | null>(XAdminToken, null);
+  const [adminProfile, setAdminProfile] =
+    useLocalStorage<AdminProfileType | null>(XAdminProfile, null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  if (pathname.startsWith("/admin/auth")) {
-    return <div>{children}</div>;
+  useEffect(() => {
+    async function validateAdminToken() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+        const response = await fetch(`${apiUrl}/auth/profile`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error("Something unexpected occurred");
+        }
+
+        setAdminProfile(data.data);
+      } catch (error) {
+        console.error("Profile error:", error);
+        setAdminProfile(null);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    validateAdminToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [adminToken]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <p>loading...</p>
+      </div>
+    );
+  }
+
+  if (!isLoading && !adminProfile) {
+    return <LoginPage />;
   }
 
   return (

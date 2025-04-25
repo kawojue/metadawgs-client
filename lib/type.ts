@@ -18,6 +18,19 @@ export interface ProfileType {
   };
 }
 
+export interface AdminProfileType {
+  eligibleToUseReferralCode: true;
+  referralCode: string;
+  user: {
+    id: string;
+    tasks: number;
+    avatar: string;
+    username: string;
+    joinedAt: string;
+    displayName: string;
+  };
+}
+
 export interface LeaderboardType {
   userId: string;
   username: string;
