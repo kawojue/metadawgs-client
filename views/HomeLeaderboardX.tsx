@@ -1,5 +1,5 @@
 import AddressButton from "@/components/custom/AddressButton";
-import LeaderboardTable from "@/components/custom/leaderboard";
+import LeaderboardTable from "@/components/custom/tables/leaderboard";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import Image from "next/image";
 

@@ -1,20 +1,19 @@
+"use client";
+
 import Footer from "@/components/custom/Footer";
 import Navbar from "@/components/custom/Navbar";
 import { ReactNode } from "react";
 import Veil from "./Veil";
-import { headers } from "next/headers";
+import { usePathname } from "next/navigation";
 
-const IGNORED_ROUTES = ["/auth"];
+const IGNORED_ROUTE_PATTERNS = [/^\/auth/, /^\/admin(\/.*)?$/];
 
-async function MainLayout({ children }: { children: ReactNode }) {
-  const headersList = await headers();
-  const fullUrl = headersList.get("x-url") || headersList.get("referer") || "";
-  const pathname = new URL(
-    fullUrl,
-    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost"
-  ).pathname;
+function MainLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
 
-  const isIgnoredRoute = IGNORED_ROUTES.includes(pathname);
+  const isIgnoredRoute = IGNORED_ROUTE_PATTERNS.some((regex) =>
+    regex.test(pathname!)
+  );
 
   return (
     <div>

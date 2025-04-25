@@ -1,4 +1,4 @@
-import LeaderboardTable from "@/components/custom/leaderboard";
+import LeaderboardTable from "@/components/custom/tables/leaderboard";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import HomeLeaderboard from "@/views/HomeLeaderboard";

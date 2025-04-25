@@ -48,3 +48,16 @@ export interface QuestType {
   app_name: string;
   link: string;
 }
+
+export interface UserType {
+  id: number;
+  isBanned: boolean;
+}
+
+export interface EntryType {
+  id: number;
+}
+
+export interface Quest {
+  id: number;
+}
