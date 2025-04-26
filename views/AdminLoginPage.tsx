@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import useLocalStorage from "use-local-storage";
 import { XAdminToken } from "@/lib/values";
 
 function LoginPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [, setAdminToken] = useLocalStorage<string | null>(XAdminToken, null);
@@ -73,7 +73,7 @@ function LoginPage() {
           );
         }
 
-        router.replace("/admin");
+        // router.replace("/admin");
         return;
       }
 

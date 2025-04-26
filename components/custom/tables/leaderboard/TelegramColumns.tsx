@@ -1,10 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { InfoIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LeaderboardType } from "@/lib/type";
 import { formatNumberWithCommas, getNumberSuffix } from "@/lib/common";
+import { TelegramLeaderboardType } from "@/lib/type";
 
-export const telegram_columns: ColumnDef<LeaderboardType>[] = [
+export const telegram_columns: ColumnDef<TelegramLeaderboardType>[] = [
   {
     accessorKey: "rank",
     header: () => (
