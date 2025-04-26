@@ -6,12 +6,12 @@ function page() {
   return (
     <div className="space-y-8">
       <div className="space-y-3">
-        <div className="flex justify-between gap-4 items-center">
+        <div className="flex sm:justify-between sm:flex-row flex-col-reverse gap-4 sm:items-center">
           <div className="flex items-center gap-3">
             <h2 className="text-3xl font-semibold font-fredoka">Entries</h2>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center sm:justify-start justify-end gap-4">
             <div className="search-box relative text-[#181B20]">
               <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2" />
               <input

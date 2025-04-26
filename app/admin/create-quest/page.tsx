@@ -8,8 +8,8 @@ function Page() {
   const [error] = useState<string>("");
 
   return (
-    <div className="size-full flex flex-col justify-center items-center p-4 min-h-full">
-      <div className="login-modal bg-white rounded-2xl shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)] p-6 sm:p-8 w-md max-w-md flex flex-col gap-4 justify-center items-center">
+    <div className="size-full flex flex-col justify-center items-center p-2 min-h-full">
+      <div className="login-modal bg-white rounded-2xl shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)] p-6 sm:p-8 w-full max-w-md flex flex-col gap-4 justify-center items-center">
         <h1 className="text-3xl font-semibold font-fredoka">Create Quest</h1>
         {error && (
           <div className="bg-red-50 text-red-700 p-3 rounded-lg w-full text-sm">
