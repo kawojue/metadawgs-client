@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { XUserProfile, XUserToken } from "@/lib/values";
 import useLocalStorage from "use-local-storage";
@@ -45,13 +45,15 @@ export default function AuthHandler() {
   }, [token]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4">
-      <div className="text-center space-y-4">
-        <div className="w-10 h-10 border-4 border-[##FFBE00] border-t-transparent rounded-full animate-spin mx-auto" />
-        <h1 className="text-3xl font-semibold text-white font-fredoka">
-          Authenticating...
-        </h1>
+    <Suspense>
+      <div className="min-h-screen flex items-center justify-center bg-black px-4">
+        <div className="text-center space-y-4">
+          <div className="w-10 h-10 border-4 border-[##FFBE00] border-t-transparent rounded-full animate-spin mx-auto" />
+          <h1 className="text-3xl font-semibold text-white font-fredoka">
+            Authenticating...
+          </h1>
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 }

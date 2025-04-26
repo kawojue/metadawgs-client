@@ -2,12 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
-import React from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useState } from "react";
 
 function Page() {
-  const searchParams = useSearchParams();
-  const error = searchParams.get("error");
+  const [error] = useState<string>("");
 
   return (
     <div className="size-full flex flex-col justify-center items-center p-4 min-h-full">

@@ -13,12 +13,21 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { Button } from "./ui/button";
+import { LogOutIcon } from "lucide-react";
+import useLocalStorage from "use-local-storage";
+import { XAdminToken } from "@/lib/values";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const [, setAdminToken] = useLocalStorage(XAdminToken, "");
+
+  function logout() {
+    setAdminToken(undefined);
+  }
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible='icon' className="z-[999]" {...props}>
       <SidebarHeader className="p-5 h-22">
         <div className="flex items-center gap-2">
           <Avatar
@@ -176,7 +185,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </li>
         </ul>
       </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter className="p-4 pb-6">
+        <Button
+          variant={"ghost"}
+          className="cursor-pointer p-5! px-6! text-[red] rounded-full hover:opacity-80"
+          onClick={logout}
+        >
+          <LogOutIcon /> Logout
+        </Button>
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

@@ -12,6 +12,7 @@ import {
 // import { AdminProfileType } from "@/lib/type";
 import { XAdminToken } from "@/lib/values";
 import LoginPage from "@/views/AdminLoginPage";
+import { Loader } from "lucide-react";
 
 import { ReactNode, useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
@@ -20,11 +21,12 @@ function DashboardLayout({ children }: { children: ReactNode }) {
   const [adminToken] = useLocalStorage<string | null>(XAdminToken, null);
   // const [adminProfile, setAdminProfile] =
   //   useLocalStorage<AdminProfileType | null>(XAdminProfile, null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function validateAdminToken() {
       try {
+        setIsLoading(true);
         // const apiUrl = process.env.NEXT_PUBLIC_API_URL;
         // const response = await fetch(`${apiUrl}/admin/auth/profile`, {
         //   method: "GET",
@@ -46,13 +48,12 @@ function DashboardLayout({ children }: { children: ReactNode }) {
     }
 
     validateAdminToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [adminToken]);
 
   if (isLoading) {
     return (
-      <div>
-        <p>loading...</p>
+      <div className="h-svh w-full grid place-content-center place-content-items">
+        <Loader size={72} color={"#FFBE00"} className="animate-spin" />
       </div>
     );
   }
@@ -65,7 +66,7 @@ function DashboardLayout({ children }: { children: ReactNode }) {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex shrink-0 items-center sticky top-0 z-[999] bg-white gap-2 p-6 h-22 border-b transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <header className="flex shrink-0 items-center sticky top-0 left-0 right-0 z-[5] bg-white gap-2 p-6 h-22 border-b transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4 md:justify-end justify-between w-full">
             <SidebarTrigger className="md:hidden" />
 
@@ -119,7 +120,11 @@ function DashboardLayout({ children }: { children: ReactNode }) {
             </div>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-6 md:p-8">{children}</div>
+        <div className="content overflow-w-auto md:max-w-[calc(100vw_-_18rem)] max-w-full">
+          <div className="flex flex-1 flex-col gap-4 p-6 md:p-8">
+            {children}
+          </div>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

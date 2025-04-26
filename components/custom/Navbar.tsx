@@ -69,7 +69,6 @@ function Navbar() {
       } catch (error) {
         setUserProfile(null);
         setUserToken("");
-        disconnect();
         console.error(error);
       } finally {
         setIsLoading(false);
@@ -78,7 +77,6 @@ function Navbar() {
 
     if (!userToken) {
       setUserProfile(null);
-      disconnect();
     } else {
       getProfile();
     }

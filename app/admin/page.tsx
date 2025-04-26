@@ -34,8 +34,8 @@ const Page = () => {
     <div className="space-y-8">
       <div className="space-y-5">
         <h1 className="text-2xl font-semibold font-fredoka">Dashboard</h1>
-        <div className="flex flex-wrap gap-4">
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#000000] text-white w-full lg:max-w-[380px] max-w-[300px]">
+        <div className="grid xl:grid-cols-3 grid-cols-2 max-[450px]:grid-cols-1 gap-4">
+          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#000000] text-white w-full col-span-1">
             <svg
               width="32"
               height="32"
@@ -54,7 +54,7 @@ const Page = () => {
               {metrics?.totalPoints || 0}
             </span>
           </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full lg:max-w-[380px] max-w-[300px]">
+          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full col-span-1">
             <svg
               width="32"
               height="32"
@@ -73,7 +73,7 @@ const Page = () => {
               {formatNumberWithCommas(metrics?.totalUsers || 0)}
             </span>
           </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full lg:max-w-[380px] max-w-[300px]">
+          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full col-span-1">
             <svg
               width="30"
               height="22"
@@ -92,7 +92,7 @@ const Page = () => {
               {formatNumberWithCommas(metrics?.totalPostEntries || 0)}
             </span>
           </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full lg:max-w-[380px] max-w-[300px]">
+          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full col-span-1">
             <svg
               width="32"
               height="32"
@@ -111,7 +111,7 @@ const Page = () => {
               {formatNumberWithCommas(metrics?.totalEngaged || 0)}
             </span>
           </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full lg:max-w-[380px] max-w-[300px]">
+          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full col-span-1">
             <svg
               width="26"
               height="29"
