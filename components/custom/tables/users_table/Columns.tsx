@@ -6,6 +6,9 @@ import { formatNumberWithCommas, hashAddress } from "@/lib/common";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { LoaderIcon } from "lucide-react";
+import { postWithAuth } from "@/lib/api";
+import useLocalStorage from "use-local-storage";
+import { XRefreshTable } from "@/lib/values";
 
 export const columns: ColumnDef<UserType>[] = [
   {
@@ -26,7 +29,7 @@ export const columns: ColumnDef<UserType>[] = [
     header: () => <div className="">Username</div>,
     cell: ({ row }) => (
       <div className="">
-        <a href="#" className="block">
+        <a href={`https://x.com/${row.original.username}`} className="block text-[#0000FF] underline" target="_blank" rel="noopener noreferrer">
           {row.getValue("username")}
         </a>
       </div>
@@ -62,17 +65,33 @@ export const columns: ColumnDef<UserType>[] = [
     accessorKey: "actions",
     header: () => <div className="">Action</div>,
     cell: ({ row }) => {
-      return <Action isBanned={row.original.banned} />;
+      return <Action isBanned={row.original.banned} userId={row.original.id} />;
     },
   },
 ];
 
-const Action = ({ isBanned }: { isBanned: boolean }) => {
+const Action = ({
+  isBanned,
+  userId,
+}: {
+  isBanned: boolean;
+  userId: number;
+}) => {
+  const [banned, setBanned] = useState<boolean>(isBanned);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setRefreshTable] = useLocalStorage(XRefreshTable, false);
 
   async function Ban() {
+    if (isLoading) return;
+
     try {
       setIsLoading(true);
+
+      await postWithAuth(`/user/toggle-ban/${userId}`, undefined, {
+        isAdmin: true,
+      });
+      setBanned(true);
+      setRefreshTable((prev) => !prev);
     } catch (error) {
       console.log(error);
     } finally {
@@ -81,8 +100,16 @@ const Action = ({ isBanned }: { isBanned: boolean }) => {
   }
 
   async function Unban() {
+    if (isLoading) return;
+
     try {
       setIsLoading(true);
+
+      await postWithAuth(`/user/toggle-ban/${userId}`, undefined, {
+        isAdmin: true,
+      });
+      setBanned(false);
+      setRefreshTable((prev) => !prev);
     } catch (error) {
       console.log(error);
     } finally {
@@ -92,7 +119,7 @@ const Action = ({ isBanned }: { isBanned: boolean }) => {
 
   return (
     <>
-      {!isBanned ? (
+      {!banned ? (
         <Button className="rounded-full bg-[#FF3B30] text-white" onClick={Ban}>
           {" "}
           {isLoading && <LoaderIcon />} {!isLoading && <span>Ban</span>}

@@ -73,7 +73,7 @@ export const QuestTile = ({ quest, func, funcText }: Props) => {
             {buttonContent}
           </Button>
         ) : userProfile ? (
-          <a href={quest.link}>
+          <a href={quest.link} target="_blank" rel="noopener noreferrer">
             <Button className="bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! sm:py-[22px]! py-[20px]! cursor-pointer hover:bg-[#FFBE00]/80!">
               {buttonContent}
             </Button>

@@ -15,10 +15,13 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { fetchWithAuth } from "@/lib/api";
+import useLocalStorage from "use-local-storage";
+import { XRefreshTable } from "@/lib/values";
 
 export default function QuestsTable() {
   const [quests, setQuests] = useState<Quest[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [refreshTable] = useLocalStorage(XRefreshTable, false);
 
   useEffect(() => {
     async function getQuests() {
@@ -39,7 +42,7 @@ export default function QuestsTable() {
     }
 
     getQuests();
-  }, []);
+  }, [refreshTable]);
 
   return (
     <div className="w-full space-y-8">

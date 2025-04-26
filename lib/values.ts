@@ -4,3 +4,4 @@ export const XUserProfile = "X_USER_PROFILE";
 export const XUserAddress = "X_USER_ADDRESS";
 export const XAdminToken = "X_ADMIN_TOKEN";
 export const XAdminProfile = "X_ADMIN_PROFILE";
+export const XRefreshTable = "X_REFRESH_TABLE";

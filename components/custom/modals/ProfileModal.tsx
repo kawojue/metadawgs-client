@@ -96,7 +96,7 @@ function ProfileModal({
                 </p>
               </div>
 
-              <a href="" className="block">
+              <a href="" className="block" target="_blank" rel="noopener noreferrer">
                 <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! py-[16px] cursor-pointer hover:bg-[#FFBE00]/80!">
                   <span className="sm:block hidden">Follow</span>
                   <ArrowUpRightIcon size={10} />
@@ -113,7 +113,7 @@ function ProfileModal({
                 </p>
               </div>
 
-              <a href="" className="block">
+              <a href="" className="block" target="_blank" rel="noopener noreferrer">
                 <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! py-[16px] cursor-pointer hover:bg-[#FFBE00]/80!">
                   <span className="sm:block hidden">Join</span>
                   <ArrowUpRightIcon size={10} />

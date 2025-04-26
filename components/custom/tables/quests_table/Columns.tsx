@@ -37,7 +37,7 @@ export const columns: ColumnDef<Quest>[] = [
     header: () => <div className="">Tweet URL</div>,
     cell: ({ row }) => (
       <div className="">
-        <a href="#" className="block text-[#0000FF] underline">
+        <a href="#" className="block text-[#0000FF] underline" target="_blank" rel="noopener noreferrer">
           {row.getValue("tweet_url")}
         </a>
       </div>

@@ -1,10 +1,8 @@
 "use client";
 
 import UsersTable from "@/components/custom/tables/users_table";
-import { Button } from "@/components/ui/button";
 import { fetchWithAuth } from "@/lib/api";
 import { formatNumberWithCommas } from "@/lib/common";
-import { SearchIcon, TrashIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type Metrics = {
@@ -133,38 +131,8 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="space-y-3">
-        <div className="flex sm:justify-between sm:flex-row flex-col-reverse gap-4 sm:items-center">
-          <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-semibold font-fredoka">New Users</h2>
-            <span className="grid place-content-center place-items-center p-0.5 px-2 bg-red-500 text-white rounded-full text-xs">
-              20
-            </span>
-          </div>
-
-          <div className="flex items-center sm:justify-start justify-end gap-4">
-            <div className="search-box relative text-[#181B20]">
-              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-full rounded-full h-[48px] px-12 text-lg max-w-[200px]"
-              />
-            </div>
-
-            <Button
-              variant={"ghost"}
-              className="cursor-pointer rounded-full hover:bg-red-500 hover:text-white"
-            >
-              <TrashIcon />
-              Trash
-            </Button>
-          </div>
-        </div>
-
-        <div className="table-x w-full">
-          <UsersTable />
-        </div>
+      <div className="table-x w-full">
+        <UsersTable />
       </div>
     </div>
   );

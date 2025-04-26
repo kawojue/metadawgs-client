@@ -70,9 +70,11 @@ export function DataTable<TData, TValue>({
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="h-24 text-center text-black"
+                className="text-center text-black p-4"
               >
-                Loading...
+                <div className="h-40 flex flex-col items-center justify-center gap-2">
+                  Loading...
+                </div>
               </TableCell>
             </TableRow>
           )}
@@ -121,7 +123,7 @@ export function DataTable<TData, TValue>({
                     </div>
                   </TableCell>
                 </TableRow>
-              )}{" "}
+              )}
             </>
           )}
         </TableBody>

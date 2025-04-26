@@ -24,7 +24,7 @@ const PostCard = ({ post }: { post: PostType }) => {
           for a system to check the task.
         </p>
         <div className="flex gap-3 items-center">
-          <a href={post?.url || "#"} className="block">
+          <a href={post?.url || "#"} className="block" target="_blank" rel="noopener noreferrer">
             <Button className="rounded-full !px-5 !py-4 font-normal cursor-pointer text-black bg-[#92A1C6]">
               <span>View Post</span> <ArrowUpRightIcon size={11} />
             </Button>
