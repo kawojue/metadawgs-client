@@ -88,7 +88,7 @@ function LoginPage() {
 
   return (
     <div className="size-full flex flex-col justify-center items-center p-4 h-svh">
-      <div className="login-modal bg-white rounded-2xl shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)] p-6 sm:p-8 w-md max-w-md flex flex-col gap-4 justify-center items-center">
+      <div className="login-modal bg-white rounded-2xl shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)] p-6 sm:p-8 w-full max-w-md flex flex-col gap-4 justify-center items-center">
         <Image src={"/images/logo2.svg"} alt="Logo" width={140} height={30} />
         <h1 className="text-3xl font-semibold font-fredoka">
           Login In To Continue
