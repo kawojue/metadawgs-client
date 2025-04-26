@@ -73,7 +73,9 @@ function ProfileModal({
           </div>
           <div className="stats grid grid-cols-3 gap-3">
             <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
-              <span className="font-semibold text-xl">0</span>
+              <span className="font-semibold text-xl">
+                {userProfile?.user.tasks}
+              </span>
               <span className="text-xs">Tasks Completed</span>
             </div>
             <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
@@ -81,7 +83,9 @@ function ProfileModal({
               <span className="text-xs">Overall Points</span>
             </div>
             <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
-              <span className="font-semibold text-xl">0</span>
+              <span className="font-semibold text-xl">
+                {userProfile?.rank || 0}
+              </span>
               <span className="text-xs">Rank Number</span>
             </div>
           </div>
@@ -96,7 +100,12 @@ function ProfileModal({
                 </p>
               </div>
 
-              <a href="" className="block" target="_blank" rel="noopener noreferrer">
+              <a
+                href=""
+                className="block"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! py-[16px] cursor-pointer hover:bg-[#FFBE00]/80!">
                   <span className="sm:block hidden">Follow</span>
                   <ArrowUpRightIcon size={10} />
@@ -113,7 +122,12 @@ function ProfileModal({
                 </p>
               </div>
 
-              <a href="" className="block" target="_blank" rel="noopener noreferrer">
+              <a
+                href=""
+                className="block"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! py-[16px] cursor-pointer hover:bg-[#FFBE00]/80!">
                   <span className="sm:block hidden">Join</span>
                   <ArrowUpRightIcon size={10} />

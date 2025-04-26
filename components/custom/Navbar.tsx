@@ -65,7 +65,11 @@ function Navbar() {
           "/auth/profile"
         );
         console.log("profile", profile);
-        setUserProfile(profile);
+
+        const {
+          data: { rank },
+        } = await fetchWithAuth<{ rank: number }>("/user/rank");
+        setUserProfile({ ...profile, rank: rank });
       } catch (error) {
         setUserProfile(null);
         setUserToken("");
@@ -259,7 +263,7 @@ function Navbar() {
         )}
       >
         <div className="nav-links p-2">
-          <ul className="flex flex-col items-center justify-center select-none">
+          <ul className="flex flex-col items-center justify-center gap-2 select-none">
             <li>
               <Link
                 onClick={() => setMenuIsOpen(false)}

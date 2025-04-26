@@ -1,8 +1,16 @@
 export interface PostType {
   id: number;
-  title: string;
-  points: number;
-  url: string;
+  postId: string;
+  point: number;
+  name: string;
+  description: string;
+  postUrl: string;
+  imageUrl: string;
+  deletedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  adminId: string;
+  hasEngaged: boolean;
 }
 
 export interface ProfileType {
@@ -16,6 +24,7 @@ export interface ProfileType {
     joinedAt: string;
     displayName: string;
   };
+  rank: number;
 }
 
 export interface AdminProfileType {

@@ -5,6 +5,7 @@ import MainLayout from "./MainLayout";
 import { SocketProvider } from "./SocketProvider";
 import WalletConnectionProvider from "./WalletProvider";
 import siteConfig from "@/lib/siteConfig";
+import { Toaster } from "@/components/ui/sonner";
 
 const josefinSans = Josefin_Sans({
   variable: "--font-josefin-sans",
@@ -58,6 +59,8 @@ export default function RootLayout({
             <MainLayout>{children}</MainLayout>
           </SocketProvider>
         </WalletConnectionProvider>
+
+        <Toaster />
       </body>
     </html>
   );

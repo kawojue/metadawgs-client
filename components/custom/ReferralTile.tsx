@@ -13,36 +13,35 @@ function ReferralTile() {
   const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
   const [openReferral, setOpenReferral] = useState<boolean>(false);
 
-  if (!!userProfile && !userProfile?.eligibleToUseReferralCode) {
-    return;
-  }
+  if (userProfile?.eligibleToUseReferralCode)
+    return (
+      <>
+        <SlideInLeft>
+          <QuestTile
+            quest={{
+              id: quests.length,
+              todo: "Referral Code",
+              point: 20,
+              app_name: "dawg",
+              link: "",
+            }}
+            func={() => {
+              setOpenReferral(true);
+            }}
+            funcText={"Input Code"}
+          />
+        </SlideInLeft>
 
-  return (
-    <>
-      <SlideInLeft>
-        <QuestTile
-          quest={{
-            id: quests.length,
-            todo: "Referral Code",
-            point: 20,
-            app_name: "dawg",
-            link: "",
-          }}
-          func={() => {
-            setOpenReferral(true);
-          }}
-          funcText={"Input Code"}
-        />
-      </SlideInLeft>
+        {openReferral && (
+          <ReferralInputModal
+            open={openReferral}
+            onClose={() => setOpenReferral(false)}
+          />
+        )}
+      </>
+    );
 
-      {openReferral && (
-        <ReferralInputModal
-          open={openReferral}
-          onClose={() => setOpenReferral(false)}
-        />
-      )}
-    </>
-  );
+  return null;
 }
 
 export default ReferralTile;

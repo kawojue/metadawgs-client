@@ -10,9 +10,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { XRefreshTable } from "@/lib/values";
 import { ArrowUpRightIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import useLocalStorage from "use-local-storage";
 
 export function SubmitEntryAlert({
   open,
@@ -21,6 +23,7 @@ export function SubmitEntryAlert({
   open?: boolean;
   onClose?: () => void;
 }) {
+  const [, setRefreshTable] = useLocalStorage(XRefreshTable, false);
   const router = useRouter();
 
   return (
@@ -57,8 +60,8 @@ export function SubmitEntryAlert({
           <AlertDialogCancel
             className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black shadow-[black]/40"
             onClick={() => {
+              setRefreshTable(true);
               onClose?.();
-              router.refresh();
             }}
           >
             Close
@@ -66,8 +69,8 @@ export function SubmitEntryAlert({
           <AlertDialogAction
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
             onClick={() => {
+              setRefreshTable(true);
               router.push("/quests#Posts");
-              router.refresh();
 
               onClose?.();
             }}

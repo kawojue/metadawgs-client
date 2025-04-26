@@ -14,24 +14,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { fetchWithAuth } from "@/lib/api";
 import { quests } from "@/lib/dummydata";
-import { Quest } from "@/lib/type";
+import { PostType } from "@/lib/type";
 import { authWithTwitter } from "@/lib/utils";
-import { XUserToken } from "@/lib/values";
+import { XRefreshTable, XUserToken } from "@/lib/values";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
 
 function Page() {
   const [userToken] = useLocalStorage(XUserToken, "");
-
-  const [posts, setPosts] = useState<Quest[]>([]);
+  const [refreshTable] = useLocalStorage(XRefreshTable, false);
+  const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function getPosts() {
       try {
         setLoading(true);
-        const { data } = await fetchWithAuth<Quest[]>("/posts");
+        const { data } = await fetchWithAuth<PostType[]>("/posts");
         console.log("Posts", data, loading);
 
         setPosts(data);
@@ -44,7 +44,7 @@ function Page() {
 
     getPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [refreshTable]);
 
   return (
     <div className="">
@@ -70,8 +70,8 @@ function Page() {
         </FadeInUp>
       </div>
       {!!userToken && (
-        <div className="conquests space-y-14 md:py-[5%] p-6">
-          <SlideInLeft className="onboarding md:mx-[20%]">
+        <div className="conquests space-y-14 lg:py-[5%] p-6">
+          <SlideInLeft className="onboarding md:mx-[5%] lg:mx-[15%]">
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="onboarding">
                 <AccordionTrigger className="cursor-pointer">
@@ -102,7 +102,7 @@ function Page() {
               </AccordionItem>
             </Accordion>
           </SlideInLeft>
-          <SlideInLeft className="social_quests md:mx-[20%]">
+          <SlideInLeft className="social_quests md:mx-[5%] lg:mx-[15%]">
             <Accordion type="single" collapsible className="w-full" id="Posts">
               <AccordionItem value="social_quests">
                 <AccordionTrigger className="cursor-pointer">
@@ -111,16 +111,22 @@ function Page() {
                   </h3>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="quests-box w-full sm:mt-8 mt-4">
-                    <ul className="flex flex-wrap md:gap-5 gap-3">
-                      {posts.map((post) => (
-                        <li key={post.id}>
-                          <PostCard post={post} />
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="quests-box w-full sm:mt-8 mt-4 max-h-[500px] overflow-y-auto">
+                    {loading && (
+                      <div className="p-4 text-center">
+                        <h3 className="text-2xl font-fredoka">Loading...</h3>
+                      </div>
+                    )}
 
-                    {posts.length == 0 && (
+                    {!loading && posts.length > 0 && (
+                      <div className="grid xl:grid-cols-3 md:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:place-items-center grid-cols-2 md:gap-5 gap-3">
+                        {posts.map((post) => (
+                          <PostCard post={post} key={post.id} />
+                        ))}
+                      </div>
+                    )}
+
+                    {!loading && posts.length == 0 && (
                       <div className="p-4 text-center">
                         <h3 className="text-2xl font-fredoka">No Posts</h3>
                       </div>
@@ -133,7 +139,7 @@ function Page() {
         </div>
       )}
       {!userToken && (
-        <div className="md:py-[5%] p-6 md:mx-[20%]">
+        <div className="lg:py-[5%] p-6 md:mx-[5%] lg:mx-[15%]">
           <div className="flex flex-col justify-center items-center gap-4">
             <div className="circle bg-black rounded-full p-2.5 mb-1">
               <Image
