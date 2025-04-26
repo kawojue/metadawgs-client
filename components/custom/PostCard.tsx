@@ -1,10 +1,10 @@
-import { PostType } from "@/lib/type";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import SubmitEntryInputModal from "@/components/custom/modals/SubmitEntryInputModal";
 import { useState } from "react";
+import { Quest } from "@/lib/type";
 
-const PostCard = ({ post }: { post: PostType }) => {
+const PostCard = ({ post }: { post: Quest }) => {
   const [showEntryInput, setShowEntryInput] = useState<boolean>(false);
 
   return (
@@ -13,18 +13,20 @@ const PostCard = ({ post }: { post: PostType }) => {
       <div className="info space-y-3 p-4 sm:p-5">
         <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">
           <div className="point-pill text-xs font-medium bg-[#dfebf5] p-1.5 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
-            {post.points} MetaDwags
+            {post.point} MetaDwags
           </div>
         </div>
         <h3 className="title font-semibold font-fredoka text-xl ">
           Post Launch on X
         </h3>
-        <p className="text-[#677697] text-[15px]">
-          Click the {"Submit"} button to complete this task. Allow 1-20 minutes
-          for a system to check the task.
-        </p>
+        <p className="text-[#677697] text-[15px]">{post.description}</p>
         <div className="flex gap-3 items-center">
-          <a href={post?.url || "#"} className="block" target="_blank" rel="noopener noreferrer">
+          <a
+            href={post?.postUrl}
+            className="block"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button className="rounded-full !px-5 !py-4 font-normal cursor-pointer text-black bg-[#92A1C6]">
               <span>View Post</span> <ArrowUpRightIcon size={11} />
             </Button>

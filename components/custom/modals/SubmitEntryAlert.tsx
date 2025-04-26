@@ -56,7 +56,10 @@ export function SubmitEntryAlert({
         <AlertDialogFooter className="grid! grid-cols-2! gap-4 mt-2">
           <AlertDialogCancel
             className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black shadow-[black]/40"
-            onClick={() => onClose?.()}
+            onClick={() => {
+              onClose?.();
+              router.refresh();
+            }}
           >
             Close
           </AlertDialogCancel>
@@ -64,6 +67,8 @@ export function SubmitEntryAlert({
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
             onClick={() => {
               router.push("/quests#Posts");
+              router.refresh();
+
               onClose?.();
             }}
           >

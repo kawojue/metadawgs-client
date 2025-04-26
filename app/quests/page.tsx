@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { fetchWithAuth } from "@/lib/api";
 import { quests } from "@/lib/dummydata";
-import { PostType } from "@/lib/type";
+import { Quest } from "@/lib/type";
 import { authWithTwitter } from "@/lib/utils";
 import { XUserToken } from "@/lib/values";
 import Image from "next/image";
@@ -24,14 +24,14 @@ import useLocalStorage from "use-local-storage";
 function Page() {
   const [userToken] = useLocalStorage(XUserToken, "");
 
-  const [posts, setPosts] = useState<PostType[]>([]);
+  const [posts, setPosts] = useState<Quest[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function getPosts() {
       try {
         setLoading(true);
-        const { data } = await fetchWithAuth<PostType[]>("/posts");
+        const { data } = await fetchWithAuth<Quest[]>("/posts");
         console.log("Posts", data, loading);
 
         setPosts(data);
