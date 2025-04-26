@@ -14,7 +14,6 @@ import {
 } from "@solana/web3.js";
 import { Buffer } from "buffer";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { postWithAuth } from "@/lib/api";
 import { debounce, formatNumberWithCommas } from "@/lib/common";
 import NumberInput from "@/components/custom/NumberInput";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
@@ -95,22 +94,37 @@ function PresaleForm() {
         amountSol: parseFloat(amount),
       };
 
-      const response = await postWithAuth<
-        { partiallySignedTokenTx: string },
-        { buyerPublicKeyStr: string; solTxSig: string; amountSol: number }
-      >("/confirm-purchase-and-prepare-claim", payload, {
-        baseUrl: process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/confirm-purchase-and-prepare-claim`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
-      if (!response.success || !response.data?.partiallySignedTokenTx) {
-        console.log("response");
-        throw new Error(`Server confirmation failed`);
+      if (!response.ok) {
+        throw new Error("Server confirmation failed");
       }
 
-      partiallySignedTokenTxBase64 = response.data.partiallySignedTokenTx;
+      const data = (await response.json()) as {
+        partiallySignedTokenTx: string;
+      };
+
+      if (!data?.partiallySignedTokenTx) {
+        throw new Error(
+          "Server confirmation failed: Missing token transaction"
+        );
+      }
+
       setStatusMessage(
         "Step 2/4: Server confirmed. Preparing token transaction..."
       );
+
+      partiallySignedTokenTxBase64 = data.partiallySignedTokenTx;
+
       setStatusMessage(
         "Step 3/4: Please approve token claim transaction in your wallet..."
       );
@@ -125,7 +139,7 @@ function PresaleForm() {
         skipPreflight: false,
       });
       setStatusMessage(
-        `Step 4/4: Token claim transaction sent. Signature: ${finalTokenTxSig}. Waiting for confirmation...`
+        `Step 4/4: Token claim transaction sent. Waiting for confirmation...`
       );
 
       await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -142,16 +156,12 @@ function PresaleForm() {
       );
 
       if (confirmation.value.err) {
-        throw new Error(
-          `Token claim transaction confirmation failed: ${JSON.stringify(
-            confirmation.value.err
-          )}`
-        );
+        throw new Error(`Token claim transaction confirmation failed`);
       }
 
-      setStatusMessage(
-        `Purchase complete! Token transaction confirmed: ${finalTokenTxSig}`
-      );
+      setStatusMessage(`Purchase complete! Token transaction confirmed`);
+
+      setAmount("");
     } catch (err: unknown) {
       console.error("Presale Purchase Error:", err);
       const displayError =
@@ -222,7 +232,7 @@ function PresaleForm() {
     const intervalId = setInterval(getWalletBalance, 30000); // Every 30 seconds
 
     return () => clearInterval(intervalId); // Clean up on unmount
-  }, [publicKey]);
+  }, [connection, publicKey]);
 
   useEffect(() => {
     async function getMetrics() {
@@ -329,7 +339,7 @@ function PresaleForm() {
             />
 
             {!exchanging && !!exchangedToken && (
-              <p className="flex">Exchange: {exchangedToken} Token(s)</p>
+              <p className="flex">Exchange: {formatNumberWithCommas(exchangedToken)} Token(s)</p>
             )}
 
             {exchanging && <p className="flex">Converting amount....</p>}
@@ -346,6 +356,7 @@ function PresaleForm() {
           )}
           {!publicKey && (
             <Button
+              type="button"
               className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed!"
               onClick={connectWallet}
             >

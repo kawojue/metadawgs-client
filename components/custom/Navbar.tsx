@@ -2,7 +2,14 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, Loader, MenuIcon, XIcon } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  ChevronDownIcon,
+  Loader,
+  MenuIcon,
+  XIcon,
+} from "lucide-react";
 import Link from "next/link";
 import useLocalStorage from "use-local-storage";
 import { XMenuisOpen, XUserProfile, XUserToken } from "@/lib/values";
@@ -15,6 +22,12 @@ import { fetchWithAuth } from "@/lib/api";
 import { ProfileType } from "@/lib/type";
 import { useWallet } from "@solana/wallet-adapter-react";
 import AddressButton from "@/components/custom/AddressButton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 function Navbar() {
   const pathname = usePathname();
@@ -85,7 +98,7 @@ function Navbar() {
 
   return (
     <div className="navbar bg-black text-white md:px-[8%] px-4 py-5 h-[88px] flex justify-between gap-4 items-center w-full sticky top-0 z-[999]">
-      <Link href={"/"} className="logo">
+      <Link href={"/"} className="logo" onClick={() => setMenuIsOpen(false)}>
         <Image src="/images/logo.svg" alt="MetaDawgs" width={150} height={35} />
       </Link>
       <div className="nav-links xl:block hidden">
@@ -113,15 +126,43 @@ function Navbar() {
             </Link>
           </li>
           <li>
-            <Link
-              href={"/leaderboard"}
-              className={cn(
-                "text-lg capitalize hover:opacity-85",
-                pathname.startsWith("/leaderboard") && "text-[#FFBE00]"
-              )}
-            >
-              leaderboard
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className={cn(
+                  "text-lg capitalize hover:opacity-85 flex items-center gap-1 cursor-pointer ring-0",
+                  pathname.startsWith("/leaderboard") && "text-[#FFBE00]"
+                )}
+              >
+                Leaderboard <ChevronDownIcon />{" "}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="z-[9999] bg-black text-white">
+                <DropdownMenuItem>
+                  <Link
+                    onClick={() => setMenuIsOpen(false)}
+                    href={"/leaderboard/x"}
+                    className={cn(
+                      "text-lg capitalize hover:opacity-85",
+                      pathname.startsWith("/leaderboard/x") && "text-[#FFBE00]"
+                    )}
+                  >
+                    X (Twitter)
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link
+                    onClick={() => setMenuIsOpen(false)}
+                    href={"/leaderboard/telegram"}
+                    className={cn(
+                      "text-lg capitalize hover:opacity-85",
+                      pathname.startsWith("/leaderboard/telegram") &&
+                        "text-[#FFBE00]"
+                    )}
+                  >
+                    Telegram
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </li>
         </ul>
       </div>
@@ -219,14 +260,14 @@ function Navbar() {
           menuIsOpen && "translate-y-0 opacity-100"
         )}
       >
-        <div className="nav-links">
+        <div className="nav-links p-2">
           <ul className="flex flex-col items-center justify-center select-none">
             <li>
               <Link
                 onClick={() => setMenuIsOpen(false)}
                 href={"/quests"}
                 className={cn(
-                  "block sm:text-4xl text-3xl font-fredoka hover:opacity-85 py-6 p-4 uppercase font-bold",
+                  "block sm:text-4xl text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
                   pathname.startsWith("/quests") && "text-[#FFBE00]"
                 )}
               >
@@ -238,7 +279,7 @@ function Navbar() {
                 onClick={() => setMenuIsOpen(false)}
                 href={"/presale"}
                 className={cn(
-                  "block sm:text-4xl text-3xl font-fredoka hover:opacity-85 py-6 p-4 uppercase font-bold",
+                  "block sm:text-4xl text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
                   pathname.startsWith("/presale") && "text-[#FFBE00]"
                 )}
               >
@@ -248,18 +289,34 @@ function Navbar() {
             <li>
               <Link
                 onClick={() => setMenuIsOpen(false)}
-                href={"/leaderboard"}
+                href={"/leaderboard/x"}
                 className={cn(
-                  "block sm:text-4xl text-3xl font-fredoka hover:opacity-85 py-6 p-4 uppercase font-bold",
-                  pathname.startsWith("/leaderboard") && "text-[#FFBE00]"
+                  "block sm:text-4xl text-3xl max-[350px]:text-2xl text-center font-fredoka hover:opacity-85 p-2 uppercase font-bold",
+                  pathname.startsWith("/leaderboard/x") && "text-[#FFBE00]"
                 )}
               >
-                leaderboard
+                X (Twitter)
+                <br />
+                Leaderboard
+              </Link>
+            </li>
+            <li>
+              <Link
+                onClick={() => setMenuIsOpen(false)}
+                href={"/leaderboard/telegram"}
+                className={cn(
+                  "block sm:text-4xl text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
+                  pathname.startsWith("/leaderboard/telegram") &&
+                    "text-[#FFBE00]"
+                )}
+              >
+                Telegram
+                <br /> Lederboard
               </Link>
             </li>
           </ul>
         </div>
-        <div className="others md:hidden flex flex-col gap-6 mt-4 w-fit">
+        <div className="others md:hidden flex flex-col gap-3 mt-2 w-fit">
           {!userToken && (
             <Button
               className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"

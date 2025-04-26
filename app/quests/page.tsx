@@ -17,8 +17,6 @@ import { quests } from "@/lib/dummydata";
 import { PostType } from "@/lib/type";
 import { authWithTwitter } from "@/lib/utils";
 import { XUserToken } from "@/lib/values";
-import HomeLeaderboard from "@/views/HomeLeaderboard";
-import HomeLeaderboardX from "@/views/HomeLeaderboardX";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
@@ -50,7 +48,7 @@ function Page() {
 
   return (
     <div className="">
-      <div className="bg-black text-white p-6 md:p-10 flex flex-col gap-5 justify-center items-center min-h-dch">
+      <div className="bg-black text-white p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center min-h-dch">
         <FadeInUp>
           <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
             Complete Quests,
@@ -176,8 +174,6 @@ function Page() {
           </div>
         </div>
       )}
-      <HomeLeaderboardX />
-      <HomeLeaderboard />
     </div>
   );
 }
