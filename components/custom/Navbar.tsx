@@ -131,7 +131,7 @@ function Navbar() {
                   pathname.startsWith("/leaderboard") && "text-[#FFBE00]"
                 )}
               >
-                Leaderboard <ChevronDownIcon />{" "}
+                Leaderboard <ChevronDownIcon />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="z-[9999] bg-black text-white">
                 <DropdownMenuItem>

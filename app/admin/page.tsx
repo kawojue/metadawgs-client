@@ -132,7 +132,7 @@ const Page = () => {
       </div>
 
       <div className="table-x w-full">
-        <UsersTable />
+        <UsersTable isPreview={true} />
       </div>
     </div>
   );

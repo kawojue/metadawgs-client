@@ -86,6 +86,18 @@ export async function postWithAuth<T, K>(
   return xFetch<T, K>(endpoint, { ...options, method: "POST" }, body, true);
 }
 
+export async function deleteWithAuth<T, K>(
+  endpoint: string,
+  options: RequestInit & { baseUrl?: string; isAdmin?: boolean } = {}
+): Promise<{ success: boolean; message: string; data: T }> {
+  return xFetch<T, K>(
+    endpoint,
+    { ...options, method: "DELETE" },
+    undefined,
+    true
+  );
+}
+
 export function logoutUser() {
   localStorage.removeItem(XUserToken);
   localStorage.removeItem(XUserProfile);

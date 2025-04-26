@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { EntryType } from "@/lib/type";
-import { formatNumberWithCommas } from "@/lib/common";
+import { formatNumberWithCommas, hashAddress } from "@/lib/common";
 
 export const columns: ColumnDef<EntryType>[] = [
   {
@@ -17,32 +17,42 @@ export const columns: ColumnDef<EntryType>[] = [
     ),
   },
   {
-    accessorKey: "username",
+    accessorKey: "user.username",
     header: () => <div className="">Username</div>,
     cell: ({ row }) => (
-      <div className="">
-        <a href="#" className="block" target="_blank" rel="noopener noreferrer">
-          {row.getValue("username")}
-        </a>
-      </div>
+      <a
+        href={`https://x.com/${row.original.user.username}`}
+        className="block text-[#0000FF] underline"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {row.getValue("user.username")}
+      </a>
     ),
   },
   {
-    accessorKey: "tweet_url",
+    accessorKey: "postUrl",
     header: () => <div className="">Tweet URL</div>,
     cell: ({ row }) => (
       <div className="">
-        <a href="#" className="block text-[#0000FF] underline" target="_blank" rel="noopener noreferrer">
-          {row.getValue("tweet_url")}
+        <a
+          href="#"
+          className="block text-[#0000FF] underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {hashAddress(row.getValue("postUrl"), 15)}
         </a>
       </div>
     ),
   },
   {
-    accessorKey: "points",
+    accessorKey: "point.value",
     header: () => <div className="">Points</div>,
     cell: ({ row }) => (
-      <div className="">{formatNumberWithCommas(row.getValue("points"))}</div>
+      <div className="">
+        {formatNumberWithCommas(row.getValue("point.value"))}
+      </div>
     ),
   },
 ];

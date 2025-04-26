@@ -82,10 +82,7 @@ const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         onBlur={handleBlur}
         disabled={disabled}
         placeholder={placeholder}
-        className={cn(
-          "h-[52px] font-semibold text-lg border border-[#9C9C9C] rounded-full w-full p-4 bg-white",
-          className
-        )}
+        className={cn(className)}
         aria-label="Number input"
         {...props}
       />

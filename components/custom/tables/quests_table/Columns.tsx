@@ -1,8 +1,13 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Quest } from "@/lib/type";
-import { hashAddress } from "@/lib/common";
 import { Button } from "@/components/ui/button";
-import { TrashIcon } from "lucide-react";
+import { LoaderIcon, TrashIcon } from "lucide-react";
+import { hashAddress } from "@/lib/common";
+import useLocalStorage from "use-local-storage";
+import { useState } from "react";
+import { XRefreshTable } from "@/lib/values";
+import { deleteWithAuth } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export const columns: ColumnDef<Quest>[] = [
   {
@@ -27,18 +32,21 @@ export const columns: ColumnDef<Quest>[] = [
     accessorKey: "description",
     header: () => <div className="">Description</div>,
     cell: ({ row }) => (
-      <div className="line-clamp-2">
-        {hashAddress(row.getValue("description"))}
-      </div>
+      <div className="line-clamp-2">{row.getValue("description")}</div>
     ),
   },
   {
-    accessorKey: "tweet_url",
+    accessorKey: "postUrl",
     header: () => <div className="">Tweet URL</div>,
     cell: ({ row }) => (
       <div className="">
-        <a href="#" className="block text-[#0000FF] underline" target="_blank" rel="noopener noreferrer">
-          {row.getValue("tweet_url")}
+        <a
+          href={row.getValue("postUrl")}
+          className="block text-[#0000FF] underline line-clamp-1"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {hashAddress(row.getValue("postUrl"), 15)}
         </a>
       </div>
     ),
@@ -46,12 +54,45 @@ export const columns: ColumnDef<Quest>[] = [
   {
     accessorKey: "actions",
     header: () => <div className="">Action</div>,
-    cell: () => {
-      return (
-        <Button variant={"ghost"} size={"icon"}>
-          <TrashIcon className="text-red-500" />
-        </Button>
-      );
+    cell: ({ row }) => {
+      return <Action questId={row.original.id} />;
     },
   },
 ];
+
+const Action = ({ questId }: { questId: number }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setRefreshTable] = useLocalStorage(XRefreshTable, false);
+  const router = useRouter();
+
+  async function DeleteQuest() {
+    if (isLoading) return;
+
+    try {
+      setIsLoading(true);
+
+      await deleteWithAuth(`/posts/quests/${questId}`, {
+        isAdmin: true,
+      });
+      setRefreshTable(true);
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <Button
+      className="cursor-pointer"
+      variant={"ghost"}
+      size={"icon"}
+      disabled={isLoading}
+      onClick={DeleteQuest}
+    >
+      {isLoading && <LoaderIcon />}
+      {!isLoading && <TrashIcon className="text-red-500" />}
+    </Button>
+  );
+};

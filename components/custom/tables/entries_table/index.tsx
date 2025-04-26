@@ -3,73 +3,101 @@
 import { useEffect, useState } from "react";
 import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
-import { EntryType, MetaType } from "@/lib/type";
+import { MetaType, EntryType } from "@/lib/type";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { fetchWithAuth } from "@/lib/api";
+import useLocalStorage from "use-local-storage";
+import { XRefreshTable } from "@/lib/values";
+import ShadcnPagination from "../../CustomPagination";
+import { useNumberQuery, useStringQuery } from "@/hooks/use-query";
+import { SearchIcon } from "lucide-react";
+import { useDebouncedFetch } from "@/hooks/use-debounce-fetch";
 
-export default function EntriesTable() {
+type Props = {
+  isPreview?: boolean;
+};
+
+export default function EntriesTable({ isPreview }: Props) {
+  const { debouncedFetch, loading } = useDebouncedFetch<{
+    entries: EntryType[];
+    meta: MetaType;
+  }>();
+
   const [entries, setEntries] = useState<EntryType[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [meta, setMeta] = useState<MetaType | null>(null);
+  const [refreshTable] = useLocalStorage(XRefreshTable, false);
+
+  const [page] = useNumberQuery("page", 1);
+  const [limit] = useNumberQuery("limit", 20);
+  const [search, setSearch] = useStringQuery("search", "");
+  const [inputValue, setInputValue] = useState(search);
+
+  const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+    setSearch(event.target.value);
+  };
 
   useEffect(() => {
-    async function getEntries() {
-      try {
-        const resEntries = await fetchWithAuth<{
-          entries: EntryType[];
-          meta: MetaType;
-        }>("/Entries", {
-          isAdmin: true,
-        });
+    debouncedFetch(async (signal) => {
+      const resEntries = await fetchWithAuth<{
+        entries: EntryType[];
+        meta: MetaType;
+      }>(`/posts/entries?page=${page}&limit=${limit}&search=${search}`, {
+        isAdmin: true,
+        signal,
+      });
 
-        setEntries(resEntries.data.entries);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
+      setEntries(resEntries.data.entries);
+      setMeta(resEntries.data.meta);
 
-    getEntries();
-  }, []);
+      return resEntries.data;
+    });
+  }, [limit, page, refreshTable, search, debouncedFetch]);
 
   return (
-    <div className="w-full space-y-8">
-      <DataTable columns={columns} data={entries} isLoading={loading} />
-      {!!entries.length && (
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      )}
+    <div className="space-y-3">
+      <div className="flex sm:justify-between sm:flex-row flex-col-reverse gap-4 sm:items-center">
+        <div className="flex items-center gap-3">
+          <h2 className="text-2xl font-semibold font-fredoka">
+            {isPreview && "New "}Entries
+          </h2>
+          {isPreview && (
+            <span className="grid place-content-center place-items-center p-0.5 px-2 bg-red-500 text-white rounded-full text-xs">
+              0
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center sm:justify-start justify-end gap-4">
+          <div className="search-box relative text-[#181B20]">
+            <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search"
+              value={inputValue}
+              className="w-full rounded-full h-[48px] px-12 text-lg max-w-[200px]"
+              onChange={onSearchChange}
+            />
+          </div>
+
+          {/* <Button
+            variant={"ghost"}
+            className="cursor-pointer rounded-full hover:bg-red-500 hover:text-white"
+          >
+            <TrashIcon />
+            Trash
+          </Button> */}
+        </div>
+      </div>
+      <div className="w-full space-y-8">
+        <DataTable columns={columns} data={entries} isLoading={loading} />
+        {meta && !!entries.length && (
+          <ShadcnPagination
+            meta={meta}
+            baseUrl={isPreview ? "/admin" : "/admin/entries"}
+          />
+        )}
+      </div>
     </div>
   );
 }

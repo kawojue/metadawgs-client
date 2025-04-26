@@ -336,10 +336,13 @@ function PresaleForm() {
               maxValue={metrics.maxPerWallet}
               disabled={isLoading || !publicKey}
               id="amount"
+              className="h-[52px] font-semibold text-lg border border-[#9C9C9C] rounded-full w-full p-4 bg-white"
             />
 
             {!exchanging && !!exchangedToken && (
-              <p className="flex">Exchange: {formatNumberWithCommas(exchangedToken)} Token(s)</p>
+              <p className="flex">
+                Exchange: {formatNumberWithCommas(exchangedToken)} Token(s)
+              </p>
             )}
 
             {exchanging && <p className="flex">Converting amount....</p>}

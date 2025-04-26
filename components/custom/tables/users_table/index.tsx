@@ -10,8 +10,7 @@ import useLocalStorage from "use-local-storage";
 import { XRefreshTable } from "@/lib/values";
 import ShadcnPagination from "../../CustomPagination";
 import { useNumberQuery, useStringQuery } from "@/hooks/use-query";
-import { SearchIcon, TrashIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { SearchIcon } from "lucide-react";
 import { useDebouncedFetch } from "@/hooks/use-debounce-fetch";
 
 type Props = {
@@ -81,18 +80,23 @@ export default function UsersTable({ isPreview }: Props) {
             />
           </div>
 
-          <Button
+          {/* <Button
             variant={"ghost"}
             className="cursor-pointer rounded-full hover:bg-red-500 hover:text-white"
           >
             <TrashIcon />
             Trash
-          </Button>
+          </Button> */}
         </div>
       </div>
       <div className="w-full space-y-8">
         <DataTable columns={columns} data={users} isLoading={loading} />
-        {meta && <ShadcnPagination meta={meta} baseUrl="/admin/users" />}
+        {meta && !!users.length && (
+          <ShadcnPagination
+            meta={meta}
+            baseUrl={isPreview ? "/admin" : "/admin/users"}
+          />
+        )}
       </div>
     </div>
   );

@@ -29,7 +29,12 @@ export const columns: ColumnDef<UserType>[] = [
     header: () => <div className="">Username</div>,
     cell: ({ row }) => (
       <div className="">
-        <a href={`https://x.com/${row.original.username}`} className="block text-[#0000FF] underline" target="_blank" rel="noopener noreferrer">
+        <a
+          href={`https://x.com/${row.original.username}`}
+          className="block text-[#0000FF] underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {row.getValue("username")}
         </a>
       </div>
@@ -120,16 +125,19 @@ const Action = ({
   return (
     <>
       {!banned ? (
-        <Button className="rounded-full bg-[#FF3B30] text-white" onClick={Ban}>
-          {" "}
+        <Button
+          className="rounded-full bg-[#FF3B30] text-white"
+          disabled={isLoading}
+          onClick={Ban}
+        >
           {isLoading && <LoaderIcon />} {!isLoading && <span>Ban</span>}
         </Button>
       ) : (
         <Button
           className="rounded-full bg-[#FFBE00] text-black"
+          disabled={isLoading}
           onClick={Unban}
         >
-          {" "}
           {isLoading && <LoaderIcon />} {!isLoading && <span>Unban</span>}
         </Button>
       )}

@@ -123,7 +123,7 @@ export function DataTable<TData, TValue>({
                     </div>
                   </TableCell>
                 </TableRow>
-              )}{" "}
+              )}
             </>
           )}
         </TableBody>

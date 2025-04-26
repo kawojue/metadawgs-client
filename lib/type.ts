@@ -96,4 +96,15 @@ export interface EntryType {
 
 export interface Quest {
   id: number;
+  postId: string;
+  point: number;
+  name: string;
+  description: string;
+  postUrl: string;
+  imageUrl: string;
+  deletedAt: null;
+  createdAt: string;
+  updatedAt: string;
+  adminId: string;
+  participationCount: number;
 }

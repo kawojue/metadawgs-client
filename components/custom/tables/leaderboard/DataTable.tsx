@@ -107,7 +107,7 @@ export function DataTable<TData, TValue>({
                     No results.
                   </TableCell>
                 </TableRow>
-              )}{" "}
+              )}
             </>
           )}
         </TableBody>
