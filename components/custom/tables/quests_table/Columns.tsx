@@ -73,7 +73,6 @@ const Action = ({ questId }: { questId: number }) => {
         isAdmin: true,
       });
       setRefreshTable(generateRandomString(10));
-      window.location.reload();
     } catch (error) {
       console.log(error);
     } finally {
