@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LeaderboardType } from "@/lib/type";
 import { formatNumberWithCommas, getNumberSuffix } from "@/lib/common";
 
-export const columns: ColumnDef<LeaderboardType>[] = [
+export const telegram_columns: ColumnDef<LeaderboardType>[] = [
   {
     accessorKey: "rank",
     header: () => (

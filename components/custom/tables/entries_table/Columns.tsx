@@ -17,7 +17,7 @@ export const columns: ColumnDef<EntryType>[] = [
     ),
   },
   {
-    accessorKey: "user.username",
+    accessorKey: "user",
     header: () => <div className="">Username</div>,
     cell: ({ row }) => (
       <a
@@ -26,7 +26,7 @@ export const columns: ColumnDef<EntryType>[] = [
         target="_blank"
         rel="noopener noreferrer"
       >
-        {row.getValue("user.username")}
+        {row.original.user.username}
       </a>
     ),
   },
@@ -36,7 +36,7 @@ export const columns: ColumnDef<EntryType>[] = [
     cell: ({ row }) => (
       <div className="">
         <a
-          href="#"
+          href={row.getValue("postUrl")}
           className="block text-[#0000FF] underline"
           target="_blank"
           rel="noopener noreferrer"
@@ -47,11 +47,11 @@ export const columns: ColumnDef<EntryType>[] = [
     ),
   },
   {
-    accessorKey: "point.value",
+    accessorKey: "point",
     header: () => <div className="">Points</div>,
     cell: ({ row }) => (
       <div className="">
-        {formatNumberWithCommas(row.getValue("point.value"))}
+        {formatNumberWithCommas(Number(row.original.point.value) || 0)}
       </div>
     ),
   },

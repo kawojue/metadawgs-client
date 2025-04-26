@@ -1,6 +1,6 @@
 import AddressButton from "@/components/custom/AddressButton";
-import LeaderboardTable from "@/components/custom/tables/leaderboard";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
+import { XLeaderboardTable } from "@/components/custom/tables/leaderboard";
 import Image from "next/image";
 
 function HomeLeaderboard() {
@@ -33,7 +33,7 @@ function HomeLeaderboard() {
       </FadeInUp>
 
       <FadeInUp className="w-full flex flex-col justify-center items-center">
-        <LeaderboardTable />
+        <XLeaderboardTable />
       </FadeInUp>
     </div>
   );

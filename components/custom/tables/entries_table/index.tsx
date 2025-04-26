@@ -42,7 +42,7 @@ export default function EntriesTable({ isPreview }: Props) {
       const resEntries = await fetchWithAuth<{
         entries: EntryType[];
         meta: MetaType;
-      }>(`/posts/entries?page=${page}&limit=${limit}&search=${search}`, {
+      }>(`/posts/entries?page=${page}&limit=${limit}`, {
         isAdmin: true,
         signal,
       });

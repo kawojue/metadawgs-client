@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
-import { LeaderboardType } from "@/lib/type";
+import { TelegramLeaderboardType, XLeaderboardType } from "@/lib/type";
 import { useSocket } from "@/app/SocketProvider";
+import { fetchWithAuth } from "@/lib/api";
+import { telegram_columns } from "./TelegramColumns";
+import { x_columns } from "./XColumns";
 
-export default function LeaderboardTable() {
+export function TelegramLeaderboardTable() {
   const socket = useSocket();
-  const [leaderboard, setLeaderboard] = useState<LeaderboardType[]>([]);
+  const [leaderboard, setLeaderboard] = useState<TelegramLeaderboardType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -27,7 +29,42 @@ export default function LeaderboardTable() {
 
   return (
     <div className="w-full max-w-3xl">
-      <DataTable columns={columns} data={leaderboard} isLoading={loading} />
+      <DataTable
+        columns={telegram_columns}
+        data={leaderboard}
+        isLoading={loading}
+      />
+    </div>
+  );
+}
+
+export function XLeaderboardTable() {
+  const [leaderboard, setLeaderboard] = useState<XLeaderboardType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function getLeaderboard() {
+      try {
+        const {
+          data: { data },
+        } = await fetchWithAuth<{ data: XLeaderboardType[] }>(
+          "/user/leaderboard"
+        );
+
+        setLeaderboard(data);
+      } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getLeaderboard();
+  }, []);
+
+  return (
+    <div className="w-full max-w-3xl">
+      <DataTable columns={x_columns} data={leaderboard} isLoading={loading} />
     </div>
   );
 }

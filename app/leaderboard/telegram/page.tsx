@@ -1,6 +1,6 @@
 import AddressButton from "@/components/custom/AddressButton";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
-import LeaderboardTable from "@/components/custom/tables/leaderboard";
+import { TelegramLeaderboardTable } from "@/components/custom/tables/leaderboard";
 import Image from "next/image";
 
 function page() {
@@ -33,7 +33,7 @@ function page() {
       </FadeInUp>
 
       <FadeInUp className="w-full flex flex-col justify-center items-center">
-        <LeaderboardTable />
+        <TelegramLeaderboardTable />
       </FadeInUp>
     </div>
   );

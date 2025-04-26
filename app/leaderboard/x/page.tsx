@@ -1,5 +1,5 @@
-import LeaderboardTable from "@/components/custom/tables/leaderboard";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
+import { XLeaderboardTable } from "@/components/custom/tables/leaderboard";
 import { Button } from "@/components/ui/button";
 import { WalletIcon } from "lucide-react";
 import Image from "next/image";
@@ -40,7 +40,7 @@ function page() {
       </FadeInUp>
 
       <FadeInUp className="w-full flex justify-center items-center">
-        <LeaderboardTable />
+        <XLeaderboardTable />
       </FadeInUp>
     </div>
   );

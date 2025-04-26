@@ -40,15 +40,22 @@ export interface AdminProfileType {
   };
 }
 
-export interface LeaderboardType {
+export interface TelegramLeaderboardType {
   userId: string;
   username: string;
   points: number;
   messages: number;
   reactions: number;
   invites: number;
-  tasks: number; // not sure about this thou
-  rank: number; // not sure about this thou
+}
+
+export interface XLeaderboardType {
+  userId: string;
+  displayName: string;
+  username: string;
+  tasks: number;
+  points: number;
+  rank: number;
 }
 
 export interface MetaType {
