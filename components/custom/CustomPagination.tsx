@@ -10,7 +10,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-// MetaType interface as provided
 interface MetaType {
   size: number;
   hasNext: boolean;
@@ -34,33 +33,27 @@ const ShadcnPagination = ({
   onPageChange,
   baseUrl = "",
 }: ShadcnPaginationProps) => {
-  // Calculate which page numbers to show
   const getPageNumbers = () => {
     const pageNumbers: (number | "ellipsis")[] = [];
     const maxVisiblePages = 5;
 
-    // Always show first page
     pageNumbers.push(1);
 
     if (meta.totalPages <= maxVisiblePages) {
-      // If we have 5 or fewer pages, show all of them
       for (let i = 2; i <= meta.totalPages; i++) {
         pageNumbers.push(i);
       }
     } else {
-      // Complex pagination with ellipsis
       const leftSiblingIndex = Math.max(meta.currentPage - 1, 2);
       const rightSiblingIndex = Math.min(
         meta.currentPage + 1,
         meta.totalPages - 1
       );
 
-      // Add ellipsis indicators or page numbers
       if (leftSiblingIndex > 2) {
         pageNumbers.push("ellipsis");
       }
 
-      // Add page numbers around current page
       for (let i = leftSiblingIndex; i <= rightSiblingIndex; i++) {
         pageNumbers.push(i);
       }
@@ -69,7 +62,6 @@ const ShadcnPagination = ({
         pageNumbers.push("ellipsis");
       }
 
-      // Always show last page
       if (meta.totalPages > 1) {
         pageNumbers.push(meta.totalPages);
       }
@@ -78,7 +70,6 @@ const ShadcnPagination = ({
     return pageNumbers;
   };
 
-  // Handle page change
   const handlePageChange = (page: number) => {
     if (page !== meta.currentPage && page >= 1 && page <= meta.totalPages) {
       if (onPageChange) {
@@ -87,17 +78,13 @@ const ShadcnPagination = ({
     }
   };
 
-  // Get URL for a specific page
   const getPageUrl = (page: number) => {
     if (baseUrl) {
-      // If baseUrl is provided, use it to construct page URLs
       return `${baseUrl}?page=${page}`;
     }
-    // Return # if no baseUrl is provided
     return "#";
   };
 
-  // Get the page numbers to render
   const pageNumbers = getPageNumbers();
 
   return (

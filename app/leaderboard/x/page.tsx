@@ -1,7 +1,6 @@
+import AddressButton from "@/components/custom/AddressButton";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { XLeaderboardTable } from "@/components/custom/tables/leaderboard";
-import { Button } from "@/components/ui/button";
-import { WalletIcon } from "lucide-react";
 import Image from "next/image";
 
 function page() {
@@ -33,10 +32,7 @@ function page() {
         </p>
       </FadeInUp>
       <FadeInUp>
-        <Button className="bg-[#FFBE00] text-black rounded-full px-5! py-6! text-sm cursor-pointer mb-3 hover:bg-[#FFBE00]/80!">
-          <WalletIcon size={12} />
-          <span>Connect Wallet</span>
-        </Button>
+        <AddressButton />
       </FadeInUp>
 
       <FadeInUp className="w-full flex justify-center items-center">

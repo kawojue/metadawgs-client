@@ -14,7 +14,6 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
   const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
-    // Function to parse different date formats
     interface ParsedDateInput {
       dateInput: string | number | Date | undefined;
     }

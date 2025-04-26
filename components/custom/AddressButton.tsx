@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { WalletIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -7,26 +8,32 @@ import { hashAddress } from "@/lib/common";
 import { SignupAlert } from "@/components/custom/modals/SignupAlert";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { useEffect, useState } from "react";
-import useLocalStorage from "use-local-storage";
+import useLocalStorage from "use-local-storage"; // your hook
 import { XMenuisOpen, XUserToken } from "@/lib/values";
 import { postWithAuth } from "@/lib/api";
+
+const LAST_SYNCED_WALLET_KEY = "last_synced_wallet"; // new key for localstorage
 
 function AddressButton() {
   const [userToken] = useLocalStorage<string>(XUserToken, "");
   const [, setMenuIsOpen] = useLocalStorage<boolean>(XMenuisOpen, false);
   const { publicKey, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
-  const [openSignUpAlert, setOpenSignUpAlert] = useState<boolean>(false);
+  const [openSignUpAlert, setOpenSignUpAlert] = useState(false);
+
+  // New: Manage last synced wallet using localStorage
+  const [lastSyncedWallet, setLastSyncedWallet] = useLocalStorage<
+    string | null
+  >(LAST_SYNCED_WALLET_KEY, null);
+
+  const lastSyncedWalletRef = useRef(lastSyncedWallet);
 
   function connectWallet() {
     setMenuIsOpen(false);
-    if (!userToken) {
-      setOpenSignUpAlert(true);
-
-      return;
-    }
-
+    // if (!userToken) {
+    //   setOpenSignUpAlert(true);
+    //   return;
+    // }
     setVisible(true);
   }
 
@@ -37,25 +44,32 @@ function AddressButton() {
 
   useEffect(() => {
     async function updateUserWallet() {
-      if (!publicKey || !userToken) {
+      if (!publicKey || !userToken) return;
+
+      const currentWallet = publicKey.toBase58();
+
+      if (lastSyncedWalletRef.current === currentWallet) {
         return;
       }
 
       try {
         await postWithAuth("/user/link-wallet", {
-          walletAddress: publicKey.toBase58(),
+          walletAddress: currentWallet,
         });
+        setLastSyncedWallet(currentWallet);
+        lastSyncedWalletRef.current = currentWallet;
       } catch (error) {
-        console.log(error);
+        console.error("Failed to link wallet:", error);
       }
     }
 
     updateUserWallet();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicKey, userToken]);
 
   return (
     <>
-      {!publicKey && (
+      {!publicKey ? (
         <Button
           className="bg-[#FFBE00] text-black rounded-full px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
           onClick={connectWallet}
@@ -63,14 +77,13 @@ function AddressButton() {
           <WalletIcon size={12} />
           <span>Connect wallet</span>
         </Button>
-      )}
-      {!!publicKey && (
+      ) : (
         <Button
           className="bg-[#FFBE00] text-black rounded-full px-3! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
           onClick={disconnectWallet}
         >
           <Avatar className="w-8 h-8 min-w-8 min-h-8">
-            <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
+            <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500" />
           </Avatar>
           <span>{hashAddress(publicKey.toBase58())}</span>
           <svg
