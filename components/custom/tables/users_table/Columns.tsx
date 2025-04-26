@@ -4,6 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { UserType } from "@/lib/type";
 import { formatNumberWithCommas, hashAddress } from "@/lib/common";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { LoaderIcon } from "lucide-react";
 
 export const columns: ColumnDef<UserType>[] = [
   {
@@ -60,11 +62,50 @@ export const columns: ColumnDef<UserType>[] = [
     accessorKey: "actions",
     header: () => <div className="">Action</div>,
     cell: ({ row }) => {
-      return (
-        <>
-          {!row.original.banned ? <Button>Ban</Button> : <Button>Unban</Button>}
-        </>
-      );
+      return <Action isBanned={row.original.banned} />;
     },
   },
 ];
+
+const Action = ({ isBanned }: { isBanned: boolean }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  async function Ban() {
+    try {
+      setIsLoading(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function Unban() {
+    try {
+      setIsLoading(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <>
+      {!isBanned ? (
+        <Button className="rounded-full bg-[#FF3B30] text-white" onClick={Ban}>
+          {" "}
+          {isLoading && <LoaderIcon />} {!isLoading && <span>Ban</span>}
+        </Button>
+      ) : (
+        <Button
+          className="rounded-full bg-[#FFBE00] text-black"
+          onClick={Unban}
+        >
+          {" "}
+          {isLoading && <LoaderIcon />} {!isLoading && <span>Unban</span>}
+        </Button>
+      )}
+    </>
+  );
+};

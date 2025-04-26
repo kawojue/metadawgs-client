@@ -87,7 +87,7 @@ export function DataTable<TData, TValue>({
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
                         key={cell.id}
-                        className="p-5 border-r-2 border-t-2 last:border-r-0 rounded-2xl text-[#5F80A0]"
+                        className="p-5 border-none text-[#5F80A0]"
                       >
                         {flexRender(
                           cell.column.columnDef.cell,

@@ -59,12 +59,14 @@ async function xFetch<T, K = undefined>(
     .then(async (response) => {
       if (!response.ok) {
         const res = await response.json();
-        throw new Error(res.message);
+        if ([401, 403].includes(response.status)) {
+          localStorage.removeItem(options.isAdmin ? XAdminToken : XUserToken);
+        }
+        throw new Error(res.message || "Something unexpected occurred");
       }
       return response.json();
     })
     .catch((error) => {
-      console.error("Error during fetch:", error);
       throw error;
     });
 }
