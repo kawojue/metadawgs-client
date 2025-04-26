@@ -23,7 +23,7 @@ import useLocalStorage from "use-local-storage";
 
 function Page() {
   const [userToken] = useLocalStorage(XUserToken, "");
-  const [refreshTable] = useLocalStorage(XRefreshTable, false);
+  const [refreshTable] = useLocalStorage<string>(XRefreshTable, '');
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 

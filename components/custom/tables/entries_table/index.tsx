@@ -25,7 +25,7 @@ export default function EntriesTable({ isPreview }: Props) {
 
   const [entries, setEntries] = useState<EntryType[]>([]);
   const [meta, setMeta] = useState<MetaType | null>(null);
-  const [refreshTable] = useLocalStorage(XRefreshTable, false);
+  const [refreshTable] = useLocalStorage<string>(XRefreshTable, '');
 
   const [page] = useNumberQuery("page", 1);
   const [limit] = useNumberQuery("limit", 20);

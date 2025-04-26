@@ -10,6 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { generateRandomString } from "@/lib/common";
 import { XRefreshTable } from "@/lib/values";
 import { ArrowUpRightIcon } from "lucide-react";
 import Image from "next/image";
@@ -23,7 +24,7 @@ export function SubmitEntryAlert({
   open?: boolean;
   onClose?: () => void;
 }) {
-  const [, setRefreshTable] = useLocalStorage(XRefreshTable, false);
+  const [, setRefreshTable] = useLocalStorage<string>(XRefreshTable, "");
   const router = useRouter();
 
   return (
@@ -60,7 +61,7 @@ export function SubmitEntryAlert({
           <AlertDialogCancel
             className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black shadow-[black]/40"
             onClick={() => {
-              setRefreshTable(true);
+              setRefreshTable(generateRandomString(10));
               onClose?.();
             }}
           >
@@ -69,7 +70,7 @@ export function SubmitEntryAlert({
           <AlertDialogAction
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
             onClick={() => {
-              setRefreshTable(true);
+              setRefreshTable(generateRandomString(10));
               router.push("/quests#Posts");
 
               onClose?.();

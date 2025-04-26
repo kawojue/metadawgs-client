@@ -25,7 +25,7 @@ export default function UsersTable({ isPreview }: Props) {
 
   const [users, setUsers] = useState<UserType[]>([]);
   const [meta, setMeta] = useState<MetaType | null>(null);
-  const [refreshTable] = useLocalStorage(XRefreshTable, false);
+  const [refreshTable] = useLocalStorage<string>(XRefreshTable, 'false');
 
   const [page] = useNumberQuery("page", 1);
   const [limit] = useNumberQuery("limit", 20);

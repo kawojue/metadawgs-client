@@ -25,7 +25,7 @@ export default function QuestTable({ isPreview }: Props) {
 
   const [quests, setQuest] = useState<Quest[]>([]);
   const [meta, setMeta] = useState<MetaType | null>(null);
-  const [refreshTable] = useLocalStorage(XRefreshTable, false);
+  const [refreshTable] = useLocalStorage<string>(XRefreshTable, 'false');
 
   const [page] = useNumberQuery("page", 1);
   const [limit] = useNumberQuery("limit", 20);

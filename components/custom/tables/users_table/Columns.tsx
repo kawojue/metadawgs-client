@@ -2,7 +2,11 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { UserType } from "@/lib/type";
-import { formatNumberWithCommas, hashAddress } from "@/lib/common";
+import {
+  formatNumberWithCommas,
+  generateRandomString,
+  hashAddress,
+} from "@/lib/common";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { LoaderIcon } from "lucide-react";
@@ -84,7 +88,7 @@ const Action = ({
 }) => {
   const [banned, setBanned] = useState<boolean>(isBanned);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [, setRefreshTable] = useLocalStorage(XRefreshTable, false);
+  const [, setRefreshTable] = useLocalStorage<string>(XRefreshTable, "");
 
   async function Ban() {
     if (isLoading) return;
@@ -96,7 +100,7 @@ const Action = ({
         isAdmin: true,
       });
       setBanned(true);
-      setRefreshTable((prev) => !prev);
+      setRefreshTable(generateRandomString(10));
     } catch (error) {
       console.log(error);
     } finally {
@@ -114,7 +118,7 @@ const Action = ({
         isAdmin: true,
       });
       setBanned(false);
-      setRefreshTable((prev) => !prev);
+      setRefreshTable(generateRandomString(10));
     } catch (error) {
       console.log(error);
     } finally {

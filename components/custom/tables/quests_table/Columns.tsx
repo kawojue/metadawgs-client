@@ -2,12 +2,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Quest } from "@/lib/type";
 import { Button } from "@/components/ui/button";
 import { LoaderIcon, TrashIcon } from "lucide-react";
-import { hashAddress } from "@/lib/common";
+import { generateRandomString, hashAddress } from "@/lib/common";
 import useLocalStorage from "use-local-storage";
 import { useState } from "react";
 import { XRefreshTable } from "@/lib/values";
 import { deleteWithAuth } from "@/lib/api";
-import { useRouter } from "next/navigation";
 
 export const columns: ColumnDef<Quest>[] = [
   {
@@ -62,8 +61,7 @@ export const columns: ColumnDef<Quest>[] = [
 
 const Action = ({ questId }: { questId: number }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [, setRefreshTable] = useLocalStorage(XRefreshTable, false);
-  const router = useRouter();
+  const [, setRefreshTable] = useLocalStorage<string>(XRefreshTable, "");
 
   async function DeleteQuest() {
     if (isLoading) return;
@@ -74,8 +72,8 @@ const Action = ({ questId }: { questId: number }) => {
       await deleteWithAuth(`/posts/quests/${questId}`, {
         isAdmin: true,
       });
-      setRefreshTable(true);
-      router.refresh();
+      setRefreshTable(generateRandomString(10));
+      window.location.reload();
     } catch (error) {
       console.log(error);
     } finally {
