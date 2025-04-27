@@ -2,10 +2,11 @@
 
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { XUserProfile, XUserToken } from "@/lib/values";
+import { XRefreshPosts, XUserProfile, XUserToken } from "@/lib/values";
 import useLocalStorage from "use-local-storage";
 import { fetchWithAuth } from "@/lib/api";
 import { ProfileType } from "@/lib/type";
+import { generateRandomString } from "@/lib/common";
 
 export default function AuthHandler() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function AuthHandler() {
     XUserProfile,
     null
   );
+  const [, setRefreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
 
   useEffect(() => {
     if (token) {
@@ -35,6 +37,7 @@ export default function AuthHandler() {
       getProfile();
     }
 
+    setRefreshPosts(generateRandomString(10));
     router.replace("/");
 
     if (window.opener) {

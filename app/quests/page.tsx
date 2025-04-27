@@ -16,14 +16,14 @@ import { fetchWithAuth } from "@/lib/api";
 import { quests } from "@/lib/dummydata";
 import { PostType } from "@/lib/type";
 import { authWithTwitter } from "@/lib/utils";
-import { XRefreshTable, XUserToken } from "@/lib/values";
+import { XRefreshPosts, XUserToken } from "@/lib/values";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
 
 function Page() {
   const [userToken] = useLocalStorage(XUserToken, "");
-  const [refreshTable] = useLocalStorage<string>(XRefreshTable, "");
+  const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -44,7 +44,7 @@ function Page() {
 
     getPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshTable]);
+  }, [refreshPosts]);
 
   return (
     <div className="">

@@ -56,12 +56,12 @@ const PostCard = ({ post }: { post: PostType }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button className="rounded-full !px-5 !py-4 font-normal cursor-pointer text-black bg-[#92A1C6]">
+            <Button className="rounded-full !px-5 !py-4 font-normal text-[14px] cursor-pointer text-black bg-[#92A1C6]">
               <span>View Post</span> <ArrowUpRightIcon size={11} />
             </Button>
           </a>
           <Button
-            className="rounded-full !px-5 !py-4 font-normal cursor-pointer text-black bg-[#FFBE00]"
+            className="rounded-full !px-5 !py-4 font-normal text-[14px] cursor-pointer text-black bg-[#FFBE00]"
             onClick={handleSubmit}
             disabled={submitted || isSubmitting}
           >

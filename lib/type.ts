@@ -23,6 +23,7 @@ export interface ProfileType {
     username: string;
     joinedAt: string;
     displayName: string;
+    totalPoints: number;
   };
   rank: number;
 }
