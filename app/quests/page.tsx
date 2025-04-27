@@ -23,7 +23,7 @@ import useLocalStorage from "use-local-storage";
 
 function Page() {
   const [userToken] = useLocalStorage(XUserToken, "");
-  const [refreshTable] = useLocalStorage<string>(XRefreshTable, '');
+  const [refreshTable] = useLocalStorage<string>(XRefreshTable, "");
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -75,9 +75,7 @@ function Page() {
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="onboarding">
                 <AccordionTrigger className="cursor-pointer">
-                  <h3 className="text-3xl font-fredoka font-semibold">
-                    Onboarding
-                  </h3>
+                  <h3 className="text-3xl font-semibold">Onboarding</h3>
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="quests-box w-full sm:mt-8 mt-4">
@@ -106,7 +104,7 @@ function Page() {
             <Accordion type="single" collapsible className="w-full" id="Posts">
               <AccordionItem value="social_quests">
                 <AccordionTrigger className="cursor-pointer">
-                  <h3 className="text-3xl font-fredoka font-semibold capitalize">
+                  <h3 className="text-3xl font-semibold capitalize">
                     social quests
                   </h3>
                 </AccordionTrigger>

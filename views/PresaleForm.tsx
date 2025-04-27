@@ -243,15 +243,13 @@ function PresaleForm() {
           `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/metrics`
         );
 
-        // if (!res.ok) {
-        //   throw new Error("Couldn't get metrics.");
-        // }
+        if (!res.ok) {
+          throw new Error("Couldn't get metrics.");
+        }
 
         const result = (await res.json()) as {
           data: Metrics;
         };
-
-        console.log(result)
 
         setMetrics(result.data);
       } catch (error) {
