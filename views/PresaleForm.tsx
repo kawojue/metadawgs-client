@@ -308,7 +308,7 @@ function PresaleForm() {
             </p>
           </div>
           <div className="balance shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] z-1 rounded-2xl p-3 text-white text-center overflow-hidden relative">
-            <h4 className="font-medium text-3xl">
+            <h4 className="font-medium text-3xl font-fredoka">
               {publicKey
                 ? `${walletBalance.toFixed(4)} SOL`
                 : "Wallet not connected"}
