@@ -100,8 +100,9 @@ function Page() {
               </AccordionItem>
             </Accordion>
           </SlideInLeft>
+          <div className="posts" id="Posts"></div>
           <SlideInLeft className="social_quests md:mx-[5%] lg:mx-[15%]">
-            <Accordion type="single" collapsible className="w-full" id="Posts">
+            <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="social_quests">
                 <AccordionTrigger className="cursor-pointer">
                   <h3 className="text-3xl font-semibold capitalize">

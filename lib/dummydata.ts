@@ -18,6 +18,6 @@ export const quests = [
     point: 20,
     todo: "Participate in the Weekly Contest",
     app_name: "twitter",
-    link: "",
+    link: "/quests#Posts",
   },
 ];
