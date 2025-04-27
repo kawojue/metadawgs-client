@@ -28,6 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import SubmitEntryInputModal from "./modals/SubmitEntryInputModal";
 
 function Navbar() {
   const pathname = usePathname();
@@ -44,6 +45,7 @@ function Navbar() {
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [profileIsOpen, setProfileIsOpen] = useState<boolean>(false);
+  const [showEntryInput, setShowEntryInput] = useState<boolean>(false);
 
   useEffect(() => {
     if (menuIsOpen) {
@@ -347,7 +349,13 @@ function Navbar() {
       <ProfileModal
         open={profileIsOpen}
         onClose={() => setProfileIsOpen(false)}
+        submitEntry={() => setShowEntryInput(true)}
         logout={logOut}
+      />
+
+      <SubmitEntryInputModal
+        open={showEntryInput}
+        onClose={() => setShowEntryInput(false)}
       />
     </div>
   );

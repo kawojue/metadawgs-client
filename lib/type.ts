@@ -14,7 +14,7 @@ export interface PostType {
 }
 
 export interface ProfileType {
-  eligibleToUseReferralCode: true;
+  eligibleToUseReferralCode: boolean;
   referralCode: string;
   user: {
     id: string;
@@ -29,7 +29,7 @@ export interface ProfileType {
 }
 
 export interface AdminProfileType {
-  eligibleToUseReferralCode: true;
+  eligibleToUseReferralCode: boolean;
   referralCode: string;
   user: {
     id: string;

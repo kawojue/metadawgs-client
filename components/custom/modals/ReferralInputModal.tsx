@@ -12,6 +12,9 @@ import { ArrowUpRightIcon, CircleX } from "lucide-react";
 import { useState } from "react";
 import { postWithAuth } from "@/lib/api";
 import { SubmitEntryAlert } from "@/components/custom/modals/SubmitEntryAlert";
+import useLocalStorage from "use-local-storage";
+import { ProfileType } from "@/lib/type";
+import { XUserProfile } from "@/lib/values";
 
 function ReferralInputModal({
   open,
@@ -24,6 +27,10 @@ function ReferralInputModal({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [userProfile, setUserProfile] = useLocalStorage<ProfileType | null>(
+    XUserProfile,
+    null
+  );
 
   async function validateCode() {
     setLoading(true);
@@ -32,6 +39,13 @@ function ReferralInputModal({
         code: code,
       });
       setSuccess(true);
+      const user = {
+        ...userProfile,
+        eligibleToUseReferralCode: false,
+      } as ProfileType;
+
+      setUserProfile(user);
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError(error.toString() || "An unexpected error occurred");

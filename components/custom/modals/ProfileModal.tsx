@@ -20,10 +20,12 @@ function ProfileModal({
   open,
   onClose,
   logout,
+  submitEntry,
 }: {
   open: boolean;
   onClose: () => void;
   logout: () => void;
+  submitEntry: () => void;
 }) {
   const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
   return (
@@ -138,7 +140,17 @@ function ProfileModal({
             </div>
           </div>
         </div>
-        <DialogFooter className="">
+        <DialogFooter className="flex flex-col w-full gap-2">
+          <Button
+            type="submit"
+            className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
+            onClick={() => {
+              submitEntry();
+              onClose();
+            }}
+          >
+            Submit Entry
+          </Button>
           <Button
             type="submit"
             className="w-full bg-transparent py-6! rounded-full cursor-pointer"
