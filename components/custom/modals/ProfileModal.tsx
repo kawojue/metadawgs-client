@@ -140,7 +140,7 @@ function ProfileModal({
             </div>
           </div>
         </div>
-        <DialogFooter className="flex flex-col w-full gap-2">
+        <DialogFooter className="flex flex-col! w-full gap-2 sm:flex-col! sm:justify-center!">
           <Button
             type="submit"
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
