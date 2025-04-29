@@ -8,7 +8,7 @@ import { MetaType, UserType } from "@/lib/type";
 import { fetchWithAuth } from "@/lib/api";
 import useLocalStorage from "use-local-storage";
 import { XRefreshTable } from "@/lib/values";
-import ShadcnPagination from "../../CustomPagination";
+import ShadcnPagination from "@/components/custom/CustomPagination";
 import { useNumberQuery, useStringQuery } from "@/hooks/use-query";
 import { SearchIcon } from "lucide-react";
 import { useDebouncedFetch } from "@/hooks/use-debounce-fetch";
@@ -25,7 +25,7 @@ export default function UsersTable({ isPreview }: Props) {
 
   const [users, setUsers] = useState<UserType[]>([]);
   const [meta, setMeta] = useState<MetaType | null>(null);
-  const [refreshTable] = useLocalStorage<string>(XRefreshTable, 'false');
+  const [refreshTable] = useLocalStorage<string>(XRefreshTable, "false");
 
   const [page] = useNumberQuery("page", 1);
   const [limit] = useNumberQuery("limit", 20);
