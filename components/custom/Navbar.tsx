@@ -28,7 +28,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import SubmitEntryInputModal from "./modals/SubmitEntryInputModal";
 
 function Navbar() {
   const pathname = usePathname();
@@ -45,7 +44,6 @@ function Navbar() {
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [profileIsOpen, setProfileIsOpen] = useState<boolean>(false);
-  const [showEntryInput, setShowEntryInput] = useState<boolean>(false);
 
   useEffect(() => {
     if (menuIsOpen) {
@@ -106,7 +104,7 @@ function Navbar() {
         <Image src="/images/logo.svg" alt="MetaDawgs" width={150} height={35} />
       </Link>
       <div className="nav-links xl:block hidden">
-        <ul className="inline-flex gap-8 md:gap-12 items-center">
+        <ul className="inline-flex gap-6 md:gap-8 items-center">
           <li>
             <Link
               href={"/quests"}
@@ -133,13 +131,13 @@ function Navbar() {
             <DropdownMenu>
               <DropdownMenuTrigger
                 className={cn(
-                  "text-lg capitalize hover:opacity-85 flex items-center gap-1 cursor-pointer ring-0",
+                  "text-lg capitalize hover:opacity-85 flex items-center gap-3 cursor-pointer ring-0",
                   pathname.startsWith("/leaderboard") && "text-[#FFBE00]"
                 )}
               >
-                Leaderboard <ChevronDownIcon />
+                Leaderboard <ChevronDownIcon size={18} />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="z-[9999] bg-black text-white">
+              <DropdownMenuContent className="z-[9999] bg-black text-white border-none! shadow-sm shadow-white/20 p-2 w-[150px]">
                 <DropdownMenuItem>
                   <Link
                     onClick={() => setMenuIsOpen(false)}
@@ -149,7 +147,7 @@ function Navbar() {
                       pathname.startsWith("/leaderboard/x") && "text-[#FFBE00]"
                     )}
                   >
-                    X (Twitter)
+                    Community
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
@@ -167,6 +165,17 @@ function Navbar() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+          </li>
+          <li>
+            <Link
+              href={"/invite-task"}
+              className={cn(
+                "text-lg capitalize hover:opacity-85",
+                pathname.startsWith("/invite-task") && "text-[#FFBE00]"
+              )}
+            >
+              Invite Task
+            </Link>
           </li>
         </ul>
       </div>
@@ -299,7 +308,7 @@ function Navbar() {
                   pathname.startsWith("/leaderboard/x") && "text-[#FFBE00]"
                 )}
               >
-                X (Twitter)
+                Community
                 <br />
                 Leaderboard
               </Link>
@@ -315,7 +324,19 @@ function Navbar() {
                 )}
               >
                 Telegram
-                <br /> Lederboard
+                <br /> Leaderboard
+              </Link>
+            </li>
+            <li>
+              <Link
+                onClick={() => setMenuIsOpen(false)}
+                href={"/invite-task"}
+                className={cn(
+                  "block sm:text-4xl text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
+                  pathname.startsWith("/invite-task") && "text-[#FFBE00]"
+                )}
+              >
+                Invite Task
               </Link>
             </li>
           </ul>
@@ -349,13 +370,7 @@ function Navbar() {
       <ProfileModal
         open={profileIsOpen}
         onClose={() => setProfileIsOpen(false)}
-        submitEntry={() => setShowEntryInput(true)}
         logout={logOut}
-      />
-
-      <SubmitEntryInputModal
-        open={showEntryInput}
-        onClose={() => setShowEntryInput(false)}
       />
     </div>
   );

@@ -5,7 +5,7 @@ import { ArrowUpRightIcon } from "lucide-react";
 import { useState } from "react";
 import { PostType } from "@/lib/type";
 import Image from "next/image";
-import { SubmitEntryAlert } from "./modals/SubmitEntryAlert";
+import { SubmitQuestAlert } from "./modals/SubmitQuestAlert";
 import { patchWithAuth } from "@/lib/api";
 import { toast } from "sonner";
 
@@ -42,7 +42,7 @@ const PostCard = ({ post }: { post: PostType }) => {
       <div className="info space-y-3 p-4 sm:p-5">
         <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">
           <div className="point-pill text-xs font-medium bg-[#dfebf5] p-1.5 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
-            {post.point} MetaDwags
+            {post.point} Points
           </div>
         </div>
         <h3 className="title font-semibold font-fredoka text-xl ">
@@ -56,26 +56,22 @@ const PostCard = ({ post }: { post: PostType }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button className="rounded-full !px-5 !py-4 font-normal text-[14px] cursor-pointer text-black bg-[#92A1C6]">
-              <span>View Post</span> <ArrowUpRightIcon size={11} />
+            <Button className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]">
+              <span>View</span> <ArrowUpRightIcon size={11} />
             </Button>
           </a>
           <Button
-            className="rounded-full !px-5 !py-4 font-normal text-[14px] cursor-pointer text-black bg-[#FFBE00]"
+            className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]"
             onClick={handleSubmit}
             disabled={submitted || isSubmitting}
           >
-            {submitted
-              ? "Submitted"
-              : isSubmitting
-              ? "Submitting..."
-              : "Submit"}
+            Done
           </Button>
         </div>
       </div>
 
       {showEntryAlert && (
-        <SubmitEntryAlert
+        <SubmitQuestAlert
           open={showEntryAlert}
           onClose={() => setShowEntryAlert(false)}
         />

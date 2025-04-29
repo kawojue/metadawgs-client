@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { WalletIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { hashAddress } from "@/lib/common";
-import { SignupAlert } from "@/components/custom/modals/SignupAlert";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import useLocalStorage from "use-local-storage"; // your hook
@@ -19,7 +18,7 @@ function AddressButton() {
   const [, setMenuIsOpen] = useLocalStorage<boolean>(XMenuisOpen, false);
   const { publicKey, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
-  const [openSignUpAlert, setOpenSignUpAlert] = useState(false);
+  // const [, setOpenSignUpAlert] = useLocalStorage(XOpenSignUpModal, false);
 
   // New: Manage last synced wallet using localStorage
   const [lastSyncedWallet, setLastSyncedWallet] = useLocalStorage<
@@ -99,13 +98,6 @@ function AddressButton() {
             />
           </svg>
         </Button>
-      )}
-
-      {openSignUpAlert && (
-        <SignupAlert
-          open={openSignUpAlert}
-          onClose={() => setOpenSignUpAlert(false)}
-        />
       )}
     </>
   );

@@ -6,3 +6,5 @@ export const XAdminToken = "X_ADMIN_TOKEN";
 export const XAdminProfile = "X_ADMIN_PROFILE";
 export const XRefreshTable = "X_REFRESH_TABLE";
 export const XRefreshPosts = "X_REFRESH_POSTS";
+export const XNoCode = "X_NO_CODE";
+export const XOpenSignUpModal = "X_OPEN_SIGNUP_MODAL";

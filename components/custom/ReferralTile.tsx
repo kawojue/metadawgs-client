@@ -7,13 +7,18 @@ import { QuestTile } from "./QuestTile";
 import ReferralInputModal from "./modals/ReferralInputModal";
 import useLocalStorage from "use-local-storage";
 import { ProfileType } from "@/lib/type";
-import { XUserProfile } from "@/lib/values";
+import { XNoCode, XUserProfile } from "@/lib/values";
 
 function ReferralTile() {
   const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
+  const [noCode] = useLocalStorage<boolean>(XNoCode, false); // Ensure the key is a string
   const [openReferral, setOpenReferral] = useState<boolean>(false);
 
-  if (userProfile?.eligibleToUseReferralCode)
+  if (userProfile?.eligibleToUseReferralCode) {
+    if (noCode) {
+      return null; // If noCode is true, don't show the referral UI
+    }
+
     return (
       <>
         <SlideInLeft>
@@ -24,6 +29,7 @@ function ReferralTile() {
               point: 20,
               app_name: "dawg",
               link: "",
+              inApp: true,
             }}
             func={() => {
               setOpenReferral(true);
@@ -40,6 +46,7 @@ function ReferralTile() {
         )}
       </>
     );
+  }
 
   return null;
 }

@@ -1,13 +1,13 @@
 "use client";
 
 import { DawgIcon, TelegramIcon, TwitterIcon } from "@/lib/icons";
-import { ArrowUpRightIcon, PlusIcon } from "lucide-react";
+import { ArrowUpRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ReactNode, useState } from "react";
-import { SignupAlert } from "./modals/SignupAlert";
+import { ReactNode } from "react";
 import useLocalStorage from "use-local-storage";
-import { XUserProfile } from "@/lib/values";
+import { XOpenSignUpModal, XUserProfile } from "@/lib/values";
 import { QuestType } from "@/lib/type";
+import Link from "next/link";
 
 type Props = {
   quest: QuestType;
@@ -19,7 +19,7 @@ type IconKey = "instagram" | "twitter" | "telegram" | "dawg" | "default";
 
 export const QuestTile = ({ quest, func, funcText }: Props) => {
   const [userProfile] = useLocalStorage(XUserProfile, null);
-  const [openSignup, setOpenSignup] = useState(false);
+  const [, setOpenSignup] = useLocalStorage<boolean>(XOpenSignUpModal, false);
 
   const renderQuestIcon = (app_name: IconKey) => {
     const icons = {
@@ -57,12 +57,12 @@ export const QuestTile = ({ quest, func, funcText }: Props) => {
             {renderQuestIcon(quest.app_name as IconKey)}
           </div>
           <p className="text-[16px] text-start line-clamp-2">{quest.todo}</p>
-          <div className="rounded-full overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">
+          {/* <div className="rounded-full overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">
             <div className="text-xs bg-black/90 p-1 px-2.5 rounded-full flex items-center gap-0.5 text-nowrap">
               {quest.point} <span className="sm:block hidden">Points</span>
               <PlusIcon className="sm:hidden block" size={12} />
             </div>
-          </div>
+          </div> */}
         </div>
 
         {func ? (
@@ -73,11 +73,15 @@ export const QuestTile = ({ quest, func, funcText }: Props) => {
             {buttonContent}
           </Button>
         ) : userProfile ? (
-          <a href={quest.link} target="_blank" rel="noopener noreferrer">
+          <Link
+            href={quest.link}
+            target={!quest.inApp ? "_blank" : undefined}
+            rel={!quest.inApp ? "noopener noreferrer" : undefined}
+          >
             <Button className="bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! sm:py-[22px]! py-[20px]! cursor-pointer hover:bg-[#FFBE00]/80!">
               {buttonContent}
             </Button>
-          </a>
+          </Link>
         ) : (
           <Button
             className="bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! sm:py-[22px]! py-[20px]! cursor-pointer hover:bg-[#FFBE00]/80!"
@@ -87,10 +91,6 @@ export const QuestTile = ({ quest, func, funcText }: Props) => {
           </Button>
         )}
       </div>
-
-      {openSignup && (
-        <SignupAlert open={openSignup} onClose={() => setOpenSignup(false)} />
-      )}
     </>
   );
 };

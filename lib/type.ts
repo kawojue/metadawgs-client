@@ -77,6 +77,7 @@ export interface QuestType {
   todo: string;
   app_name: string;
   link: string;
+  inApp: boolean;
 }
 
 export interface UserType {

@@ -8,13 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowUpRightIcon, CircleX } from "lucide-react";
 import { useState } from "react";
 import { postWithAuth } from "@/lib/api";
 import { SubmitEntryAlert } from "@/components/custom/modals/SubmitEntryAlert";
 import useLocalStorage from "use-local-storage";
 import { ProfileType } from "@/lib/type";
-import { XUserProfile } from "@/lib/values";
+import { XNoCode, XUserProfile } from "@/lib/values";
+import Image from "next/image";
 
 function ReferralInputModal({
   open,
@@ -31,6 +31,7 @@ function ReferralInputModal({
     XUserProfile,
     null
   );
+  const [, setNoCode] = useLocalStorage<boolean>(XNoCode, false);
 
   async function validateCode() {
     setLoading(true);
@@ -54,6 +55,11 @@ function ReferralInputModal({
     }
   }
 
+  function noCode() {
+    setNoCode(true);
+    onClose?.();
+  }
+
   return (
     <>
       {!success && (
@@ -69,25 +75,26 @@ function ReferralInputModal({
             className="sm:max-w-[456px] bg-black text-white shadow-sm border  border-white/20 rounded-3xl"
             showCloseButton={false}
           >
-            <DialogHeader className="flex flex-row justify-between gap-4 items-center">
+            <DialogHeader className="flex flex-col justify-center gap-2 items-center">
+              <div className="circle bg-black rounded-full p-2.5 mb-1">
+                <Image
+                  src={"/images/paw.svg"}
+                  alt="paws"
+                  width={100}
+                  height={100}
+                />
+              </div>
               <DialogTitle className="font-fredoka text-2xl">
                 Referral Code
               </DialogTitle>
-              <button
-                className="cursor-pointer p-1"
-                id="Close"
-                onClick={() => {
-                  onClose?.();
-                }}
-              >
-                <CircleX size={18} />
-                <span className="sr-only">Close</span>
-              </button>
             </DialogHeader>
-            <div className="grid gap-5 py-4 content">
+            <div className="grid gap-5 py-2 content">
               <div className="row flex flex-col gap-2">
-                <label htmlFor="link" className="text-sm">
-                  Code
+                <label
+                  htmlFor="link"
+                  className="text-base font-fredoka font-semibold"
+                >
+                  Referral Code
                 </label>
                 <input
                   type="text"
@@ -96,16 +103,12 @@ function ReferralInputModal({
                   onChange={(x) => setCode(x.target.value)}
                   className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
                 />
-                <p className="text-sm">
-                  You need to engage the tasks before the referral reward can be
-                  allocated.
-                </p>
                 {!!error && (
                   <p className="error text-red-500 text-sm">{error}</p>
                 )}
               </div>
             </div>
-            <DialogFooter className="">
+            <DialogFooter className="w-full flex flex-col sm:flex-col gap-4 sm:justify-start">
               <Button
                 type="button"
                 className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
@@ -113,7 +116,13 @@ function ReferralInputModal({
                 onClick={validateCode}
               >
                 {!loading ? "Validate" : "Validating"}
-                <ArrowUpRightIcon size={11} />
+              </Button>
+              <Button
+                type="button"
+                className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black disabled:cursor-not-allowed!"
+                onClick={noCode}
+              >
+                I {"don't"} have code
               </Button>
             </DialogFooter>
           </DialogContent>

@@ -2,7 +2,6 @@
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -12,12 +11,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { generateRandomString } from "@/lib/common";
 import { XRefreshPosts } from "@/lib/values";
-import { ArrowUpRightIcon } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import useLocalStorage from "use-local-storage";
 
-export function SubmitEntryAlert({
+export function SubmitReferralAlert({
   open,
   onClose,
 }: {
@@ -25,7 +22,6 @@ export function SubmitEntryAlert({
   onClose?: () => void;
 }) {
   const [, setRefreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
-  const router = useRouter();
 
   return (
     <AlertDialog
@@ -46,18 +42,15 @@ export function SubmitEntryAlert({
               height={100}
             />
           </div>
-          <AlertDialogTitle className="text-center font-fredoka text-3xl capitalize">
-            Quest submitted!
-            <br />
-            Points awarded! 🎉
+          <AlertDialogTitle className="text-center font-fredoka text-3xl px-10 capitalize">
+            Referral Submitted Successfully! 🎉
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
-            An admin will review your entry soon to make sure everything checks
-            out. If something doesn’t add up, your account could face penalties.
-            So play fair, adventurer! ⚔️
+            Your referral has been successfully submitted and is now under
+            review. Thank you for helping us grow our community! 🎊
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter className="grid! grid-cols-2! gap-4 mt-2">
+        <AlertDialogFooter className="grid! grid-cols-1! gap-4 mt-2">
           <AlertDialogCancel
             className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black shadow-[black]/40"
             onClick={() => {
@@ -67,7 +60,7 @@ export function SubmitEntryAlert({
           >
             Close
           </AlertDialogCancel>
-          <AlertDialogAction
+          {/* <AlertDialogAction
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
             onClick={() => {
               setRefreshPosts(generateRandomString(10));
@@ -77,7 +70,7 @@ export function SubmitEntryAlert({
             }}
           >
             See More Quests <ArrowUpRightIcon />
-          </AlertDialogAction>
+          </AlertDialogAction> */}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

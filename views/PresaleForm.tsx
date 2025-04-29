@@ -102,7 +102,6 @@ function PresaleForm() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
-          
         }
       );
 
@@ -372,13 +371,6 @@ function PresaleForm() {
           {error && <p style={{ color: "red" }}>{error}</p>}
           {!publicKey && <p>Please connect your wallet.</p>}
         </form>
-
-        {/* {openSignUpAlert && (
-          <SignupAlert
-            open={openSignUpAlert}
-            onClose={() => setOpenSignUpAlert(false)}
-          />
-        )} */}
       </>
     );
 }
