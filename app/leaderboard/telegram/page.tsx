@@ -1,4 +1,3 @@
-import AddressButton from "@/components/custom/AddressButton";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { TelegramLeaderboardTable } from "@/components/custom/tables/leaderboard";
 import Image from "next/image";
@@ -27,9 +26,6 @@ function page() {
           spreading good vibes and energy, believing in a brighter day and a
           brighter future.
         </p>
-      </FadeInUp>
-      <FadeInUp>
-        <AddressButton />
       </FadeInUp>
 
       <FadeInUp className="w-full flex flex-col justify-center items-center">

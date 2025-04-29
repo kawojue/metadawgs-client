@@ -22,10 +22,10 @@ function page() {
                 1
               </div>
               <div className="flex flex-col gap-1">
-                <span className="font-semibold font-fredoka text-2xl">
+                <span className="font-semibold font-fredoka text-xl md:text-2xl">
                   Step into the Arena. 🥊
                 </span>
-                <span className="text-[#ACACAC] text-xl">
+                <span className="text-[#ACACAC] md:text-xl text-lg">
                   Join our official Telegram group - the battleground awaits!
                 </span>
               </div>
@@ -37,10 +37,10 @@ function page() {
                 2
               </div>
               <div className="flex flex-col gap-1">
-                <span className="font-semibold font-fredoka text-2xl">
+                <span className="font-semibold font-fredoka text-xl md:text-2xl">
                   Arm Yourself with Your Invite Link. ⚔
                 </span>
-                <span className="text-[#ACACAC] text-xl">
+                <span className="text-[#ACACAC] md:text-xl text-lg">
                   Use our Invite Bot to generate your unique invite link.
                 </span>
               </div>
@@ -52,10 +52,10 @@ function page() {
                 3
               </div>
               <div className="flex flex-col gap-1">
-                <span className="font-semibold font-fredoka text-2xl">
+                <span className="font-semibold font-fredoka text-xl md:text-2xl">
                   Recruit, Score, Dominate. 🏆
                 </span>
-                <span className="text-[#ACACAC] text-xl">
+                <span className="text-[#ACACAC] md:text-xl text-lg">
                   Share your link far and wide! Every friend you bring in nets
                   you <strong className="text-white">5 Points</strong>. Rack up points, crush the
                   leaderboard, and prove
