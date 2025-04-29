@@ -48,6 +48,7 @@ export interface TelegramLeaderboardType {
   messages: number;
   reactions: number;
   invites: number;
+  avatar: string;
 }
 
 export interface XLeaderboardType {
@@ -57,6 +58,7 @@ export interface XLeaderboardType {
   tasks: number;
   points: number;
   rank: number;
+  avatar: string;
 }
 
 export interface MetaType {

@@ -16,7 +16,7 @@ export const x_columns: ColumnDef<XLeaderboardType>[] = [
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
         <Avatar className="w-7 h-7 min-w-7 min-h-7">
-          <AvatarImage src={row.getValue("avatar")} />
+          <AvatarImage src={row.original.avatar} />
           <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
         </Avatar>
         <span className="text-white font-medium">
