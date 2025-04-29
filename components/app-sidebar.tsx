@@ -16,18 +16,23 @@ import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import { LogOutIcon } from "lucide-react";
 import useLocalStorage from "use-local-storage";
-import { XAdminToken } from "@/lib/values";
+import { XAdminProfile, XAdminToken } from "@/lib/values";
+import { AdminProfileType } from "@/lib/type";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const [, setAdminToken] = useLocalStorage(XAdminToken, "");
+  const [adminProfile, setAdminProfile] = useLocalStorage<
+    AdminProfileType | undefined
+  >(XAdminProfile, undefined);
 
   function logout() {
     setAdminToken(undefined);
+    setAdminProfile(undefined);
   }
 
   return (
-    <Sidebar collapsible='icon' className="z-[999]" {...props}>
+    <Sidebar collapsible="icon" className="z-[999]" {...props}>
       <SidebarHeader className="p-5 h-22">
         <div className="flex items-center gap-2">
           <Avatar
@@ -38,8 +43,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
           </Avatar>
           <div className="div -space-y-1">
-            <h4 className="font-medium line-clamp-1">Hi, Dominic</h4>
-            <p className="text-sm-text-gray-400 line-clamp-1">dom@gmail.com</p>
+            <h4 className="font-medium line-clamp-1">
+              Hi, {adminProfile?.username}
+            </h4>
+            {/* <p className="text-sm-text-gray-400 line-clamp-1">dom@gmail.com</p> */}
           </div>
         </div>
       </SidebarHeader>

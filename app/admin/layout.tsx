@@ -9,16 +9,56 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { XAdminToken } from "@/lib/values";
+import { fetchWithAuth } from "@/lib/api";
+import { AdminProfileType } from "@/lib/type";
+import { XAdminProfile, XAdminToken } from "@/lib/values";
 import { Loader } from "lucide-react";
 
-import { ReactNode, Suspense } from "react";
+import { ReactNode, Suspense, useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
 
 function DashboardLayout({ children }: { children: ReactNode }) {
-  const [adminToken] = useLocalStorage<string | null>(XAdminToken, null);
+  const [adminToken, setAdminToken] = useLocalStorage<string | null>(
+    XAdminToken,
+    null
+  );
+  const [adminProfile, setAdminProfile] =
+    useLocalStorage<AdminProfileType | null>(XAdminProfile, null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  if (!adminToken) return <>{children}</>;
+  useEffect(() => {
+    async function validateAdminToken() {
+      try {
+        setIsLoading(true);
+        const { data } = await fetchWithAuth<AdminProfileType>(`/admin`, {
+          isAdmin: true,
+        });
+
+        setAdminProfile(data);
+      } catch (error) {
+        console.error("Profile error:", error);
+        setAdminProfile(null);
+        setAdminToken(null);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    validateAdminToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [adminToken]);
+
+  if (isLoading) {
+    return (
+      <div className="h-svh w-full grid place-content-center place-content-items">
+        <Loader size={72} color={"#FFBE00"} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (!isLoading && !adminProfile) {
+    return <>{children}</>;
+  }
 
   return (
     <Suspense

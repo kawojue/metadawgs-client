@@ -29,16 +29,11 @@ export interface ProfileType {
 }
 
 export interface AdminProfileType {
-  eligibleToUseReferralCode: boolean;
-  referralCode: string;
-  user: {
-    id: string;
-    tasks: number;
-    avatar: string;
-    username: string;
-    joinedAt: string;
-    displayName: string;
-  };
+  id: string;
+  username: string;
+  deletedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TelegramLeaderboardType {
