@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { postWithAuth } from "@/lib/api";
-import { SubmitEntryAlert } from "@/components/custom/modals/SubmitEntryAlert";
+import { SubmitReferralAlert } from "@/components/custom/modals/SubmitReferralAlert";
 import useLocalStorage from "use-local-storage";
 import { ProfileType } from "@/lib/type";
 import { XNoCode, XUserProfile } from "@/lib/values";
@@ -129,7 +129,7 @@ function ReferralInputModal({
         </Dialog>
       )}
       {success && (
-        <SubmitEntryAlert
+        <SubmitReferralAlert
           open={success}
           onClose={() => {
             onClose?.();
