@@ -14,7 +14,7 @@ function Veil() {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 right-0 bottom-0 size-full bg-black/95 transition-opacity z-[900]",
+        "fixed top-0 left-0 right-0 bottom-0 bg-black/95 transition-opacity z-[900] block xl:hidden",
         !menuIsOpen && "opacity-0 -z-[900]",
         menuIsOpen && "opacity-100"
       )}

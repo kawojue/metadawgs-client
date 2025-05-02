@@ -20,7 +20,7 @@ function MainLayout({ children }: { children: ReactNode }) {
   );
 
   return (
-    <div>
+    <div className="font-sans">
       {!isIgnoredRoute && <Navbar />}
       <div className="content min-h-dch">{children}</div>
       {openSignup && (

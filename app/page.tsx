@@ -1,17 +1,20 @@
-import { FadeInUp, ZoomInLeft } from "@/components/custom/ScrollAnimation";
+import { FadeInUp, FadeIn } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
+import FAQ from "@/views/FAQ";
 import HomeQuests from "@/views/HomeQuests";
+import HomeRoadmap from "@/views/HomeRoadmap";
+import HomeTokenomics from "@/views/HomeTokenomics";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="div">
-      <div className="banner bg-black text-white md:min-h-dch size-full grid place-items-center p-6 md:p-10">
-        <div className="inner flex flex-wrap gap-4 md:gap-14 items-center justify-center">
-          <div className="info md:space-y-6 space-y-4">
+    <div className="div bg-black text-white">
+      <div className="banner min-h-dch size-full grid md:place-content-center relative z-[1]">
+        <div className="inner grid md:grid-cols-[1fr_0.8fr]">
+          <div className="info md:space-y-6 space-y-4 p-6 md:p-10">
             <FadeInUp>
-              <h1 className="title md:text-[86px] text-5xl md:leading-[80px] tracking-[-2px] font-fredoka font-semibold uppercase">
+              <h1 className="title md:text-[94px] text-5xl md:leading-[80px] tracking-[-2px] font-fredoka font-semibold uppercase">
                 MetaDawgs
                 <br />
                 For the bold &<br />
@@ -19,12 +22,12 @@ export default function Home() {
               </h1>
             </FadeInUp>
             <FadeInUp className="md:space-y-6 space-y-4">
-              <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[600px]">
+              <p className="text-xl md:text-2xl xl:text-[#ACACAC] text-white md:leading-[35px] max-w-[600px]">
                 This is for all the dawgs, this is for all the grinders on X,
                 spreading good vibes and energy, believing in a brighter day and
                 a brighter future.
               </p>
-              <Link className="block" href={"/#Quests"}>
+              <Link className="block" href={"/#Quests"} scroll={true}>
                 <Button className="bg-[#9D4EDD] rounded-full px-5! py-6! text-base cursor-pointer hover:bg-[#9D4EDD]/80!">
                   <svg
                     width="20"
@@ -43,19 +46,32 @@ export default function Home() {
               </Link>
             </FadeInUp>
           </div>
-          <ZoomInLeft className="dog mx-auto">
+
+          <FadeIn className="">
             <Image
-              className="md:w-[360px] md:min-w-[300px] w-[250px]"
-              src="/images/dog.svg"
+              className="bg-red-400s md:w-[calc(100svh_-_150px)] w-sm absolute right-0 bottom-0 -z-[1]"
+              src="/man.png"
               alt="MetaDawgs"
-              width={360}
-              height={600}
+              width={830}
+              height={830}
             />
-          </ZoomInLeft>
+          </FadeIn>
         </div>
       </div>
-      <div id="Quests" className="p-4"></div>
+      <div id="Quests" className="p-4 bg-black"></div>
       <HomeQuests />
+      <FadeIn className="animate-float">
+        <Image
+          className="bg-red-400s md:w-4/5 w-full mx-auto"
+          src="/images/chant.png"
+          alt="MetaDawgs"
+          width={1440}
+          height={810}
+        />
+      </FadeIn>
+      <HomeTokenomics />
+      <HomeRoadmap />
+      <FAQ />
     </div>
   );
 }

@@ -127,3 +127,43 @@
 body {
   font-family: var(--font-sans);
 }
+
+.pool {
+  background: linear-gradient(180deg, #FFBE00 0%, #A078FF 37.5%, #D5D5D5 70.19%, #229EFF 100%);
+
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.pool::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  background: #000000f3;
+  z-index: -1;
+  pointer-events: none;
+}
+
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}

@@ -19,7 +19,7 @@ function AuthUserButton() {
     <>
       {!userToken && (
         <Button
-          className="bg-[black] shadow-[rgba(255,_255,_255,_0.4)] rounded-full px-5! py-6! text-sm cursor-pointer hover:bg-[black]/80!"
+          className="bg-[white] text-black shadow-[#484848] rounded-full px-5! py-6! text-sm cursor-pointer hover:bg-[white]/80!"
           onClick={authWithX}
         >
           <svg
@@ -31,7 +31,7 @@ function AuthUserButton() {
           >
             <path
               d="M6.49204 7.76733L9.6665 12H14.3332L9.0943 5.01487L13.4537 0H11.687L8.27604 3.92385L5.33317 0H0.666504L5.67374 6.67633L1.04594 12H2.81262L6.49204 7.76733ZM10.3332 10.6667L3.33317 1.33333H4.6665L11.6665 10.6667H10.3332Z"
-              fill="white"
+              fill="black"
             />
           </svg>
           <span>Continue with X</span>
@@ -39,7 +39,7 @@ function AuthUserButton() {
       )}
       {!!userToken && (
         <Button
-          className="bg-[black] shadow-[rgba(255,_255,_255,_0.4)] rounded-full px-5! pl-3! py-6! text-sm cursor-pointer hover:bg-[black]/80!"
+          className=" px-5! pl-3! py-6!  bg-[white] text-black shadow-[#484848] rounded-full text-sm cursor-pointer hover:bg-[white]/80!"
 
           //   onClick={() => setProfileIsOpen(true)}
         >

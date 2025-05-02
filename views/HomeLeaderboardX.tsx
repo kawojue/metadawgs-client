@@ -5,7 +5,7 @@ import Image from "next/image";
 
 function HomeLeaderboardX() {
   return (
-    <div className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-20 py-15 min-h-dch relative bg-black text-white z-1">
+    <div className="flex flex-col gap-6 items-center justify-center p-6 md:p-20 py-15 min-h-dch relative bg-black text-white z-1">
       <FadeInUp className="div relative">
         <h2 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka text-center font-semibold uppercase">
           Community

@@ -99,7 +99,7 @@ function Navbar() {
   }
 
   return (
-    <div className="navbar bg-black text-white md:px-[8%] px-4 py-5 h-[88px] flex justify-between gap-4 items-center w-full sticky top-0 z-[999]">
+    <div className="navbar bg-black text-white md:px-[4%] px-4 py-5 h-[88px] flex justify-between gap-4 items-center w-full sticky top-0 z-[999]">
       <Link href={"/"} className="logo" onClick={() => setMenuIsOpen(false)}>
         <Image src="/images/logo.svg" alt="MetaDawgs" width={150} height={35} />
       </Link>
@@ -175,6 +175,28 @@ function Navbar() {
               )}
             >
               Invite Task
+            </Link>
+          </li>
+          <li>
+            <Link
+              href={"/dawg-pools"}
+              className={cn(
+                "text-lg capitalize hover:opacity-85",
+                pathname.startsWith("/dawg-pools") && "text-[#FFBE00]"
+              )}
+            >
+              DawgPools
+            </Link>
+          </li>
+          <li>
+            <Link
+              href={"/dawg-bot"}
+              className={cn(
+                "text-lg capitalize hover:opacity-85",
+                pathname.startsWith("/dawg-bot") && "text-[#FFBE00]"
+              )}
+            >
+              DawgBot
             </Link>
           </li>
         </ul>
@@ -268,7 +290,7 @@ function Navbar() {
 
       <div
         className={cn(
-          "fixed top-[88px] left-0 xl:hidden transition-all z-[990] w-full h-dch flex justify-center items-center flex-col",
+          "fixed top-[88px] left-0 xl:hidden transition-all z-[990] w-svw max-h-dch overflow-auto flex justify-center items-center flex-col",
           !menuIsOpen && "-translate-y-full opacity-0 invisible",
           menuIsOpen && "translate-y-0 opacity-100"
         )}
@@ -280,7 +302,7 @@ function Navbar() {
                 onClick={() => setMenuIsOpen(false)}
                 href={"/quests"}
                 className={cn(
-                  "block sm:text-4xl text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
+                  "block text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
                   pathname.startsWith("/quests") && "text-[#FFBE00]"
                 )}
               >
@@ -292,7 +314,7 @@ function Navbar() {
                 onClick={() => setMenuIsOpen(false)}
                 href={"/presale"}
                 className={cn(
-                  "block sm:text-4xl text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
+                  "block text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
                   pathname.startsWith("/presale") && "text-[#FFBE00]"
                 )}
               >
@@ -304,7 +326,7 @@ function Navbar() {
                 onClick={() => setMenuIsOpen(false)}
                 href={"/leaderboard/x"}
                 className={cn(
-                  "block sm:text-4xl text-3xl max-[350px]:text-2xl text-center font-fredoka hover:opacity-85 p-2 uppercase font-bold",
+                  "block text-3xl max-[350px]:text-2xl text-center font-fredoka hover:opacity-85 p-2 uppercase font-bold",
                   pathname.startsWith("/leaderboard/x") && "text-[#FFBE00]"
                 )}
               >
@@ -318,7 +340,7 @@ function Navbar() {
                 onClick={() => setMenuIsOpen(false)}
                 href={"/leaderboard/telegram"}
                 className={cn(
-                  "block sm:text-4xl text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
+                  "block text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
                   pathname.startsWith("/leaderboard/telegram") &&
                     "text-[#FFBE00]"
                 )}
@@ -332,11 +354,35 @@ function Navbar() {
                 onClick={() => setMenuIsOpen(false)}
                 href={"/invite-task"}
                 className={cn(
-                  "block sm:text-4xl text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
+                  "block text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
                   pathname.startsWith("/invite-task") && "text-[#FFBE00]"
                 )}
               >
                 Invite Task
+              </Link>
+            </li>
+            <li>
+              <Link
+                onClick={() => setMenuIsOpen(false)}
+                href={"/dawg-pools"}
+                className={cn(
+                  "block text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
+                  pathname.startsWith("/dawg-pools") && "text-[#FFBE00]"
+                )}
+              >
+                DawgPools
+              </Link>
+            </li>
+            <li>
+              <Link
+                onClick={() => setMenuIsOpen(false)}
+                href={"/dawg-bot"}
+                className={cn(
+                  "block text-3xl max-[350px]:text-2xl font-fredoka hover:opacity-85 p-2 text-center uppercase font-bold",
+                  pathname.startsWith("/dawg-bot") && "text-[#FFBE00]"
+                )}
+              >
+                DawgBot
               </Link>
             </li>
           </ul>
