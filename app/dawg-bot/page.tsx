@@ -9,7 +9,7 @@ import Link from "next/link";
 function page() {
   return (
     <div className="bg-black text-white">
-      <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-10 justify-center items-center min-h-dch max-w-screen-xl mx-auto">
+      <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-10 justify-center items-center min-h-dch max-w-screen-2xl mx-auto">
         <FadeInUp>
           <h1 className="title md:text-[76px] sm:text-6xl text-4xl font-fredoka font-bold capitalize tracking-wider text-center">
             DawgBot Terminal
@@ -56,7 +56,7 @@ function page() {
           </Link>
         </FadeInUp>
 
-        <div className="flex gap-4 md:gap-12 flex-wrap justify-center">
+        <div className="flex gap-4 md:gap-12 flex-wrap justify-center mt-10">
           {features.map((feature, index) => {
             return (
               <FadeInUp key={index}>
