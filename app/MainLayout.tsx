@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { SignupAlert } from "@/components/custom/modals/SignupAlert";
 import useLocalStorage from "use-local-storage";
 import { XOpenSignUpModal } from "@/lib/values";
+import { cn } from "@/lib/utils";
 
 const IGNORED_ROUTE_PATTERNS = [/^\/auth/, /^\/admin(\/.*)?$/];
 
@@ -22,7 +23,14 @@ function MainLayout({ children }: { children: ReactNode }) {
   return (
     <div className="font-sans">
       {!isIgnoredRoute && <Navbar />}
-      <div className="bg-black text-white content min-h-dch">{children}</div>
+      <div
+        className={cn(
+          "content min-h-dch",
+          !isIgnoredRoute && "bg-black text-white"
+        )}
+      >
+        {children}
+      </div>
       {openSignup && (
         <SignupAlert open={openSignup} onClose={() => setOpenSignup(false)} />
       )}

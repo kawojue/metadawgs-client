@@ -121,6 +121,7 @@ function LoginPage() {
               name="password"
               placeholder="Password"
               required
+              showEye
             />
           </div>
           <div className="flex items-center gap-2 text-sm">

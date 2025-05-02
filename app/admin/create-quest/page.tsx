@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import NumberInput from "@/components/custom/NumberInput";
@@ -8,10 +9,13 @@ import React, { useMemo, useRef, useState } from "react";
 
 function Page() {
   const [error, setError] = useState<string>("");
+  const [tweetError, setTweetError] = useState<string>("");
+  const [imageError, setImageError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setIsLoading] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement>(null);
   const [point, setPoint] = useState<string>("");
+  const [imageUrlPreview, setImageUrlPreview] = useState<string>("");
 
   async function submitQuest(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -42,6 +46,7 @@ function Page() {
 
       formRef.current?.reset();
       setPoint("");
+      setImageUrlPreview("");
       setSuccess(true);
     } catch (error: string | unknown) {
       console.error("Error creating quest:", error);
@@ -76,7 +81,7 @@ function Page() {
 
   return (
     <div className="size-full flex flex-col justify-center items-center p-2 min-h-full">
-      <div className="login-modal bg-white rounded-2xl shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)] p-6 sm:p-8 w-full max-w-md flex flex-col gap-4 justify-center items-center">
+      <div className="create-quest-modal bg-white rounded-2xl shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)] p-6 sm:p-8 w-full max-w-lg flex flex-col gap-4 justify-center items-center">
         <h1 className="text-3xl font-semibold font-fredoka">Create Quest</h1>
         {success && (
           <div className="bg-green-50 text-green-700 p-3 rounded-lg w-full text-sm">
@@ -131,8 +136,37 @@ function Page() {
               name="tweetUrl"
               placeholder="Enter post URL"
               required
+              onChange={(e) => {
+                const url = e.target.value;
+                const twitterRegex =
+                  /^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/.+$/;
+                if (!twitterRegex.test(url)) {
+                  setTweetError("Please enter a valid Twitter (X) URL.");
+                } else {
+                  setTweetError("");
+                }
+              }}
             />
+            {tweetError && (
+              <p className="text-red-500 text-sm mt-1">{tweetError}</p>
+            )}
           </div>
+          {imageUrlPreview && !imageError && (
+            <div className="div space-y-2">
+              <label className="text-sm block font-fredoka">
+                Image Preview
+              </label>
+              <div className="relative w-full border-2 border-[#F5F5F5] aspect-video rounded-lg overflow-hidden">
+                <img
+                  src={imageUrlPreview}
+                  width={500}
+                  height={250}
+                  alt="Preview"
+                  className=" object-cover"
+                />
+              </div>
+            </div>
+          )}
           <div className="div space-y-2">
             <label htmlFor="imageUrl" className="text-sm block font-fredoka">
               Cover Image URL
@@ -143,8 +177,26 @@ function Page() {
               name="imageUrl"
               placeholder="Enter image URL"
               required
+              onChange={(e) => {
+                const url = e.target.value;
+                setImageUrlPreview(url);
+                setImageError("");
+
+                // Validate the image URL
+                const img = new Image();
+                img.onload = () => setImageError(""); // Clear error if image loads
+                img.onerror = () =>
+                  setImageError(
+                    "The image URL is invalid or the image does not exist."
+                  );
+                img.src = url;
+              }}
             />
+            {imageError && (
+              <p className="text-red-500 text-sm mt-1">{imageError}</p>
+            )}
           </div>
+
           <div className="div space-y-2">
             <label htmlFor="point" className="text-sm block font-fredoka">
               Point

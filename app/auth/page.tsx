@@ -38,12 +38,12 @@ export default function AuthHandler() {
     }
 
     setRefreshPosts(generateRandomString(10));
-    router.replace("/");
-
+    
     if (window.opener) {
       window.close();
     }
-
+    
+    router.replace("/quests#Posts");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 

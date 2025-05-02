@@ -22,8 +22,10 @@ function DashboardLayout({ children }: { children: ReactNode }) {
     XAdminToken,
     null
   );
-  const [adminProfile, setAdminProfile] =
-    useLocalStorage<AdminProfileType | null>(XAdminProfile, null);
+  const [, setAdminProfile] = useLocalStorage<AdminProfileType | null>(
+    XAdminProfile,
+    null
+  );
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -56,7 +58,7 @@ function DashboardLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  if (!isLoading && !adminProfile) {
+  if (!isLoading && !adminToken) {
     return <>{children}</>;
   }
 

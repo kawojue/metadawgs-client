@@ -170,7 +170,7 @@ function Navbar() {
             <Link
               href={"/invite-task"}
               className={cn(
-                "text-lg capitalize hover:opacity-85",
+                "text-lg text-nowrap capitalize hover:opacity-85",
                 pathname.startsWith("/invite-task") && "text-[#FFBE00]"
               )}
             >

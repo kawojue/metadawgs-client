@@ -1,4 +1,4 @@
-import { FadeInUp, SlideInRight } from "@/components/custom/ScrollAnimation";
+import { FadeIn, FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
@@ -7,16 +7,16 @@ function page() {
   return (
     <div>
       <div className="bg-black text-white p-4 sm:p-6 md:p-10 flex flex-col gap-6 md:gap-12 justify-center items-center min-h-dch">
-        <FadeInUp>
+        <FadeIn>
           <h1 className="title md:text-[76px] sm:text-6xl text-4xl font-fredoka font-bold capitalize tracking-wider text-center">
             Welcome to the
             <br />
             Telegram Invite Race!
           </h1>
-        </FadeInUp>
+        </FadeIn>
 
         <ul className="grid gap-6 max-w-2xl mx-auto">
-          <SlideInRight>
+          <FadeInUp>
             <li className="flex gap-5 pool rounded-2xl after:rounded-2xl p-6 sm:p-8">
               <div className="border-2 mt-0.5 font-medium shadow-[inset_0px_-1.5px_3px_0px_rgba(0,0,0,0.4)] border-white rounded-full size-[30px] min-w-[30px] grid place-items-center place-content-center text-white bg-[#FFBE00]">
                 1
@@ -30,8 +30,8 @@ function page() {
                 </span>
               </div>
             </li>
-          </SlideInRight>
-          <SlideInRight>
+          </FadeInUp>
+          <FadeInUp>
             <li className="flex gap-5 pool rounded-2xl after:rounded-2xl p-6 sm:p-8">
               <div className="border-2 mt-0.5 font-medium shadow-[inset_0px_-1.5px_3px_0px_rgba(0,0,0,0.4)] border-white rounded-full size-[30px] min-w-[30px] grid place-items-center place-content-center text-white bg-[#A078FF]">
                 2
@@ -45,8 +45,8 @@ function page() {
                 </span>
               </div>
             </li>
-          </SlideInRight>
-          <SlideInRight>
+          </FadeInUp>
+          <FadeInUp>
             <li className="flex gap-5 pool rounded-2xl after:rounded-2xl p-6 sm:p-8">
               <div className="border-2 mt-0.5 font-medium shadow-[inset_0px_-1.5px_3px_0px_rgba(0,0,0,0.4)] border-white rounded-full size-[30px] min-w-[30px] grid place-items-center place-content-center text-white bg-[#00C159]">
                 3
@@ -63,7 +63,7 @@ function page() {
                 </span>
               </div>
             </li>
-          </SlideInRight>
+          </FadeInUp>
         </ul>
 
         <FadeInUp>

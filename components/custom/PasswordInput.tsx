@@ -16,15 +16,20 @@ function PasswordInput(props: PropType) {
 
   return (
     <div className="relative">
-      <button
-        type="button"
-        onClick={toggleShowPassword}
-        className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer bg-white p-2"
-      >
-        {showPassword && <EyeIcon />}
-        {!showPassword && <EyeClosedIcon />}
-      </button>
-      <input {...props} maxLength={24} />
+      {props.showEye && (
+        <button
+          type="button"
+          onClick={toggleShowPassword}
+          className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer bg-white p-2"
+        >
+          {showPassword ? <EyeIcon /> : <EyeClosedIcon />}
+        </button>
+      )}
+      <input
+        {...props}
+        type={showPassword ? "text" : "password"}
+        maxLength={24}
+      />
     </div>
   );
 }

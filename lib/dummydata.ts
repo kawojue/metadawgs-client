@@ -120,42 +120,42 @@ export const features = [
     title: "Token Launch On Solana",
     description:
       "Trade Solana tokens in real-time with our intuitive tools and direct DEX integration for speed.",
-    icon: "/images/token-launch.png",
+    icon: "/images/token-launch.svg",
   },
   {
     title: "Token Trading",
     description:
       "Trade Solana tokens in real-time with our intuitive tools and direct DEX integration for speed.",
-    icon: "/images/token-trading.png",
+    icon: "/images/token-trading.svg",
   },
   {
     title: "Token Balance Insights",
     description:
       "Create and execute airdrops effortlessly, and get access to multiple wallet address lists.",
-    icon: "/images/token-insights.png",
+    icon: "/images/token-insights.svg",
   },
   {
     title: "AI-Powered Integration",
     description:
       "Trade Solana tokens in real-time with our intuitive tools and direct DEX integration for speed.",
-    icon: "/images/ai-integration.png",
+    icon: "/images/ai-integration.svg",
   },
   {
     title: "AMM Pool Deployment",
     description:
       "Trade Solana tokens in real-time with our intuitive tools and direct DEX integration for speed.",
-    icon: "/images/amm-deployment.png",
+    icon: "/images/amm-deployment.svg",
   },
   {
     title: "Community Airdrops",
     description:
       "Create and execute airdrops effortlessly, and get access to multiple wallet address lists.",
-    icon: "/images/community-airdrops.png",
+    icon: "/images/community-airdrops.svg",
   },
   {
     title: "NFT Minting",
     description:
       "Trade Solana tokens in real-time with our intuitive tools and direct DEX integration for speed.",
-    icon: "/images/nft-minting.png",
+    icon: "/images/nft-minting.svg",
   },
 ];

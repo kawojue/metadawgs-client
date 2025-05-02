@@ -30,7 +30,16 @@ export const x_columns: ColumnDef<XLeaderboardType>[] = [
     accessorKey: "username",
     header: () => <div className="text-white">User</div>,
     cell: ({ row }) => (
-      <div className="text-white">{row.getValue("username")}</div>
+      <div className="text-white">
+        <a
+          href={`https://x.com/${row.getValue("username")}`}
+          className="block text-white font-semibold"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {row.getValue("username")}
+        </a>
+      </div>
     ),
   },
   {

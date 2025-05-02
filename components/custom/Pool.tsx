@@ -58,27 +58,27 @@ const Pool = () => {
         <div className="grid gap-2">
           <div className="flex justify-between gap-4 items-center">
             <span className="block text-[#D5D5D5] font-light text-[15px]">
-              Stakes Earned
+            Total Staked
             </span>
             <span className="block text-[15px]">Coming Soon</span>
           </div>
           <div className="flex justify-between gap-4 items-center">
             <span className="block text-[#D5D5D5] font-light text-[15px]">
-              Stakes Earned
+            Block Reward
             </span>
-            <span className="block text-[15px]">Coming Soon</span>
+            <span className="block text-[15px]">67 Dawgs</span>
           </div>
           <div className="flex justify-between gap-4 items-center">
             <span className="block text-[#D5D5D5] font-light text-[15px]">
-              Stakes Earned
+            Ends On
             </span>
-            <span className="block text-[15px]">Coming Soon</span>
+            <span className="block text-[15px]">TBA</span>
           </div>
           <div className="flex justify-between gap-4 items-center">
             <span className="block text-[#D5D5D5] font-light text-[15px]">
-              Stakes Earned
+            End Block
             </span>
-            <span className="block text-[15px]">Coming Soon</span>
+            <span className="block text-[15px]">TBA</span>
           </div>
         </div>
       </div>
