@@ -11,6 +11,7 @@ import { PostType } from "@/lib/type";
 import { authWithTwitter } from "@/lib/utils";
 import { XOpenSignUpModal, XRefreshPosts, XUserToken } from "@/lib/values";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
 
@@ -51,8 +52,8 @@ function Page() {
   }
 
   return (
-    <div className="">
-      <div className="bg-black text-white p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center min-h-dch">
+    <div className="bg-black text-white">
+      <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center min-h-dch">
         <FadeInUp>
           <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
             Complete Quests,
@@ -77,36 +78,45 @@ function Page() {
       <div className="conquests space-y-14 lg:py-[5%] p-6">
         <div className="posts" id="Posts"></div>
         <div className="social_quests md:mx-[5%] lg:mx-[15%]">
-          <div className="w-full rounded-2xl bg-[#F5F5F5] p-5 sm:p-6 space-y-3">
+          <FadeInUp className="w-full rounded-2xl pool after:rounded-2xl p-5 sm:p-6 space-y-3">
             <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">
-              <div className="point-pill text-xs font-medium bg-[#f7eccc] p-1.5 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
+              <div className="point-pill text-xs font-medium pool after:rounded-full p-2 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
                 30 MetaDwags
               </div>
             </div>
             <h3 className="font-semibold font-fredoka text-3xl">
               Write a post about MetaDawgs on Twitter
             </h3>
-            <p className="text-[#677697] text-[15px]">
+            <p className="text-white text-[15px]">
               Click {'"Submit Entry"'} button to complete this task. Allow 1-20
               minutes for the system check.
             </p>
-            <Button
-              className="rounded-full !px-6 !py-6 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]"
-              onClick={openEntryInput}
-            >
-              <span>Submit Entry</span>
-            </Button>
-          </div>
+
+            <div className="flex gap-4 gap-y-2 flex-wrap">
+              <Button
+                className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]"
+                onClick={openEntryInput}
+              >
+                <span>Submit Entry</span>
+              </Button>
+              <Link
+                href={"/tweet-examples"}
+                className="rounded-full !px-6 !py-2 pt-2.5! font-medium text-[14px] cursor-pointer text-black bg-[#D5D5D5] shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80 block"
+              >
+                <span>Tweet Examples</span>
+              </Link>
+            </div>
+          </FadeInUp>
           {!!userToken && (
             <div className="quests-box w-full sm:mt-8 mt-4 max-h-[500px]overflow-y-auto">
               {loading && (
                 <div className="p-4 text-center">
-                  <h3 className="text-2xl font-fredoka">Loading...</h3>
+                  <h3 className="text-2xl font-fredoka">Loading Quests...</h3>
                 </div>
               )}
 
               {!loading && posts.length > 0 && (
-                <div className="grid xl:grid-cols-3 md:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:place-items-center grid-cols-2 md:gap-5 gap-3">
+                <div className="grid xl:grid-cols-3 md:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:place-items-center grid-cols-2 gap-3 mt-10">
                   {posts.map((post) => (
                     <FadeInUp key={post.id}>
                       <PostCard post={post} />

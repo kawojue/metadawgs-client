@@ -29,8 +29,8 @@ const PostCard = ({ post }: { post: PostType }) => {
   };
 
   return (
-    <div className="card rounded-2xl col-span-1 grid bg-[#FBFBFB] border border-[#F5F5F5] overflow-hidden max-w-[320px]">
-      <div className="relative banner aspect-video bg-[#E5E5E5] overflow-hidden">
+    <div className="card rounded-2xl col-span-1 grid after:rounded-2xl max-w-[320px] pool overflow-hidden">
+      <div className="banner aspect-video overflow-hidden rounded-t-2xl pool after:bg-[#101928]! after:bottom-0! text-transparent after:rounded-t-2xl">
         <Image
           src={post.imageUrl}
           width={360}
@@ -41,14 +41,14 @@ const PostCard = ({ post }: { post: PostType }) => {
       </div>
       <div className="info space-y-3 p-4 sm:p-5">
         <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">
-          <div className="point-pill text-xs font-medium bg-[#dfebf5] p-1.5 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
+          <div className="point-pill text-xs font-medium bg-[#101928] p-1.5 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
             {post.point} Points
           </div>
         </div>
         <h3 className="title font-semibold font-fredoka text-xl ">
           Post Launch on X
         </h3>
-        <p className="text-[#677697] text-[15px]">{post.description}</p>
+        <p className="text-white text-[15px]">{post.description}</p>
         <div className="flex gap-3 items-center">
           <a
             href={post?.postUrl}

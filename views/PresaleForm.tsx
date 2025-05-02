@@ -3,7 +3,6 @@
 import CountdownTimer from "@/components/custom/Countdown";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
-import Image from "next/image";
 import { useState, useCallback, useEffect } from "react";
 import {
   PublicKey,
@@ -284,15 +283,15 @@ function PresaleForm() {
     return (
       <>
         <form
-          className="wait rounded-2xl bg-[#F5F5F5] flex flex-col gap-5 max-w-lg mx-auto p-6 sm:p-8"
+          className="wait rounded-2xl pool after:rounded-2xl flex flex-col gap-5 max-w-lg mx-auto p-6 sm:p-8 after:bg-[#101928]!"
           onInput={() => {
             setExchangedToken(0);
           }}
         >
           <CountdownTimer targetDate={metrics?.endTime} />
-          <div className="progress w-full bg-gray-300 rounded-full h-4 overflow-hidden">
+          <div className="progress w-full bg-white rounded-full h-4 overflow-hidden">
             <div
-              className="bg-green-500 h-full"
+              className="bg-[#F9C580] h-full"
               style={{
                 width: `${(metrics.totalSoldSol * 100) / metrics.targetSol}%`,
               }}
@@ -302,33 +301,35 @@ function PresaleForm() {
             <p className="text-lg">
               Raised:{" "}
               <strong>
-                {formatNumberWithCommas(metrics?.totalSoldSol)} SOL /{" "}
-                {metrics?.targetSol} SOL
+                Sol {formatNumberWithCommas(metrics?.totalSoldSol)} / Sol{" "}
+                {formatNumberWithCommas(metrics?.targetSol)}
               </strong>
             </p>
           </div>
-          <div className="balance shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] z-1 rounded-2xl p-3 text-white text-center overflow-hidden relative">
+          <div className="pool balance shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] z-1 rounded-2xl after:rounded-2xl p-3 py-4 text-white text-center overflow-hidden relative">
             <h4 className="font-medium text-3xl font-fredoka">
               {publicKey
                 ? `${walletBalance.toFixed(4)} SOL`
                 : "Wallet not connected"}
             </h4>
-            <p className="text-sm">Solana balance</p>
-            <Image
-              src="/images/balance-bg.jpeg"
-              alt="bg"
-              width={400}
-              height={100}
-              className="image absolute top-0 left-0 size-full -z-1 text-transparent object-cover"
-            />
+            <p className="text-sm">Solana Balance</p>
           </div>
           <div className="amount-input flex flex-col gap-2">
             <div className="flex justify-between items-center gap-4">
-              <label htmlFor="amount">Amount</label>
-              <p className="text-sm font-semibold">
-                Max: {metrics.maxPerWallet}
-              </p>
+              <span className="text-lg font-semibold">
+                Min:{" "}
+                <span className="font-fredoka font-semibold">
+                  Sol {formatNumberWithCommas(metrics.minPerWallet || 0)}
+                </span>
+              </span>
+              <span className="text-lg font-semibold">
+                Max:{" "}
+                <span className="font-fredoka font-semibold">
+                  Sol {formatNumberWithCommas(metrics.maxPerWallet)}
+                </span>
+              </span>
             </div>
+            <label htmlFor="amount">Amount</label>
             <NumberInput
               value={amount}
               onChange={setAmount}
@@ -336,13 +337,16 @@ function PresaleForm() {
               maxValue={metrics.maxPerWallet}
               disabled={isLoading || !publicKey}
               id="amount"
-              className="h-[52px] font-semibold text-lg border border-[#9C9C9C] rounded-full w-full p-4 bg-white"
+              className="h-[52px] font-semibold text-lg border border-[#9C9C9C] rounded-full w-full p-4 bg-white text-black"
             />
 
             {!exchanging && !!exchangedToken && (
-              <p className="flex">
-                Exchange: {formatNumberWithCommas(exchangedToken)} Token(s)
-              </p>
+              <div className="flex justify-between items-center gap-4">
+                <span className="block">Tokens</span>
+                <span className="block text-lg font-fredoka font-semibold">
+                  {formatNumberWithCommas(exchangedToken)}
+                </span>
+              </div>
             )}
 
             {exchanging && <p className="flex">Converting amount....</p>}

@@ -74,35 +74,35 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
   if (isExpired) {
     return (
       <div className="text-center p-4">
-        <p className="text-xl font-bold">Countdown expired!</p>
+        <p className="text-xl font-bold">Countdown timeout!</p>
       </div>
     );
   }
 
   return (
     <div className="countdown grid grid-cols-4 gap-4">
-      <div className="grid col-span-1 rounded-2xl p-4 space-y-1 text-center shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] bg-[#C6D0E4]">
+      <div className="grid col-span-1 rounded-2xl p-4 space-y-1 text-center shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] pool after:rounded-2xl">
         <span className="font-semibold text-xl font-fredoka sm:text-lg">
           {padWithZero(timeRemaining.days)}
         </span>
         <span className="text-sm sm:hidden">D</span>
         <span className="text-sm hidden sm:inline">Days</span>
       </div>
-      <div className="grid col-span-1 rounded-2xl p-4 space-y-1 text-center shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] bg-[#67C68D]">
+      <div className="grid col-span-1 rounded-2xl p-4 space-y-1 text-center shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] pool after:rounded-2xl">
         <span className="font-semibold text-xl font-fredoka sm:text-lg">
           {padWithZero(timeRemaining.hours)}
         </span>
         <span className="text-sm sm:hidden">H</span>
         <span className="text-sm hidden sm:inline">Hours</span>
       </div>
-      <div className="grid col-span-1 rounded-2xl p-4 space-y-1 text-center shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] bg-[#FBFBFB]">
+      <div className="grid col-span-1 rounded-2xl p-4 space-y-1 text-center shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] pool after:rounded-2xl">
         <span className="font-semibold text-xl font-fredoka sm:text-lg">
           {padWithZero(timeRemaining.minutes)}
         </span>
         <span className="text-sm sm:hidden">M</span>
         <span className="text-sm hidden sm:inline">Minutes</span>
       </div>
-      <div className="grid col-span-1 rounded-2xl p-4 space-y-1 text-center shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] bg-[#F9C580]">
+      <div className="grid col-span-1 rounded-2xl p-4 space-y-1 text-center shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)] pool after:rounded-2xl">
         <span className="font-semibold text-xl font-fredoka sm:text-lg">
           {padWithZero(timeRemaining.seconds)}
         </span>

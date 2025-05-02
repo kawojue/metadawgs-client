@@ -22,7 +22,7 @@ function MainLayout({ children }: { children: ReactNode }) {
   return (
     <div className="font-sans">
       {!isIgnoredRoute && <Navbar />}
-      <div className="content min-h-dch">{children}</div>
+      <div className="bg-black text-white content min-h-dch">{children}</div>
       {openSignup && (
         <SignupAlert open={openSignup} onClose={() => setOpenSignup(false)} />
       )}

@@ -3,8 +3,8 @@ import PresaleForm from "@/views/PresaleForm";
 
 function Page() {
   return (
-    <div>
-      <div className="bg-black text-white p-4 sm:p-6 md:p-15 py-5 flex flex-col gap-5 justify-center items-center">
+    <div className="bg-black text-white">
+      <div className="p-4 sm:p-6 md:p-15 py-5 flex flex-col gap-5 justify-center items-center">
         <FadeIn>
           <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
             Buy $MetaDawgs
