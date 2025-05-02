@@ -91,7 +91,7 @@ export default function UsersTable({ isPreview }: Props) {
       </div>
       <div className="w-full space-y-8">
         <DataTable columns={columns} data={users} isLoading={loading} />
-        {meta && !!users.length && (
+        {meta && !loading && (
           <ShadcnPagination
             meta={meta}
             baseUrl={isPreview ? "/admin" : "/admin/users"}

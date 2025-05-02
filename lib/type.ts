@@ -64,8 +64,8 @@ export interface MetaType {
   currentPage: number;
   offset: number;
   totalItems: number;
-  nextPage: string | null;
-  previousPage: string | null;
+  nextPage: number | null;
+  previousPage: number | null;
 }
 
 export interface QuestType {

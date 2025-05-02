@@ -91,7 +91,7 @@ export default function QuestTable({ isPreview }: Props) {
       </div>
       <div className="w-full space-y-8">
         <DataTable columns={columns} data={quests} isLoading={loading} />
-        {meta && !!quests.length && (
+        {meta && !loading && (
           <ShadcnPagination
             meta={meta}
             baseUrl={isPreview ? "/admin" : "/admin/quests"}

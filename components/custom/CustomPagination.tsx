@@ -9,18 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
-interface MetaType {
-  size: number;
-  hasNext: boolean;
-  hasPrev: boolean;
-  totalPages: number;
-  currentPage: number;
-  offset: number;
-  totalItems: number;
-  nextPage: string | null;
-  previousPage: string | null;
-}
+import { MetaType } from "@/lib/type";
 
 interface ShadcnPaginationProps {
   meta: MetaType;
@@ -96,7 +85,7 @@ const ShadcnPagination = ({
             <PaginationPrevious
               href={
                 meta.hasPrev
-                  ? meta.previousPage || getPageUrl(meta.currentPage - 1)
+                  ? getPageUrl(meta.previousPage || meta.currentPage - 1)
                   : "#"
               }
               onClick={(e) => {
@@ -142,7 +131,7 @@ const ShadcnPagination = ({
             <PaginationNext
               href={
                 meta.hasNext
-                  ? meta.nextPage || getPageUrl(meta.currentPage + 1)
+                  ? getPageUrl(meta.nextPage || meta.currentPage + 1)
                   : "#"
               }
               onClick={(e) => {
