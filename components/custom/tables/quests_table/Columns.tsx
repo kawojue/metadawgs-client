@@ -72,7 +72,9 @@ const Action = ({ questId }: { questId: number }) => {
       await deleteWithAuth(`/posts/quests/${questId}`, {
         isAdmin: true,
       });
+      
       setRefreshTable(generateRandomString(10));
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     } finally {

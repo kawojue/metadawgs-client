@@ -1,4 +1,4 @@
-import { FadeInUp, FadeIn } from "@/components/custom/ScrollAnimation";
+import { FadeInUp, FadeIn, SlideInRight } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import FAQ from "@/views/FAQ";
 import HomeQuests from "@/views/HomeQuests";
@@ -47,15 +47,15 @@ export default function Home() {
             </FadeInUp>
           </div>
 
-          <FadeIn className="">
+          <SlideInRight className="bg-red-400s md:w-[calc(100svh_-_150px)] w-sm absolute right-0 bottom-0 -z-[1]">
             <Image
-              className="bg-red-400s md:w-[calc(100svh_-_150px)] w-sm absolute right-0 bottom-0 -z-[1]"
+              className=""
               src="/man.png"
               alt="MetaDawgs"
               width={830}
               height={830}
             />
-          </FadeIn>
+          </SlideInRight>
         </div>
       </div>
       <div id="Quests" className="p-4 bg-black"></div>

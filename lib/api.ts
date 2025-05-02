@@ -64,6 +64,11 @@ async function xFetch<T, K = undefined>(
         }
         throw new Error(res.message || "Something unexpected occurred");
       }
+
+      if (mergedOptions.method === "DELETE") {
+        return { success: true, message: "Deleted", data: {} as T };
+      }
+
       return response.json();
     })
     .catch((error) => {
