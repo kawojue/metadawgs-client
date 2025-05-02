@@ -147,6 +147,38 @@ body {
   pointer-events: none;
 }
 
+.quest-tile {
+  border-radius: 9999px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.25rem;
+  background-image: url('/images/quest-bg.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  ;
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+.quest-tile::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  background-color: rgba(0, 0, 0, 0.773);
+}
+
+
 
 @keyframes float {
   0% {

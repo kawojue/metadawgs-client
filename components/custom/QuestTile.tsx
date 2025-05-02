@@ -51,7 +51,7 @@ export const QuestTile = ({ quest, func, funcText }: Props) => {
 
   return (
     <>
-      <div className="quest rounded-full w-full flex justify-between gap-5 p-4 px-5 pl-6 bg-black/60 border border-white/60 text-white relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg.png')] after:bg-no-repeat after:bg-center after:bg-cover">
+      <div className="quest-tile">
         <div className="flex gap-4 items-center">
           <div className="max-[340px]:hidden">
             {renderQuestIcon(quest.app_name as IconKey)}
