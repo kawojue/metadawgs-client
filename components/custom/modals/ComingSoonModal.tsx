@@ -9,8 +9,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ArrowUpRight } from "lucide-react";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 function ComingSoonModal({
   open,
@@ -19,6 +21,8 @@ function ComingSoonModal({
   open: boolean;
   onClose?: () => void;
 }) {
+  const router = useRouter();
+
   return (
     <Dialog
       open={open}
@@ -55,10 +59,11 @@ function ComingSoonModal({
             type="button"
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
             onClick={() => {
+              router.push("/quests");
               onClose?.();
             }}
           >
-            Get Notified First
+            Join The Quests <ArrowUpRight/>
           </Button>
           <Button
             type="button"
