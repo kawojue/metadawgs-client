@@ -29,6 +29,9 @@ const VerifyParticipate = () => {
             inApp: true,
           }}
           func={() => {
+            if (userProfile?.eligibleToUseReferralCode) {
+              return;
+            }
             setParticipateVerified(true);
             router.push("/quests#Posts");
           }}

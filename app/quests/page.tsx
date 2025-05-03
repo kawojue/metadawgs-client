@@ -125,7 +125,7 @@ function Page() {
             </p>
           </FadeInUp>
 
-          <div className="quests-box w-full max-w-3xl sm:mt-4 mt-2">
+          <div className="quests-box w-full max-w-3xl mt-2">
             <ul className="grid grid-cols-1 md:gap-5 gap-3">
               <li>
                 <ReferralTile />
