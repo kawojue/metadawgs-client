@@ -24,7 +24,7 @@ const PostCard = ({ post }: { post: PostType }) => {
   );
 
   const handleSubmit = async () => {
-    if (isOnboardingCompleted) {
+    if (!isOnboardingCompleted) {
       setCompleteOnboarding(true);
       return;
     }
