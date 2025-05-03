@@ -59,10 +59,12 @@ const PostCard = ({ post }: { post: PostType }) => {
             {post.point} Points
           </div>
         </div>
-        <h3 className="title font-semibold font-fredoka text-xl ">
+        <h3 className="title font-semibold font-fredoka text-xl line-clamp-2">
           {post.name}
         </h3>
-        <p className="text-white text-[15px]">{post.description}</p>
+        <p className="text-white text-[15px] line-clamp-4">
+          {post.description}
+        </p>
         <div className="flex gap-3 items-center">
           <a
             href={post?.postUrl}
