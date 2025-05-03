@@ -30,6 +30,12 @@ function DashboardLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function validateAdminToken() {
+      if (!adminToken) {
+        setAdminProfile(null);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         setIsLoading(true);
         const { data } = await fetchWithAuth<AdminProfileType>(`/admin`, {
