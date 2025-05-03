@@ -76,11 +76,7 @@ function Page() {
           <AvatarGroup />
           <p className="text-xs font-semibold">30K Have Participated</p>
         </FadeInUp>
-      </div>
-
-      <div className="conquests space-y-14 lg:py-[5%] p-6">
-        <div className="posts" id="Posts"></div>
-        <div className="quests-box w-full md:mx-[5%] lg:mx-[15%]">
+        <div className="quests-box w-full max-w-3xl sm:mt-4 mt-2">
           <ul className="grid grid-cols-1 md:gap-5 gap-3">
             <li>
               <ReferralTile />
@@ -94,6 +90,10 @@ function Page() {
             ))}
           </ul>
         </div>
+      </div>
+
+      <div className="conquests space-y-14 lg:py-[5%] p-6">
+        <div className="posts" id="Posts"></div>
 
         <div className="social_quests md:mx-[5%] lg:mx-[15%]">
           <FadeInUp className="w-full rounded-2xl pool after:rounded-2xl p-5 sm:p-6 space-y-3">
