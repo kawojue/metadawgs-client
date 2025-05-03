@@ -68,7 +68,7 @@ function Page() {
       return;
     }
 
-    if (isOnboardingCompleted) {
+    if (!isOnboardingCompleted) {
       setCompleteOnboarding(true);
       return;
     }
@@ -77,7 +77,7 @@ function Page() {
   }
 
   function openTweetExamples() {
-    if (isOnboardingCompleted) {
+    if (!isOnboardingCompleted) {
       setCompleteOnboarding(true);
       return;
     }
