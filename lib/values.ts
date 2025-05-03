@@ -7,5 +7,7 @@ export const XAdminProfile = "X_ADMIN_PROFILE";
 export const XRefreshTable = "X_REFRESH_TABLE";
 export const XRefreshPosts = "X_REFRESH_POSTS";
 export const XNoCode = "X_NO_CODE";
+export const XOnboardingCompleted = "X_ONBOARDING_COMPLETED";
 export const XOpenSignUpModal = "X_OPEN_SIGNUP_MODAL";
 export const XComingSoonModal = "X_COMING_SOON_MODAL";
+export const XCompleteOnboarding = "X_COMPLETE_ONBOARDING_MODAL";

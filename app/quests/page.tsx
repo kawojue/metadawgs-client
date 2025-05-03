@@ -10,21 +10,34 @@ import { FadeInUp, SlideInLeft } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import { fetchWithAuth } from "@/lib/api";
 import { quests } from "@/lib/dummydata";
-import { PostType } from "@/lib/type";
+import { PostType, ProfileType } from "@/lib/type";
 import { authWithTwitter } from "@/lib/utils";
-import { XOpenSignUpModal, XRefreshPosts, XUserToken } from "@/lib/values";
+import {
+  XCompleteOnboarding,
+  XOpenSignUpModal,
+  XRefreshPosts,
+  XUserProfile,
+  XUserToken,
+} from "@/lib/values";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useLocalStorage from "use-local-storage";
 
 function Page() {
   const [userToken] = useLocalStorage(XUserToken, "");
+  const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
+  const [, setCompleteOnboarding] = useLocalStorage(XCompleteOnboarding, false);
   const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [showEntryInput, setShowEntryInput] = useState<boolean>(false);
   const [, setOpenSignup] = useLocalStorage(XOpenSignUpModal, false);
+
+  const isOnboardingCompleted = useMemo(
+    () => !userProfile?.eligibleToUseReferralCode,
+    [userProfile?.eligibleToUseReferralCode]
+  );
 
   useEffect(() => {
     async function getPosts() {
@@ -48,6 +61,11 @@ function Page() {
   function openEntryInput() {
     if (!userToken) {
       setOpenSignup(true);
+      return;
+    }
+
+    if (isOnboardingCompleted) {
+      setCompleteOnboarding(true);
       return;
     }
 
@@ -76,6 +94,20 @@ function Page() {
           <AvatarGroup />
           <p className="text-xs font-semibold">30K Have Participated</p>
         </FadeInUp>
+      </div>
+
+      <div className="posts" id="Onboarding"></div>
+      <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center">
+        <FadeInUp className="space-y-2">
+          <h2 className="md:text-6xl text-3xl font-fredoka font-semibold text-center">
+            Onboarding Tasks
+          </h2>
+          <p className="text-[#ACACAC] text-lg max-w-lg mx-auto text-center">
+            Complete the following tasks to stand a chance to earn more
+            metadawgs as an early participant in the ecosystem
+          </p>
+        </FadeInUp>
+
         <div className="quests-box w-full max-w-3xl sm:mt-4 mt-2">
           <ul className="grid grid-cols-1 md:gap-5 gap-3">
             <li>
@@ -91,7 +123,6 @@ function Page() {
           </ul>
         </div>
       </div>
-
       <div className="conquests space-y-14 lg:py-[5%] p-6">
         <div className="posts" id="Posts"></div>
 

@@ -11,14 +11,17 @@ import {
 } from "@/components/ui/dialog";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-function ComingSoonModal({
+function CompleteOnboardingModal({
   open,
   onClose,
 }: {
   open: boolean;
   onClose?: () => void;
 }) {
+  const router = useRouter();
+
   return (
     <Dialog
       open={open}
@@ -42,11 +45,10 @@ function ComingSoonModal({
             />
           </div>
           <DialogTitle className="font-fredoka text-2xl">
-            Coming Soon
+            Complete Onboarding
           </DialogTitle>
           <DialogDescription className="text-center text-white px-6">
-            Our team is working hard behind the scenes to bring you an
-            experience worth the wait. Stay tuned - we’re almost there.
+            Please complete the onboarding process to get started.
           </DialogDescription>
         </DialogHeader>
 
@@ -55,10 +57,11 @@ function ComingSoonModal({
             type="button"
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
             onClick={() => {
+              router.push("/quests#Onboarding");
               onClose?.();
             }}
           >
-            Get Notified First
+            Complete Onboarding
           </Button>
           <Button
             type="button"
@@ -75,4 +78,4 @@ function ComingSoonModal({
   );
 }
 
-export default ComingSoonModal;
+export default CompleteOnboardingModal;
