@@ -4,11 +4,16 @@ import React from "react";
 import { SlideInLeft } from "./ScrollAnimation";
 import { QuestTile } from "./QuestTile";
 import { useLocalStorage } from "@solana/wallet-adapter-react";
-import { XVerifyParticipate } from "@/lib/values";
+import { XUserProfile, XVerifyParticipate } from "@/lib/values";
 import { useRouter } from "next/navigation";
+import { ProfileType } from "@/lib/type";
 
 const VerifyParticipate = () => {
-  const [, setParticipateVerified] = useLocalStorage(XVerifyParticipate, false);
+  const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
+  const [, setParticipateVerified] = useLocalStorage(
+    `${XVerifyParticipate}-${userProfile?.user.username}`,
+    false
+  );
   const router = useRouter();
 
   return (

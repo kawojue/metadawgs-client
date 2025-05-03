@@ -28,7 +28,10 @@ function Page() {
   const [userToken] = useLocalStorage(XUserToken, "");
   const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
   const [, setCompleteOnboarding] = useLocalStorage(XCompleteOnboarding, false);
-  const [participateVerified] = useLocalStorage(XVerifyParticipate, false);
+  const [participateVerified] = useLocalStorage(
+    `${XVerifyParticipate}-${userProfile?.user.username}`,
+    false
+  );
 
   const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
   const [posts, setPosts] = useState<PostType[]>([]);
