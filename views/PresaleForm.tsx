@@ -40,6 +40,7 @@ function PresaleForm() {
   const [exchanging, setExchanging] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isPresaleClosed, setIsPresaleClosed] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [isInitializing, setIsInitializing] = useState<boolean>(true);
@@ -250,6 +251,10 @@ function PresaleForm() {
           data: Metrics;
         };
 
+        const isPresaleClosed =
+          new Date(result.data.endTime).getTime() < Date.now();
+        setIsPresaleClosed(isPresaleClosed);
+
         setMetrics(result.data);
       } catch (error) {
         console.log(error);
@@ -335,9 +340,9 @@ function PresaleForm() {
               onChange={setAmount}
               minValue={metrics.minPerWallet || 0}
               maxValue={metrics.maxPerWallet}
-              disabled={isLoading || !publicKey}
+              disabled={isLoading || !publicKey || isPresaleClosed}
               id="amount"
-              className="h-[52px] font-semibold text-lg border border-[#9C9C9C] rounded-full w-full p-4 bg-white text-black"
+              className="h-[52px] font-semibold text-lg border border-[#9C9C9C] rounded-full w-full p-4 bg-white text-black disabled:cursor-not-allowed disabled:opacity-50"
             />
 
             {!exchanging && !!exchangedToken && (
@@ -371,9 +376,16 @@ function PresaleForm() {
               <ArrowUpRightIcon />
             </Button>
           )}
-          {statusMessage && !error && <p>Status: {statusMessage}</p>}
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {statusMessage && !error && (
+            <p className="line-clamp-2">Status: {statusMessage}</p>
+          )}
+          {error && (
+            <p className="line-clamp-2" style={{ color: "red" }}>
+              {error}
+            </p>
+          )}
           {!publicKey && <p>Please connect your wallet.</p>}
+          {isPresaleClosed && <p className="text-center text-lg uppercase text-[#FFBE00] font-fredoka font-semibold tracking-wide">Presale is closed</p>}
         </form>
       </>
     );
