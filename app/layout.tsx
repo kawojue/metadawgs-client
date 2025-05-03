@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   authors: { name: siteConfig.author },
   twitter: {
     site: siteConfig.socialLinks.twitter,
-    images: ["/images/paw.svg"],
+    images: ["/images/man-avatar.png"],
     card: "summary",
   },
 
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
     siteName: siteConfig.title,
-    images: ["/images/paw.svg"],
+    images: ["/images/man-avatar.png"],
   },
   publisher: siteConfig.author,
 };

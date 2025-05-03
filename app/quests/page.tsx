@@ -199,9 +199,9 @@ function Page() {
           {!userToken && (
             <div className="lg:py-[5%] p-6 md:mx-[5%] lg:mx-[15%]">
               <div className="flex flex-col justify-center items-center gap-4">
-                <div className="circle bg-black rounded-full p-2.5 mb-1">
+                <div className="circle bg-white rounded-full p-2.5 mb-1">
                   <Image
-                    src={"/images/paw.svg"}
+                    src={"/images/man-avatar.png"}
                     alt="warning"
                     width={100}
                     height={100}

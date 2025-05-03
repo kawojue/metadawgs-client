@@ -36,7 +36,7 @@ function CompleteOnboardingModal({
         showCloseButton={false}
       >
         <DialogHeader className="flex flex-col justify-center gap-2 items-center">
-          <div className="circle bg-black rounded-full p-2.5 mb-1">
+          <div className="circle bg-white rounded-full p-2.5 mb-1">
             <Image
               src={"/images/man-avatar.png"}
               alt="man"
