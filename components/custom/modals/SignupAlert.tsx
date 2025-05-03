@@ -35,7 +35,7 @@ export function SignupAlert({
         <AlertDialogHeader className="flex flex-col justify-center items-center gap-4">
           <div className="circle bg-white rounded-full p-2.5 mb-1">
             <Image
-              src={"/images/paw.svg"}
+              src={"/images/man-avatar.png"}
               alt="warning"
               width={100}
               height={100}
