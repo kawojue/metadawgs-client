@@ -252,7 +252,8 @@ function PresaleForm() {
         };
 
         const isPresaleClosed =
-          new Date(result.data.endTime).getTime() < Date.now();
+          new Date(result.data.endTime).getTime() < Date.now() ||
+          result.data.totalSoldSol >= result.data.targetSol;
         setIsPresaleClosed(isPresaleClosed);
 
         setMetrics(result.data);
@@ -385,7 +386,11 @@ function PresaleForm() {
             </p>
           )}
           {!publicKey && <p>Please connect your wallet.</p>}
-          {isPresaleClosed && <p className="text-center text-lg uppercase text-[#FFBE00] font-fredoka font-semibold tracking-wide">Presale is closed</p>}
+          {isPresaleClosed && (
+            <p className="text-center text-lg uppercase text-[#FFBE00] font-fredoka font-semibold tracking-wide">
+              Presale is closed
+            </p>
+          )}
         </form>
       </>
     );

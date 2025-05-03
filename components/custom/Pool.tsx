@@ -1,10 +1,28 @@
+'use client'
+
 import { DawgIcon } from "@/lib/icons";
 import { ArrowUpRight, MinusIcon, PlusIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import useLocalStorage from "use-local-storage";
+import { XComingSoonModal } from "@/lib/values";
 
 const Pool = () => {
+  const [, setComingSoon] = useLocalStorage(XComingSoonModal, false);
+
+  function addStake() {
+    setComingSoon(true)
+  }
+
+  function removeStake() {
+    setComingSoon(true)
+  }
+
+  function claimStake() {
+    setComingSoon(true) 
+  }
+
   return (
     <div className="min-w-xs rounded-2xl pool col-span-1 sm:aspect-square after:rounded-2xl text-white p-6 md:p-8 flex flex-col justify-between gap-5">
       <div className="space-y-6 md:space-y-8">
@@ -35,10 +53,10 @@ const Pool = () => {
           </div>
 
           <div className="flex gap-3 items-center">
-            <button className="rounded-full border-white border-2 size-7 grid place-content-center place-items-center cursor-pointer hover:opacity-80 bg-green-500">
+            <button className="rounded-full border-white border-2 size-7 grid place-content-center place-items-center cursor-pointer hover:opacity-80 bg-green-500" onClick={addStake}>
               <PlusIcon size={18} />
             </button>
-            <button className="rounded-full border-white border-2 size-7 grid place-content-center place-items-center cursor-pointer hover:opacity-80 bg-red-500">
+            <button className="rounded-full border-white border-2 size-7 grid place-content-center place-items-center cursor-pointer hover:opacity-80 bg-red-500" onClick={removeStake}>
               <MinusIcon size={18} />
             </button>
           </div>
@@ -51,7 +69,7 @@ const Pool = () => {
             <span className="block uppercase">0 Dawgs</span>
           </div>
 
-          <Button className="rounded-full bg-[#A078FF] text-black !px-5 !py-4">
+          <Button className="rounded-full bg-[#A078FF] text-black !px-5 !py-4" onClick={claimStake}>
             Claim
           </Button>
         </div>
