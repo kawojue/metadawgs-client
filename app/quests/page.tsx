@@ -3,10 +3,13 @@
 import AvatarGroup from "@/components/custom/AvatarGroup";
 import SubmitEntryInputModal from "@/components/custom/modals/SubmitEntryInputModal";
 import PostCard from "@/components/custom/PostCard";
-import { FadeInUp } from "@/components/custom/ScrollAnimation";
+import { QuestTile } from "@/components/custom/QuestTile";
+import ReferralTile from "@/components/custom/ReferralTile";
+import { FadeInUp, SlideInLeft } from "@/components/custom/ScrollAnimation";
 
 import { Button } from "@/components/ui/button";
 import { fetchWithAuth } from "@/lib/api";
+import { quests } from "@/lib/dummydata";
 import { PostType } from "@/lib/type";
 import { authWithTwitter } from "@/lib/utils";
 import { XOpenSignUpModal, XRefreshPosts, XUserToken } from "@/lib/values";
@@ -77,6 +80,21 @@ function Page() {
 
       <div className="conquests space-y-14 lg:py-[5%] p-6">
         <div className="posts" id="Posts"></div>
+        <div className="quests-box w-full md:mx-[5%] lg:mx-[15%]">
+          <ul className="grid grid-cols-1 md:gap-5 gap-3">
+            <li>
+              <ReferralTile />
+            </li>
+            {quests.map((quest) => (
+              <li key={quest.id}>
+                <SlideInLeft>
+                  <QuestTile quest={quest} />
+                </SlideInLeft>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <div className="social_quests md:mx-[5%] lg:mx-[15%]">
           <FadeInUp className="w-full rounded-2xl pool after:rounded-2xl p-5 sm:p-6 space-y-3">
             <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">

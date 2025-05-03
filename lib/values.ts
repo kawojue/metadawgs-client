@@ -8,3 +8,4 @@ export const XRefreshTable = "X_REFRESH_TABLE";
 export const XRefreshPosts = "X_REFRESH_POSTS";
 export const XNoCode = "X_NO_CODE";
 export const XOpenSignUpModal = "X_OPEN_SIGNUP_MODAL";
+export const XComingSoonModal = "X_COMING_SOON_MODAL";

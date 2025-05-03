@@ -1,14 +1,9 @@
-import AuthUserButton from "@/components/AuthUserButton";
+// import AuthUserButton from "@/components/AuthUserButton";
 import AvatarGroup from "@/components/custom/AvatarGroup";
-import { QuestTile } from "@/components/custom/QuestTile";
-import ReferralTile from "@/components/custom/ReferralTile";
-import {
-  FadeInUp,
-  SlideInLeft,
-  ZoomIn,
-} from "@/components/custom/ScrollAnimation";
-import { quests } from "@/lib/dummydata";
+import { FadeInUp, ZoomIn } from "@/components/custom/ScrollAnimation";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 function Quests() {
   return (
@@ -33,24 +28,19 @@ function Quests() {
         <AvatarGroup />
         <p className="text-xs font-semibold">30K Have Participated</p>
       </FadeInUp>
-      <FadeInUp>
+      {/* <FadeInUp>
         <AuthUserButton />
-      </FadeInUp>
+      </FadeInUp> */}
 
-      <div className="quests-box w-full max-w-3xl sm:mt-4 mt-2">
-        <ul className="grid grid-cols-1 md:gap-5 gap-3">
-          <li>
-            <ReferralTile/>
-          </li>
-          {quests.map((quest) => (
-            <li key={quest.id}>
-              <SlideInLeft>
-                <QuestTile quest={quest} />
-              </SlideInLeft>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <FadeInUp>
+        <Link
+          href={"/quests/#Posts"}
+          className="rounded-full px-5! flex items-center justify-center gap-2 font-medium !py-3 bg-[#FFC36C] text-black shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80"
+        >
+          <span>Join Quests</span>
+          <ArrowUpRight size={16} strokeWidth={3} />
+        </Link>
+      </FadeInUp>
 
       <ZoomIn className="dog mx-auto absolute bottom-5 right-5 -z-10">
         <Image
