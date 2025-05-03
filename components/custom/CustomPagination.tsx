@@ -98,6 +98,7 @@ const ShadcnPagination = ({
                   handlePageChange(meta.currentPage - 1);
                 }
               }}
+              aria-disabled={!meta.hasPrev}
               className={!meta.hasPrev ? "pointer-events-none opacity-50" : ""}
             />
           </PaginationItem>
@@ -145,6 +146,7 @@ const ShadcnPagination = ({
                 }
               }}
               className={!meta.hasNext ? "pointer-events-none opacity-50" : ""}
+              aria-disabled={!meta.hasNext}
             />
           </PaginationItem>
         </PaginationContent>

@@ -78,8 +78,8 @@ function ReferralInputModal({
             <DialogHeader className="flex flex-col justify-center gap-2 items-center">
               <div className="circle bg-black rounded-full p-2.5 mb-1">
                 <Image
-                  src={"/images/paw.svg"}
-                  alt="paws"
+                  src={"/images/man-avatar.png"}
+                  alt="man"
                   width={100}
                   height={100}
                 />
