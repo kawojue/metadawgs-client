@@ -1,10 +1,10 @@
+"use client";
+
 import Feature from "@/components/custom/Feature";
+import LaunchBot from "@/components/custom/LaunchBot";
 import { FadeIn, FadeInUp } from "@/components/custom/ScrollAnimation";
-import { Button } from "@/components/ui/button";
 import { features } from "@/lib/dummydata";
-import { BotIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 function page() {
   return (
@@ -19,11 +19,7 @@ function page() {
           </h1>
         </FadeInUp>
         <FadeInUp>
-          <Link href={"/leaderboard/telegram"} className="block">
-            <Button className="rounded-full px-7! font-medium !py-6 bg-[#FFBE00] text-black">
-              <BotIcon /> Launch Bot
-            </Button>
-          </Link>
+          <LaunchBot />
         </FadeInUp>
         <FadeIn className="animate-float">
           <Image
@@ -49,11 +45,7 @@ function page() {
           </p>
         </FadeInUp>
         <FadeInUp>
-          <Link href={"/leaderboard/telegram"} className="block">
-            <Button className="rounded-full px-7! font-medium !py-6 bg-[#FFBE00] text-black">
-              <BotIcon /> Launch Bot
-            </Button>
-          </Link>
+          <LaunchBot />
         </FadeInUp>
 
         <div className="flex gap-4 md:gap-12 flex-wrap justify-center mt-10">
@@ -67,11 +59,7 @@ function page() {
         </div>
 
         <FadeInUp>
-          <Link href={"/leaderboard/telegram"} className="block">
-            <Button className="rounded-full px-7! font-medium !py-6 bg-[#FFBE00] text-black">
-              <BotIcon /> Launch Bot
-            </Button>
-          </Link>
+          <LaunchBot />
         </FadeInUp>
       </div>
     </div>
