@@ -3,13 +3,12 @@
 import AvatarGroup from "@/components/custom/AvatarGroup";
 import SubmitEntryInputModal from "@/components/custom/modals/SubmitEntryInputModal";
 import PostCard from "@/components/custom/PostCard";
-import { QuestTile } from "@/components/custom/QuestTile";
 import ReferralTile from "@/components/custom/ReferralTile";
-import { FadeInUp, SlideInLeft } from "@/components/custom/ScrollAnimation";
+import { FadeInUp } from "@/components/custom/ScrollAnimation";
+import VerifyParticipate from "@/components/custom/VerifyParticipateTile";
 
 import { Button } from "@/components/ui/button";
 import { fetchWithAuth } from "@/lib/api";
-import { quests } from "@/lib/dummydata";
 import { PostType, ProfileType } from "@/lib/type";
 import { authWithTwitter } from "@/lib/utils";
 import {
@@ -18,9 +17,10 @@ import {
   XRefreshPosts,
   XUserProfile,
   XUserToken,
+  XVerifyParticipate,
 } from "@/lib/values";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import useLocalStorage from "use-local-storage";
 
@@ -28,6 +28,8 @@ function Page() {
   const [userToken] = useLocalStorage(XUserToken, "");
   const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
   const [, setCompleteOnboarding] = useLocalStorage(XCompleteOnboarding, false);
+  const [participateVerified] = useLocalStorage(XVerifyParticipate, false);
+
   const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -35,9 +37,11 @@ function Page() {
   const [, setOpenSignup] = useLocalStorage(XOpenSignUpModal, false);
 
   const isOnboardingCompleted = useMemo(
-    () => !userProfile?.eligibleToUseReferralCode,
-    [userProfile?.eligibleToUseReferralCode]
+    () => !userProfile?.eligibleToUseReferralCode && participateVerified,
+    [userProfile?.eligibleToUseReferralCode, participateVerified]
   );
+
+  const router = useRouter();
 
   useEffect(() => {
     async function getPosts() {
@@ -72,6 +76,15 @@ function Page() {
     setShowEntryInput(true);
   }
 
+  function openTweetExamples() {
+    if (isOnboardingCompleted) {
+      setCompleteOnboarding(true);
+      return;
+    }
+
+    router.push("/tweet-examples");
+  }
+
   return (
     <div className="bg-black text-white">
       <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center min-h-dch">
@@ -97,32 +110,31 @@ function Page() {
       </div>
 
       <div className="posts" id="Onboarding"></div>
-      <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center">
-        <FadeInUp className="space-y-2">
-          <h2 className="md:text-6xl text-3xl font-fredoka font-semibold text-center">
-            Onboarding Tasks
-          </h2>
-          <p className="text-[#ACACAC] text-lg max-w-lg mx-auto text-center">
-            Complete the following tasks to stand a chance to earn more
-            metadawgs as an early participant in the ecosystem
-          </p>
-        </FadeInUp>
+      {!isOnboardingCompleted && (
+        <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center">
+          <FadeInUp className="space-y-2">
+            <h2 className="md:text-6xl text-3xl font-fredoka font-semibold text-center">
+              Onboarding Tasks
+            </h2>
+            <p className="text-[#ACACAC] text-lg max-w-lg mx-auto text-center">
+              Complete the following tasks to stand a chance to earn more
+              metadawgs as an early participant in the ecosystem
+            </p>
+          </FadeInUp>
 
-        <div className="quests-box w-full max-w-3xl sm:mt-4 mt-2">
-          <ul className="grid grid-cols-1 md:gap-5 gap-3">
-            <li>
-              <ReferralTile />
-            </li>
-            {quests.map((quest) => (
-              <li key={quest.id}>
-                <SlideInLeft>
-                  <QuestTile quest={quest} />
-                </SlideInLeft>
+          <div className="quests-box w-full max-w-3xl sm:mt-4 mt-2">
+            <ul className="grid grid-cols-1 md:gap-5 gap-3">
+              <li>
+                <ReferralTile />
               </li>
-            ))}
-          </ul>
+              <li>
+                <VerifyParticipate />
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      )}
+
       <div className="conquests space-y-14 lg:py-[5%] p-6">
         <div className="posts" id="Posts"></div>
 
@@ -148,12 +160,12 @@ function Page() {
               >
                 <span>Submit Entry</span>
               </Button>
-              <Link
-                href={"/tweet-examples"}
+              <Button
+                onClick={openTweetExamples}
                 className="rounded-full !px-6 !py-2 pt-2.5! font-medium text-[14px] cursor-pointer text-black bg-[#D5D5D5] shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80 block"
               >
                 <span>Tweet Examples</span>
-              </Link>
+              </Button>
             </div>
           </FadeInUp>
           {!!userToken && (

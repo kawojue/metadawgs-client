@@ -77,6 +77,7 @@ export const QuestTile = ({ quest, func, funcText }: Props) => {
             href={quest.link}
             target={!quest.inApp ? "_blank" : undefined}
             rel={!quest.inApp ? "noopener noreferrer" : undefined}
+            onClick={handleButtonClick}
           >
             <Button className="bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! sm:py-[22px]! py-[20px]! cursor-pointer hover:bg-[#FFBE00]/80!">
               {buttonContent}
