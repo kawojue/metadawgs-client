@@ -52,7 +52,7 @@ export function SignupAlert({
         </AlertDialogHeader>
         <AlertDialogFooter className="grid! grid-cols-2! gap-4 mt-2">
           <AlertDialogCancel
-            className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black shadow-[black]/40"
+            className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.3)]"
             onClick={() => onClose?.()}
           >
             Close
