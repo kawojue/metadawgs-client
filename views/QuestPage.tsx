@@ -46,7 +46,15 @@ function QuestPage() {
     //     `${XVerifyParticipate}-${userProfile?.user.username}`
     //   ) === "true";
 
-    return !userProfile?.eligibleToUseReferralCode || noCode;
+    if(!userProfile?.eligibleToUseReferralCode) {
+      return true;
+    }
+
+    if(noCode) {
+      return true;
+    }
+
+    return  false
   }, [userProfile?.eligibleToUseReferralCode, noCode]);
 
   const router = useRouter();
