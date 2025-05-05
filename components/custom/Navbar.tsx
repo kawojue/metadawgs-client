@@ -220,7 +220,7 @@ function Navbar() {
               />
             </svg>
 
-            <span>Sign In with X</span>
+            <span>Sign In With X</span>
           </Button>
         )}
         {!!userToken && (
@@ -406,7 +406,7 @@ function Navbar() {
                 />
               </svg>
 
-              <span>Sign In with X</span>
+              <span>Sign In With X</span>
             </Button>
           )}
           <AddressButton />

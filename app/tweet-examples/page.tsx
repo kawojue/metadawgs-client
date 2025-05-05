@@ -1,8 +1,16 @@
 import AvatarGroup from "@/components/custom/AvatarGroup";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
+import { TweetCard } from "@/components/custom/twitter";
+import { sampleTweets } from "@/lib/dummydata";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+
+export const metadata = {
+  title: "Tweet Example",
+  description:
+    "Explore example tweets and complete tasks to earn rewards as an early participant in the MetaDawgs ecosystem.",
+};
 
 function page() {
   return (
@@ -25,7 +33,13 @@ function page() {
           <AvatarGroup />
           <p className="text-xs font-semibold">30K Have Participated</p>
         </FadeInUp>
-        <div className="box min-h-32"></div>
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4 w-full max-w-screen-md  my-4">
+          {sampleTweets.map((tweet, index) => (
+            <FadeInUp key={index}>
+              <TweetCard tweet={tweet} />
+            </FadeInUp>
+          ))}
+        </div>
         <FadeInUp>
           <Link
             href={"/quests/#Posts"}

@@ -84,6 +84,11 @@ function QuestPage() {
   }
 
   function openTweetExamples() {
+    if (!userToken) {
+      setOpenSignup(true);
+      return;
+    }
+
     if (!isOnboardingCompleted) {
       setCompleteOnboarding(true);
       return;

@@ -214,3 +214,62 @@ export const pools = [
     ],
   },
 ];
+
+export const sampleTweets = [
+  {
+    id: 1,
+    username: "MetaDawgsUser",
+    handle: "@metadawgs_user",
+    profilePic: "/api/placeholder/48/48",
+    content:
+      "We don't chase clout—we build legacy.\nMeta Dawgs grind, survive, and earn bones and metadawgs through the storm.\nIf you're still here, you are the alpha.\nTagging in with @metadawgsX 🐾\n#MetaDawgs #SocialFi #EarnBones",
+    timestamp: "2h",
+    likes: 124,
+    retweets: 37,
+    comments: 9,
+    views: "1.2K",
+    verified: true,
+  },
+  {
+    id: 2,
+    username: "Web3Enthusiast",
+    handle: "@web3_fan",
+    profilePic: "/api/placeholder/48/48",
+    content:
+      "Just claimed my spot in the Meta Dawgs pack 🐶\nRed candles? I bark louder.\nEarning BONES with the realest—@metadawgsX\n#MetaDawgs #SocialFi #EarnBones",
+    timestamp: "5h",
+    likes: 89,
+    retweets: 14,
+    comments: 3,
+    views: "812",
+    verified: false,
+  },
+  {
+    id: 3,
+    username: "CryptoBuilder",
+    handle: "@crypto_builder",
+    profilePic: "/api/placeholder/48/48",
+    content:
+      "I've been through the dips, the rugs, and the noise. Still standing. Still building.\nEarning BONES with the dawgs @metadawgsX 🐾\n#MetaDawgs #EarnBones #Web3Survivor",
+    timestamp: "1d",
+    likes: 212,
+    retweets: 63,
+    comments: 17,
+    views: "2.4K",
+    verified: true,
+  },
+  {
+    id: 4,
+    username: "SocialFiExpert",
+    handle: "@socialfi_pro",
+    profilePic: "/api/placeholder/48/48",
+    content:
+      "If you're not earning BONES with @metadawgsX yet…\nYou're missing the whole point of SocialFi.\nJoin the pack or get left behind.\n#MetaDawgs #BonesSeason #Web3Grind",
+    timestamp: "7h",
+    likes: 156,
+    retweets: 42,
+    comments: 11,
+    views: "1.7K",
+    verified: false,
+  },
+];
