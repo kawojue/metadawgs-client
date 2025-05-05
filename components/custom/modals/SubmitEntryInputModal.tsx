@@ -33,6 +33,7 @@ function SubmitEntryInputModal({
         url: link,
       });
       setSuccess(true);
+      setLink("");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError(error.toString() || "An unexpected error occurred");
