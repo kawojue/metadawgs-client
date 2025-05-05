@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } else {
       setUserProfile(null);
     }
-  }, [setUserProfile, setUserToken, userToken]);
+  }, [userToken]);
 
   const login = () => {
     authWithTwitter();

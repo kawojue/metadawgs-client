@@ -28,6 +28,7 @@ function UserProfileButton({
 
   return (
     <Button
+      variant="ghost"
       className={
         isMobile
           ? "p-2 md:hidden cursor-pointer"
