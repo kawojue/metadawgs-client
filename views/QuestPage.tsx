@@ -171,7 +171,10 @@ function QuestPage() {
                 <div className="grid xl:grid-cols-3 md:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:place-items-center grid-cols-2 gap-3 mt-10">
                   {posts.map((post) => (
                     <FadeInUp key={post.id}>
-                      <PostCard post={post} />
+                      <PostCard
+                        post={post}
+                        isOnboardingCompleted={isOnboardingCompleted}
+                      />
                     </FadeInUp>
                   ))}
                 </div>

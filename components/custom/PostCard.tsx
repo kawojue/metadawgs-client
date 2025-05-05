@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { PostType } from "@/lib/type";
 import Image from "next/image";
 import { SubmitQuestAlert } from "./modals/SubmitQuestAlert";
@@ -12,17 +12,18 @@ import useLocalStorage from "use-local-storage";
 import { XCompleteOnboarding } from "@/lib/values";
 import useAuth from "@/hooks/use-auth";
 
-const PostCard = ({ post }: { post: PostType }) => {
+const PostCard = ({
+  post,
+  isOnboardingCompleted,
+}: {
+  post: PostType;
+  isOnboardingCompleted: boolean;
+}) => {
   const { userProfile } = useAuth();
   const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(post.hasEngaged);
   const [, setCompleteOnboarding] = useLocalStorage(XCompleteOnboarding, false);
-
-  const isOnboardingCompleted = useMemo(
-    () => !userProfile?.eligibleToUseReferralCode,
-    [userProfile?.eligibleToUseReferralCode]
-  );
 
   const handleSubmit = async () => {
     if (!isOnboardingCompleted) {
@@ -67,16 +68,25 @@ const PostCard = ({ post }: { post: PostType }) => {
           {post.description}
         </p>
         <div className="flex gap-3 items-center">
-          <a
-            href={post?.postUrl}
-            className="block"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]">
-              <span>View</span> <ArrowUpRightIcon size={11} />
+          {userProfile ? (
+            <a
+              href={post?.postUrl}
+              className="block"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]">
+                <span>View</span> <ArrowUpRightIcon size={11} />
+              </Button>
+            </a>
+          ) : (
+            <Button
+              className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-not-allowed text-black bg-gray-400"
+              disabled
+            >
+              <span>Login to View</span>
             </Button>
-          </a>
+          )}
           <Button
             className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]"
             onClick={handleSubmit}
