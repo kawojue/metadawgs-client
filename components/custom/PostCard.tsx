@@ -10,7 +10,7 @@ import { patchWithAuth } from "@/lib/api";
 import { toast } from "sonner";
 import useLocalStorage from "use-local-storage";
 import { XCompleteOnboarding } from "@/lib/values";
-import useAuth from "@/hooks/use-auth";
+import { cn } from "@/lib/utils";
 
 const PostCard = ({
   post,
@@ -19,7 +19,6 @@ const PostCard = ({
   post: PostType;
   isOnboardingCompleted: boolean;
 }) => {
-  const { userProfile } = useAuth();
   const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(post.hasEngaged);
@@ -68,27 +67,22 @@ const PostCard = ({
           {post.description}
         </p>
         <div className="flex gap-3 items-center">
-          {userProfile ? (
-            <a
-              href={post?.postUrl}
-              className="block"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]">
-                <span>View</span> <ArrowUpRightIcon size={11} />
-              </Button>
-            </a>
-          ) : (
-            <Button
-              className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]"
-              disabled
-            >
-              <span>View</span>
+          <a
+            href={post?.postUrl}
+            className="block"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]">
+              <span>View</span> <ArrowUpRightIcon size={11} />
             </Button>
-          )}
+          </a>
+
           <Button
-            className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]"
+            className={cn(
+              "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
+              isSubmitting && "cursor-wait"
+            )}
             onClick={handleSubmit}
             disabled={submitted || isSubmitting}
           >
