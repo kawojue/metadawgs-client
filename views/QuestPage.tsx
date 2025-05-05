@@ -48,7 +48,7 @@ function QuestPage() {
       ) === "true";
 
     return (
-      participateVerified || !userProfile?.eligibleToUseReferralCode || noCode
+      participateVerified && (!userProfile?.eligibleToUseReferralCode || noCode)
     );
   }, [
     userProfile?.eligibleToUseReferralCode,
