@@ -3,9 +3,7 @@
 import AvatarGroup from "@/components/custom/AvatarGroup";
 import SubmitEntryInputModal from "@/components/custom/modals/SubmitEntryInputModal";
 import PostCard from "@/components/custom/PostCard";
-import ReferralTile from "@/components/custom/ReferralTile";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
-import VerifyParticipate from "@/components/custom/VerifyParticipateTile";
 
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/use-auth";
@@ -23,6 +21,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import useLocalStorage from "use-local-storage";
+import Onboarding from "./Onboarding";
 
 function QuestPage() {
   const [userToken] = useLocalStorage(XUserToken, "");
@@ -46,15 +45,15 @@ function QuestPage() {
     //     `${XVerifyParticipate}-${userProfile?.user.username}`
     //   ) === "true";
 
-    if(!userProfile?.eligibleToUseReferralCode) {
+    if (!userProfile?.eligibleToUseReferralCode) {
       return true;
     }
 
-    if(noCode) {
+    if (noCode) {
       return true;
     }
 
-    return  false
+    return false;
   }, [userProfile?.eligibleToUseReferralCode, noCode]);
 
   const router = useRouter();
@@ -131,30 +130,8 @@ function QuestPage() {
       </div>
 
       <div className="posts" id="Onboarding"></div>
-      {!isOnboardingCompleted && (
-        <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center">
-          <FadeInUp className="space-y-2">
-            <h2 className="md:text-6xl text-3xl font-fredoka font-semibold text-center">
-              Onboarding Tasks
-            </h2>
-            <p className="text-[#ACACAC] text-lg max-w-lg mx-auto text-center">
-              Complete the following tasks to stand a chance to earn more
-              metadawgs as an early participant in the ecosystem
-            </p>
-          </FadeInUp>
-
-          <div className="quests-box w-full max-w-3xl mt-2">
-            <ul className="grid grid-cols-1 md:gap-5 gap-3">
-              <li>
-                <ReferralTile />
-              </li>
-              <li>
-                <VerifyParticipate />
-              </li>
-            </ul>
-          </div>
-        </div>
-      )}
+      {!!userProfile && !isOnboardingCompleted && <Onboarding />}
+      {!userProfile && <Onboarding />}
 
       <div className="conquests space-y-14 lg:py-[5%] p-6">
         <div className="posts" id="Posts"></div>
