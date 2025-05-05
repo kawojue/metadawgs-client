@@ -81,7 +81,7 @@ const PostCard = ({
             </a>
           ) : (
             <Button
-              className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-not-allowed text-black bg-gray-400"
+              className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]"
               disabled
             >
               <span>View</span>
