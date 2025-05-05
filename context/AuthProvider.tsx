@@ -3,7 +3,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { fetchWithAuth } from "@/lib/api";
 import { ProfileType } from "@/lib/type";
-import { useWallet } from "@solana/wallet-adapter-react";
+// import { useWallet } from "@solana/wallet-adapter-react";
 import { XUserProfile, XUserToken } from "@/lib/values";
 import { authWithTwitter } from "@/lib/utils";
 import useLocalStorage from "use-local-storage";
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { disconnect } = useWallet();
+  // const { disconnect } = useWallet();
 
   // Fetch user profile
   useEffect(() => {
@@ -76,7 +76,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setUserProfile(null);
     setUserToken("");
-    disconnect();
   };
 
   const auth = {
