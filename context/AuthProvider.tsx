@@ -8,7 +8,7 @@ import { XUserProfile, XUserToken } from "@/lib/values";
 import { authWithTwitter } from "@/lib/utils";
 import useLocalStorage from "use-local-storage";
 
-interface AuthContextType {
+export interface AuthContextType {
   userToken: string;
   userProfile: ProfileType | null;
   setUserProfile: (profile: ProfileType | null) => void;
@@ -19,7 +19,7 @@ interface AuthContextType {
   setUserToken: (token: string) => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userToken, setUserToken] = useLocalStorage<string>(XUserToken, "");
@@ -66,6 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } else {
       setUserProfile(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userToken]);
 
   const login = () => {
