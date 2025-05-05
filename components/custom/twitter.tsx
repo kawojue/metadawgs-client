@@ -42,7 +42,7 @@ const Tweet = ({
               {tweet.timestamp}
             </span>
           </div>
-          <div className="mb-3 whitespace-pre-line text-sm">
+          <div className="mb-3 line-clamp-2 text-sm">
             {formatTweetContent(tweet.content)}
           </div>
           <div className="flex justify-between text-gray-500 mt-3">
