@@ -84,7 +84,7 @@ const PostCard = ({
               className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-not-allowed text-black bg-gray-400"
               disabled
             >
-              <span>Login to View</span>
+              <span>View</span>
             </Button>
           )}
           <Button
