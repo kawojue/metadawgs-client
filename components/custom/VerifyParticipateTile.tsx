@@ -3,7 +3,7 @@
 import React from "react";
 import { SlideInLeft } from "./ScrollAnimation";
 import { QuestTile } from "./QuestTile";
-import { XVerifyParticipate } from "@/lib/values";
+import { XNoCode, XVerifyParticipate } from "@/lib/values";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/use-auth";
 import useLocalStorage from "use-local-storage";
@@ -14,6 +14,7 @@ const VerifyParticipate = () => {
     `${XVerifyParticipate}`,
     false
   );
+  const [noCode] = useLocalStorage<boolean>(XNoCode, false);
 
   const router = useRouter();
 
@@ -34,9 +35,14 @@ const VerifyParticipate = () => {
             inApp: true,
           }}
           func={() => {
-            if (userProfile?.eligibleToUseReferralCode) {
+            if (!userProfile) {
               return;
             }
+
+            if (userProfile.eligibleToUseReferralCode && !noCode) {
+              return;
+            }
+
             setParticipateVerified(true);
             router.push("/quests#Posts");
           }}
