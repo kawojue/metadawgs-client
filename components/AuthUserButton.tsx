@@ -1,15 +1,12 @@
 "use client";
 
-import useLocalStorage from "use-local-storage";
 import { Button } from "@/components/ui/button";
-import { XUserProfile, XUserToken } from "@/lib/values";
 import { authWithTwitter } from "@/lib/utils";
-import { ProfileType } from "@/lib/type";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import useAuth from "@/hooks/use-auth";
 
 function AuthUserButton() {
-  const [userToken] = useLocalStorage<string>(XUserToken, "");
-  const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
+  const { userToken, userProfile } = useAuth();
 
   function authWithX() {
     authWithTwitter();

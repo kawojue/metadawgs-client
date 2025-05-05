@@ -2,47 +2,29 @@
 
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { XRefreshPosts, XUserProfile, XUserToken } from "@/lib/values";
+import { XRefreshPosts } from "@/lib/values";
 import useLocalStorage from "use-local-storage";
-import { fetchWithAuth } from "@/lib/api";
-import { ProfileType } from "@/lib/type";
 import { generateRandomString } from "@/lib/common";
+import useAuth from "@/hooks/use-auth";
 
 export default function AuthHandler() {
   const router = useRouter();
+  const { setUserToken } = useAuth();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  const [, setUserToken] = useLocalStorage<string>(XUserToken, "");
-  const [, setUserProfile] = useLocalStorage<ProfileType | null>(
-    XUserProfile,
-    null
-  );
   const [, setRefreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
 
   useEffect(() => {
     if (token) {
       setUserToken(token);
-
-      async function getProfile() {
-        try {
-          const { data: profile } = await fetchWithAuth<ProfileType>(
-            "/auth/profile"
-          );
-          setUserProfile(profile);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
-      getProfile();
     }
 
     setRefreshPosts(generateRandomString(10));
-    
+
     if (window.opener) {
       window.close();
     }
-    
+
     router.replace("/quests#Posts");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);

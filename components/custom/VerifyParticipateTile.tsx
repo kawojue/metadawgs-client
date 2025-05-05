@@ -3,13 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { SlideInLeft } from "./ScrollAnimation";
 import { QuestTile } from "./QuestTile";
-import { useLocalStorage } from "@solana/wallet-adapter-react";
-import { XUserProfile, XVerifyParticipate } from "@/lib/values";
+import { XVerifyParticipate } from "@/lib/values";
 import { useRouter } from "next/navigation";
-import { ProfileType } from "@/lib/type";
+import useAuth from "@/hooks/use-auth";
 
 const VerifyParticipate = () => {
-  const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
+  const { userProfile } = useAuth();
   // const [, setParticipateVerified] = useLocalStorage(
   //   `${XVerifyParticipate}-${userProfile?.user.username}`,
   //   false

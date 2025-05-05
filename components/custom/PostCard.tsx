@@ -3,19 +3,20 @@
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import { useMemo, useState } from "react";
-import { PostType, ProfileType } from "@/lib/type";
+import { PostType } from "@/lib/type";
 import Image from "next/image";
 import { SubmitQuestAlert } from "./modals/SubmitQuestAlert";
 import { patchWithAuth } from "@/lib/api";
 import { toast } from "sonner";
 import useLocalStorage from "use-local-storage";
-import { XCompleteOnboarding, XUserProfile } from "@/lib/values";
+import { XCompleteOnboarding } from "@/lib/values";
+import useAuth from "@/hooks/use-auth";
 
 const PostCard = ({ post }: { post: PostType }) => {
+  const { userProfile } = useAuth();
   const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(post.hasEngaged);
-  const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
   const [, setCompleteOnboarding] = useLocalStorage(XCompleteOnboarding, false);
 
   const isOnboardingCompleted = useMemo(

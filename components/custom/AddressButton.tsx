@@ -7,20 +7,20 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { hashAddress } from "@/lib/common";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import useLocalStorage from "use-local-storage"; // your hook
-import { XMenuisOpen, XUserToken } from "@/lib/values";
+import useLocalStorage from "use-local-storage";
 import { postWithAuth } from "@/lib/api";
+import useAuth from "@/hooks/use-auth";
+import useMobileMenu from "@/hooks/use-mobile-menu";
 
 const LAST_SYNCED_WALLET_KEY = "last_synced_wallet"; // new key for localstorage
 
 function AddressButton() {
-  const [userToken] = useLocalStorage<string>(XUserToken, "");
-  const [, setMenuIsOpen] = useLocalStorage<boolean>(XMenuisOpen, false);
+  const { userToken } = useAuth();
+  const { setMenuIsOpen } = useMobileMenu();
+
   const { publicKey, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
-  // const [, setOpenSignUpAlert] = useLocalStorage(XOpenSignUpModal, false);
 
-  // New: Manage last synced wallet using localStorage
   const [lastSyncedWallet, setLastSyncedWallet] = useLocalStorage<
     string | null
   >(LAST_SYNCED_WALLET_KEY, null);

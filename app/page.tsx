@@ -12,7 +12,7 @@ export default function Home() {
     <div className="div bg-black text-white">
       <div className="banner min-h-dch size-full grid md:place-content-center relative z-[1]">
         <div className="inner grid md:grid-cols-[1fr_0.6fr]">
-          <div className="info md:space-y-6 space-y-4 p-6 md:p-10">
+          <div className="info md:space-y-6 space-y-4 p-6 md:p-10 max-[450px]:py-4">
             <FadeInUp>
               <h1 className="title md:text-[90px] text-5xl md:leading-[80px] tracking-[-2px] font-fredoka font-semibold uppercase">
                 MetaDawgs

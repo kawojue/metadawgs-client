@@ -1,15 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { XUserToken } from "@/lib/values";
+import useAuth from "@/hooks/use-auth";
 import {
   CircleArrowOutUpLeftIcon,
   CircleArrowOutUpRightIcon,
 } from "lucide-react";
-import useLocalStorage from "use-local-storage";
 
 function Other() {
-  const [userToken, setUserToken] = useLocalStorage<string>(XUserToken, "");
+  const { userToken, setUserToken } = useAuth();
 
   return (
     <div>

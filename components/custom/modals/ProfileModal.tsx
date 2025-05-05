@@ -10,14 +10,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { postWithAuth } from "@/lib/api";
-import { copyToClipboard } from "@/lib/common";
+import { copyToClipboard, formatNumberWithCommas } from "@/lib/common";
 import { TelegramIcon, TwitterIcon } from "@/lib/icons";
 import { ProfileType } from "@/lib/type";
-import { XUserProfile } from "@/lib/values";
 import { ArrowUpRightIcon, CircleX, CopyIcon } from "lucide-react";
 import { FormEvent, useState } from "react";
-import useLocalStorage from "use-local-storage";
 import { SubmitReferralAlert } from "./SubmitReferralAlert";
+import useAuth from "@/hooks/use-auth";
 
 function ProfileModal({
   open,
@@ -28,10 +27,7 @@ function ProfileModal({
   onClose: () => void;
   logout: () => void;
 }) {
-  const [userProfile, setUserProfile] = useLocalStorage<ProfileType | null>(
-    XUserProfile,
-    null
-  );
+  const { userProfile, setUserProfile } = useAuth();
   const [code, setCode] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -133,19 +129,25 @@ function ProfileModal({
             <div className="stats grid grid-cols-3 gap-3">
               <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
                 <span className="font-semibold text-xl">
-                  {userProfile?.user.tasks}
+                  {formatNumberWithCommas(
+                    Number(userProfile?.user.tasks) || 0,
+                    true
+                  )}
                 </span>
                 <span className="text-xs">Tasks Completed</span>
               </div>
               <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
                 <span className="font-semibold text-xl">
-                  {userProfile?.user.totalPoints || 0}
+                  {formatNumberWithCommas(
+                    Number(userProfile?.user.totalPoints) || 0,
+                    true
+                  )}
                 </span>
                 <span className="text-xs">Overall Points</span>
               </div>
               <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
                 <span className="font-semibold text-xl">
-                  {userProfile?.rank || 0}
+                  {userProfile?.rank || "Nil"}
                 </span>
                 <span className="text-xs">Rank Number</span>
               </div>

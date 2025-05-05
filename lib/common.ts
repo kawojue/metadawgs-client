@@ -110,6 +110,16 @@ export function getNumberSuffix(num: number): string {
 }
 
 // Function to format a number with commas as thousand separators
-export function formatNumberWithCommas(num: number): string {
+export function formatNumberWithCommas(
+  num: number,
+  shorten: boolean = false
+): string {
+  if (shorten) {
+    if (num >= 1_000_000_000)
+      return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
+    if (num >= 1_000_000)
+      return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+    if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+  }
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

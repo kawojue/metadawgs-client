@@ -8,15 +8,15 @@ import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import VerifyParticipate from "@/components/custom/VerifyParticipateTile";
 
 import { Button } from "@/components/ui/button";
+import useAuth from "@/hooks/use-auth";
 import { fetchWithAuth } from "@/lib/api";
-import { PostType, ProfileType } from "@/lib/type";
+import { PostType } from "@/lib/type";
 import { authWithTwitter } from "@/lib/utils";
 import {
   XCompleteOnboarding,
   XNoCode,
   XOpenSignUpModal,
   XRefreshPosts,
-  XUserProfile,
   XUserToken,
 } from "@/lib/values";
 import Image from "next/image";
@@ -26,7 +26,7 @@ import useLocalStorage from "use-local-storage";
 
 function QuestPage() {
   const [userToken] = useLocalStorage(XUserToken, "");
-  const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
+  const { userProfile } = useAuth();
   const [, setCompleteOnboarding] = useLocalStorage(XCompleteOnboarding, false);
   const [noCode] = useLocalStorage<boolean>(XNoCode, false);
   // const [participateVerified] = useLocalStorage(

@@ -13,8 +13,9 @@ import { postWithAuth } from "@/lib/api";
 import { SubmitReferralAlert } from "@/components/custom/modals/SubmitReferralAlert";
 import useLocalStorage from "use-local-storage";
 import { ProfileType } from "@/lib/type";
-import { XNoCode, XUserProfile } from "@/lib/values";
+import { XNoCode } from "@/lib/values";
 import Image from "next/image";
+import useAuth from "@/hooks/use-auth";
 
 function ReferralInputModal({
   open,
@@ -27,10 +28,7 @@ function ReferralInputModal({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [userProfile, setUserProfile] = useLocalStorage<ProfileType | null>(
-    XUserProfile,
-    null
-  );
+  const { userProfile, setUserProfile } = useAuth();
   const [, setNoCode] = useLocalStorage<boolean>(XNoCode, false);
 
   async function validateCode() {

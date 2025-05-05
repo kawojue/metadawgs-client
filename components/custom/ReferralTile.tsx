@@ -6,11 +6,12 @@ import { quests } from "@/lib/dummydata";
 import { QuestTile } from "./QuestTile";
 import ReferralInputModal from "./modals/ReferralInputModal";
 import useLocalStorage from "use-local-storage";
-import { ProfileType } from "@/lib/type";
-import { XNoCode, XUserProfile } from "@/lib/values";
+
+import { XNoCode } from "@/lib/values";
+import useAuth from "@/hooks/use-auth";
 
 function ReferralTile() {
-  const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
+  const { userProfile } = useAuth();
   const [noCode] = useLocalStorage<boolean>(XNoCode, false);
 
   if (!!userProfile) {
