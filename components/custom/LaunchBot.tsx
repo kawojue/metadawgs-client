@@ -14,7 +14,7 @@ export default function LaunchBot() {
   }
 
   return (
-    <Link href={"/leaderboard/telegram"} className="block">
+    <Link href={"#"} className="block">
       <Button
         className="rounded-full px-7! font-medium !py-6 bg-[#FFBE00] text-black"
         onClick={launchBot}
