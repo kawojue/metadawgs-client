@@ -1,31 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SlideInLeft } from "./ScrollAnimation";
 import { QuestTile } from "./QuestTile";
 import { XVerifyParticipate } from "@/lib/values";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/use-auth";
+import useLocalStorage from "use-local-storage";
 
 const VerifyParticipate = () => {
   const { userProfile } = useAuth();
-  // const [, setParticipateVerified] = useLocalStorage(
-  //   `${XVerifyParticipate}-${userProfile?.user.username}`,
-  //   false
-  // );
-  const [participateVerified, setParticipateVerified] =
-    useState<boolean>(false);
+  const [participateVerified, setParticipateVerified] = useLocalStorage(
+    `${XVerifyParticipate}`,
+    false
+  );
 
   const router = useRouter();
-
-  useEffect(() => {
-    const storedValue = localStorage.getItem(
-      `${XVerifyParticipate}-${userProfile?.user.username}`
-    );
-    if (storedValue) {
-      setParticipateVerified(true);
-    }
-  }, [userProfile?.user.username]);
 
   if (participateVerified) {
     return;
@@ -47,10 +37,7 @@ const VerifyParticipate = () => {
             if (userProfile?.eligibleToUseReferralCode) {
               return;
             }
-            localStorage.setItem(
-              `${XVerifyParticipate}-${userProfile?.user.username}`,
-              "true"
-            );
+            setParticipateVerified(true);
             router.push("/quests#Posts");
           }}
         />

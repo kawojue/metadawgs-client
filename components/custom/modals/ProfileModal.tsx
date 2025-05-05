@@ -127,7 +127,7 @@ function ProfileModal({
               </div>
             </div>
             <div className="stats grid grid-cols-3 gap-3">
-              <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
+              <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl sm:p-4 p-2 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
                 <span className="font-semibold sm:text-xl text-lg">
                   {formatNumberWithCommas(
                     Number(userProfile?.user.tasks) || 0,
@@ -136,7 +136,7 @@ function ProfileModal({
                 </span>
                 <span className="text-xs">Tasks Completed</span>
               </div>
-              <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
+              <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl sm:p-4 p-2 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
                 <span className="font-semibold sm:text-xl text-lg">
                   {formatNumberWithCommas(
                     Number(userProfile?.user.totalPoints) || 0,
@@ -145,7 +145,7 @@ function ProfileModal({
                 </span>
                 <span className="text-xs">Overall Points</span>
               </div>
-              <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
+              <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl sm:p-4 p-2 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
                 <span className="font-semibold sm:text-xl text-lg">
                   {userProfile?.rank || "Nil"}
                 </span>

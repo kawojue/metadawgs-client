@@ -55,7 +55,7 @@ function ReferralInputModal({
 
   function noCode() {
     setNoCode(true);
-    onClose?.();
+    setTimeout(() => onClose?.(), 0);
   }
 
   return (
