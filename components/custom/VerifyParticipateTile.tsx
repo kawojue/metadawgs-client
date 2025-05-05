@@ -7,6 +7,7 @@ import { XNoCode, XVerifyParticipate } from "@/lib/values";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/use-auth";
 import useLocalStorage from "use-local-storage";
+import { toast } from "sonner";
 
 const VerifyParticipate = () => {
   const { userProfile } = useAuth();
@@ -40,6 +41,7 @@ const VerifyParticipate = () => {
             }
 
             if (userProfile.eligibleToUseReferralCode && !noCode) {
+              toast("Please enter your referral code first");
               return;
             }
 
