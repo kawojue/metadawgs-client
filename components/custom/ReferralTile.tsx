@@ -15,11 +15,10 @@ function ReferralTile() {
   const [noCode] = useLocalStorage<boolean>(XNoCode, false);
 
   if (!!userProfile) {
-    if (userProfile?.eligibleToUseReferralCode) {
+    if (userProfile.eligibleToUseReferralCode) {
       if (noCode) {
-        return null; // If noCode is true, don't show the referral UI
+        return null;
       }
-
       return <ReferralTileContent />;
     } else {
       return null;
