@@ -2,6 +2,11 @@ import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { TelegramLeaderboardTable } from "@/components/custom/tables/leaderboard";
 import Image from "next/image";
 
+export const metadata = {
+  title: "Telegram Leaderboard",
+  description: "Explore the Telegram Leaderboard showcasing top contributors.",
+};
+
 function page() {
   return (
     <div className="flex flex-col gap-6 items-center justify-center p-4 sm:p-6 md:p-10 min-h-dch relative bg-black text-white z-1">
@@ -22,7 +27,7 @@ function page() {
       </FadeInUp>
       <FadeInUp>
         <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px] text-center">
-          This is for all the dwags, this is for all the grinders on Telegram,
+          This is for all the dawgs, this is for all the grinders on Telegram,
           spreading good vibes and energy, believing in a brighter day and a
           brighter future.
         </p>

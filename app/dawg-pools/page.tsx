@@ -1,6 +1,13 @@
 import AddressButton from "@/components/custom/AddressButton";
 import Pool from "@/components/custom/Pool";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
+import { pools } from "@/lib/dummydata";
+
+export const metadata = {
+  title: "DawgPools",
+  description:
+    "Explore DawgPools, a multi-reward revenue-generating pool for MetaDawgs.",
+};
 
 function page() {
   return (
@@ -10,17 +17,17 @@ function page() {
           Dawg Pools
         </h1>
         <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px] text-center">
-          This is for all the dwags, this is for all the grinders on X,
-          spreading good vibes and energy, believing in a brighter day and a
-          brighter future.
+          A multi-reward revenue-generating pool for metadawgs. Earn continuous
+          passive income for your holdings. Featuring multiple ecosystem staking
+          pools.
         </p>
         <AddressButton />
       </div>
 
-      <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 md:gap-12 max-w-screen-lg mx-auto">
-        {[1, 2, 3, 4].map((_, index) => (
+      <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 md:gap-10 max-w-screen-lg mx-auto">
+        {pools.map((pool, index) => (
           <FadeInUp key={index}>
-            <Pool />
+            <Pool pool={pool} />
           </FadeInUp>
         ))}
       </div>

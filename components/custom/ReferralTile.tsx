@@ -11,7 +11,7 @@ import { XNoCode, XUserProfile } from "@/lib/values";
 
 function ReferralTile() {
   const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
-  const [noCode] = useLocalStorage<boolean>(XNoCode, false); // Ensure the key is a string
+  const [noCode] = useLocalStorage<boolean>(XNoCode, false);
 
   if (!!userProfile) {
     if (userProfile?.eligibleToUseReferralCode) {

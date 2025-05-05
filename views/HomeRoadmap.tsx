@@ -17,7 +17,7 @@ const HomeRoadmap = () => {
                 <li className="flex items-start space-x-4">
                   <div className="w-10 h-10 min-w-10 min-h-10 bg-[url('/images/man-icon.png')] bg-contain bg-no-repeat bg-center"></div>
                   <span className="text-left md:max-w-sm md:text-3xl text-2xl font-fredoka font-medium">
-                    Phase {index + 1}: {phase}
+                    Wave {index + 1}: {phase}
                   </span>
                 </li>
               </SlideInRight>

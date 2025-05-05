@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 
 interface CountdownTimerProps {
   targetDate: string | number | Date;
+  isComing: boolean;
 }
 
-const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
+const CountdownTimer = ({ targetDate, isComing }: CountdownTimerProps) => {
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
     hours: 0,
@@ -71,10 +72,18 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
     return num.toString().padStart(2, "0");
   };
 
+  if (isComing) {
+    return (
+      <div className="text-center p-4">
+        <p className="text-xl font-bold capitalize font-fredoka">TO BE ANNOUNCED</p>
+      </div>
+    );
+  }
+
   if (isExpired) {
     return (
       <div className="text-center p-4">
-        <p className="text-xl font-bold">Countdown timeout!</p>
+        <p className="text-xl font-bold capitalize font-fredoka">Countdown timeout!</p>
       </div>
     );
   }

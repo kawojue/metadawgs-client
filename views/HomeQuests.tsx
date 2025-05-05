@@ -12,15 +12,15 @@ function Quests() {
         <h2 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-semibold uppercase">
           Complete Quests,
           <br />
-          Collect Sparks & Earn
+          Collect Bones, & Earn 
           <br />
-          MetaDawgs Token
+          MetaDawgs Token.
         </h2>
       </FadeInUp>
       <FadeInUp>
         <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px]">
-          Complete the following tasks to stand a chance to earn more metadawgs
-          as an early participant in the ecosystem
+          Complete the following tasks to stand a chance of earning more
+          metadawgs as a participant in the ecosystem.
         </p>
       </FadeInUp>
 

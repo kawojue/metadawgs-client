@@ -3,6 +3,12 @@ import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { XLeaderboardTable } from "@/components/custom/tables/leaderboard";
 import Image from "next/image";
 
+export const metadata = {
+  title: "X (Twitter) Community Leaderboard",
+  description:
+    "Explore the X (Twitter) Community Leaderboard showcasing top contributors.",
+};
+
 function page() {
   return (
     <div
@@ -26,7 +32,7 @@ function page() {
       </FadeInUp>
       <FadeInUp>
         <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px] text-center">
-          This is for all the dwags, this is for all the grinders on X,
+          This is for all the dawgs, this is for all the grinders on X,
           spreading good vibes and energy, believing in a brighter day and a
           brighter future.
         </p>

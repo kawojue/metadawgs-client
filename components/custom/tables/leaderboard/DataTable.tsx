@@ -45,9 +45,9 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-2xl bg-[#101928] border-[#E4E4E4]/10 overflow-hidden">
+    <div className="rounded-2xl pool after:rounded-2xl overflow-hidden">
       <Table>
-        <TableHeader className="bg-[#101928]">
+        <TableHeader className="">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="hover:bg-transparent">
               {headerGroup.headers.map((header) => (
@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className="bg-[#101928]">
+        <TableBody className="">
           {isLoading && (
             <TableRow>
               <TableCell

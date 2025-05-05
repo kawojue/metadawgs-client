@@ -30,7 +30,7 @@ type Metrics = {
 
 const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS as string;
 
-function PresaleForm() {
+function PresaleForm({ isComing }: { isComing: boolean }) {
   const { connection } = useConnection();
   const { setVisible } = useWalletModal();
   const { publicKey, sendTransaction, signTransaction } = useWallet();
@@ -294,7 +294,7 @@ function PresaleForm() {
             setExchangedToken(0);
           }}
         >
-          <CountdownTimer targetDate={metrics?.endTime} />
+          <CountdownTimer targetDate={metrics?.endTime} isComing={isComing} />
           <div className="progress w-full bg-white rounded-full h-4 overflow-hidden">
             <div
               className="bg-[#F9C580] h-full"
@@ -305,10 +305,14 @@ function PresaleForm() {
           </div>
           <div className="progress-value">
             <p className="text-lg">
-              Raised:{" "}
+              Total Raised:{" "}
               <strong>
-                Sol {formatNumberWithCommas(metrics?.totalSoldSol)} / Sol{" "}
-                {formatNumberWithCommas(metrics?.targetSol)}
+                Sol{" "}
+                {isComing
+                  ? "TBA"
+                  : formatNumberWithCommas(metrics?.totalSoldSol)}{" "}
+                / Sol{" "}
+                {isComing ? "TBA" : formatNumberWithCommas(metrics?.targetSol)}
               </strong>
             </p>
           </div>
@@ -321,17 +325,29 @@ function PresaleForm() {
             <p className="text-sm">Solana Balance</p>
           </div>
           <div className="amount-input flex flex-col gap-2">
-            <div className="flex justify-between items-center gap-4">
+            <div className="flex flex-col items-start gap-0 mb-2">
               <span className="text-lg font-semibold">
-                Min:{" "}
+                Hard Cap:{" "}
                 <span className="font-fredoka font-semibold">
-                  Sol {formatNumberWithCommas(metrics.minPerWallet || 0)}
+                  Sol {isComing ? "TBA" : formatNumberWithCommas(0)}
                 </span>
               </span>
               <span className="text-lg font-semibold">
-                Max:{" "}
+                Minimum Buy:{" "}
                 <span className="font-fredoka font-semibold">
-                  Sol {formatNumberWithCommas(metrics.maxPerWallet)}
+                  Sol{" "}
+                  {isComing
+                    ? "TBA"
+                    : formatNumberWithCommas(metrics.minPerWallet || 0)}
+                </span>
+              </span>
+              <span className="text-lg font-semibold">
+                Maximum Buy:{" "}
+                <span className="font-fredoka font-semibold">
+                  Sol{" "}
+                  {isComing
+                    ? "TBA"
+                    : formatNumberWithCommas(metrics.maxPerWallet)}
                 </span>
               </span>
             </div>
@@ -388,7 +404,7 @@ function PresaleForm() {
           {!publicKey && <p>Please connect your wallet.</p>}
           {isPresaleClosed && (
             <p className="text-center text-lg uppercase text-[#FFBE00] font-fredoka font-semibold tracking-wide">
-              Presale is closed
+              {isComing ? "COMING SOON" : "Presale is closed"}
             </p>
           )}
         </form>

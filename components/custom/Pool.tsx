@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { DawgIcon } from "@/lib/icons";
 import { ArrowUpRight, MinusIcon, PlusIcon } from "lucide-react";
@@ -7,39 +7,35 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import useLocalStorage from "use-local-storage";
 import { XComingSoonModal } from "@/lib/values";
+import { PoolType } from "@/lib/type";
 
-const Pool = () => {
+const Pool = ({ pool }: { pool: PoolType }) => {
   const [, setComingSoon] = useLocalStorage(XComingSoonModal, false);
 
   function addStake() {
-    setComingSoon(true)
+    setComingSoon(true);
   }
 
   function removeStake() {
-    setComingSoon(true)
+    setComingSoon(true);
   }
 
   function claimStake() {
-    setComingSoon(true) 
+    setComingSoon(true);
   }
 
   return (
     <div className="min-w-xs rounded-2xl pool col-span-1 sm:aspect-square after:rounded-2xl text-white p-6 md:p-8 flex flex-col justify-between gap-5">
       <div className="space-y-6 md:space-y-8">
         <div className="flex justify-between gap-4 items-center">
-          <div className="space-y-1">
+          <div className="">
             <span className="block text-[#D5D5D5] font-light text-[14px]">
-              Earn SOL
+              {pool.title}
             </span>
-            <span className="block">Stake MetaDawgs</span>
+            <span className="block">{pool.description}</span>
           </div>
 
-          <Image
-            src={"/images/solana.png"}
-            alt="Solana"
-            width={40}
-            height={40}
-          />
+          <Image src={pool.icon} alt={pool.currency} width={40} height={40} />
         </div>
         <div className="flex justify-between gap-4 items-center">
           <div className="space-y-1">
@@ -48,15 +44,21 @@ const Pool = () => {
             </span>
             <div className="flex items-center gap-2">
               <DawgIcon />
-              <span className="block uppercase">0 MetaDawgs</span>
+              <span className="block uppercase">{pool.stakes}</span>
             </div>
           </div>
 
           <div className="flex gap-3 items-center">
-            <button className="rounded-full border-white border-2 size-7 grid place-content-center place-items-center cursor-pointer hover:opacity-80 bg-green-500" onClick={addStake}>
+            <button
+              className="rounded-full border-white border-2 size-7 grid place-content-center place-items-center cursor-pointer hover:opacity-80 bg-green-500"
+              onClick={addStake}
+            >
               <PlusIcon size={18} />
             </button>
-            <button className="rounded-full border-white border-2 size-7 grid place-content-center place-items-center cursor-pointer hover:opacity-80 bg-red-500" onClick={removeStake}>
+            <button
+              className="rounded-full border-white border-2 size-7 grid place-content-center place-items-center cursor-pointer hover:opacity-80 bg-red-500"
+              onClick={removeStake}
+            >
               <MinusIcon size={18} />
             </button>
           </div>
@@ -66,38 +68,28 @@ const Pool = () => {
             <span className="block text-[#D5D5D5] font-light text-[14px]">
               Stakes Earned
             </span>
-            <span className="block uppercase">0 Dawgs</span>
+            <span className="block uppercase">{pool.stakesEarned}</span>
           </div>
 
-          <Button className="rounded-full bg-[#A078FF] text-black !px-5 !py-4" onClick={claimStake}>
+          <Button
+            className="rounded-full bg-[#A078FF] text-black !px-5 !py-4"
+            onClick={claimStake}
+          >
             Claim
           </Button>
         </div>
         <div className="grid gap-2">
-          <div className="flex justify-between gap-4 items-center">
-            <span className="block text-[#D5D5D5] font-light text-[15px]">
-            Total Staked
-            </span>
-            <span className="block text-[15px]">Coming Soon</span>
-          </div>
-          <div className="flex justify-between gap-4 items-center">
-            <span className="block text-[#D5D5D5] font-light text-[15px]">
-            Block Reward
-            </span>
-            <span className="block text-[15px]">67 Dawgs</span>
-          </div>
-          <div className="flex justify-between gap-4 items-center">
-            <span className="block text-[#D5D5D5] font-light text-[15px]">
-            Ends On
-            </span>
-            <span className="block text-[15px]">TBA</span>
-          </div>
-          <div className="flex justify-between gap-4 items-center">
-            <span className="block text-[#D5D5D5] font-light text-[15px]">
-            End Block
-            </span>
-            <span className="block text-[15px]">TBA</span>
-          </div>
+          {pool.details.map((detail, index) => (
+            <div
+              key={index}
+              className="flex justify-between gap-4 items-center"
+            >
+              <span className="block text-[#D5D5D5] font-light text-[15px]">
+                {detail.label}
+              </span>
+              <span className="block text-[15px]">{detail.value}</span>
+            </div>
+          ))}
         </div>
       </div>
       <div>

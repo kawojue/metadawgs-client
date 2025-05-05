@@ -48,9 +48,11 @@ export const tokenomics = [
         label: "Distribution",
         items: [
           "100% Public (fair launch, no VC dumps)",
-          "2% Dev wallet (for marketing & partnerships)",
           "Liquidity (permanently locked)",
           "0% Team Reserve (locked for 12+ months)",
+          "50 million for marketing, airdrops, and collabs (5%)",
+          "600 million for token allocation (60%)",
+          "350 million for liquidity (35%)",
         ],
       },
       {
@@ -62,27 +64,27 @@ export const tokenomics = [
 ];
 
 export const roadmap = [
-  "MetaDawgs community Campaigns launch",
-  "MetaDawgs Token Launch",
-  "MetaDawgs Partnerships",
-  "MetaDawgs NFT Collections",
+  "MetaDawgs Socialfi Campaigns launch",
+  "Metadawgs partnerships and collabs",
+  "Meta Dawgs TGE",
+  "Dawgs Pools and Dawgs bot launch",
 ];
 
 export const faqs = [
   {
     question: "What is Metadawgs?",
     answer:
-      "Metadawgs is a decentralized community-driven project focused on innovation and transparency.",
+      "Meta Dawgs is a movement for the ones who don’t fold—born in red candles and built to dominate.",
   },
   {
     question: "Is there a buy/sell tax? How is it used?",
     answer:
-      "Yes, a small tax is applied to each transaction and is used to support marketing, development, and liquidity.",
+      "No, there isn’t a buy and sell tax, but trading fees will be generated from the Dawg Bot tool and will be used for rewards distribution to holders.",
   },
   {
     question: "Can I stake Metadawgs?",
     answer:
-      "Staking options will be available in the near future, allowing holders to earn passive rewards.",
+      "Staking options will go live at TGE on dawgpools, allowing holders to earn generative income continuously.",
   },
   {
     question: "Does Metadawgs ensure security?",
@@ -102,51 +104,113 @@ export const faqs = [
   {
     question: "What are the benefits of holding Metadawgs?",
     answer:
-      "Holders get access to exclusive events, governance voting, staking rewards, and early access to new features.",
+      "Holders get access to exclusive drops and events, earn staking rewards, earn trading fees, and generative income.",
   },
 ];
 
 export const features = [
   {
-    title: "Token Launch On Solana",
+    title: "Token Launch on Solana",
     description:
-      "Trade Solana tokens in real-time with our intuitive tools and direct DEX integration for speed.",
+      "Seamlessly launch SPL tokens directly from the Cleo terminal with a user-friendly interface and robust backend powered by Solana.",
     icon: "/images/token-launch.svg",
   },
   {
     title: "Token Trading",
     description:
-      "Trade Solana tokens in real-time with our intuitive tools and direct DEX integration for speed.",
+      "Engage in real-time trading of Solana-based tokens within the terminal using our intuitive trading tools, and direct integration with decentralized exchanges (DEXes) for liquidity and speed.",
     icon: "/images/token-trading.svg",
   },
   {
     title: "Token Balance Insights",
     description:
-      "Create and execute airdrops effortlessly, and get access to multiple wallet address lists.",
+      "Check your wallet balances effortlessly for all Solana-native assets. We offer multi-wallet support and detailed breakdown of token holdings.",
     icon: "/images/token-insights.svg",
   },
   {
     title: "AI-Powered Integration",
     description:
-      "Trade Solana tokens in real-time with our intuitive tools and direct DEX integration for speed.",
+      "Advanced AI functionalities via Langchain. Empower users to analyze markets, strategize token launches, and optimize trades with precise insights.",
     icon: "/images/ai-integration.svg",
   },
   {
     title: "AMM Pool Deployment",
     description:
-      "Trade Solana tokens in real-time with our intuitive tools and direct DEX integration for speed.",
+      "Deploy and manage Automated Market Maker (AMM) pools on top Solana DEXes. Create liquidity pools to support token trading, and get access to tools for monitoring and rebalancing liquidity.",
     icon: "/images/amm-deployment.svg",
   },
   {
     title: "Community Airdrops",
     description:
-      "Create and execute airdrops effortlessly, and get access to multiple wallet address lists.",
+      "Simplify token distribution for community engagement. Create and execute airdrops effortlessly, and get access to multiple wallet address lists.",
     icon: "/images/community-airdrops.svg",
   },
   {
     title: "NFT Minting",
     description:
-      "Trade Solana tokens in real-time with our intuitive tools and direct DEX integration for speed.",
+      "Mint and manage Solana NFTs directly from the terminal. We offer batch and single NFT minting support, as well as easy integration with Metaplex standards.",
     icon: "/images/nft-minting.svg",
+  },
+];
+
+export const pools = [
+  {
+    title: "Earn SOL",
+    description: "Stake MetaDawgs",
+    icon: "/images/solana.png",
+    currency: "SOL",
+    stakes: "0 MetaDawgs",
+    stakesEarned: "0 SOL",
+    details: [
+      { label: "Total Staked", value: "Coming Soon" },
+      { label: "Block Reward", value: "TBA" },
+      { label: "Starts On", value: "TBA" },
+      { label: "End Block", value: "TBA" },
+    ],
+  },
+
+  {
+    title: "Earn MetaDawgs",
+    description: "Stake SOL",
+    icon: "/images/man-avatar.png",
+    currency: "MetaDawgs",
+    stakes: "0 SOL",
+    stakesEarned: "0 MetaDawgs",
+    details: [
+      { label: "Total Staked", value: "Coming Soon" },
+      { label: "Block Reward", value: "TBA" },
+      { label: "Starts On", value: "TBA" },
+      { label: "End Block", value: "TBA" },
+    ],
+  },
+
+  {
+    title: "Earn Dawgbot Fees",
+    description: "Stake MetaDawgs",
+    icon: "/images/man-avatar.png",
+    currency: "SOL",
+    stakes: "0 MetaDawgs",
+    stakesEarned: "0 SOL",
+    details: [
+      { label: "Total Staked", value: "Coming Soon" },
+      { label: "Block Reward", value: "TBA" },
+      { label: "Starts On", value: "TBA" },
+      { label: "End Block", value: "TBA" },
+    ],
+  },
+
+  {
+    title: "Earn USDC",
+    description: "Stake MetaDawgs",
+    icon: "/images/usdc.svg",
+    currency: "USDC",
+    stakes: "0 MetaDawgs",
+    stakesEarned: "0 USDC",
+    details: [
+      { label: "Total Staked", value: "Coming Soon" },
+      { label: "Block Reward", value: "TBA" },
+      { label: "Starts On", value: "TBA" },
+      { label: "End Block", value: "TBA" },
+    ],
   },
 ];

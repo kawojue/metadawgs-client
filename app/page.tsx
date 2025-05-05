@@ -11,21 +11,23 @@ export default function Home() {
   return (
     <div className="div bg-black text-white">
       <div className="banner min-h-dch size-full grid md:place-content-center relative z-[1]">
-        <div className="inner grid md:grid-cols-[1fr_0.8fr]">
+        <div className="inner grid md:grid-cols-[1fr_0.6fr]">
           <div className="info md:space-y-6 space-y-4 p-6 md:p-10">
             <FadeInUp>
-              <h1 className="title md:text-[94px] text-5xl md:leading-[80px] tracking-[-2px] font-fredoka font-semibold uppercase">
+              <h1 className="title md:text-[90px] text-5xl md:leading-[80px] tracking-[-2px] font-fredoka font-semibold uppercase">
                 MetaDawgs
                 <br />
-                For the bold &<br />
-                the grinders.
+                Born in the dip,
+                <br />
+                built to dominate
               </h1>
             </FadeInUp>
             <FadeInUp className="md:space-y-6 space-y-4">
               <p className="text-xl md:text-2xl xl:text-[#ACACAC] text-white md:leading-[35px] max-w-[600px]">
-                This is for all the dawgs, this is for all the grinders on X,
-                spreading good vibes and energy, believing in a brighter day and
-                a brighter future.
+                We’ve seen the bottom, felt the fear, and kept moving. Meta
+                Dawgs don’t fold—we adapt, evolve, and lead. Born in the
+                trenches of the digital frontier, we turn volatility into
+                opportunity. Join the pack. Own your story.
               </p>
               <Link className="block" href={"/#Quests"} scroll={true}>
                 <Button className="bg-[#9D4EDD] rounded-full px-5! py-6! text-base cursor-pointer hover:bg-[#9D4EDD]/80!">

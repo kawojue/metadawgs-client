@@ -3,6 +3,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
+export const metadata = {
+  title: "Telegram Invite Race",
+  description:
+    "Join the Telegram Invite Race and compete to climb the leaderboard by inviting friends.",
+};
+
 function page() {
   return (
     <div>
@@ -57,8 +63,8 @@ function page() {
                 </span>
                 <span className="text-[#ACACAC] md:text-xl text-lg">
                   Share your link far and wide! Every friend you bring in nets
-                  you <strong className="text-white">5 Points</strong>. Rack up points, crush the
-                  leaderboard, and prove
+                  you <strong className="text-white">5 Points</strong>. Rack up
+                  points, crush the leaderboard, and prove
                   {"you’re"} the ultimate champion!
                 </span>
               </div>

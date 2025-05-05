@@ -17,7 +17,7 @@ const Feature = ({
       <h3 className="title font-semibold font-fredoka text-2xl">
         {feature.title}
       </h3>
-      <p className="text-[#ACACAC] text-xl">{feature.description}</p>
+      <p className="text-[#ACACAC] text-lg">{feature.description}</p>
     </div>
   );
 };

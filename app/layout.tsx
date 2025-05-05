@@ -23,8 +23,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Meta Dawgs",
-  description: "Complete Quests, Collect Sparks & Earn MetaDawgs Token",
+  title: {
+    template: "Meta Dawgs | %s",
+    default: "Meta Dawgs",
+  },
+  description: "Complete Quests & Earn MetaDawgs Token",
   keywords: siteConfig.keywords,
   authors: { name: siteConfig.author },
   twitter: {

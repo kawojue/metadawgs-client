@@ -123,3 +123,16 @@ export interface Quest {
   adminId: string;
   participationCount: number;
 }
+
+export interface PoolType {
+  title: string;
+  description: string;
+  icon: string;
+  currency: string;
+  stakes: string;
+  stakesEarned: string;
+  details: {
+    label: string;
+    value: string;
+  }[];
+}
