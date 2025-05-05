@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import ComingSoonModal from "@/components/custom/modals/ComingSoonModal";
 import CompleteOnboardingModal from "@/components/custom/modals/CompleteOnboardingModal";
+import { AuthProvider } from "@/context/AuthProvider";
 
 const IGNORED_ROUTE_PATTERNS = [/^\/auth/, /^\/admin(\/.*)?$/];
 
@@ -31,35 +32,41 @@ function MainLayout({ children }: { children: ReactNode }) {
     regex.test(pathname!)
   );
 
+  if (isIgnoredRoute) {
+    return <div className="font-sans content min-h-dch">{children}</div>;
+  }
+
   return (
-    <div className="font-sans">
-      {!isIgnoredRoute && <Navbar />}
-      <div
-        className={cn(
-          "content min-h-dch",
-          !isIgnoredRoute && "bg-black text-white overflow-hidden"
+    <AuthProvider>
+      <div className="font-sans">
+        <Navbar />
+        <div
+          className={cn(
+            "content min-h-dch",
+            "bg-black text-white overflow-hidden"
+          )}
+        >
+          {children}
+        </div>
+        {openSignup && (
+          <SignupAlert open={openSignup} onClose={() => setOpenSignup(false)} />
         )}
-      >
-        {children}
+        {comingSoon && (
+          <ComingSoonModal
+            open={comingSoon}
+            onClose={() => setComingSoon(false)}
+          />
+        )}
+        {completeOnboarding && (
+          <CompleteOnboardingModal
+            open={completeOnboarding}
+            onClose={() => setCompleteOnboarding(false)}
+          />
+        )}
+        <Footer />
+        <Veil />
       </div>
-      {openSignup && (
-        <SignupAlert open={openSignup} onClose={() => setOpenSignup(false)} />
-      )}
-      {comingSoon && (
-        <ComingSoonModal
-          open={comingSoon}
-          onClose={() => setComingSoon(false)}
-        />
-      )}
-      {completeOnboarding && (
-        <CompleteOnboardingModal
-          open={completeOnboarding}
-          onClose={() => setCompleteOnboarding(false)}
-        />
-      )}
-      {!isIgnoredRoute && <Footer />}
-      <Veil />
-    </div>
+    </AuthProvider>
   );
 }
 

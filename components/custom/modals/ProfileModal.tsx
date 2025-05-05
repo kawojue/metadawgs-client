@@ -105,7 +105,7 @@ function ProfileModal({
               <span className="sr-only">Close</span>
             </button>
           </DialogHeader>
-          <div className="grid gap-5 py-4 max-h-[calc(85svh_-_100px)] px-4 overflow-y-auto">
+          <div className="grid gap-5 py-4 max-h-[calc(85svh_-_100px)] px-1 overflow-y-auto">
             <div className="profile flex flex-col gap-2 items-center justify-center">
               <Avatar className="w-20 h-20 min-w-20 min-h-20">
                 <AvatarImage src={userProfile?.user.avatar} />
@@ -128,7 +128,7 @@ function ProfileModal({
             </div>
             <div className="stats grid grid-cols-3 gap-3">
               <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
-                <span className="font-semibold text-xl">
+                <span className="font-semibold sm:text-xl text-lg">
                   {formatNumberWithCommas(
                     Number(userProfile?.user.tasks) || 0,
                     true
@@ -137,7 +137,7 @@ function ProfileModal({
                 <span className="text-xs">Tasks Completed</span>
               </div>
               <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
-                <span className="font-semibold text-xl">
+                <span className="font-semibold sm:text-xl text-lg">
                   {formatNumberWithCommas(
                     Number(userProfile?.user.totalPoints) || 0,
                     true
@@ -146,7 +146,7 @@ function ProfileModal({
                 <span className="text-xs">Overall Points</span>
               </div>
               <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-4 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
-                <span className="font-semibold text-xl">
+                <span className="font-semibold sm:text-xl text-lg">
                   {userProfile?.rank || "Nil"}
                 </span>
                 <span className="text-xs">Rank Number</span>

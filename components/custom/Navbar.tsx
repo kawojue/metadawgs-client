@@ -35,7 +35,7 @@ function Navbar() {
       <NavLinks closeMenu={closeMenu} />
 
       {/* Desktop Auth Buttons */}
-      <div className="others md:flex hidden gap-4">
+      <div className="others md:flex hidden gap-4 items-center">
         {!userToken ? (
           <Button
             className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
