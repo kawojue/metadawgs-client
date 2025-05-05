@@ -51,7 +51,7 @@ export default function Home() {
 
           <FadeIn className="bg-red-400s md:w-[calc(100svh_-_150px)] w-sm absolute right-0 bottom-0 -z-[1]">
             <Image
-              className=""
+              className="max-[480px]:opacity-50"
               src="/man.png"
               alt="MetaDawgs"
               width={830}

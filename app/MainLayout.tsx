@@ -37,7 +37,7 @@ function MainLayout({ children }: { children: ReactNode }) {
       <div
         className={cn(
           "content min-h-dch",
-          !isIgnoredRoute && "bg-black text-white"
+          !isIgnoredRoute && "bg-black text-white overflow-hidden"
         )}
       >
         {children}

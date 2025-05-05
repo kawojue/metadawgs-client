@@ -1,4 +1,4 @@
-import { FadeInUp, SlideInRight } from "@/components/custom/ScrollAnimation";
+import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import {
   Accordion,
   AccordionContent,
@@ -29,7 +29,7 @@ function FAQ() {
           className="w-full max-w-3xl mx-auto mt-4"
         >
           {faqs.map((faq, index) => (
-            <SlideInRight key={index}>
+            <FadeInUp key={index}>
               <AccordionItem
                 value={`item-${index}`}
                 className="border-white/4 text-base"
@@ -46,7 +46,7 @@ function FAQ() {
                   <p className="text-start">{faq.answer}</p>
                 </AccordionContent>
               </AccordionItem>
-            </SlideInRight>
+            </FadeInUp>
           ))}
         </Accordion>
       </div>
