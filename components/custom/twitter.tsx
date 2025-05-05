@@ -25,7 +25,7 @@ const Tweet = ({
   return (
     <div className="bg-black border border-gray-700 p-4 rounded-xl shadow-sm h-full overflow-hidden">
       <div className="flex items-start gap-4">
-        <Avatar className="w-10 h-10 min-w-10 min-h-10">
+        <Avatar className="sm:w-10 sm:h-10 sm:min-w-10 sm:min-h-10 w-8 h-8 min-w-8 min-h-8">
           <AvatarImage src={tweet.profilePic} alt={tweet.username} />
           <AvatarFallback className="bg-gradient-to-r from-yellow-400 to-orange-500"></AvatarFallback>
         </Avatar>
@@ -42,7 +42,7 @@ const Tweet = ({
               {tweet.timestamp}
             </span>
           </div>
-          <div className="mb-3 line-clamp-2 text-sm">
+          <div className="mb-3 text-sm">
             {formatTweetContent(tweet.content)}
           </div>
           <div className="flex justify-between text-gray-500 mt-3">
@@ -108,7 +108,7 @@ const formatTweetContent = (content: string): ReactNode => {
               key={wordIndex}
               className="text-blue-500 hover:underline cursor-pointer"
             >
-              {word}
+              {word}{" "}
             </span>
           );
         } else if (word.startsWith("@")) {
@@ -117,7 +117,7 @@ const formatTweetContent = (content: string): ReactNode => {
               key={wordIndex}
               className="text-blue-500 hover:underline cursor-pointer"
             >
-              {word}
+              {word}{" "}
             </span>
           );
         }
