@@ -33,7 +33,11 @@ function MainLayout({ children }: { children: ReactNode }) {
   );
 
   if (isIgnoredRoute) {
-    return <div className="font-sans content min-h-dch">{children}</div>;
+    return (
+      <AuthProvider>
+        <div className="font-sans content min-h-dch">{children}</div>
+      </AuthProvider>
+    );
   }
 
   return (
