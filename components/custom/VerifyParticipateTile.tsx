@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SlideInLeft } from "./ScrollAnimation";
 import { QuestTile } from "./QuestTile";
 import { useLocalStorage } from "@solana/wallet-adapter-react";
@@ -10,11 +10,27 @@ import { ProfileType } from "@/lib/type";
 
 const VerifyParticipate = () => {
   const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
-  const [, setParticipateVerified] = useLocalStorage(
-    `${XVerifyParticipate}-${userProfile?.user.username}`,
-    false
-  );
+  // const [, setParticipateVerified] = useLocalStorage(
+  //   `${XVerifyParticipate}-${userProfile?.user.username}`,
+  //   false
+  // );
+  const [participateVerified, setParticipateVerified] =
+    useState<boolean>(false);
+
   const router = useRouter();
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem(
+      `${XVerifyParticipate}-${userProfile?.user.username}`
+    );
+    if (storedValue) {
+      setParticipateVerified(true);
+    }
+  }, [userProfile?.user.username]);
+
+  if (participateVerified) {
+    return;
+  }
 
   return (
     <>
@@ -32,7 +48,10 @@ const VerifyParticipate = () => {
             if (userProfile?.eligibleToUseReferralCode) {
               return;
             }
-            setParticipateVerified(true);
+            localStorage.setItem(
+              `${XVerifyParticipate}-${userProfile?.user.username}`,
+              "true"
+            );
             router.push("/quests#Posts");
           }}
         />

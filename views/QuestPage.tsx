@@ -30,10 +30,10 @@ function QuestPage() {
   const [userProfile] = useLocalStorage<ProfileType | null>(XUserProfile, null);
   const [, setCompleteOnboarding] = useLocalStorage(XCompleteOnboarding, false);
   const [noCode] = useLocalStorage<boolean>(XNoCode, false);
-  const [participateVerified] = useLocalStorage(
-    `${XVerifyParticipate}-${userProfile?.user.username}`,
-    false
-  );
+  // const [participateVerified] = useLocalStorage(
+  //   `${XVerifyParticipate}-${userProfile?.user.username}`,
+  //   false
+  // );
 
   const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -41,12 +41,20 @@ function QuestPage() {
   const [showEntryInput, setShowEntryInput] = useState<boolean>(false);
   const [, setOpenSignup] = useLocalStorage(XOpenSignUpModal, false);
 
-  const isOnboardingCompleted = useMemo(
-    () =>
-      (!userProfile?.eligibleToUseReferralCode || noCode) &&
-      participateVerified,
-    [userProfile?.eligibleToUseReferralCode, noCode, participateVerified]
-  );
+  const isOnboardingCompleted = useMemo(() => {
+    const participateVerified =
+      localStorage.getItem(
+        `${XVerifyParticipate}-${userProfile?.user.username}`
+      ) === "true";
+
+    return (
+      participateVerified || !userProfile?.eligibleToUseReferralCode || noCode
+    );
+  }, [
+    userProfile?.eligibleToUseReferralCode,
+    userProfile?.user.username,
+    noCode,
+  ]);
 
   const router = useRouter();
 
