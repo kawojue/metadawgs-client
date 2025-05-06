@@ -8,12 +8,12 @@ const siteConfig = {
   favicon: "/assets/favicon.ico",
   robot: "/robots.txt",
   socialLinks: {
-    twitter: "https://twitter.com/metadawgs",
-    telegram: "https://t.me/metadawgs",
-    facebook: "https://facebook.com/metadawgs",
-    instagram: "https://instagram.com/metadawgs",
-    linkedin: "https://linkedin.com/company/metadawgs",
-    github: "https://github.com/metadawgs",
+    twitter: "https://twitter.com/Meta_Dawgs",
+    telegram: "https://t.me/meta_dawgs",
+    facebook: "https://facebook.com/meta_dawgs",
+    instagram: "https://instagram.com/meta_dawgs",
+    linkedin: "https://linkedin.com/company/meta_dawgs",
+    github: "https://github.com/meta_dawgs",
   },
   url: "https://metadawgs.com",
 };
