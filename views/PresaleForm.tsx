@@ -307,12 +307,12 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
             <p className="text-lg">
               Total Raised:{" "}
               <strong>
-                SOL{" "}
                 {isComing
                   ? "TBA"
                   : formatNumberWithCommas(metrics?.totalSoldSol)}{" "}
-                / SOL{" "}
-                {isComing ? "TBA" : formatNumberWithCommas(metrics?.targetSol)}
+                SOL /
+                {isComing ? "TBA" : formatNumberWithCommas(metrics?.targetSol)}{" "}
+                SOL
               </strong>
             </p>
           </div>
