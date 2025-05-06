@@ -118,7 +118,7 @@ function QuestPage() {
         </FadeInUp>
         <FadeInUp className="pips flex gap-x-4 gap-y-2 flex-wrap items-center justify-center">
           <AvatarGroup />
-          <p className="text-xs font-semibold">30K Have Participated</p>
+          <p className="text-xs font-semibold">A Lot Have Participated</p>
         </FadeInUp>
       </div>
 

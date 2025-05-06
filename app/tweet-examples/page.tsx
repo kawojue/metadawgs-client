@@ -31,7 +31,7 @@ function page() {
         </FadeInUp>
         <FadeInUp className="pips flex gap-x-4 gap-y-2 flex-wrap items-center justify-center">
           <AvatarGroup />
-          <p className="text-xs font-semibold">30K Have Participated</p>
+          <p className="text-xs font-semibold">A Lot Have Participated</p>
         </FadeInUp>
         <div className="grid md:grid-cols-2 grid-cols-1 gap-4 w-full max-w-screen-md  my-4">
           {sampleTweets.map((tweet, index) => (
