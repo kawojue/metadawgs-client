@@ -16,6 +16,8 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { debounce, formatNumberWithCommas } from "@/lib/common";
 import NumberInput from "@/components/custom/NumberInput";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import useLocalStorage from "use-local-storage";
+import { XComingSoonModal } from "@/lib/values";
 // import { SignupAlert } from "@/components/custom/modals/SignupAlert";
 
 type Metrics = {
@@ -46,8 +48,14 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
   const [isInitializing, setIsInitializing] = useState<boolean>(true);
   const [walletBalance, setWalletBalance] = useState<number>(0);
   // const [openSignUpAlert, setOpenSignUpAlert] = useState<boolean>(false);
+  const [, setComingSoon] = useLocalStorage(XComingSoonModal, false);
 
   const handlePurchase = useCallback(async () => {
+    if (isComing) {
+      setComingSoon(true);
+      return;
+    }
+
     if (!publicKey || !sendTransaction || !signTransaction) {
       setError("Wallet not connected or sign/send functions unavailable.");
       return;
@@ -377,7 +385,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
             <Button
               className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed!"
               onClick={handlePurchase}
-              disabled={isLoading || exchanging || !amount}
+              disabled={isLoading || exchanging}
             >
               {isLoading ? "Processing..." : "Buy Tokens"}
               <ArrowUpRightIcon />
