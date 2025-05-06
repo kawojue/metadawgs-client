@@ -131,6 +131,7 @@ export interface PoolType {
   currency: string;
   stakes: string;
   stakesEarned: string;
+  stakesIcon: string;
   details: {
     label: string;
     value: string;

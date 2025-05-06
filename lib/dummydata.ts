@@ -160,6 +160,7 @@ export const pools = [
     icon: "/images/solana.png",
     currency: "SOL",
     stakes: "0 MetaDawgs",
+    stakesIcon: '/images/man-avatar.png',
     stakesEarned: "0 SOL",
     details: [
       { label: "Total Staked", value: "Coming Soon" },
@@ -175,6 +176,7 @@ export const pools = [
     icon: "/images/man-avatar.png",
     currency: "MetaDawgs",
     stakes: "0 SOL",
+    stakesIcon: '/images/solana.png',
     stakesEarned: "0 MetaDawgs",
     details: [
       { label: "Total Staked", value: "Coming Soon" },
@@ -190,6 +192,7 @@ export const pools = [
     icon: "/images/man-avatar.png",
     currency: "SOL",
     stakes: "0 MetaDawgs",
+    stakesIcon: '/images/man-avatar.png',
     stakesEarned: "0 SOL",
     details: [
       { label: "Total Staked", value: "Coming Soon" },
@@ -205,6 +208,7 @@ export const pools = [
     icon: "/images/usdc.svg",
     currency: "USDC",
     stakes: "0 MetaDawgs",
+    stakesIcon: '/images/usdc.svg',
     stakesEarned: "0 USDC",
     details: [
       { label: "Total Staked", value: "Coming Soon" },
