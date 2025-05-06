@@ -79,7 +79,7 @@ export const faqs = [
   {
     question: "Is there a buy/sell tax? How is it used?",
     answer:
-      "No, there isn’t a buy and sell tax, but trading fees will be generated from the Dawg Bot tool and will be used for rewards distribution to holders.",
+      "No, there isn’t a buy-and-sell tax, but trading fees will be generated from the Dawg Bot tool and used to distribute rewards to holders.",
   },
   {
     question: "Can I stake Metadawgs?",
@@ -104,7 +104,7 @@ export const faqs = [
   {
     question: "What are the benefits of holding Metadawgs?",
     answer:
-      "Holders get access to exclusive drops and events, earn staking rewards, earn trading fees, and generative income.",
+      "Holders can access exclusive drops and events, earn staking rewards, trading fees, and generative income.",
   },
 ];
 
@@ -222,7 +222,7 @@ export const sampleTweets = [
     handle: "@metadawgs_user",
     profilePic: "/api/placeholder/48/48",
     content:
-      "We don't chase clout—we build legacy.\nMeta Dawgs grind, survive, and earn bones and metadawgs through the storm.\nIf you're still here, you are the alpha.\nTagging in with @metadawgsX 🐾\n#MetaDawgs #SocialFi #EarnBones",
+      "We don't chase clout—we build legacy.\nMeta Dawgs grind, survive, and earn bones and metadawgs through the storm.\nIf you're still here, you are the alpha.\nTagging in with @Meta_Dawgs 🐾\n#MetaDawgs #SocialFi #EarnBones",
     timestamp: "2h",
     likes: 124,
     retweets: 37,
@@ -236,7 +236,7 @@ export const sampleTweets = [
     handle: "@web3_fan",
     profilePic: "/api/placeholder/48/48",
     content:
-      "Just claimed my spot in the Meta Dawgs pack 🐶\nRed candles? I bark louder.\nEarning BONES with the realest—@metadawgsX\n#MetaDawgs #SocialFi #EarnBones",
+      "Just claimed my spot in the Meta Dawgs pack 🐶\nRed candles? I bark louder.\nEarning BONES with the realest—@Meta_Dawgs\n#MetaDawgs #SocialFi #EarnBones",
     timestamp: "5h",
     likes: 89,
     retweets: 14,
@@ -250,7 +250,7 @@ export const sampleTweets = [
     handle: "@crypto_builder",
     profilePic: "/api/placeholder/48/48",
     content:
-      "I've been through the dips, the rugs, and the noise. Still standing. Still building.\nEarning BONES with the dawgs @metadawgsX 🐾\n#MetaDawgs #EarnBones #Web3Survivor",
+      "I've been through the dips, the rugs, and the noise. Still standing. Still building.\nEarning BONES with the dawgs @Meta_Dawgs 🐾\n#MetaDawgs #EarnBones #Web3Survivor",
     timestamp: "1d",
     likes: 212,
     retweets: 63,
@@ -264,7 +264,7 @@ export const sampleTweets = [
     handle: "@socialfi_pro",
     profilePic: "/api/placeholder/48/48",
     content:
-      "If you're not earning BONES with @metadawgsX yet…\nYou're missing the whole point of SocialFi.\nJoin the pack or get left behind.\n#MetaDawgs #BonesSeason #Web3Grind",
+      "If you're not earning BONES with @Meta_Dawgs yet…\nYou're missing the whole point of SocialFi.\nJoin the pack or get left behind.\n#MetaDawgs #BonesSeason #Web3Grind",
     timestamp: "7h",
     likes: 156,
     retweets: 42,

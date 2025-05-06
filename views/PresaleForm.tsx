@@ -329,25 +329,25 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
               <span className="text-lg font-semibold">
                 Hard Cap:{" "}
                 <span className="font-fredoka font-semibold">
-                  SOL {isComing ? "TBA" : formatNumberWithCommas(0)}
+                  {isComing ? "TBA" : formatNumberWithCommas(0)} SOL
                 </span>
               </span>
               <span className="text-lg font-semibold">
                 Minimum Buy:{" "}
                 <span className="font-fredoka font-semibold">
-                  SOL{" "}
                   {isComing
                     ? "TBA"
-                    : formatNumberWithCommas(metrics.minPerWallet || 0)}
+                    : formatNumberWithCommas(metrics.minPerWallet || 0)}{" "}
+                  SOL
                 </span>
               </span>
               <span className="text-lg font-semibold">
                 Maximum Buy:{" "}
                 <span className="font-fredoka font-semibold">
-                  SOL{" "}
                   {isComing
                     ? "TBA"
-                    : formatNumberWithCommas(metrics.maxPerWallet)}
+                    : formatNumberWithCommas(metrics.maxPerWallet)}{" "}
+                  SOL
                 </span>
               </span>
             </div>
