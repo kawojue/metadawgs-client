@@ -208,7 +208,7 @@ export const pools = [
     icon: "/images/usdc.svg",
     currency: "USDC",
     stakes: "0 MetaDawgs",
-    stakesIcon: '/images/usdc.svg',
+    stakesIcon: '/images/man-avatar.png',
     stakesEarned: "0 USDC",
     details: [
       { label: "Total Staked", value: "Coming Soon" },
