@@ -51,7 +51,7 @@ export const x_columns: ColumnDef<XLeaderboardType>[] = [
   },
   {
     accessorKey: "points",
-    header: () => <div className="text-white">Points</div>,
+    header: () => <div className="text-white">Bones</div>,
     cell: ({ row }) => {
       // const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF"];
       // const color = colors[Math.floor(Math.random() * colors.length)];

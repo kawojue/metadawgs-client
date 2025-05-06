@@ -57,7 +57,7 @@ const PostCard = ({
       <div className="info space-y-3 p-4 sm:p-5">
         <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">
           <div className="point-pill text-xs font-medium bg-[#101928] p-1.5 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
-            {post.point} Points
+            {post.point} Bones
           </div>
         </div>
         <h3 className="title font-semibold font-fredoka text-xl line-clamp-2">

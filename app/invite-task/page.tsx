@@ -63,7 +63,7 @@ function page() {
                 </span>
                 <span className="text-[#ACACAC] md:text-xl text-lg">
                   Share your link far and wide! Every friend you bring in nets
-                  you <strong className="text-white">5 Points</strong>. Rack up
+                  you <strong className="text-white">5 Bones</strong>. Rack up
                   points, crush the leaderboard, and prove
                   {"you’re"} the ultimate champion!
                 </span>

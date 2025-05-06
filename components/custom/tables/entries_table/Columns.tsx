@@ -48,7 +48,7 @@ export const columns: ColumnDef<EntryType>[] = [
   },
   {
     accessorKey: "point",
-    header: () => <div className="">Points</div>,
+    header: () => <div className="">Bones</div>,
     cell: ({ row }) => (
       <div className="">
         {formatNumberWithCommas(Number(row.original.point.value) || 0)}

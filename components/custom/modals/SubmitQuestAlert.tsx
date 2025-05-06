@@ -43,7 +43,7 @@ export function SubmitQuestAlert({
             />
           </div>
           <AlertDialogTitle className="text-center font-fredoka text-3xl px-10 capitalize">
-            Quest Done! Points awarded! 🎉
+            Quest Done! Bones awarded! 🎉
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
             An admin will review your entry soon to make sure everything checks

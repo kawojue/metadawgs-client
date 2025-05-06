@@ -49,7 +49,7 @@ export function SubmitEntryAlert({
           <AlertDialogTitle className="text-center font-fredoka text-3xl capitalize">
             Quest submitted!
             <br />
-            Points awarded! 🎉
+            Bones awarded! 🎉
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
             An admin will review your entry soon to make sure everything checks

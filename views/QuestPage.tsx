@@ -133,7 +133,7 @@ function QuestPage() {
           <FadeInUp className="w-full rounded-2xl pool after:rounded-2xl p-5 sm:p-6 space-y-3">
             <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">
               <div className="point-pill text-xs font-medium pool after:rounded-full p-2 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
-                30 MetaDawgs
+                30 Bones
               </div>
             </div>
             <h3 className="font-semibold font-fredoka text-3xl">

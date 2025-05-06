@@ -59,7 +59,7 @@ export const QuestTile = ({ quest, func, funcText }: Props) => {
           <p className="text-[16px] text-start line-clamp-2">{quest.todo}</p>
           {/* <div className="rounded-full overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">
             <div className="text-xs bg-black/90 p-1 px-2.5 rounded-full flex items-center gap-0.5 text-nowrap">
-              {quest.point} <span className="sm:block hidden">Points</span>
+              {quest.point} <span className="sm:block hidden">Bones</span>
               <PlusIcon className="sm:hidden block" size={12} />
             </div>
           </div> */}

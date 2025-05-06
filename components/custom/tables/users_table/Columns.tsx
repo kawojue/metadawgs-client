@@ -53,7 +53,7 @@ export const columns: ColumnDef<UserType>[] = [
   },
   {
     accessorKey: "totalPoints",
-    header: () => <div className="">Total Points</div>,
+    header: () => <div className="">Total Bones</div>,
     cell: ({ row }) => (
       <div className="">
         {formatNumberWithCommas(row.getValue("totalPoints") ?? "")}

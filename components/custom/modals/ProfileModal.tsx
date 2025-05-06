@@ -143,7 +143,7 @@ function ProfileModal({
                     true
                   )}
                 </span>
-                <span className="text-xs">Overall Points</span>
+                <span className="text-xs">Overall Bones</span>
               </div>
               <div className="grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl sm:p-4 p-2 py-2 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]">
                 <span className="font-semibold sm:text-xl text-lg">
