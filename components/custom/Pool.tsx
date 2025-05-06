@@ -43,8 +43,8 @@ const Pool = ({ pool }: { pool: PoolType }) => {
             </span>
             <div className="flex items-center gap-2">
               <Image
-                src={pool.icon}
-                alt={pool.currency}
+                src={pool.stakesIcon}
+                alt={pool.stakes}
                 width={24}
                 height={24}
               />
