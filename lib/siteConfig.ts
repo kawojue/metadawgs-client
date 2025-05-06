@@ -13,7 +13,6 @@ const siteConfig = {
     facebook: "https://facebook.com/meta_dawgs",
     instagram: "https://instagram.com/meta_dawgs",
     linkedin: "https://linkedin.com/company/meta_dawgs",
-    github: "https://github.com/meta_dawgs",
   },
   url: "https://metadawgs.com",
 };
