@@ -377,7 +377,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
             <Button
               className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed!"
               onClick={handlePurchase}
-              disabled={isLoading || exchanging}
+              disabled={isLoading || exchanging || !amount}
             >
               {isLoading ? "Processing..." : "Buy Tokens"}
               <ArrowUpRightIcon />

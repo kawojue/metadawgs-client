@@ -1,0 +1,25 @@
+# robots.txt for https://metadawgs.com
+
+User-agent: *
+# Disallow sensitive or restricted pages
+Disallow: /admin/
+Disallow: /auth/
+
+# Optional: Disallow non-SEO valuable or dynamic routes
+Disallow: /dawg-bot/
+Disallow: /invite-task/
+Disallow: /quests/
+Disallow: /tweet-examples/
+
+# Optional: Disallow temporary or early access pages
+Disallow: /presale/
+
+# Allow public/SEO-important pages
+Allow: /leaderboard/
+Allow: /dawg-pools/
+
+# Avoid crawling query params (can create duplicate content)
+Disallow: /*?*
+
+# Provide sitemap for better indexing
+Sitemap: https://metadawgs.com/sitemap.xml

@@ -5,6 +5,7 @@ const siteConfig = {
   keywords: ["meta", "dawgs", "technology", "platform"],
   themeColor: "#ffffff",
   favicon: "/favicon.ico",
+  robot: "/robots.txt",
   socialLinks: {
     twitter: "",
     telegram: "",
@@ -13,7 +14,7 @@ const siteConfig = {
     linkedin: "",
     github: "",
   },
-  url: "https://metadawgs.com/",
+  url: "https://metadawgs.com",
 };
 
 export default siteConfig;
