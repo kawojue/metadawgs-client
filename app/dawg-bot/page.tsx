@@ -1,7 +1,7 @@
 import Feature from "@/components/custom/Feature";
 import LaunchBot from "@/components/custom/LaunchBot";
 import { FadeIn, FadeInUp } from "@/components/custom/ScrollAnimation";
-import { features } from "@/lib/dummydata";
+import { features } from "@/lib/data";
 import Image from "next/image";
 
 export const metadata = {

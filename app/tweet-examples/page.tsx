@@ -1,7 +1,7 @@
 import AvatarGroup from "@/components/custom/AvatarGroup";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { TweetCard } from "@/components/custom/twitter";
-import { sampleTweets } from "@/lib/dummydata";
+import { sampleTweets } from "@/lib/data";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";

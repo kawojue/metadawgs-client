@@ -1,5 +1,5 @@
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
-import { tokenomics } from "@/lib/dummydata";
+import { tokenomics } from "@/lib/data";
 import Image from "next/image";
 
 const HomeTokenomics = () => {
