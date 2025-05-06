@@ -42,7 +42,12 @@ const Pool = ({ pool }: { pool: PoolType }) => {
               Your Stakes
             </span>
             <div className="flex items-center gap-2">
-              <Image src={pool.icon} alt={pool.currency} width={24} height={24} />
+              <Image
+                src={pool.icon}
+                alt={pool.currency}
+                width={24}
+                height={24}
+              />
               <span className="block uppercase">{pool.stakes}</span>
             </div>
           </div>
@@ -93,7 +98,10 @@ const Pool = ({ pool }: { pool: PoolType }) => {
       </div>
       <div>
         <Link
-          href={""}
+          href={"#"}
+          onClick={() => {
+            setComingSoon(true);
+          }}
           className="text-center flex items-center gap-2 justify-center text-[14px] font-sans"
         >
           Creator Address <ArrowUpRight size={16} />
