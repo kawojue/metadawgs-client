@@ -310,7 +310,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                 {isComing
                   ? "TBA"
                   : formatNumberWithCommas(metrics?.totalSoldSol)}{" "}
-                SOL /
+                SOL /{" "}
                 {isComing ? "TBA" : formatNumberWithCommas(metrics?.targetSol)}{" "}
                 SOL
               </strong>
