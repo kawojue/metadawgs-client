@@ -307,11 +307,11 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
             <p className="text-lg">
               Total Raised:{" "}
               <strong>
-                Sol{" "}
+                SOL{" "}
                 {isComing
                   ? "TBA"
                   : formatNumberWithCommas(metrics?.totalSoldSol)}{" "}
-                / Sol{" "}
+                / SOL{" "}
                 {isComing ? "TBA" : formatNumberWithCommas(metrics?.targetSol)}
               </strong>
             </p>
@@ -329,13 +329,13 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
               <span className="text-lg font-semibold">
                 Hard Cap:{" "}
                 <span className="font-fredoka font-semibold">
-                  Sol {isComing ? "TBA" : formatNumberWithCommas(0)}
+                  SOL {isComing ? "TBA" : formatNumberWithCommas(0)}
                 </span>
               </span>
               <span className="text-lg font-semibold">
                 Minimum Buy:{" "}
                 <span className="font-fredoka font-semibold">
-                  Sol{" "}
+                  SOL{" "}
                   {isComing
                     ? "TBA"
                     : formatNumberWithCommas(metrics.minPerWallet || 0)}
@@ -344,7 +344,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
               <span className="text-lg font-semibold">
                 Maximum Buy:{" "}
                 <span className="font-fredoka font-semibold">
-                  Sol{" "}
+                  SOL{" "}
                   {isComing
                     ? "TBA"
                     : formatNumberWithCommas(metrics.maxPerWallet)}
