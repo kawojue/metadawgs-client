@@ -1,7 +1,7 @@
 import AddressButton from "@/components/custom/AddressButton";
 import Pool from "@/components/custom/Pool";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
-import { pools } from "@/lib/dummydata";
+import { pools } from "@/lib/data";
 
 export const metadata = {
   title: "DawgPools",

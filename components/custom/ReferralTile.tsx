@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { SlideInLeft } from "./ScrollAnimation";
-import { quests } from "@/lib/dummydata";
+import { quests } from "@/lib/data";
 import { QuestTile } from "./QuestTile";
 import ReferralInputModal from "./modals/ReferralInputModal";
 import useLocalStorage from "use-local-storage";

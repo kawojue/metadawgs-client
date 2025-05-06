@@ -1,5 +1,5 @@
 import { FadeIn, SlideInRight } from "@/components/custom/ScrollAnimation";
-import { roadmap } from "@/lib/dummydata";
+import { roadmap } from "@/lib/data";
 import Image from "next/image";
 
 const HomeRoadmap = () => {
