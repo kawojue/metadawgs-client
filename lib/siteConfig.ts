@@ -13,7 +13,7 @@ const siteConfig = {
     linkedin: "",
     github: "",
   },
-  url: "",
+  url: "https://metadawgs.com/",
 };
 
 export default siteConfig;
