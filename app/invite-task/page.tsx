@@ -1,5 +1,6 @@
 import { FadeIn, FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
+import siteConfig from "@/lib/siteConfig";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
@@ -32,7 +33,14 @@ function page() {
                   Step into the Arena. 🥊
                 </span>
                 <span className="text-[#ACACAC] md:text-xl text-lg">
-                  Join our official Telegram group - the battleground awaits!
+                  Join our official{" "}
+                  <a
+                    href={siteConfig.socialLinks.telegram}
+                    className="font-bold text-white"
+                  >
+                    Telegram
+                  </a>{" "}
+                  group - the battleground awaits!
                 </span>
               </div>
             </li>

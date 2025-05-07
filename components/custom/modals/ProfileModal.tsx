@@ -17,6 +17,7 @@ import { ArrowUpRightIcon, CircleX, CopyIcon } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { SubmitReferralAlert } from "./SubmitReferralAlert";
 import useAuth from "@/hooks/use-auth";
+import siteConfig from "@/lib/siteConfig";
 
 function ProfileModal({
   open,
@@ -235,7 +236,7 @@ function ProfileModal({
                 </div>
 
                 <a
-                  href=""
+                  href={siteConfig.socialLinks.twitter}
                   className="block"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -257,7 +258,7 @@ function ProfileModal({
                 </div>
 
                 <a
-                  href=""
+                  href={siteConfig.socialLinks.telegram}
                   className="block"
                   target="_blank"
                   rel="noopener noreferrer"
