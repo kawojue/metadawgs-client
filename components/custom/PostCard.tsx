@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import { useState } from "react";
-import { PostType } from "@/lib/type";
+import { PostType, ProfileType } from "@/lib/type";
 import Image from "next/image";
 import { SubmitQuestAlert } from "./modals/SubmitQuestAlert";
 import { patchWithAuth } from "@/lib/api";
@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import useLocalStorage from "use-local-storage";
 import { XCompleteOnboarding } from "@/lib/values";
 import { cn } from "@/lib/utils";
+import useAuth from "@/hooks/use-auth";
 
 const PostCard = ({
   post,
@@ -19,6 +20,7 @@ const PostCard = ({
   post: PostType;
   isOnboardingCompleted: boolean;
 }) => {
+  const { setUserProfile, userProfile } = useAuth();
   const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(post.hasEngaged);
@@ -33,8 +35,20 @@ const PostCard = ({
     setIsSubmitting(true);
     try {
       await patchWithAuth(`/posts/${post.id}/engage`, {});
-      setShowEntryAlert(true);
       setSubmitted(true);
+      setShowEntryAlert(true);
+
+      if (!userProfile) return;
+      const profileUpdate: ProfileType = {
+        ...userProfile,
+        user: {
+          ...userProfile.user,
+          tasks: userProfile.user.tasks + 1,
+          totalPoints: userProfile.user.totalPoints + post.point,
+        },
+      };
+
+      setUserProfile(profileUpdate);
     } catch (error: unknown) {
       toast(error instanceof Error ? error.toString() : "Failed to submit.");
       console.error("Failed to submit:", error);
