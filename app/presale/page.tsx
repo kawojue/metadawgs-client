@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 function page() {
-  const isComingSoon = false;
+  const isComingSoon = true;
 
   return (
     <div className="bg-black text-white">
