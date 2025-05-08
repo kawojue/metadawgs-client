@@ -6,7 +6,7 @@ import VerifyParticipate from "@/components/custom/VerifyParticipateTile";
 
 function Onboarding() {
   return (
-    <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center">
+    <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center mt:pt-10">
       <FadeInUp className="space-y-2">
         <h2 className="md:text-6xl text-3xl font-fredoka font-semibold text-center">
           Onboarding Tasks
