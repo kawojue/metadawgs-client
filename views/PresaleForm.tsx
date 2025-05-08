@@ -337,7 +337,10 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
               <span className="text-lg font-semibold">
                 Hard Cap:{" "}
                 <span className="font-fredoka font-semibold">
-                  {isComing ? "TBA" : formatNumberWithCommas(0)} SOL
+                  {isComing
+                    ? "TBA"
+                    : formatNumberWithCommas(metrics.targetSol || 0)}{" "}
+                  SOL
                 </span>
               </span>
               <span className="text-lg font-semibold">
