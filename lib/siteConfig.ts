@@ -10,9 +10,9 @@ const siteConfig = {
   socialLinks: {
     twitter: "https://x.com/Meta_Dawgs",
     telegram: "https://t.me/Metadawgsportal",
-    facebook: "https://facebook.com/meta_dawgs",
-    instagram: "https://instagram.com/meta_dawgs",
-    linkedin: "https://linkedin.com/company/meta_dawgs",
+    facebook: "",
+    instagram: "",
+    linkedin: "",
   },
   url: "https://metadawgs.com",
 };
