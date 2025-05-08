@@ -259,7 +259,11 @@ function ProfileModal({
                     <Button
                       className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4 py-2 cursor-pointer hover:bg-[#FFBE00]/80!"
                       onClick={approveWallet}
-                      disabled={syncAddressing || !currentWallet}
+                      disabled={
+                        syncAddressing ||
+                        !currentWallet ||
+                        userProfile?.user.approved
+                      }
                     >
                       {syncAddressing ? "Approving..." : "Approve"}
                     </Button>

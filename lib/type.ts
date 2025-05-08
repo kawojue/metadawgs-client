@@ -24,6 +24,7 @@ export interface ProfileType {
     joinedAt: string;
     displayName: string;
     totalPoints: number;
+    approved: boolean;
   };
   rank: number;
 }
