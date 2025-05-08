@@ -18,6 +18,7 @@ import { FormEvent, useState } from "react";
 import { SubmitReferralAlert } from "./SubmitReferralAlert";
 import useAuth from "@/hooks/use-auth";
 import siteConfig from "@/lib/siteConfig";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 function ProfileModal({
   open,
@@ -29,10 +30,15 @@ function ProfileModal({
   logout: () => void;
 }) {
   const { userProfile, setUserProfile } = useAuth();
+  const { publicKey } = useWallet();
   const [code, setCode] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [syncAddressing, setSyncAddressing] = useState<boolean>(false);
+  const [syncAddressError, setSyncAddressError] = useState<string>("");
+
+  const currentWallet = publicKey?.toBase58();
 
   async function submitReferralCode(e: FormEvent) {
     e.preventDefault();
@@ -55,6 +61,21 @@ function ProfileModal({
       setError(error.toString() || "An unexpected error occurred");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function approveWallet() {
+    try {
+      setSyncAddressing(true);
+      await postWithAuth("/user/link-wallet", {
+        walletAddress: currentWallet,
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setSyncAddressError(error.toString() || "An unexpected error occurred");
+      console.error("Failed to link wallet:", error);
+    } finally {
+      setSyncAddressing(false);
     }
   }
 
@@ -224,6 +245,33 @@ function ProfileModal({
                   </div>
                 </form>
               )}
+
+            {!!currentWallet && (
+              <div className="wallet-approval-section space-y-4">
+                <div className="w-full flex flex-col gap-2">
+                  <label className="text-sm text-[#ACACAC] font-semibold">
+                    Linked Wallet Address
+                  </label>
+                  <div className="flex justify-between items-center gap-4 bg-white/10 p-3 rounded-lg border border-[#9C9C9C]">
+                    <p className="truncate text-sm text-white">
+                      {currentWallet}
+                    </p>
+                    <Button
+                      className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4 py-2 cursor-pointer hover:bg-[#FFBE00]/80!"
+                      onClick={approveWallet}
+                      disabled={syncAddressing || !currentWallet}
+                    >
+                      {syncAddressing ? "Approving..." : "Approve"}
+                    </Button>
+                  </div>
+                </div>
+                {!!syncAddressError && (
+                  <p className="syncAddressError text-red-500 text-sm">
+                    {syncAddressError}
+                  </p>
+                )}
+              </div>
+            )}
             <div className="links grid gap-3">
               <div className="link rounded-full h-17 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-no-repeat after:bg-center after:bg-cover">
                 <div className="lint flex gap-4 items-center">

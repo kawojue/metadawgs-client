@@ -8,7 +8,7 @@ import { hashAddress } from "@/lib/common";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import useLocalStorage from "use-local-storage";
-import { postWithAuth } from "@/lib/api";
+// import { postWithAuth } from "@/lib/api";
 import useAuth from "@/hooks/use-auth";
 import useMobileMenu from "@/hooks/use-mobile-menu";
 
@@ -21,9 +21,10 @@ function AddressButton() {
   const { publicKey, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
 
-  const [lastSyncedWallet, setLastSyncedWallet] = useLocalStorage<
-    string | null
-  >(LAST_SYNCED_WALLET_KEY, null);
+  const [lastSyncedWallet] = useLocalStorage<string | null>(
+    LAST_SYNCED_WALLET_KEY,
+    null
+  );
 
   const lastSyncedWalletRef = useRef(lastSyncedWallet);
 
@@ -51,15 +52,15 @@ function AddressButton() {
         return;
       }
 
-      try {
-        await postWithAuth("/user/link-wallet", {
-          walletAddress: currentWallet,
-        });
-        setLastSyncedWallet(currentWallet);
-        lastSyncedWalletRef.current = currentWallet;
-      } catch (error) {
-        console.error("Failed to link wallet:", error);
-      }
+      // try {
+      //   await postWithAuth("/user/link-wallet", {
+      //     walletAddress: currentWallet,
+      //   });
+      //   setLastSyncedWallet(currentWallet);
+      //   lastSyncedWalletRef.current = currentWallet;
+      // } catch (error) {
+      //   console.error("Failed to link wallet:", error);
+      // }
     }
 
     updateUserWallet();
