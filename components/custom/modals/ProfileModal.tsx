@@ -70,6 +70,16 @@ function ProfileModal({
       await postWithAuth("/user/link-wallet", {
         walletAddress: currentWallet,
       });
+
+      if (userProfile) {
+        setUserProfile({
+          ...userProfile,
+          user: {
+            ...userProfile.user,
+            approved: true,
+          },
+        });
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setSyncAddressError(error.toString() || "An unexpected error occurred");
@@ -111,7 +121,7 @@ function ProfileModal({
         }}
       >
         <DialogContent
-          className="sm:max-w-[456px] bg-black text-white shadow-sm border  border-white/20 z-[100000] rounded-3xl"
+          className="sm:max-w-[456px]  bg-black text-white shadow-sm border  border-white/20 z-[100000] rounded-3xl"
           showCloseButton={false}
         >
           <DialogHeader className="flex flex-row justify-between gap-4 items-center">
@@ -247,34 +257,40 @@ function ProfileModal({
               )}
 
             {!!currentWallet && (
-                <div className="wallet-approval-section space-y-4">
+              <div className="wallet-approval-section space-y-4 relative">
                 <div className="w-full flex flex-col gap-2">
                   <label className="text-sm text-[#ACACAC] font-semibold">
-                  Linked Wallet Address
+                    Linked Wallet Address
                   </label>
-                  <div className="flex justify-between items-center gap-4 bg-white/10 p-3 rounded-lg border border-[#9C9C9C]">
-                  <p className="break-words text-sm text-white">
-                    {currentWallet}
-                  </p>
-                  <Button
-                    className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4 py-2 cursor-pointer hover:bg-[#FFBE00]/80!"
-                    onClick={approveWallet}
-                    disabled={
-                    syncAddressing ||
-                    !currentWallet ||
-                    userProfile?.user?.approved
-                    }
-                  >
-                    {syncAddressing ? "Approving..." : "Approve"}
-                  </Button>
+                  <div className="grid w-full gap-y-2 bg-white/10 p-3 rounded-lg border border-[#9C9C9C]">
+                    <p className="text-sm text-white break-words">
+                      {currentWallet}
+                    </p>
+                  </div>
+                  <div className="flex justify-end">
+                    <Button
+                      className="verify bg-[#FFBE00] max-w-fit text-black text-sm rounded-full px-4 py-2 cursor-pointer hover:bg-[#FFBE00]/80!"
+                      onClick={approveWallet}
+                      disabled={
+                        syncAddressing ||
+                        !currentWallet ||
+                        userProfile?.user?.approved
+                      }
+                    >
+                      {!userProfile?.user?.approved
+                        ? syncAddressing
+                          ? "Approving..."
+                          : "Approve"
+                        : "Approved"}
+                    </Button>
                   </div>
                 </div>
                 {!!syncAddressError && (
                   <p className="syncAddressError text-red-500 text-sm">
-                  {syncAddressError}
+                    {syncAddressError}
                   </p>
                 )}
-                </div>
+              </div>
             )}
             <div className="links grid gap-3">
               <div className="link rounded-full h-17 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-no-repeat after:bg-center after:bg-cover">

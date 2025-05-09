@@ -21,10 +21,9 @@ function AddressButton() {
   const { publicKey, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
 
-  const [lastSyncedWallet] = useLocalStorage<string | null>(
-    LAST_SYNCED_WALLET_KEY,
-    null
-  );
+  const [lastSyncedWallet, setLastSyncedWallet] = useLocalStorage<
+    string | null
+  >(LAST_SYNCED_WALLET_KEY, null);
 
   const lastSyncedWalletRef = useRef(lastSyncedWallet);
 
@@ -51,6 +50,9 @@ function AddressButton() {
       if (lastSyncedWalletRef.current === currentWallet) {
         return;
       }
+
+      setLastSyncedWallet(currentWallet);
+      lastSyncedWalletRef.current = currentWallet;
 
       // try {
       //   await postWithAuth("/user/link-wallet", {
