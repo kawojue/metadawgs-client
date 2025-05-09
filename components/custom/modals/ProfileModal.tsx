@@ -10,7 +10,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { postWithAuth } from "@/lib/api";
-import { copyToClipboard, formatNumberWithCommas } from "@/lib/common";
+import {
+  copyToClipboard,
+  formatNumberWithCommas,
+  hashAddress,
+} from "@/lib/common";
 import { TelegramIcon, TwitterIcon } from "@/lib/icons";
 import { ProfileType } from "@/lib/type";
 import { ArrowUpRightIcon, CircleX, CopyIcon } from "lucide-react";
@@ -262,12 +266,10 @@ function ProfileModal({
                   <label className="text-sm text-[#ACACAC] font-semibold">
                     Linked Wallet Address
                   </label>
-                  <div className="grid w-full gap-y-2 bg-white/10 p-3 rounded-lg border border-[#9C9C9C]">
+                  <div className="flex justify-between gap-x-4 w-full gap-y-2 bg-white/10 p-3 rounded-lg border border-[#9C9C9C]">
                     <p className="text-sm text-white break-words">
-                      {currentWallet}
+                      {hashAddress(currentWallet, 8)}
                     </p>
-                  </div>
-                  <div className="flex justify-end">
                     <Button
                       className="verify bg-[#FFBE00] max-w-fit text-black text-sm rounded-full px-4 py-2 cursor-pointer hover:bg-[#FFBE00]/80!"
                       onClick={approveWallet}
