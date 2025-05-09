@@ -4,7 +4,7 @@ import PresaleForm from "@/views/PresaleForm";
 export const metadata = {
   title: "Buy $MetaDawgs Token.",
   description:
-    "Join the MetaDawgs Token Generation Event and secure your $MetaDawgs tokens today.",
+    "Join the MetaDawgs Token Generation Event and secure your $MetaDawgs tokens today",
 };
 
 function page() {
