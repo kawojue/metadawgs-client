@@ -112,7 +112,7 @@ export const features = [
   {
     title: "Token Launch on Solana",
     description:
-      "Seamlessly launch SPL tokens directly from the Cleo terminal with a user-friendly interface and robust backend powered by Solana.",
+      "Seamlessly launch SPL tokens directly from the Dawg terminal with a user-friendly interface and robust backend powered by Solana.",
     icon: "/images/token-launch.svg",
   },
   {
