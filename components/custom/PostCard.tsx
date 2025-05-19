@@ -52,13 +52,11 @@ const PostCard = ({
     setViewing(true);
     try {
       await patchWithAuth(`/posts/${post.id}/click`, {});
-      setSubmitted(true);
-      setShowEntryAlert(true);
 
       await refetchProfile();
     } catch (error: unknown) {
-      toast(error instanceof Error ? error.toString() : "Failed to submit.");
-      console.error("Failed to submit:", error);
+      toast(error instanceof Error ? error.toString() : "Failed to view.");
+      console.error("Failed to view:", error);
     } finally {
       setViewing(false);
     }
