@@ -95,10 +95,10 @@ const PostCard = ({
             <Button
               className={cn(
                 "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]",
-                isSubmitting && "cursor-wait"
+                viewing && "cursor-wait"
               )}
               onClick={handleView}
-              disabled={submitted || isSubmitting}
+              disabled={viewing}
             >
               <span>{viewing ? "Viewing" : "View"}</span>{" "}
               <ArrowUpRightIcon size={11} />
