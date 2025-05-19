@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import { useState } from "react";
-import { PostType, ProfileType } from "@/lib/type";
+import { PostType } from "@/lib/type";
 import Image from "next/image";
 import { SubmitQuestAlert } from "./modals/SubmitQuestAlert";
 import { patchWithAuth } from "@/lib/api";
@@ -20,9 +20,10 @@ const PostCard = ({
   post: PostType;
   isOnboardingCompleted: boolean;
 }) => {
-  const { setUserProfile, userProfile } = useAuth();
+  const { refetchProfile } = useAuth();
   const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [viewing, setViewing] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(post.hasEngaged);
   const [, setCompleteOnboarding] = useLocalStorage(XCompleteOnboarding, false);
 
@@ -38,22 +39,28 @@ const PostCard = ({
       setSubmitted(true);
       setShowEntryAlert(true);
 
-      if (!userProfile) return;
-      const profileUpdate: ProfileType = {
-        ...userProfile,
-        user: {
-          ...userProfile.user,
-          tasks: userProfile.user.tasks + 1,
-          totalPoints: userProfile.user.totalPoints + post.point,
-        },
-      };
-
-      setUserProfile(profileUpdate);
+      await refetchProfile();
     } catch (error: unknown) {
       toast(error instanceof Error ? error.toString() : "Failed to submit.");
       console.error("Failed to submit:", error);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleView = async () => {
+    setViewing(true);
+    try {
+      await patchWithAuth(`/posts/${post.id}/click`, {});
+      setSubmitted(true);
+      setShowEntryAlert(true);
+
+      await refetchProfile();
+    } catch (error: unknown) {
+      toast(error instanceof Error ? error.toString() : "Failed to submit.");
+      console.error("Failed to submit:", error);
+    } finally {
+      setViewing(false);
     }
   };
 
@@ -87,8 +94,16 @@ const PostCard = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button className="rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]">
-              <span>View</span> <ArrowUpRightIcon size={11} />
+            <Button
+              className={cn(
+                "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]",
+                isSubmitting && "cursor-wait"
+              )}
+              onClick={handleView}
+              disabled={submitted || isSubmitting}
+            >
+              <span>{viewing ? "Viewing" : "View"}</span>{" "}
+              <ArrowUpRightIcon size={11} />
             </Button>
           </a>
 

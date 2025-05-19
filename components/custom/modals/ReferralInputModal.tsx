@@ -12,7 +12,6 @@ import { useState } from "react";
 import { postWithAuth } from "@/lib/api";
 import { SubmitReferralAlert } from "@/components/custom/modals/SubmitReferralAlert";
 import useLocalStorage from "use-local-storage";
-import { ProfileType } from "@/lib/type";
 import { XNoCode } from "@/lib/values";
 import Image from "next/image";
 import useAuth from "@/hooks/use-auth";
@@ -28,7 +27,7 @@ function ReferralInputModal({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { userProfile, setUserProfile } = useAuth();
+  const { refetchProfile } = useAuth();
   const [, setNoCode] = useLocalStorage<boolean>(XNoCode, false);
 
   async function validateCode() {
@@ -38,12 +37,8 @@ function ReferralInputModal({
         code: code,
       });
       setSuccess(true);
-      const user = {
-        ...userProfile,
-        eligibleToUseReferralCode: false,
-      } as ProfileType;
 
-      setUserProfile(user);
+      await refetchProfile();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

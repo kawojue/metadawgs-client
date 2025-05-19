@@ -25,8 +25,9 @@ function page() {
         </FadeInUp>
         <FadeInUp>
           <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px] text-center">
-            Complete the following tasks to stand a chance to earn more
-            metadawgs as an early participant in the ecosystem
+            Complete the quest for a chance to earn a guaranteed whitelist spot
+            on TGE and earn MetaDawgs token as an early participant in the
+            ecosystem
           </p>
         </FadeInUp>
         <FadeInUp className="pips flex gap-x-4 gap-y-2 flex-wrap items-center justify-center">

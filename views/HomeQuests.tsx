@@ -12,15 +12,15 @@ function Quests() {
         <h2 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-semibold uppercase">
           Complete Quests,
           <br />
-          Collect Bones, & Earn 
+          Collect Bones, & Earn
           <br />
           MetaDawgs Token.
         </h2>
       </FadeInUp>
       <FadeInUp>
         <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px]">
-          Complete the following tasks to stand a chance of earning more
-          metadawgs as a participant in the ecosystem.
+          Complete the quest for a chance to earn a guaranteed whitelist spot on
+          TGE and earn MetaDawgs token as an early participant in the ecosystem
         </p>
       </FadeInUp>
 

@@ -1,6 +1,11 @@
 "use client";
-
-import React, { createContext, ReactNode, useEffect, useState } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import { fetchWithAuth } from "@/lib/api";
 import { ProfileType } from "@/lib/type";
 // import { useWallet } from "@solana/wallet-adapter-react";
@@ -17,9 +22,12 @@ export interface AuthContextType {
   login: () => void;
   logout: () => void;
   setUserToken: (token: string) => void;
+  refetchProfile: () => Promise<void>;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userToken, setUserToken] = useLocalStorage<string>(XUserToken, "");
@@ -30,42 +38,64 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // const { disconnect } = useWallet();
+  const abortControllerRef = useRef<AbortController | null>(null);
 
-  // Fetch user profile
-  useEffect(() => {
-    async function getProfile() {
-      if (!userToken) return;
+  const fetchProfile = async () => {
+    if (!userToken) return;
 
-      try {
-        setIsLoading(true);
-        setError(null);
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
 
-        // Use Promise.all to fetch data in parallel
-        const [profileResponse, rankResponse] = await Promise.all([
-          fetchWithAuth<ProfileType>("/auth/profile"),
-          fetchWithAuth<{ rank: number }>("/user/rank"),
-        ]);
+    abortControllerRef.current = new AbortController();
 
-        setUserProfile({
-          ...profileResponse.data,
-          rank: rankResponse.data.rank,
-        });
-      } catch (error) {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const signal = abortControllerRef.current.signal;
+      const [profileResponse, rankResponse] = await Promise.all([
+        fetchWithAuth<ProfileType>("/auth/profile", { signal }),
+        fetchWithAuth<{ rank: number }>("/user/rank", { signal }),
+      ]);
+
+      setUserProfile({
+        ...profileResponse.data,
+        rank: rankResponse.data.rank,
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.name !== "AbortError") {
         console.error("Failed to fetch profile:", error);
         setError("Failed to load profile");
         setUserProfile(null);
         setUserToken("");
-      } finally {
+      }
+    } finally {
+      if (abortControllerRef.current?.signal.aborted === false) {
         setIsLoading(false);
+        abortControllerRef.current = null;
       }
     }
+  };
 
+  const refetchProfile = async () => {
+    await fetchProfile();
+  };
+
+  useEffect(() => {
     if (userToken) {
-      getProfile();
+      fetchProfile();
     } else {
       setUserProfile(null);
     }
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userToken]);
 
@@ -74,6 +104,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
     setUserProfile(null);
     setUserToken("");
   };
@@ -87,6 +121,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     login,
     logout,
     setUserToken,
+    refetchProfile,
   };
 
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
