@@ -17,7 +17,6 @@ export function TelegramLeaderboardTable() {
     if (!socket) return;
 
     socket.on("leaderboard", (data) => {
-      // console.log('found leaderboard', data)
       setLeaderboard(data);
       setLoading(false);
     });

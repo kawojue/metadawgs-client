@@ -56,7 +56,6 @@ function QuestPage() {
       try {
         setLoading(true);
         const { data } = await fetchWithAuth<PostType[]>("/posts");
-        console.log("Posts", data, loading);
 
         setPosts(data);
       } catch (error) {
@@ -67,7 +66,6 @@ function QuestPage() {
     }
 
     getPosts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshPosts]);
 
   function openEntryInput() {
