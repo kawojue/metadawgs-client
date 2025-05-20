@@ -36,11 +36,14 @@ function SubmitEntryInputModal({
 
     setLoading(true);
 
+    const body = { url: link };
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/entry`, {
       method: "POST",
-      body: JSON.stringify({ url: link }),
+      body: JSON.stringify(body),
       headers: {
         Authorization: `Bearer ${JSON.parse(token)}`,
+        "Content-Type": "application/json",
       },
     });
 
