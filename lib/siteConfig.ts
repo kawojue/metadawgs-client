@@ -11,6 +11,7 @@ const siteConfig = {
     twitter: "https://x.com/Meta_Dawgs",
     telegram: "https://t.me/Metadawgsportal",
     facebook: "",
+    youtube: "https://www.youtube.com/@MetaDawgs",
     instagram: "",
     linkedin: "",
   },
