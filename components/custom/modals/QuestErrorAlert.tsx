@@ -57,8 +57,9 @@ export function QuestErrorAlert({
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
             {!isRobo &&
-              "You’ve hit the button too many times. Wait a bit ans try again shortly"}
-            {isRobo && error}
+              (error ||
+                "You’ve hit the button too many times. Wait a bit ans try again shortly")}
+            {isRobo && (error || "Something unexpected occurred")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="grid! grid-cols-1! gap-4 mt-2">
