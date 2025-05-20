@@ -48,11 +48,13 @@ function SubmitEntryInputModal({
         const { message } = await res.json();
         setIsRobo(![400, 429].includes(res.status));
         setError(message);
+        setLoading(false);
       } else {
         logout();
+        setLoading(false);
+        onClose?.();
       }
 
-      setLoading(false);
       return;
     }
 
