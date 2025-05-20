@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/dialog";
 import { ArrowUpRightIcon, CircleX } from "lucide-react";
 import { useState } from "react";
-import { postWithAuth } from "@/lib/api";
 import { SubmitEntryAlert } from "@/components/custom/modals/SubmitEntryAlert";
-import { toast } from "sonner";
 import { QuestErrorAlert } from "./QuestErrorAlert";
+import { XUserToken } from "@/lib/values";
+import useAuth from "@/hooks/use-auth";
 
 function SubmitEntryInputModal({
   open,
@@ -23,34 +23,41 @@ function SubmitEntryInputModal({
   open: boolean;
   onClose?: () => void;
 }) {
+  const { logout } = useAuth();
   const [link, setLink] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [isError, setIsError] = useState<boolean>(false);
+  const [isRobo, setIsRobo] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function submitEntry() {
+    const token = localStorage.getItem(XUserToken);
+    if (!token) return;
+
     setLoading(true);
-    try {
-      await postWithAuth("/posts/entry", {
-        url: link,
-      });
-      setSuccess(true);
-      setLink("");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const errMsg = error.toString()?.replace("Error:", "");
 
-      setError(errMsg || "An unexpected error occurred");
+    const res = await fetch(`/posts/entry`, {
+      body: JSON.stringify({ url: link }),
+      headers: {
+        Authorization: `Bearer ${JSON.parse(token)}`,
+      },
+    });
 
-      if (errMsg?.includes("too many times")) {
-        setIsError(true);
+    if (!res.ok) {
+      if (res.status !== 401) {
+        const { message } = await res.json();
+        setIsRobo(![400, 429].includes(res.status));
+        setError(message);
       } else {
-        toast(errMsg || "An unexpected error occurred");
+        logout();
       }
-    } finally {
+
       setLoading(false);
+      return;
     }
+
+    setSuccess(true);
+    setLink("");
   }
 
   const isValidLink = (url: string): boolean => {
@@ -139,11 +146,13 @@ function SubmitEntryInputModal({
           </DialogContent>
         </Dialog>
       )}
-      {isError && (
+      {!!error && (
         <QuestErrorAlert
-          open={isError}
+          open={!!error}
+          isRobo={isRobo}
+          error={error}
           onClose={() => {
-            setIsError(false);
+            setError(null);
           }}
         />
       )}

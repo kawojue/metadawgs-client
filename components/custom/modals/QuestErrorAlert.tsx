@@ -14,8 +14,12 @@ import Image from "next/image";
 export function QuestErrorAlert({
   open,
   onClose,
+  isRobo,
+  error,
 }: {
   open?: boolean;
+  isRobo?: boolean;
+  error?: string;
   onClose?: () => void;
 }) {
   return (
@@ -29,20 +33,32 @@ export function QuestErrorAlert({
     >
       <AlertDialogContent className="bg-black text-white border-white/20 rounded-2xl">
         <AlertDialogHeader className="flex flex-col justify-center items-center gap-4">
-          <div className="circle bg-white rounded-full p-2.5 mb-1">
-            <Image
-              src={"/images/robo.svg"}
-              alt="check"
-              width={250}
-              height={160}
-            />
+          <div className="mb-1">
+            {isRobo && (
+              <Image
+                src={"/images/robo.svg"}
+                alt="robo"
+                width={250}
+                height={160}
+              />
+            )}
+
+            {!isRobo && (
+              <Image
+                src={"/images/clock.svg"}
+                alt="clock"
+                width={200}
+                height={200}
+              />
+            )}
           </div>
           <AlertDialogTitle className="text-center font-fredoka text-3xl px-10 capitalize">
             Submit Failed
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
-            You’ve hit the button too many times. Wait a bit ans try again
-            shortly
+            {!isRobo &&
+              "You’ve hit the button too many times. Wait a bit ans try again shortly"}
+            {isRobo && error}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="grid! grid-cols-1! gap-4 mt-2">
