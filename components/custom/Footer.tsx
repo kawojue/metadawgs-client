@@ -64,7 +64,7 @@ function Footer() {
 
           <a
             href={siteConfig.socialLinks.youtube}
-            className="sm:w-10 sm:h-10 w-8 h-8 rounded-full bg-white grid place-content-center place-items-center"
+            className="sm:w-10 sm:h-10 w-8 h-8 rounded-full bg-white text-black grid place-content-center place-items-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
