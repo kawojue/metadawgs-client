@@ -13,6 +13,8 @@ import { ArrowUpRightIcon, CircleX } from "lucide-react";
 import { useState } from "react";
 import { postWithAuth } from "@/lib/api";
 import { SubmitEntryAlert } from "@/components/custom/modals/SubmitEntryAlert";
+import { toast } from "sonner";
+import { QuestErrorAlert } from "./QuestErrorAlert";
 
 function SubmitEntryInputModal({
   open,
@@ -23,6 +25,7 @@ function SubmitEntryInputModal({
 }) {
   const [link, setLink] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -36,7 +39,15 @@ function SubmitEntryInputModal({
       setLink("");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      setError(error.toString() || "An unexpected error occurred");
+      const errMsg = error.toString()?.replace("Error:", "");
+
+      setError(errMsg || "An unexpected error occurred");
+
+      if (errMsg?.includes("too many times")) {
+        setIsError(true);
+      } else {
+        toast(errMsg || "An unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -109,9 +120,9 @@ function SubmitEntryInputModal({
                   onChange={(x) => setLink(x.target.value)}
                   className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
                 />
-                {!!error && (
+                {/* {!!error && (
                   <p className="error text-red-500 text-sm">{error}</p>
-                )}
+                )} */}
               </div>
             </div>
             <DialogFooter className="">
@@ -127,6 +138,14 @@ function SubmitEntryInputModal({
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      )}
+      {isError && (
+        <QuestErrorAlert
+          open={isError}
+          onClose={() => {
+            setIsError(false);
+          }}
+        />
       )}
       {success && (
         <SubmitEntryAlert
