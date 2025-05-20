@@ -36,7 +36,8 @@ function SubmitEntryInputModal({
 
     setLoading(true);
 
-    const res = await fetch(`/posts/entry`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/entry`, {
+      method: "POST",
       body: JSON.stringify({ url: link }),
       headers: {
         Authorization: `Bearer ${JSON.parse(token)}`,
