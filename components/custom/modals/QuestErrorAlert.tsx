@@ -9,20 +9,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { generateRandomString } from "@/lib/common";
-import { XRefreshPosts } from "@/lib/values";
 import Image from "next/image";
-import useLocalStorage from "use-local-storage";
 
-export function SubmitQuestAlert({
+export function QuestErrorAlert({
   open,
   onClose,
+  isRobo,
+  error,
 }: {
   open?: boolean;
+  isRobo?: boolean;
+  error?: string;
   onClose?: () => void;
 }) {
-  const [, setRefreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
-
   return (
     <AlertDialog
       open={open}
@@ -34,28 +33,38 @@ export function SubmitQuestAlert({
     >
       <AlertDialogContent className="bg-black text-white border-white/20 rounded-2xl">
         <AlertDialogHeader className="flex flex-col justify-center items-center gap-4">
-          <div className="circle bg-white rounded-full p-2.5 mb-1">
-            <Image
-              src={"/images/check.svg"}
-              alt="check"
-              width={100}
-              height={100}
-            />
+          <div className="mb-1">
+            {isRobo && (
+              <Image
+                src={"/images/robo.svg"}
+                alt="robo"
+                width={250}
+                height={160}
+              />
+            )}
+
+            {!isRobo && (
+              <Image
+                src={"/images/clock.svg"}
+                alt="clock"
+                width={200}
+                height={200}
+              />
+            )}
           </div>
           <AlertDialogTitle className="text-center font-fredoka text-3xl px-10 capitalize">
-            Quest Done! Bones awarded! 🎉
+            Submit Failed
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
-            An admin will review your entry soon to make sure everything checks
-            out. If something doesn’t add up, your account could face penalties.
-            So play fair, adventurer! ⚔️
+            {!isRobo &&
+              "You’ve hit the button too many times. Wait a bit ans try again shortly"}
+            {isRobo && error}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="grid! grid-cols-1! gap-4 mt-2">
           <AlertDialogCancel
             className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black shadow-[black]/40"
             onClick={() => {
-              setRefreshPosts(generateRandomString(10));
               onClose?.();
             }}
           >

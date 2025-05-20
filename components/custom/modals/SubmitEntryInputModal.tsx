@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/dialog";
 import { ArrowUpRightIcon, CircleX } from "lucide-react";
 import { useState } from "react";
-import { postWithAuth } from "@/lib/api";
 import { SubmitEntryAlert } from "@/components/custom/modals/SubmitEntryAlert";
+import { QuestErrorAlert } from "./QuestErrorAlert";
+import { XUserToken } from "@/lib/values";
+import useAuth from "@/hooks/use-auth";
 
 function SubmitEntryInputModal({
   open,
@@ -21,25 +23,43 @@ function SubmitEntryInputModal({
   open: boolean;
   onClose?: () => void;
 }) {
+  const { logout } = useAuth();
   const [link, setLink] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [isRobo, setIsRobo] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function submitEntry() {
+    const token = localStorage.getItem(XUserToken);
+    if (!token) return;
+
     setLoading(true);
-    try {
-      await postWithAuth("/posts/entry", {
-        url: link,
-      });
-      setSuccess(true);
-      setLink("");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      setError(error.toString() || "An unexpected error occurred");
-    } finally {
-      setLoading(false);
+
+    const res = await fetch(`/posts/entry`, {
+      body: JSON.stringify({ url: link }),
+      headers: {
+        Authorization: `Bearer ${JSON.parse(token)}`,
+      },
+    });
+
+    if (!res.ok) {
+      if (res.status !== 401) {
+        const { message } = await res.json();
+        setIsRobo(![400, 429].includes(res.status));
+        setError(message);
+        setLoading(false);
+      } else {
+        logout();
+        setLoading(false);
+        onClose?.();
+      }
+
+      return;
     }
+
+    setSuccess(true);
+    setLink("");
   }
 
   const isValidLink = (url: string): boolean => {
@@ -109,9 +129,9 @@ function SubmitEntryInputModal({
                   onChange={(x) => setLink(x.target.value)}
                   className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
                 />
-                {!!error && (
+                {/* {!!error && (
                   <p className="error text-red-500 text-sm">{error}</p>
-                )}
+                )} */}
               </div>
             </div>
             <DialogFooter className="">
@@ -127,6 +147,16 @@ function SubmitEntryInputModal({
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      )}
+      {!!error && (
+        <QuestErrorAlert
+          open={!!error}
+          isRobo={isRobo}
+          error={error}
+          onClose={() => {
+            setError(null);
+          }}
+        />
       )}
       {success && (
         <SubmitEntryAlert
