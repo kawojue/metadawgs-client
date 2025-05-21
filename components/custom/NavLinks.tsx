@@ -22,7 +22,7 @@ function NavLinks({
 
   const navItems = [
     { name: "quests", path: "/quests" },
-    { name: "presale", path: "/presale" },
+    { name: "Dawgs TGE", path: "/presale" },
     {
       name: "Leaderboard",
       path: "/leaderboard",
