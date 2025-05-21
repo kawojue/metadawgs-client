@@ -15,7 +15,7 @@ import {
   formatNumberWithCommas,
   hashAddress,
 } from "@/lib/common";
-import { TelegramIcon, TwitterIcon } from "@/lib/icons";
+import { TelegramIcon, TwitterIcon, YoutubeIcon } from "@/lib/icons";
 import { ProfileType } from "@/lib/type";
 import { ArrowUpRightIcon, CircleX, CopyIcon } from "lucide-react";
 import { FormEvent, useState } from "react";
@@ -335,6 +335,28 @@ function ProfileModal({
                 >
                   <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! py-[16px] cursor-pointer hover:bg-[#FFBE00]/80!">
                     <span className="sm:block hidden">Join</span>
+                    <ArrowUpRightIcon size={10} />
+                  </Button>
+                </a>
+              </div>
+              <div className="link rounded-full h-17 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-no-repeat after:bg-center after:bg-cover">
+                <div className="lint flex gap-4 items-center">
+                  <div className="app-icon max-[340px]:hidden text-white">
+                    <YoutubeIcon />
+                  </div>
+                  <p className="info text-[16px] text-start line-clamp-2">
+                    Subscribe on Youtube
+                  </p>
+                </div>
+
+                <a
+                  href={siteConfig.socialLinks.youtube}
+                  className="block"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! py-[16px] cursor-pointer hover:bg-[#FFBE00]/80!">
+                    <span className="sm:block hidden">Subscribe</span>
                     <ArrowUpRightIcon size={10} />
                   </Button>
                 </a>
