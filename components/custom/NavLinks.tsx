@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 function NavLinks({
-  isMobile = false,
+  isMobile,
   closeMenu,
 }: {
   isMobile?: boolean;

@@ -25,6 +25,7 @@ export interface ProfileType {
     displayName: string;
     totalPoints: number;
     approved: boolean;
+    verified: boolean;
   };
   rank: number;
 }
@@ -55,6 +56,7 @@ export interface XLeaderboardType {
   points: number;
   rank: number;
   avatar: string;
+  verified: boolean;
 }
 
 export interface MetaType {
