@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 function NavLinks({
-  isMobile = false,
+  isMobile,
   closeMenu,
 }: {
   isMobile?: boolean;
@@ -22,7 +22,7 @@ function NavLinks({
 
   const navItems = [
     { name: "quests", path: "/quests" },
-    { name: "presale", path: "/presale" },
+    { name: "Dawgs TGE", path: "/presale" },
     {
       name: "Leaderboard",
       path: "/leaderboard",
