@@ -94,7 +94,7 @@ export const faqs = [
   {
     question: "How can I participate in the Metadawgs community?",
     answer:
-      "Join the official Telegram and Discord channels, follow us on Twitter, and take part in community initiatives.",
+      "Join the official Telegram community group, follow us on Twitter, and take part in community initiatives.",
   },
   {
     question: "Are there any upcoming events for Metadawgs?",
