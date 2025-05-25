@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { authUrl, cn } from "@/lib/utils";
 import ProfileModal from "@/components/custom/modals/ProfileModal";
 
 import AddressButton from "@/components/custom/AddressButton";
@@ -16,7 +16,7 @@ import { useState } from "react";
 import NavLinks from "./NavLinks";
 
 function Navbar() {
-  const { userToken, userProfile, isLoading, login, logout } = useAuth();
+  const { userToken, userProfile, isLoading, logout } = useAuth();
   const { menuIsOpen, toggleMenu, closeMenu } = useMobileMenu();
   const [profileIsOpen, setProfileIsOpen] = useState<boolean>(false);
 
@@ -37,27 +37,29 @@ function Navbar() {
       {/* Desktop Auth Buttons */}
       <div className="others md:flex hidden gap-4 items-center">
         {!userToken ? (
-          <Button
-            className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
-            onClick={() => {
-              closeMenu();
-              login();
-            }}
-          >
-            <svg
-              width="14"
-              height="12"
-              viewBox="0 0 14 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <Link className="block w-fit" href={authUrl}>
+            <Button
+              className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
+              onClick={() => {
+                closeMenu();
+                // login();
+              }}
             >
-              <path
-                d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
-                fill="black"
-              />
-            </svg>
-            <span>Sign In With X</span>
-          </Button>
+              <svg
+                width="14"
+                height="12"
+                viewBox="0 0 14 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
+                  fill="black"
+                />
+              </svg>
+              <span>Sign In With X</span>
+            </Button>
+          </Link>
         ) : (
           <UserProfileButton
             profile={userProfile}
@@ -99,27 +101,29 @@ function Navbar() {
 
         <div className="others md:hidden flex flex-col gap-3 mt-2 w-fit">
           {!userToken && (
-            <Button
-              className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
-              onClick={() => {
-                closeMenu();
-                login();
-              }}
-            >
-              <svg
-                width="14"
-                height="12"
-                viewBox="0 0 14 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <Link className="block w-fit" href={authUrl}>
+              <Button
+                className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
+                onClick={() => {
+                  closeMenu();
+                  // login();
+                }}
               >
-                <path
-                  d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
-                  fill="black"
-                />
-              </svg>
-              <span>Sign In With X</span>
-            </Button>
+                <svg
+                  width="14"
+                  height="12"
+                  viewBox="0 0 14 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
+                    fill="black"
+                  />
+                </svg>
+                <span>Sign In With X</span>
+              </Button>
+            </Link>
           )}
           <AddressButton />
         </div>

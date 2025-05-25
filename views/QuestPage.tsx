@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/use-auth";
 import { fetchWithAuth } from "@/lib/api";
 import { PostType } from "@/lib/type";
-import { authWithTwitter } from "@/lib/utils";
+// import { authWithTwitter } from "@/lib/utils";
 import {
   XCompleteOnboarding,
   XNoCode,
@@ -23,6 +23,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import useLocalStorage from "use-local-storage";
 import Onboarding from "./Onboarding";
+import { authUrl } from "@/lib/utils";
+import Link from "next/link";
 
 function QuestPage() {
   const [userToken] = useLocalStorage(XUserToken, "");
@@ -205,26 +207,28 @@ function QuestPage() {
                   need to authenticate and start collecting bones for your
                   MetaDawgs journey!
                 </p>
-                <Button
-                  className="w-fit py-6! px-5! rounded-full cursor-pointer bg-[#FFBE00] text-black"
-                  onClick={() => {
-                    authWithTwitter();
-                  }}
-                >
-                  <svg
-                    width="14"
-                    height="12"
-                    viewBox="0 0 14 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                <Link className="block w-fit" href={authUrl}>
+                  <Button
+                    className="w-fit py-6! px-5! rounded-full cursor-pointer bg-[#FFBE00] text-black"
+                    onClick={() => {
+                      // authWithTwitter();
+                    }}
                   >
-                    <path
-                      d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
-                      fill="black"
-                    />
-                  </svg>{" "}
-                  Sign in with X
-                </Button>
+                    <svg
+                      width="14"
+                      height="12"
+                      viewBox="0 0 14 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
+                        fill="black"
+                      />
+                    </svg>{" "}
+                    Sign in with X
+                  </Button>
+                </Link>
               </div>
             </div>
           )}

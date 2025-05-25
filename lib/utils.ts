@@ -20,29 +20,16 @@ export function authWithTwitter() {
   );
 
   if (authWindow) {
-    const checkClosed = setInterval(() => {
+    const timer = setInterval(() => {
       if (authWindow.closed) {
-        clearInterval(checkClosed);
+        clearInterval(timer);
         console.log("Authentication window closed");
-
-        setTimeout(() => {
-          const currentToken = localStorage.getItem("userToken");
-          if (currentToken) {
-            window.location.reload();
-          }
-        }, 1000);
       }
     }, 500);
-
-    setTimeout(() => {
-      if (!authWindow.closed) {
-        console.log("Auth window timeout - closing");
-        authWindow.close();
-      }
-      clearInterval(checkClosed);
-    }, 300000);
   } else {
     console.error("Failed to open authentication window");
-    alert("Please allow popups for this site to enable authentication");
   }
 }
+
+export const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
+export const authUrl = `${apiUrl}/auth/x/`;

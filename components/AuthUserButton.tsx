@@ -1,19 +1,21 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { authWithTwitter } from "@/lib/utils";
+// import { authWithTwitter } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useAuth from "@/hooks/use-auth";
+import Link from "next/link";
+import { authUrl } from "@/lib/utils";
 
 function AuthUserButton() {
   const { userToken, userProfile } = useAuth();
 
   function authWithX() {
-    authWithTwitter();
+    // authWithTwitter();
   }
 
   return (
-    <>
+    <Link className="block w-fit" href={authUrl}>
       {!userToken && (
         <Button
           className="bg-[white] text-black shadow-[#484848] rounded-full px-5! py-6! text-sm cursor-pointer hover:bg-[white]/80!"
@@ -49,7 +51,7 @@ function AuthUserButton() {
           </span>
         </Button>
       )}
-    </>
+    </Link>
   );
 }
 

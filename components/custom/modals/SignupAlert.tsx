@@ -10,8 +10,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { authWithTwitter } from "@/lib/utils";
+import { authUrl } from "@/lib/utils";
+// import { authWithTwitter } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 export function SignupAlert({
   open,
@@ -22,6 +24,8 @@ export function SignupAlert({
   onClose?: () => void;
   message?: string;
 }) {
+
+
   return (
     <AlertDialog
       open={open}
@@ -57,27 +61,29 @@ export function SignupAlert({
           >
             Close
           </AlertDialogCancel>
-          <AlertDialogAction
-            className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
-            onClick={() => {
-              onClose?.();
-              authWithTwitter();
-            }}
-          >
-            <svg
-              width="14"
-              height="12"
-              viewBox="0 0 14 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <Link className="block w-fit" href={authUrl}>
+            <AlertDialogAction
+              className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
+              onClick={() => {
+                onClose?.();
+                // authWithTwitter();
+              }}
             >
-              <path
-                d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
-                fill="black"
-              />
-            </svg>{" "}
-            Sign in with X
-          </AlertDialogAction>
+              <svg
+                width="14"
+                height="12"
+                viewBox="0 0 14 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.99204 7.76733L9.1665 12H13.8332L8.5943 5.01487L12.9537 0H11.187L7.77604 3.92385L4.83317 0H0.166504L5.17374 6.67633L0.545937 12H2.31262L5.99204 7.76733ZM9.83317 10.6667L2.83317 1.33333H4.1665L11.1665 10.6667H9.83317Z"
+                  fill="black"
+                />
+              </svg>{" "}
+              Sign in with X
+            </AlertDialogAction>
+          </Link>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
