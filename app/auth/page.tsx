@@ -30,7 +30,7 @@ export default function AuthHandler() {
     };
 
     handleAuth();
-  }, [token, setUserToken, setRefreshPosts, router]);
+  }, [token]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
