@@ -61,7 +61,7 @@ export function SignupAlert({
           >
             Close
           </AlertDialogCancel>
-          <Link className="block w-fit" href={authUrl}>
+          <Link className="block w-full" href={authUrl}>
             <AlertDialogAction
               className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
               onClick={() => {
