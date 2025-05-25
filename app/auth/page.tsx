@@ -17,7 +17,6 @@ export default function AuthHandler() {
     const handleAuth = () => {
       if (token) {
         setUserToken(token);
-        console.log("Token saved:", token);
       }
 
       // Update refresh posts
