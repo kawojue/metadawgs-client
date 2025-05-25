@@ -17,7 +17,6 @@ export default function AuthHandler() {
     const handleAuth = () => {
       if (token) {
         setUserToken(token);
-        console.log("Token saved:", token);
       }
 
       // Update refresh posts
@@ -27,11 +26,11 @@ export default function AuthHandler() {
         window.close();
       }
 
-      // router.replace("/quests#Posts");
+      router.replace("/quests#Posts");
     };
 
     handleAuth();
-  }, [token, setUserToken, setRefreshPosts, router]);
+  }, [token]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
