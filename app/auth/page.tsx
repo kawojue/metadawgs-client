@@ -27,7 +27,7 @@ export default function AuthHandler() {
         window.close();
       }
 
-      // router.replace("/quests#Posts");
+      router.replace("/quests#Posts");
     };
 
     handleAuth();
