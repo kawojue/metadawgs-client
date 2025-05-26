@@ -361,6 +361,12 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                   SOL
                 </span>
               </span>
+              <span className="text-lg font-semibold">
+                Allocated Token:{" "}
+                <span className="font-fredoka font-semibold">
+                  {isComing ? "TBA" : formatNumberWithCommas(0)} SOL
+                </span>
+              </span>
             </div>
             <label htmlFor="amount">Amount</label>
             <NumberInput
@@ -368,7 +374,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
               onChange={setAmount}
               minValue={metrics.minPerWallet || 0}
               maxValue={metrics.maxPerWallet}
-              disabled={isLoading || !publicKey || isPresaleClosed}
+              disabled={isLoading || !publicKey || isPresaleClosed || isComing}
               id="amount"
               className="h-[52px] font-semibold text-lg border border-[#9C9C9C] rounded-full w-full p-4 bg-white text-black disabled:cursor-not-allowed disabled:opacity-50"
             />
