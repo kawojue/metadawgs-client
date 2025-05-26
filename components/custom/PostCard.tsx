@@ -113,7 +113,7 @@ const PostCard = ({
             onClick={handleSubmit}
             disabled={submitted || isSubmitting}
           >
-            Done
+            Claim
           </Button>
         </div>
       </div>
