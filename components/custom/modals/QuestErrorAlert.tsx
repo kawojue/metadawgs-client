@@ -21,7 +21,7 @@ export function QuestErrorAlert({
   open?: boolean;
   isRobo?: boolean;
   error?: string;
-  isOthers?: string;
+  isOthers?: boolean;
   onClose?: () => void;
 }) {
   return (
