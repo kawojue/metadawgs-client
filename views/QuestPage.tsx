@@ -40,6 +40,7 @@ function QuestPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [showEntryInput, setShowEntryInput] = useState<boolean>(false);
     const [, setOpenSignup] = useLocalStorage(XOpenSignUpModal, false);
+    const [activeTab, setActiveTab] = useState<"live" | "past">("live");
 
     const isOnboardingCompleted = useMemo(() => {
         if (!userProfile?.eligibleToUseReferralCode) {
@@ -59,7 +60,9 @@ function QuestPage() {
         async function getPosts() {
             try {
                 setLoading(true);
-                const { data } = await fetchWithAuth<PostType[]>("/posts");
+                const { data } = await fetchWithAuth<PostType[]>(
+                    `/posts?tab=${activeTab}`
+                );
 
                 setPosts(data);
             } catch (error) {
@@ -70,7 +73,7 @@ function QuestPage() {
         }
 
         getPosts();
-    }, [refreshPosts]);
+    }, [refreshPosts, activeTab]);
 
     function openEntryInput() {
         if (!userToken) {
@@ -167,6 +170,28 @@ function QuestPage() {
                     </FadeInUp>
                     {!!userToken && (
                         <div className="quests-box w-full sm:mt-8 mt-4 max-h-[500px]overflow-y-auto">
+                            <div className="flex gap-4 mb-6">
+                                <Button
+                                    className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer ${
+                                        activeTab === "live"
+                                            ? "text-black bg-[#FFBE00]"
+                                            : "text-white bg-[#1E1E1E]"
+                                    }`}
+                                    onClick={() => setActiveTab("live")}
+                                >
+                                    Live
+                                </Button>
+                                <Button
+                                    className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer ${
+                                        activeTab === "past"
+                                            ? "text-black bg-[#FFBE00]"
+                                            : "text-white bg-[#1E1E1E]"
+                                    }`}
+                                    onClick={() => setActiveTab("past")}
+                                >
+                                    Past
+                                </Button>
+                            </div>
                             {loading && (
                                 <div className="p-4 text-center">
                                     <h3 className="text-2xl font-fredoka">
