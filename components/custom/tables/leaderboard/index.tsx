@@ -8,62 +8,142 @@ import { fetchWithAuth } from "@/lib/api";
 import { telegram_columns } from "./TelegramColumns";
 import { x_columns } from "./XColumns";
 
+type LeaderboardState<T> = {
+    data: T[];
+    loading: boolean;
+    error: string | null;
+};
+
+const initialLeaderboardState = {
+    data: [],
+    loading: true,
+    error: null,
+};
+
 export function TelegramLeaderboardTable() {
-  const socket = useSocket();
-  const [leaderboard, setLeaderboard] = useState<TelegramLeaderboardType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+    const {
+        socket,
+        isConnected,
+        isConnecting,
+        error: socketError,
+    } = useSocket();
+    const [state, setState] = useState<
+        LeaderboardState<TelegramLeaderboardType>
+    >(initialLeaderboardState);
 
-  useEffect(() => {
-    if (!socket) return;
+    useEffect(() => {
+        if (!socket) {
+            setState((prev) => ({
+                ...prev,
+                loading: false,
+                error: "Socket not connected. Please refresh the page.",
+            }));
+            return;
+        }
 
-    socket.on("leaderboard", (data) => {
-      setLeaderboard(data);
-      setLoading(false);
-    });
+        if (socketError) {
+            setState((prev) => ({
+                ...prev,
+                loading: false,
+                error: socketError,
+            }));
+            return;
+        }
 
-    return () => {
-      socket.off("leaderboard");
-    };
-  }, [socket]);
+        if (isConnecting) {
+            setState((prev) => ({
+                ...prev,
+                loading: true,
+                error: null,
+            }));
+            return;
+        }
 
-  return (
-    <div className="w-full max-w-3xl">
-      <DataTable
-        columns={telegram_columns}
-        data={leaderboard}
-        isLoading={loading}
-      />
-    </div>
-  );
+        const handleLeaderboard = (data: TelegramLeaderboardType[]) => {
+            setState({ data, loading: false, error: null });
+        };
+
+        const handleError = (error: Error) => {
+            console.error("Socket error:", error);
+            setState((prev) => ({
+                ...prev,
+                loading: false,
+                error: "Failed to fetch leaderboard. Please try again.",
+            }));
+        };
+
+        socket.on("leaderboard", handleLeaderboard);
+        socket.on("error", handleError);
+
+        // Initial fetch attempt if connected
+        if (isConnected) {
+            setState((prev) => ({ ...prev, loading: true, error: null }));
+        }
+
+        return () => {
+            socket.off("leaderboard", handleLeaderboard);
+            socket.off("error", handleError);
+        };
+    }, [socket, isConnected, isConnecting, socketError]);
+
+    return (
+        <div className="w-full max-w-3xl">
+            <DataTable
+                columns={telegram_columns}
+                data={state.data}
+                isLoading={state.loading || isConnecting}
+                error={state.error || socketError}
+            />
+        </div>
+    );
 }
 
 export function XLeaderboardTable() {
-  const [leaderboard, setLeaderboard] = useState<XLeaderboardType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+    const [state, setState] = useState<LeaderboardState<XLeaderboardType>>(
+        initialLeaderboardState
+    );
 
-  useEffect(() => {
-    async function getLeaderboard() {
-      try {
-        const {
-          data: { data },
-        } = await fetchWithAuth<{ data: XLeaderboardType[] }>(
-          "/user/leaderboard"
-        );
+    useEffect(() => {
+        let isMounted = true;
 
-        setLeaderboard(data);
-      } catch (error) {
-        console.error("Error fetching leaderboard:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
+        async function getLeaderboard() {
+            try {
+                const {
+                    data: { data },
+                } = await fetchWithAuth<{ data: XLeaderboardType[] }>(
+                    "/user/leaderboard"
+                );
 
-    getLeaderboard();
-  }, []);
+                if (isMounted) {
+                    setState({ data, loading: false, error: null });
+                }
+            } catch (error) {
+                console.error("Error fetching leaderboard:", error);
+                if (isMounted) {
+                    setState((prev) => ({
+                        ...prev,
+                        loading: false,
+                        error: "Failed to fetch leaderboard. Please try again.",
+                    }));
+                }
+            }
+        }
 
-  return (
-    <div className="w-full max-w-3xl">
-      <DataTable columns={x_columns} data={leaderboard} isLoading={loading} />
-    </div>
-  );
+        getLeaderboard();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    return (
+        <div className="w-full max-w-3xl">
+            <DataTable
+                columns={x_columns}
+                data={state.data}
+                isLoading={state.loading}
+                error={state.error}
+            />
+        </div>
+    );
 }
