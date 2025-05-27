@@ -41,7 +41,7 @@ const PostCard = ({
 
       await refetchProfile();
     } catch (error: unknown) {
-      toast(error instanceof Error ? error.toString() : "Failed to submit.");
+      toast(error instanceof Error ? error.message : "Failed to submit.");
       console.error("Failed to submit:", error);
     } finally {
       setIsSubmitting(false);
@@ -55,7 +55,7 @@ const PostCard = ({
 
       await refetchProfile();
     } catch (error: unknown) {
-      toast(error instanceof Error ? error.toString() : "Failed to view.");
+      toast(error instanceof Error ? error.message : "Failed to view.");
       console.error("Failed to view:", error);
     } finally {
       setViewing(false);
