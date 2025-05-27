@@ -145,6 +145,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       {!!error && (
         <QuestErrorAlert
           open={!!error}
+          isOthers={true}
           isRobo={true}
           error={error}
           onClose={() => {

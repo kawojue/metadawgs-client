@@ -16,10 +16,12 @@ export function QuestErrorAlert({
   onClose,
   isRobo,
   error,
+  isOthers
 }: {
   open?: boolean;
   isRobo?: boolean;
   error?: string;
+  isOthers?: string;
   onClose?: () => void;
 }) {
   return (
@@ -53,7 +55,8 @@ export function QuestErrorAlert({
             )}
           </div>
           <AlertDialogTitle className="text-center font-fredoka text-3xl px-10 capitalize">
-            Submit Failed
+            {!isOthers && "Submit Failed"}
+            {isOthers && "Request Failed"}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
             {!isRobo &&
