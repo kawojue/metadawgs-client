@@ -17,7 +17,12 @@ import {
 } from "@/lib/common";
 import { TelegramIcon, TwitterIcon, YoutubeIcon } from "@/lib/icons";
 import { ProfileType } from "@/lib/type";
-import { ArrowUpRightIcon, CircleX, CopyIcon } from "lucide-react";
+import {
+  ArrowUpRightIcon,
+  BookAIcon,
+  CircleX,
+  CopyIcon,
+} from "lucide-react";
 import { FormEvent, useState } from "react";
 import { SubmitReferralAlert } from "./SubmitReferralAlert";
 import useAuth from "@/hooks/use-auth";
@@ -141,7 +146,7 @@ function ProfileModal({
               <span className="sr-only">Close</span>
             </button>
           </DialogHeader>
-          <div className="grid gap-5 py-4 max-h-[calc(85svh_-_100px)] px-1 overflow-y-auto">
+          <div className="grid gap-5 py-4 max-h-[calc(85svh_-_100px)] px-1 overflow-y-auto scroll">
             <div className="profile flex flex-col gap-2 items-center justify-center">
               <Avatar className="w-20 h-20 min-w-20 min-h-20">
                 <AvatarImage src={userProfile?.user.avatar} />
@@ -381,6 +386,28 @@ function ProfileModal({
                 >
                   <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! py-[16px] cursor-pointer hover:bg-[#FFBE00]/80!">
                     <span className="sm:block hidden">Subscribe</span>
+                    <ArrowUpRightIcon size={10} />
+                  </Button>
+                </a>
+              </div>
+              <div className="link rounded-full h-17 w-full col-span-1 flex text-white justify-between gap-5 p-4 px-5 pl-6 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-no-repeat after:bg-center after:bg-cover">
+                <div className="lint flex gap-4 items-center">
+                  <div className="app-icon max-[340px]:hidden text-white">
+                    <BookAIcon size={24} />
+                  </div>
+                  <p className="info text-[16px] text-start line-clamp-2">
+                    A guide to metadawgs
+                  </p>
+                </div>
+
+                <a
+                  href={siteConfig.socialLinks.roadmap}
+                  className="block"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full sm:px-5! py-[16px] cursor-pointer hover:bg-[#FFBE00]/80!">
+                    <span className="sm:block hidden">Read</span>
                     <ArrowUpRightIcon size={10} />
                   </Button>
                 </a>

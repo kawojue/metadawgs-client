@@ -16,7 +16,7 @@ import {
   XOpenSignUpModal,
   XRefreshPosts,
   XUserToken,
-  XVerifyParticipate,
+  // XVerifyParticipate,
 } from "@/lib/values";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,7 @@ function QuestPage() {
   const { userProfile } = useAuth();
   const [, setCompleteOnboarding] = useLocalStorage(XCompleteOnboarding, false);
   const [noCode] = useLocalStorage<boolean>(XNoCode, false);
-  const [participateVerified] = useLocalStorage(XVerifyParticipate, false);
+  // const [participateVerified] = useLocalStorage(XVerifyParticipate, false);
 
   const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -40,16 +40,16 @@ function QuestPage() {
   const [, setOpenSignup] = useLocalStorage(XOpenSignUpModal, false);
 
   const isOnboardingCompleted = useMemo(() => {
-    if (!userProfile?.eligibleToUseReferralCode && participateVerified) {
+    if (!userProfile?.eligibleToUseReferralCode) {
       return true;
     }
 
-    if (noCode && participateVerified) {
+    if (noCode) {
       return true;
     }
 
     return false;
-  }, [userProfile?.eligibleToUseReferralCode, noCode, participateVerified]);
+  }, [userProfile?.eligibleToUseReferralCode, noCode]);
 
   const router = useRouter();
 

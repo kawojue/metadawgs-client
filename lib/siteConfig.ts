@@ -14,6 +14,7 @@ const siteConfig = {
     youtube: "https://www.youtube.com/@MetaDawgs",
     instagram: "",
     linkedin: "",
+    roadmap: "https://metadawg.gitbook.io/metadawgs/",
   },
   url: "https://metadawgs.com",
 };

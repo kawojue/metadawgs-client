@@ -51,7 +51,7 @@ export const tokenomics = [
           "Liquidity (permanently locked)",
           "0% Team Reserve (locked for 12+ months)",
           "50 million for marketing, airdrops, and collabs (5%)",
-          "600 million for token allocation (60%)",
+          "600 million allocated for token generation event TGE",
           "350 million for liquidity (35%)",
         ],
       },

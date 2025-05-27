@@ -6,11 +6,10 @@ import React, {
   useState,
   useRef,
 } from "react";
-import { fetchWithAuth } from "@/lib/api";
 import { ProfileType } from "@/lib/type";
 import { XUserProfile, XUserToken } from "@/lib/values";
-// import { authWithTwitter } from "@/lib/utils";
 import useLocalStorage from "use-local-storage";
+import { QuestErrorAlert } from "@/components/custom/modals/QuestErrorAlert";
 
 export interface AuthContextType {
   userToken: string;
@@ -49,25 +48,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       setIsLoading(true);
       setError(null);
+
       const signal = abortControllerRef.current.signal;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-      const [profileResponse, rankResponse] = await Promise.all([
-        fetchWithAuth<ProfileType>("/auth/profile", { signal }),
-        fetchWithAuth<{ rank: number }>("/user/rank", { signal }),
-      ]);
-
-      setUserProfile({
-        ...profileResponse.data,
-        rank: rankResponse.data.rank,
+      const profileRes = await fetch(`${apiUrl}/auth/profile`, {
+        headers: { Authorization: `Bearer ${userToken}` },
+        signal,
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      if (error.name !== "AbortError") {
-        console.error("Failed to fetch profile:", error);
-        setError("Failed to load profile");
-        setUserProfile(null);
-        setUserToken("");
+
+      if (!profileRes.ok) {
+        if (profileRes.status === 401 || profileRes.status === 403) {
+          setUserProfile(null);
+          setUserToken("");
+          return;
+        }
+
+        try {
+          const err = await profileRes.json();
+          setError(err.message);
+        } catch {}
+        return;
       }
+
+      const profileData = await profileRes.json();
+      setUserProfile(profileData);
+
+      fetch(`${apiUrl}/user/rank`, {
+        headers: { Authorization: `Bearer ${userToken}` },
+        signal,
+      })
+        .then(async (rankRes) => {
+          if (rankRes.ok) {
+            const rankData = await rankRes.json();
+            setUserProfile((prev) => ({
+              ...prev,
+              rank: rankData.rank,
+            } as ProfileType));
+          }
+        })
+        .catch(() => {});
+    } catch (error) {
+      console.error("Failed to fetch profile:", error);
     } finally {
       if (abortControllerRef.current?.signal.aborted === false) {
         setIsLoading(false);
@@ -75,7 +97,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     }
   };
-
   const refetchProfile = async () => {
     await fetchProfile();
   };
@@ -93,12 +114,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         abortControllerRef.current = null;
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userToken]);
 
-  const login = () => {
-    // authWithTwitter();
-  };
+  const login = () => {};
 
   const logout = () => {
     if (abortControllerRef.current) {
@@ -121,5 +139,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     refetchProfile,
   };
 
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={auth}>
+      {children}
+      {!!error && (
+        <QuestErrorAlert
+          open={!!error}
+          isRobo={true}
+          error={error}
+          onClose={() => {
+            setError(null);
+          }}
+        />
+      )}
+    </AuthContext.Provider>
+  );
 };

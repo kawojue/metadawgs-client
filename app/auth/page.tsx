@@ -15,22 +15,23 @@ export default function AuthHandler() {
 
   useEffect(() => {
     const handleAuth = () => {
-      if (token) {
-        setUserToken(token);
+      if (!token) {
+        router.replace("/");
+        return;
       }
 
-      // Update refresh posts
+      setUserToken(token);
       setRefreshPosts(generateRandomString(10));
 
       if (window.opener) {
         window.close();
+      } else {
+        router.replace("/quests#Posts");
       }
-
-      router.replace("/quests#Posts");
     };
 
     handleAuth();
-  }, [token]);
+  }, [token, setUserToken, setRefreshPosts, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">

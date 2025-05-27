@@ -121,5 +121,9 @@ export function formatNumberWithCommas(
       return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
     if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
   }
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  const [intPart, decimalPart] = num.toString().split(".");
+  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  return decimalPart ? `${formattedInt}.${decimalPart}` : formattedInt;
 }

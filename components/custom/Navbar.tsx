@@ -26,7 +26,7 @@ function Navbar() {
   };
 
   return (
-    <div className="navbar bg-black text-white md:px-[4%] px-4 py-5 h-[88px] flex justify-between gap-4 items-center w-full sticky top-0 z-[999]">
+    <div className="navbar bg-black text-white md:px-[4%] px-4 py-5 h-[88px] flex justify-between gap-8 items-center w-full sticky top-0 z-[999]">
       <Link href={"/"} className="logo" onClick={closeMenu}>
         <Image src="/images/logo.svg" alt="MetaDawgs" width={150} height={35} />
       </Link>
