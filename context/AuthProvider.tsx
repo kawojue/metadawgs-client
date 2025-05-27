@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      const profileData = await profileRes.json();
+      const {data:profileData} = await profileRes.json();
       setUserProfile(profileData);
 
       fetch(`${apiUrl}/user/rank`, {
@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       })
         .then(async (rankRes) => {
           if (rankRes.ok) {
-            const rankData = await rankRes.json();
+            const {rank: rankData} = await rankRes.json();
             setUserProfile((prev) => ({
               ...prev,
               rank: rankData.rank,
