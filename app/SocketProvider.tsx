@@ -71,11 +71,9 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
             setError("Failed to reconnect to server");
         };
 
-        // Set initial state
         setIsConnected(socket.connected);
         setIsConnecting(!socket.connected);
 
-        // Add event listeners
         socket.on("connect", handleConnect);
         socket.on("disconnect", handleDisconnect);
         socket.on("connect_error", handleConnectError);

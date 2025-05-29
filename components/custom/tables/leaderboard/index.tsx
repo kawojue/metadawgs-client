@@ -60,6 +60,7 @@ export function TelegramLeaderboardTable() {
         }
 
         const handleLeaderboard = (data: TelegramLeaderboardType[]) => {
+            console.log(data);
             setState({ data, loading: false, error: null });
         };
 
@@ -75,7 +76,6 @@ export function TelegramLeaderboardTable() {
         socket.on("leaderboard", handleLeaderboard);
         socket.on("error", handleError);
 
-        // Initial fetch attempt if connected
         if (isConnected) {
             setState((prev) => ({ ...prev, loading: true, error: null }));
         }
