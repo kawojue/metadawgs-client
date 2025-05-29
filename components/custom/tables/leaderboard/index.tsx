@@ -60,7 +60,6 @@ export function TelegramLeaderboardTable() {
         }
 
         const handleLeaderboard = (data: TelegramLeaderboardType[]) => {
-            console.log(data);
             setState({ data, loading: false, error: null });
         };
 
