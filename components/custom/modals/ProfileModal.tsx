@@ -148,12 +148,12 @@ function ProfileModal({
                     <div className="grid gap-5 py-4 max-h-[calc(85svh_-_100px)] px-1 overflow-y-auto scroll">
                         <div className="profile flex flex-col gap-2 items-center justify-center">
                             <Avatar className="w-20 h-20 min-w-20 min-h-20">
-                                <AvatarImage src={userProfile?.user.avatar} />
+                                <AvatarImage src={userProfile?.user?.avatar} />
                                 <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
                             </Avatar>
                             <div className="div flex gap-2 items-center">
                                 <p className="text-sm text-[#ACACAC]">
-                                    {userProfile?.user.username}
+                                    {`@${userProfile?.user.username}`}
                                 </p>
                                 {userProfile?.user?.verified && (
                                     <svg
@@ -178,19 +178,23 @@ function ProfileModal({
                                     </svg>
                                 )}
                             </div>
-                            <div className="flex gap-3 items-center">
-                                <span className="text-[#ACACAC] text-sm">
-                                    Referral Code:
+                            <div className="flex gap-1.5 items-center">
+                                <span className="text-[#ACACAC] text-sm font-medium">
+                                    Referral Link:
                                 </span>
                                 <Button
-                                    className="bg-[#A078FF] p-1.5 px-2.5 rounded-full cursor-pointer"
+                                    className="bg-[#A078FF] p-1.5 px-2.5 rounded-full cursor-pointer text-sm"
                                     onClick={() =>
                                         copyToClipboard(
-                                            userProfile?.referralCode ?? ""
+                                            `https://socialfi.metadawgs.com/auth/x?ref=${userProfile?.referralCode}`
                                         )
                                     }
                                 >
-                                    {userProfile?.referralCode} <CopyIcon />
+                                    {hashAddress(
+                                        `https://socialfi.metadawgs.com/auth/x?ref=${userProfile?.referralCode}`,
+                                        10
+                                    )}{" "}
+                                    <CopyIcon />
                                 </Button>
                             </div>
                         </div>
