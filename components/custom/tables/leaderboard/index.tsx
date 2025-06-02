@@ -13,18 +13,21 @@ import { useSocket } from "@/app/SocketProvider";
 import { fetchWithAuth } from "@/lib/api";
 import { telegram_columns } from "./TelegramColumns";
 import { x_columns } from "./OverallColumns";
-import DarkPagination from "../../DarkPagination2";
+import DarkPagination from "../../DarkPagination";
+import { useNumberQuery } from "@/hooks/use-query";
 
 type LeaderboardState<T> = {
   data: T[];
   loading: boolean;
   error: string | null;
+  meta?: MetaType;
 };
 
 const initialLeaderboardState = {
   data: [],
   loading: true,
   error: null,
+  meta: undefined,
 };
 
 export function TelegramLeaderboardTable() {
@@ -32,21 +35,6 @@ export function TelegramLeaderboardTable() {
   const [state, setState] = useState<LeaderboardState<TelegramLeaderboardType>>(
     initialLeaderboardState
   );
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 12;
-
-  const mockMeta: MetaType = {
-    currentPage,
-    totalPages,
-    totalItems: 120,
-    offset: 10,
-    size: 10,
-    hasPrev: currentPage > 1,
-    hasNext: currentPage < totalPages,
-    previousPage: currentPage > 1 ? currentPage - 1 : null,
-    nextPage: currentPage < totalPages ? currentPage + 1 : null,
-  };
 
   useEffect(() => {
     if (!socket) {
@@ -102,10 +90,6 @@ export function TelegramLeaderboardTable() {
     };
   }, [socket, isConnected, isConnecting, socketError]);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
   return (
     <div className="w-full max-w-4xl space-y-8">
       <DataTable
@@ -115,7 +99,7 @@ export function TelegramLeaderboardTable() {
         error={state.error || socketError}
       />
 
-      <DarkPagination meta={mockMeta} onPageChange={handlePageChange} />
+      {/* <DarkPagination data={state.data} /> */}
     </div>
   );
 }
@@ -125,20 +109,7 @@ export function OverallLeaderboardTable() {
     initialLeaderboardState
   );
 
-   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 12;
-
-  const mockMeta: MetaType = {
-    currentPage,
-    totalPages,
-    totalItems: 120,
-    offset: 10,
-    size: 10,
-    hasPrev: currentPage > 1,
-    hasNext: currentPage < totalPages,
-    previousPage: currentPage > 1 ? currentPage - 1 : null,
-    nextPage: currentPage < totalPages ? currentPage + 1 : null,
-  };
+  const [page, setPage] = useNumberQuery("page", 1);
 
   useEffect(() => {
     let isMounted = true;
@@ -146,13 +117,16 @@ export function OverallLeaderboardTable() {
     async function getLeaderboard() {
       try {
         const {
-          data: { data },
-        } = await fetchWithAuth<{ data: OverallLeaderboardType[] }>(
-          "/user/leaderboard"
-        );
+          data: { data, meta },
+        } = await fetchWithAuth<{
+          data: OverallLeaderboardType[];
+          meta: MetaType;
+        }>(`/user/leaderboard/overall?page=${page}`);
+
+        console.log(meta);
 
         if (isMounted) {
-          setState({ data, loading: false, error: null });
+          setState({ data, loading: false, error: null, meta: meta });
         }
       } catch (error) {
         console.error("Error fetching leaderboard:", error);
@@ -161,6 +135,7 @@ export function OverallLeaderboardTable() {
             ...prev,
             loading: false,
             error: "Failed to fetch leaderboard. Please try again.",
+            meta: undefined,
           }));
         }
       }
@@ -171,11 +146,7 @@ export function OverallLeaderboardTable() {
     return () => {
       isMounted = false;
     };
-  }, []);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  }, [page]);
 
   return (
     <div className="w-full max-w-4xl space-y-8">
@@ -185,11 +156,14 @@ export function OverallLeaderboardTable() {
         isLoading={state.loading}
         error={state.error}
       />
-
-       <DarkPagination
-          meta={mockMeta}
-          onPageChange={handlePageChange}
+      {!!state.meta && (
+        <DarkPagination
+          meta={state.meta}
+          onPageChange={(value) => {
+            setPage(value);
+          }}
         />
+      )}
     </div>
   );
 }
@@ -199,20 +173,7 @@ export function CreatorsLeaderboardTable() {
     initialLeaderboardState
   );
 
-   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 12;
-
-  const mockMeta: MetaType = {
-    currentPage,
-    totalPages,
-    totalItems: 120,
-    offset: 10,
-    size: 10,
-    hasPrev: currentPage > 1,
-    hasNext: currentPage < totalPages,
-    previousPage: currentPage > 1 ? currentPage - 1 : null,
-    nextPage: currentPage < totalPages ? currentPage + 1 : null,
-  };
+  const [page, setPage] = useNumberQuery("page", 1);
 
   useEffect(() => {
     let isMounted = true;
@@ -220,13 +181,14 @@ export function CreatorsLeaderboardTable() {
     async function getLeaderboard() {
       try {
         const {
-          data: { data },
-        } = await fetchWithAuth<{ data: CreatorsLeaderboardType[] }>(
-          "/user/leaderboard"
-        );
+          data: { data, meta },
+        } = await fetchWithAuth<{
+          data: CreatorsLeaderboardType[];
+          meta: MetaType;
+        }>(`/user/leaderboard/creators?page=${page}`);
 
         if (isMounted) {
-          setState({ data, loading: false, error: null });
+          setState({ data, loading: false, error: null, meta: meta });
         }
       } catch (error) {
         console.error("Error fetching leaderboard:", error);
@@ -235,6 +197,7 @@ export function CreatorsLeaderboardTable() {
             ...prev,
             loading: false,
             error: "Failed to fetch leaderboard. Please try again.",
+            meta: undefined,
           }));
         }
       }
@@ -245,11 +208,7 @@ export function CreatorsLeaderboardTable() {
     return () => {
       isMounted = false;
     };
-  }, []);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  }, [page]);
 
   return (
     <div className="w-full max-w-4xl space-y-8">
@@ -260,10 +219,14 @@ export function CreatorsLeaderboardTable() {
         error={state.error}
       />
 
-       <DarkPagination
-          meta={mockMeta}
-          onPageChange={handlePageChange}
+      {!!state.meta && (
+        <DarkPagination
+          meta={state.meta}
+          onPageChange={(value) => {
+            setPage(value);
+          }}
         />
+      )}
     </div>
   );
 }
@@ -273,20 +236,7 @@ export function GrindersLeaderboardTable() {
     initialLeaderboardState
   );
 
-   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 12;
-
-  const mockMeta: MetaType = {
-    currentPage,
-    totalPages,
-    totalItems: 120,
-    offset: 10,
-    size: 10,
-    hasPrev: currentPage > 1,
-    hasNext: currentPage < totalPages,
-    previousPage: currentPage > 1 ? currentPage - 1 : null,
-    nextPage: currentPage < totalPages ? currentPage + 1 : null,
-  };
+  const [page, setPage] = useNumberQuery("page", 1);
 
   useEffect(() => {
     let isMounted = true;
@@ -294,13 +244,14 @@ export function GrindersLeaderboardTable() {
     async function getLeaderboard() {
       try {
         const {
-          data: { data },
-        } = await fetchWithAuth<{ data: GrindersLeaderboardType[] }>(
-          "/user/leaderboard"
-        );
+          data: { data, meta },
+        } = await fetchWithAuth<{
+          data: GrindersLeaderboardType[];
+          meta: MetaType;
+        }>(`/user/leaderboard/grinders?page=${page}`);
 
         if (isMounted) {
-          setState({ data, loading: false, error: null });
+          setState({ data, loading: false, error: null, meta: meta });
         }
       } catch (error) {
         console.error("Error fetching leaderboard:", error);
@@ -309,6 +260,7 @@ export function GrindersLeaderboardTable() {
             ...prev,
             loading: false,
             error: "Failed to fetch leaderboard. Please try again.",
+            meta: undefined,
           }));
         }
       }
@@ -319,11 +271,7 @@ export function GrindersLeaderboardTable() {
     return () => {
       isMounted = false;
     };
-  }, []);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  }, [page]);
 
   return (
     <div className="w-full max-w-4xl space-y-8">
@@ -334,10 +282,14 @@ export function GrindersLeaderboardTable() {
         error={state.error}
       />
 
-       <DarkPagination
-          meta={mockMeta}
-          onPageChange={handlePageChange}
+      {!!state.meta && (
+        <DarkPagination
+          meta={state.meta}
+          onPageChange={(value) => {
+            setPage(value);
+          }}
         />
+      )}
     </div>
   );
 }
