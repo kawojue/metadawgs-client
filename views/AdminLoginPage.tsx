@@ -73,7 +73,7 @@ function LoginPage() {
           );
         }
 
-        // router.replace("/admin");
+        // router.replace("/wherethemagicrestricted");
         return;
       }
 

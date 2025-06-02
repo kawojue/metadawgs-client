@@ -94,7 +94,7 @@ export default function QuestTable({ isPreview }: Props) {
         {meta && !loading && (
           <ShadcnPagination
             meta={meta}
-            baseUrl={isPreview ? "/admin" : "/admin/quests"}
+            baseUrl={isPreview ? "/wherethemagicrestricted" : "/wherethemagicrestricted/quests"}
           />
         )}
       </div>

@@ -94,7 +94,7 @@ export default function UsersTable({ isPreview }: Props) {
         {meta && !loading && (
           <ShadcnPagination
             meta={meta}
-            baseUrl={isPreview ? "/admin" : "/admin/users"}
+            baseUrl={isPreview ? "/wherethemagicrestricted" : "/wherethemagicrestricted/users"}
           />
         )}
       </div>

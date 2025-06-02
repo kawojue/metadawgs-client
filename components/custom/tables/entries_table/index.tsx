@@ -94,7 +94,7 @@ export default function EntriesTable({ isPreview }: Props) {
         {meta && !loading && (
           <ShadcnPagination
             meta={meta}
-            baseUrl={isPreview ? "/admin" : "/admin/entries"}
+            baseUrl={isPreview ? "/wherethemagicrestricted" : "/wherethemagicrestricted/entries"}
           />
         )}
       </div>

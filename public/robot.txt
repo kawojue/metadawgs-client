@@ -2,7 +2,7 @@
 
 User-agent: *
 # Disallow sensitive or restricted pages
-Disallow: /admin/
+Disallow: /wherethemagicrestricted/
 Disallow: /auth/
 
 # Optional: Disallow non-SEO valuable or dynamic routes
