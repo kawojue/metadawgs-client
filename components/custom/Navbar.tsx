@@ -103,7 +103,7 @@ function Navbar() {
           {!userToken && (
             <Link className="block w-fit" href={authUrl}>
               <Button
-                className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80!"
+                className="bg-white text-black rounded-full px-6! py-6! cursor-pointer hover:bg-white/80! flex items-center justify-center gap-2"
                 onClick={() => {
                   closeMenu();
                   // login();
@@ -121,7 +121,7 @@ function Navbar() {
                     fill="black"
                   />
                 </svg>
-                <span>Sign In With X</span>
+                <span className="block">Sign In With X</span>
               </Button>
             </Link>
           )}

@@ -48,7 +48,29 @@ export interface TelegramLeaderboardType {
   avatar: string;
 }
 
-export interface XLeaderboardType {
+export interface OverallLeaderboardType {
+  userId: string;
+  displayName: string;
+  username: string;
+  tasks: number;
+  points: number;
+  rank: number;
+  avatar: string;
+  verified: boolean;
+}
+
+export interface GrindersLeaderboardType {
+  userId: string;
+  displayName: string;
+  username: string;
+  tasks: number;
+  points: number;
+  rank: number;
+  avatar: string;
+  verified: boolean;
+}
+
+export interface CreatorsLeaderboardType {
   userId: string;
   displayName: string;
   username: string;
@@ -140,3 +162,5 @@ export interface PoolType {
     value: string;
   }[];
 }
+
+export type LeaderboardType = "overall" | "grinders" | "telegram" | "creators";

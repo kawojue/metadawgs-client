@@ -142,10 +142,12 @@ body {
   left: 2px;
   right: 2px;
   bottom: 2px;
-  background: #000000f3;
-  z-index: -1;
+  background-color: #000000f3;
+  z-index: -2;
   pointer-events: none;
 }
+
+
 
 .quest-tile {
   border-radius: 9999px;

@@ -46,17 +46,24 @@ function ProfileSidebar({
 
   const currentWallet = publicKey?.toBase58();
 
-  // Handle escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && open) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [open, onClose]);
+  const statsConfig = [
+    {
+      value: formatNumberWithCommas(Number(userProfile?.user.tasks)) || 0,
+      label: "Tasks Completed",
+    },
+    {
+      value:
+        Number(userProfile?.user.totalPoints)?.toLocaleString("en-US", {
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2,
+        }) || 0,
+      label: "Overall Bones",
+    },
+    {
+      value: userProfile?.rank || "NIL",
+      label: "Rank Number",
+    },
+  ];
 
   async function submitReferralCode(e: FormEvent) {
     e.preventDefault();
@@ -107,57 +114,33 @@ function ProfileSidebar({
     }
   }
 
-  // Stats configuration
-  const statsConfig = [
-    {
-      value: formatNumberWithCommas(Number(userProfile?.user.tasks)) || 0,
-      label: "Tasks Completed",
-    },
-    {
-      value:
-        Number(userProfile?.user.totalPoints)?.toLocaleString("en-US", {
-          maximumFractionDigits: 2,
-          minimumFractionDigits: 2,
-        }) || 0,
-      label: "Overall Bones",
-    },
-    {
-      value: userProfile?.rank || "NIL",
-      label: "Rank Number",
-    },
-  ];
-
-  // Social links configuration
-  const socialLinks = [
-    {
-      icon: <TwitterIcon />,
-      label: "Follow On Twitter",
-      buttonText: "Follow",
-      href: siteConfig.socialLinks.twitter,
-    },
-    {
-      icon: <TelegramIcon />,
-      label: "Join Telegram",
-      buttonText: "Join",
-      href: siteConfig.socialLinks.telegram,
-    },
-    {
-      icon: <YoutubeIcon />,
-      label: "Subscribe on Youtube",
-      buttonText: "Subscribe",
-      href: siteConfig.socialLinks.youtube,
-    },
-    {
-      icon: <BookAIcon size={24} />,
-      label: "A guide to metadawgs",
-      buttonText: "Read",
-      href: siteConfig.socialLinks.roadmap,
-    },
-  ];
-
   const shouldShowReferralCode =
     userProfile?.eligibleToUseReferralCode &&
     !getTimeRemaining(userProfile?.user?.joinedAt || "").hasPassed;
+
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && open) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [open, onClose]);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [open]);
 
   return (
     <>
@@ -217,7 +200,7 @@ function ProfileSidebar({
                     toast("Referral link is saved to the clipboard");
                   }}
                 >
-                  <span className="pt-1.5">
+                  <span className=".5">
                     {hashAddress(
                       `https://socialfi.metadawgs.com/auth/x?ref=${userProfile?.referralCode}`,
                       10
@@ -376,7 +359,7 @@ function ProfileSidebar({
                     className="w-auto"
                   >
                     <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1">
-                      <span className="pt-1">{link.buttonText}</span>
+                      <span className="">{link.buttonText}</span>
                       <ArrowUpRightIcon size={12} />
                     </Button>
                   </a>
@@ -395,7 +378,7 @@ function ProfileSidebar({
                 onClose();
               }}
             >
-              <span className="pt-1">Log Out</span>
+              <span className="">Log Out</span>
               <LogOutIcon />
             </Button>
           </div>
@@ -415,3 +398,31 @@ function ProfileSidebar({
 }
 
 export default ProfileSidebar;
+
+// Social links configuration
+const socialLinks = [
+  {
+    icon: <TwitterIcon />,
+    label: "Follow On Twitter",
+    buttonText: "Follow",
+    href: siteConfig.socialLinks.twitter,
+  },
+  {
+    icon: <TelegramIcon />,
+    label: "Join Telegram",
+    buttonText: "Join",
+    href: siteConfig.socialLinks.telegram,
+  },
+  {
+    icon: <YoutubeIcon />,
+    label: "Subscribe on Youtube",
+    buttonText: "Subscribe",
+    href: siteConfig.socialLinks.youtube,
+  },
+  {
+    icon: <BookAIcon size={24} />,
+    label: "A guide to metadawgs",
+    buttonText: "Read",
+    href: siteConfig.socialLinks.roadmap,
+  },
+];
