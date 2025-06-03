@@ -43,16 +43,16 @@ function QuestPage() {
     const [activeTab, setActiveTab] = useState<"live" | "past">("live");
 
     const isOnboardingCompleted = useMemo(() => {
-        if (!userProfile?.eligibleToUseReferralCode) {
-            return true;
-        }
+        // if (!userProfile?.eligibleToUseReferralCode) {
+        //     return true;
+        // }
 
         if (noCode) {
             return true;
         }
 
         return false;
-    }, [userProfile?.eligibleToUseReferralCode, noCode]);
+    }, [noCode]);
 
     const router = useRouter();
 

@@ -14,8 +14,9 @@ export interface PostType {
 }
 
 export interface ProfileType {
-  eligibleToUseReferralCode: boolean;
+  creatorClubVerification: "NOT_APPROVED" | "APPROVED";
   referralCode: string;
+  hasLinkedTelegram: false;
   user: {
     id: string;
     tasks: number;
@@ -23,11 +24,11 @@ export interface ProfileType {
     username: string;
     joinedAt: string;
     displayName: string;
-    totalPoints: number;
-    approved: boolean;
     verified: boolean;
+    walletApproved: boolean;
   };
   rank: number;
+  overallPoints: number;
 }
 
 export interface AdminProfileType {

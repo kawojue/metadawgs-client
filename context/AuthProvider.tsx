@@ -87,9 +87,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const rankData = await fetchWithAuth("/user/rank");
             if (rankData) {
                 const {
-                    data: { rank },
-                } = rankData as { data: { rank: number } };
-                setUserProfile((prev) => (prev ? { ...prev, rank } : null));
+                    data: { rank, overallPoints },
+                } = rankData as { data: { rank: number, overallPoints: number } };
+                console.log('overallPoints', overallPoints)
+                setUserProfile((prev) => (prev ? { ...prev, rank, overallPoints: overallPoints  } : null));
             }
         } catch (error) {
             console.error("Failed to fetch profile:", error);

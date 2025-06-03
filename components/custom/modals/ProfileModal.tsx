@@ -6,7 +6,6 @@ import { postWithAuth } from "@/lib/api";
 import {
   copyToClipboard,
   formatNumberWithCommas,
-  getTimeRemaining,
   hashAddress,
 } from "@/lib/common";
 import {
@@ -16,10 +15,9 @@ import {
   VerificationBadge,
   YoutubeIcon,
 } from "@/lib/icons";
-import { ProfileType } from "@/lib/type";
 import { cn } from "@/lib/utils";
 import { ArrowUpRightIcon, BookAIcon, CircleX, CopyIcon } from "lucide-react";
-import { FormEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { SubmitReferralAlert } from "./SubmitReferralAlert";
 import useAuth from "@/hooks/use-auth";
 import siteConfig from "@/lib/siteConfig";
@@ -37,10 +35,7 @@ function ProfileSidebar({
 }) {
   const { userProfile, setUserProfile } = useAuth();
   const { publicKey } = useWallet();
-  const [code, setCode] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const [syncAddressing, setSyncAddressing] = useState<boolean>(false);
   const [syncAddressError, setSyncAddressError] = useState<string>("");
 
@@ -53,7 +48,7 @@ function ProfileSidebar({
     },
     {
       value:
-        Number(userProfile?.user.totalPoints)?.toLocaleString("en-US", {
+        Number(userProfile?.overallPoints)?.toLocaleString("en-US", {
           maximumFractionDigits: 2,
           minimumFractionDigits: 2,
         }) || 0,
@@ -64,30 +59,6 @@ function ProfileSidebar({
       label: "Rank Number",
     },
   ];
-
-  async function submitReferralCode(e: FormEvent) {
-    e.preventDefault();
-
-    setLoading(true);
-    try {
-      await postWithAuth("/auth/referral-code", {
-        code: code,
-      });
-      setSuccess(true);
-      const user = {
-        ...userProfile,
-        eligibleToUseReferralCode: false,
-      } as ProfileType;
-
-      setUserProfile(user);
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      setError(error.toString() || "An unexpected error occurred");
-    } finally {
-      setLoading(false);
-    }
-  }
 
   async function approveWallet() {
     try {
@@ -101,7 +72,7 @@ function ProfileSidebar({
           ...userProfile,
           user: {
             ...userProfile.user,
-            approved: true,
+            walletApproved: true,
           },
         });
       }
@@ -113,10 +84,6 @@ function ProfileSidebar({
       setSyncAddressing(false);
     }
   }
-
-  const shouldShowReferralCode =
-    userProfile?.eligibleToUseReferralCode &&
-    !getTimeRemaining(userProfile?.user?.joinedAt || "").hasPassed;
 
   // Handle escape key
   useEffect(() => {
@@ -224,80 +191,6 @@ function ProfileSidebar({
               ))}
             </div>
 
-            {/* Referral Code Section */}
-            {shouldShowReferralCode && (
-              <form
-                onSubmit={submitReferralCode}
-                className="space-y-4"
-                onInput={() => {
-                  setError("");
-                }}
-              >
-                <div className="row flex flex-col gap-3">
-                  <label
-                    htmlFor="link"
-                    className="text-base font-fredoka font-semibold"
-                  >
-                    Referral Code
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter code"
-                    value={code}
-                    onChange={(x) => setCode(x.target.value)}
-                    className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#FFBE00] focus:border-transparent"
-                  />
-                  {userProfile?.user.joinedAt &&
-                    (() => {
-                      const { hours, minutes } = getTimeRemaining(
-                        userProfile.user.joinedAt
-                      );
-                      return (
-                        <p className="error text-white text-sm">
-                          You have{" "}
-                          <strong>
-                            {hours} hours {minutes} mins
-                          </strong>{" "}
-                          to input code
-                        </p>
-                      );
-                    })()}
-                  {!!error && (
-                    <p className="error text-red-500 text-sm">{error}</p>
-                  )}
-
-                  <div className="grid gap-3 grid-cols-2">
-                    <div className="col-span-1">
-                      <Button
-                        type="button"
-                        className="w-full text-black bg-white text-sm rounded-full px-4 py-3 cursor-pointer hover:bg-gray-100 transition-colors"
-                        onClick={() => {
-                          setCode("");
-                          setError(null);
-                          setSuccess(false);
-                          onClose?.();
-                        }}
-                      >
-                        I {"don't"} have code
-                      </Button>
-                    </div>
-                    <div className="col-span-1">
-                      <Button
-                        type="submit"
-                        className={cn(
-                          "w-full bg-[#FFBE00] text-black text-sm rounded-full px-4 py-3 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors",
-                          (!!error || !code || loading) && "opacity-50"
-                        )}
-                        disabled={!!error || !code || loading}
-                      >
-                        {!loading ? "Validate" : "Validating"}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            )}
-
             {/* Wallet Section */}
             {!!currentWallet && (
               <div className="wallet-approval-section space-y-4">
@@ -314,17 +207,17 @@ function ProfileSidebar({
                         "verify bg-[#FFBE00] text-black text-sm rounded-full px-4 py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex-shrink-0",
                         (syncAddressing ||
                           !currentWallet ||
-                          userProfile?.user?.approved) &&
+                          userProfile?.user?.walletApproved) &&
                           "opacity-50"
                       )}
                       onClick={approveWallet}
                       disabled={
                         syncAddressing ||
                         !currentWallet ||
-                        userProfile?.user?.approved
+                        userProfile?.user?.walletApproved
                       }
                     >
-                      {!userProfile?.user?.approved
+                      {!userProfile?.user?.walletApproved
                         ? syncAddressing
                           ? "Approving..."
                           : "Approve"

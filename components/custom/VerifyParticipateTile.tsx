@@ -3,11 +3,10 @@
 import React from "react";
 import { SlideInLeft } from "./ScrollAnimation";
 import { QuestTile } from "./QuestTile";
-import { XNoCode, XVerifyParticipate } from "@/lib/values";
+import { XVerifyParticipate } from "@/lib/values";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/use-auth";
 import useLocalStorage from "use-local-storage";
-import { toast } from "sonner";
 
 const VerifyParticipate = () => {
   const { userProfile } = useAuth();
@@ -15,7 +14,7 @@ const VerifyParticipate = () => {
     `${XVerifyParticipate}`,
     false
   );
-  const [noCode] = useLocalStorage<boolean>(XNoCode, false);
+  // const [noCode] = useLocalStorage<boolean>(XNoCode, false);
 
   const router = useRouter();
 
@@ -40,10 +39,10 @@ const VerifyParticipate = () => {
               return;
             }
 
-            if (userProfile.eligibleToUseReferralCode && !noCode) {
-              toast("Please enter your referral code first");
-              return;
-            }
+            // if (userProfile.eligibleToUseReferralCode && !noCode) {
+            //   toast("Please enter your referral code first");
+            //   return;
+            // }
 
             setParticipateVerified(true);
             router.push("/quests#Posts");

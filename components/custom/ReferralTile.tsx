@@ -15,14 +15,14 @@ function ReferralTile() {
   const [noCode] = useLocalStorage<boolean>(XNoCode, false);
 
   if (!!userProfile) {
-    if (userProfile.eligibleToUseReferralCode) {
-      if (noCode) {
-        return null;
-      }
-      return <ReferralTileContent />;
-    } else {
+    if (noCode) {
       return null;
     }
+    return <ReferralTileContent />;
+    // if (userProfile.eligibleToUseReferralCode) {
+    // } else {
+    //   return null;
+    // }
   }
 
   return <ReferralTileContent />;
