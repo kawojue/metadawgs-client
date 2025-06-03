@@ -143,12 +143,15 @@ export function useJsonQuery<T extends object>(key: string, defaultValue?: T) {
 /**
  * useQuery for string values
  */
-export function useStringQuery(key: string, defaultValue?: string) {
+export function useStringQuery<T extends string = string>(
+  key: string,
+  defaultValue?: T
+) {
   return useQuery<string>(key, {
-    defaultValue: defaultValue,
-    deserializer: (value) => value,
+    defaultValue,
+    deserializer: (value) => value as string,
     serializer: (value) => value,
-  });
+  }) as [T, (value: T | null) => void];
 }
 
 export default useQuery;

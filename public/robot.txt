@@ -2,13 +2,12 @@
 
 User-agent: *
 # Disallow sensitive or restricted pages
-Disallow: /admin/
+Disallow: /wherethemagicrestricted/
 Disallow: /auth/
 
 # Optional: Disallow non-SEO valuable or dynamic routes
 Disallow: /dawg-bot/
-Disallow: /invite-task/
-Disallow: /quests/
+Disallow: /metadawgs-club/
 Disallow: /tweet-examples/
 
 # Optional: Disallow temporary or early access pages

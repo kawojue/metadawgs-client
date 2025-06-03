@@ -29,8 +29,8 @@ export default function UsersTable({ isPreview }: Props) {
 
   const [page] = useNumberQuery("page", 1);
   const [limit] = useNumberQuery("limit", 20);
-  const [search, setSearch] = useStringQuery("search", "");
-  const [inputValue, setInputValue] = useState(search);
+  const [search, setSearch] = useStringQuery<string>("search", "");
+  const [inputValue, setInputValue] = useState<string>(search);
 
   const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -94,7 +94,7 @@ export default function UsersTable({ isPreview }: Props) {
         {meta && !loading && (
           <ShadcnPagination
             meta={meta}
-            baseUrl={isPreview ? "/admin" : "/admin/users"}
+            baseUrl={isPreview ? "/wherethemagicrestricted" : "/wherethemagicrestricted/users"}
           />
         )}
       </div>

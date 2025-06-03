@@ -20,18 +20,22 @@ function NavLinks({
 }) {
   const pathname = usePathname();
 
-  const navItems = [
-    { name: "quests", path: "/quests" },
+  type NavItem = {
+    name: string;
+    path: string;
+    children?: {
+      name: string;
+      path: string;
+    }[];
+  };
+
+  const navItems: NavItem[] = [
+    { name: "Metadawgs Club", path: "/metadawgs-club" },
     { name: "Dawgs TGE", path: "/presale" },
     {
       name: "Leaderboard",
       path: "/leaderboard",
-      children: [
-        { name: "Community", path: "/leaderboard/x" },
-        { name: "Telegram", path: "/leaderboard/telegram" },
-      ],
     },
-    { name: "Invite Task", path: "/invite-task" },
     { name: "DawgPools", path: "/dawg-pools" },
     { name: "DawgBot", path: "/dawg-bot" },
   ];

@@ -2,147 +2,294 @@
 
 import { useEffect, useState } from "react";
 import { DataTable } from "./DataTable";
-import { TelegramLeaderboardType, XLeaderboardType } from "@/lib/type";
+import {
+  CreatorsLeaderboardType,
+  GrindersLeaderboardType,
+  MetaType,
+  OverallLeaderboardType,
+  TelegramLeaderboardType,
+} from "@/lib/type";
 import { useSocket } from "@/app/SocketProvider";
 import { fetchWithAuth } from "@/lib/api";
 import { telegram_columns } from "./TelegramColumns";
-import { x_columns } from "./XColumns";
+import { x_columns } from "./OverallColumns";
+import DarkPagination from "../../DarkPagination";
+import { useNumberQuery } from "@/hooks/use-query";
 
 type LeaderboardState<T> = {
-    data: T[];
-    loading: boolean;
-    error: string | null;
+  data: T[];
+  loading: boolean;
+  error: string | null;
+  meta?: MetaType;
 };
 
 const initialLeaderboardState = {
-    data: [],
-    loading: true,
-    error: null,
+  data: [],
+  loading: true,
+  error: null,
+  meta: undefined,
 };
 
 export function TelegramLeaderboardTable() {
-    const {
-        socket,
-        isConnected,
-        isConnecting,
+  const { socket, isConnected, isConnecting, error: socketError } = useSocket();
+  const [state, setState] = useState<LeaderboardState<TelegramLeaderboardType>>(
+    initialLeaderboardState
+  );
+
+  useEffect(() => {
+    if (!socket) {
+      setState((prev) => ({
+        ...prev,
+        loading: false,
+        error: "Socket not connected. Please refresh the page.",
+      }));
+      return;
+    }
+
+    if (socketError) {
+      setState((prev) => ({
+        ...prev,
+        loading: false,
         error: socketError,
-    } = useSocket();
-    const [state, setState] = useState<
-        LeaderboardState<TelegramLeaderboardType>
-    >(initialLeaderboardState);
+      }));
+      return;
+    }
 
-    useEffect(() => {
-        if (!socket) {
-            setState((prev) => ({
-                ...prev,
-                loading: false,
-                error: "Socket not connected. Please refresh the page.",
-            }));
-            return;
-        }
+    if (isConnecting) {
+      setState((prev) => ({
+        ...prev,
+        loading: true,
+        error: null,
+      }));
+      return;
+    }
 
-        if (socketError) {
-            setState((prev) => ({
-                ...prev,
-                loading: false,
-                error: socketError,
-            }));
-            return;
-        }
+    const handleLeaderboard = (data: TelegramLeaderboardType[]) => {
+      setState({ data, loading: false, error: null });
+    };
 
-        if (isConnecting) {
-            setState((prev) => ({
-                ...prev,
-                loading: true,
-                error: null,
-            }));
-            return;
-        }
+    const handleError = (error: Error) => {
+      console.error("Socket error:", error);
+      setState((prev) => ({
+        ...prev,
+        loading: false,
+        error: "Failed to fetch leaderboard. Please try again.",
+      }));
+    };
 
-        const handleLeaderboard = (data: TelegramLeaderboardType[]) => {
-            setState({ data, loading: false, error: null });
-        };
+    socket.on("leaderboard", handleLeaderboard);
+    socket.on("error", handleError);
 
-        const handleError = (error: Error) => {
-            console.error("Socket error:", error);
-            setState((prev) => ({
-                ...prev,
-                loading: false,
-                error: "Failed to fetch leaderboard. Please try again.",
-            }));
-        };
+    if (isConnected) {
+      setState((prev) => ({ ...prev, loading: true, error: null }));
+    }
 
-        socket.on("leaderboard", handleLeaderboard);
-        socket.on("error", handleError);
+    return () => {
+      socket.off("leaderboard", handleLeaderboard);
+      socket.off("error", handleError);
+    };
+  }, [socket, isConnected, isConnecting, socketError]);
 
-        if (isConnected) {
-            setState((prev) => ({ ...prev, loading: true, error: null }));
-        }
+  return (
+    <div className="w-full max-w-4xl space-y-8">
+      <DataTable
+        columns={telegram_columns}
+        data={state.data}
+        isLoading={state.loading || isConnecting}
+        error={state.error || socketError}
+      />
 
-        return () => {
-            socket.off("leaderboard", handleLeaderboard);
-            socket.off("error", handleError);
-        };
-    }, [socket, isConnected, isConnecting, socketError]);
-
-    return (
-        <div className="w-full max-w-3xl">
-            <DataTable
-                columns={telegram_columns}
-                data={state.data}
-                isLoading={state.loading || isConnecting}
-                error={state.error || socketError}
-            />
-        </div>
-    );
+      {/* <DarkPagination data={state.data} /> */}
+    </div>
+  );
 }
 
-export function XLeaderboardTable() {
-    const [state, setState] = useState<LeaderboardState<XLeaderboardType>>(
-        initialLeaderboardState
-    );
+export function OverallLeaderboardTable() {
+  const [state, setState] = useState<LeaderboardState<OverallLeaderboardType>>(
+    initialLeaderboardState
+  );
 
-    useEffect(() => {
-        let isMounted = true;
+  const [page, setPage] = useNumberQuery("page", 1);
 
-        async function getLeaderboard() {
-            try {
-                const {
-                    data: { data },
-                } = await fetchWithAuth<{ data: XLeaderboardType[] }>(
-                    "/user/leaderboard"
-                );
+  useEffect(() => {
+    let isMounted = true;
 
-                if (isMounted) {
-                    setState({ data, loading: false, error: null });
-                }
-            } catch (error) {
-                console.error("Error fetching leaderboard:", error);
-                if (isMounted) {
-                    setState((prev) => ({
-                        ...prev,
-                        loading: false,
-                        error: "Failed to fetch leaderboard. Please try again.",
-                    }));
-                }
-            }
+    async function getLeaderboard() {
+      try {
+        const {
+          data: { data, meta },
+        } = await fetchWithAuth<{
+          data: OverallLeaderboardType[];
+          meta: MetaType;
+        }>(`/user/leaderboard/overall?page=${page}`);
+
+        console.log(meta);
+
+        if (isMounted) {
+          setState({ data, loading: false, error: null, meta: meta });
         }
+      } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+        if (isMounted) {
+          setState((prev) => ({
+            ...prev,
+            loading: false,
+            error: "Failed to fetch leaderboard. Please try again.",
+            meta: undefined,
+          }));
+        }
+      }
+    }
 
-        getLeaderboard();
+    getLeaderboard();
 
-        return () => {
-            isMounted = false;
-        };
-    }, []);
+    return () => {
+      isMounted = false;
+    };
+  }, [page]);
 
-    return (
-        <div className="w-full max-w-3xl">
-            <DataTable
-                columns={x_columns}
-                data={state.data}
-                isLoading={state.loading}
-                error={state.error}
-            />
-        </div>
-    );
+  return (
+    <div className="w-full max-w-4xl space-y-8">
+      <DataTable
+        columns={x_columns}
+        data={state.data}
+        isLoading={state.loading}
+        error={state.error}
+      />
+      {!!state.meta && (
+        <DarkPagination
+          meta={state.meta}
+          onPageChange={(value) => {
+            setPage(value);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+export function CreatorsLeaderboardTable() {
+  const [state, setState] = useState<LeaderboardState<CreatorsLeaderboardType>>(
+    initialLeaderboardState
+  );
+
+  const [page, setPage] = useNumberQuery("page", 1);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function getLeaderboard() {
+      try {
+        const {
+          data: { data, meta },
+        } = await fetchWithAuth<{
+          data: CreatorsLeaderboardType[];
+          meta: MetaType;
+        }>(`/user/leaderboard/creators?page=${page}`);
+
+        if (isMounted) {
+          setState({ data, loading: false, error: null, meta: meta });
+        }
+      } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+        if (isMounted) {
+          setState((prev) => ({
+            ...prev,
+            loading: false,
+            error: "Failed to fetch leaderboard. Please try again.",
+            meta: undefined,
+          }));
+        }
+      }
+    }
+
+    getLeaderboard();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [page]);
+
+  return (
+    <div className="w-full max-w-4xl space-y-8">
+      <DataTable
+        columns={x_columns}
+        data={state.data}
+        isLoading={state.loading}
+        error={state.error}
+      />
+
+      {!!state.meta && (
+        <DarkPagination
+          meta={state.meta}
+          onPageChange={(value) => {
+            setPage(value);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+export function GrindersLeaderboardTable() {
+  const [state, setState] = useState<LeaderboardState<GrindersLeaderboardType>>(
+    initialLeaderboardState
+  );
+
+  const [page, setPage] = useNumberQuery("page", 1);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function getLeaderboard() {
+      try {
+        const {
+          data: { data, meta },
+        } = await fetchWithAuth<{
+          data: GrindersLeaderboardType[];
+          meta: MetaType;
+        }>(`/user/leaderboard/grinders?page=${page}`);
+
+        if (isMounted) {
+          setState({ data, loading: false, error: null, meta: meta });
+        }
+      } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+        if (isMounted) {
+          setState((prev) => ({
+            ...prev,
+            loading: false,
+            error: "Failed to fetch leaderboard. Please try again.",
+            meta: undefined,
+          }));
+        }
+      }
+    }
+
+    getLeaderboard();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [page]);
+
+  return (
+    <div className="w-full max-w-4xl space-y-8">
+      <DataTable
+        columns={x_columns}
+        data={state.data}
+        isLoading={state.loading}
+        error={state.error}
+      />
+
+      {!!state.meta && (
+        <DarkPagination
+          meta={state.meta}
+          onPageChange={(value) => {
+            setPage(value);
+          }}
+        />
+      )}
+    </div>
+  );
 }

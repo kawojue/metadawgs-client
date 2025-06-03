@@ -14,8 +14,9 @@ export interface PostType {
 }
 
 export interface ProfileType {
-  eligibleToUseReferralCode: boolean;
+  creatorClubVerification: "NOT_APPROVED" | "APPROVED";
   referralCode: string;
+  hasLinkedTelegram: false;
   user: {
     id: string;
     tasks: number;
@@ -23,11 +24,11 @@ export interface ProfileType {
     username: string;
     joinedAt: string;
     displayName: string;
-    totalPoints: number;
-    approved: boolean;
     verified: boolean;
+    walletApproved: boolean;
   };
   rank: number;
+  overallPoints: number;
 }
 
 export interface AdminProfileType {
@@ -48,7 +49,29 @@ export interface TelegramLeaderboardType {
   avatar: string;
 }
 
-export interface XLeaderboardType {
+export interface OverallLeaderboardType {
+  userId: string;
+  displayName: string;
+  username: string;
+  tasks: number;
+  points: number;
+  rank: number;
+  avatar: string;
+  verified: boolean;
+}
+
+export interface GrindersLeaderboardType {
+  userId: string;
+  displayName: string;
+  username: string;
+  tasks: number;
+  points: number;
+  rank: number;
+  avatar: string;
+  verified: boolean;
+}
+
+export interface CreatorsLeaderboardType {
   userId: string;
   displayName: string;
   username: string;
@@ -140,3 +163,5 @@ export interface PoolType {
     value: string;
   }[];
 }
+
+export type LeaderboardType = "overall" | "grinders" | "telegram" | "creators";

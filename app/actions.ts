@@ -10,7 +10,7 @@ export async function login(formData: FormData) {
 
     if (!username || !password) {
         return redirect(
-            `/admin/auth?error=${encodeURIComponent(
+            `/wherethemagicrestricted/auth?error=${encodeURIComponent(
                 "Username and password are required."
             )}`
         );
@@ -23,7 +23,7 @@ export async function login(formData: FormData) {
                 "NEXT_PUBLIC_API_URL environment variable is not defined"
             );
             return redirect(
-                `/admin/auth?error=${encodeURIComponent(
+                `/wherethemagicrestricted/auth?error=${encodeURIComponent(
                     "Server configuration error."
                 )}`
             );
@@ -47,7 +47,7 @@ export async function login(formData: FormData) {
             const errorMessage =
                 data.message || "Login failed. Please check your credentials.";
             return redirect(
-                `/admin/auth?error=${encodeURIComponent(errorMessage)}`
+                `/wherethemagicrestricted/auth?error=${encodeURIComponent(errorMessage)}`
             );
         }
 
@@ -60,18 +60,18 @@ export async function login(formData: FormData) {
                 maxAge: rememberMe ? 30 * 24 * 60 * 60 : undefined,
             });
 
-            redirect("/admin");
+            redirect("/wherethemagicrestricted");
         }
 
         return redirect(
-            `/admin/auth?error=${encodeURIComponent(
+            `/wherethemagicrestricted/auth?error=${encodeURIComponent(
                 "Authentication failed. Please try again."
             )}`
         );
     } catch (error) {
         console.error("Login error:", error);
         return redirect(
-            `/admin/auth?error=${encodeURIComponent(
+            `/wherethemagicrestricted/auth?error=${encodeURIComponent(
                 "An unexpected error occurred."
             )}`
         );

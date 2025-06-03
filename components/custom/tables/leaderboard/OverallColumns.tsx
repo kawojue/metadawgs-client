@@ -1,10 +1,10 @@
 import { InfoIcon } from "lucide-react";
-import { XLeaderboardType } from "@/lib/type";
+import { OverallLeaderboardType } from "@/lib/type";
 import { getNumberSuffix } from "@/lib/common";
 import { ColumnDef } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export const x_columns: ColumnDef<XLeaderboardType>[] = [
+export const x_columns: ColumnDef<OverallLeaderboardType>[] = [
     {
         accessorKey: "rank",
         header: () => (

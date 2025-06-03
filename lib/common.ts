@@ -127,3 +127,24 @@ export function formatNumberWithCommas(
 
   return decimalPart ? `${formattedInt}.${decimalPart}` : formattedInt;
 }
+
+export function getTimeRemaining(joinedAt: string): {
+    hours: number;
+    minutes: number;
+    seconds: number;
+    hasPassed: boolean;
+  } {
+    const joinedDate = new Date(joinedAt);
+    const now = new Date();
+    const diff = Math.max(
+      0,
+      24 * 60 * 60 * 1000 - (now.getTime() - joinedDate.getTime())
+    );
+
+    const hasPassed = diff <= 0;
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    return { hours, minutes, seconds, hasPassed };
+  }
