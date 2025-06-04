@@ -14,7 +14,7 @@ export interface PostType {
 }
 
 export interface ProfileType {
-  creatorClubVerification: "NOT_APPLIED" | "ACCEPTED" | "PENDING" | "REJECTED";
+  creatorClubVerification: "NOT_APPLIED" | "APPROVED" | "PENDING" | "REJECTED";
   referralCode: string;
   hasLinkedTelegram: false;
   user: {
@@ -165,3 +165,36 @@ export interface PoolType {
 }
 
 export type LeaderboardType = "overall" | "grinders" | "telegram" | "creators";
+
+export type Approval = {
+  id: string;
+  avatar: string;
+  username: string;
+  approved: boolean;
+  verified: boolean;
+  walletApproved: boolean;
+  tweetsCount: number;
+  followersCount: number;
+  walletAddress: string;
+  telegramHandle: null;
+  tasks: number;
+  banned: boolean;
+  lastAppSubmittedAt: string;
+  displayName: string;
+  xAccessToken: string;
+  xRefreshToken: string;
+  providerId: string;
+  deletedAt: null;
+  updatedAt: string;
+  createdAt: string;
+  lastWalletAddressChangeAt: string;
+  applicationSubmission: {
+    id: string;
+    answer1: string;
+    answer2: string;
+    deletedAt: null;
+    createdAt: string;
+    updatedAt: string;
+    userId: string;
+  };
+};
