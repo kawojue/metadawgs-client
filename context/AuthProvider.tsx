@@ -89,7 +89,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 const {
                     data: { rank, overallPoints },
                 } = rankData as { data: { rank: number, overallPoints: number } };
-                console.log('overallPoints', overallPoints)
                 setUserProfile((prev) => (prev ? { ...prev, rank, overallPoints: overallPoints  } : null));
             }
         } catch (error) {

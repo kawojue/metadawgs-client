@@ -1,16 +1,25 @@
+"use client";
+
 import { FadeIn, FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import siteConfig from "@/lib/siteConfig";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import OnboardingModal from "./modals/OnboardModal";
+import { useState } from "react";
 
-export const metadata = {
-  title: "Telegram Invite Race",
-  description:
-    "Join the Telegram Invite Race and compete to climb the leaderboard by inviting friends.",
-};
+function Onboarding({
+  setIsOnboarded,
+}: {
+  setIsOnboarded: (value: boolean) => void;
+}) {
+  const [onboardOpen, setOnboardOpen] = useState<boolean>(false);
 
-function Onboarding() {
+  const continueOn = () => {
+    setIsOnboarded(true);
+    setOnboardOpen(false);
+  };
+
   return (
     <>
       <div className="bg-black text-white p-4 sm:p-6 md:p-10 flex flex-col gap-6 md:gap-12 justify-center items-center min-h-dch">
@@ -18,7 +27,8 @@ function Onboarding() {
           <h1 className="title md:text-[64px] sm:text-5xl text-4xl font-fredoka font-bold capitalize tracking-wider text-center">
             Welcome to
             <br />
-            Metadawgs GrindFi <br />Club!
+            Metadawgs GrindFi <br />
+            Club!
           </h1>
         </FadeIn>
 
@@ -95,7 +105,7 @@ function Onboarding() {
           </FadeInUp>
           <FadeInUp>
             <li className="flex gap-5 pool rounded-2xl after:rounded-2xl p-6 sm:p-8">
-              <div className="border-2 mt-0.5 font-medium shadow-[inset_0px_-1.5px_3px_0px_rgba(0,0,0,0.4)] rounded-full size-[30px] min-w-[30px] border-[#00C159]">
+              <div className="border-2 mt-0.5 font-medium shadow-[inset_0px_-1.5px_3px_0px_rgba(0,0,0,0.4)] rounded-full size-[30px] min-w-[30px] border-[#c12700]">
                 <Image
                   width={30}
                   height={30}
@@ -119,10 +129,20 @@ function Onboarding() {
           </FadeInUp>
         </ul>
 
-        <Button className="rounded-full px-7! font-medium !py-6 bg-[#08A5D9]">
+        <Button
+          className="rounded-full px-7! font-medium !py-6 bg-[#08A5D9]"
+          onClick={() => setOnboardOpen(true)}
+        >
           Join Metadawgs Club <ArrowUpRight strokeWidth={3} />
         </Button>
       </div>
+
+      <OnboardingModal
+        open={onboardOpen}
+        onClose={() => setOnboardOpen(false)}
+        toggleOpen={() => setOnboardOpen(true)}
+        continueOn={continueOn}
+      />
     </>
   );
 }

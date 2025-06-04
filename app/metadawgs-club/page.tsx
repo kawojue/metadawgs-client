@@ -1,12 +1,40 @@
-import Onboarding from "./Onboarding";
+"use client";
 
-function page() {
-  const isOnboarded = false;
+import { useState } from "react";
+import Onboarding from "./Onboarding";
+import useAuth from "@/hooks/use-auth";
+import OnboardingModal from "./modals/OnboardModal";
+
+function Page() {
+  const { userProfile } = useAuth();
+  const [isOnboarded, setIsOnboarded] = useState<boolean>(
+    !!userProfile &&
+      !!userProfile.user.walletApproved
+  );
+
+  const [onboardOpen, setOnboardOpen] = useState<boolean>(
+    !userProfile?.hasLinkedTelegram
+  );
+
+  const continueOn = () => {
+    setOnboardOpen(false);
+  };
 
   if (!isOnboarded) {
-    return <Onboarding />;
+    return <Onboarding setIsOnboarded={(value) => setIsOnboarded(value)} />;
   }
-  return <div>page</div>;
+
+  return (
+    <>
+      <div>page</div>
+      <OnboardingModal
+        open={onboardOpen}
+        onClose={() => setOnboardOpen(false)}
+        continueOn={continueOn}
+        hideTheRest={true}
+      />
+    </>
+  );
 }
 
-export default page;
+export default Page;

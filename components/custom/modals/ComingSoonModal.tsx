@@ -45,7 +45,7 @@ function ComingSoonModal({
               height={100}
             />
           </div>
-          <DialogTitle className="font-fredoka text-2xl">
+          <DialogTitle className="font-fredoka text-2xl text-center">
             Coming Soon
           </DialogTitle>
           <DialogDescription className="text-center text-white px-6">
