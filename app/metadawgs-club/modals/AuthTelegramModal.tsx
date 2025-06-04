@@ -71,6 +71,8 @@ function AuthTelegramModal({
 
   function willDoThatLater() {
     setWillDoThatLater(true);
+    setUsername("");
+    setCode("");
     setTimeout(() => onClose?.(), 0);
   }
 
@@ -158,10 +160,11 @@ function AuthTelegramModal({
                 disabled={!!error || !username || loading}
                 onClick={getCode}
               >
-                Get Code
+                {loading ? "Loading..." : "Get Code"}
               </Button>
               <Button
                 type="button"
+                disabled={loading}
                 className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black disabled:cursor-not-allowed!"
                 onClick={willDoThatLater}
               >
@@ -181,9 +184,12 @@ function AuthTelegramModal({
               </Button>
               <Button
                 type="button"
+                disabled={loading}
                 className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black disabled:cursor-not-allowed!"
                 onClick={() => {
                   setStep2(false);
+                  setUsername("");
+                  setCode("");
                   onClose?.();
                 }}
               >
