@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
-import { MetaType, UserType } from "@/lib/type";
+import { MetaType, Quest } from "@/lib/type";
 
 import { fetchWithAuth } from "@/lib/api";
 import useLocalStorage from "use-local-storage";
@@ -17,15 +17,15 @@ type Props = {
   isPreview?: boolean;
 };
 
-export default function UsersTable({ isPreview }: Props) {
+export default function SpecialQuestTable({ isPreview }: Props) {
   const { debouncedFetch, loading } = useDebouncedFetch<{
-    users: UserType[];
+    quests: Quest[];
     meta: MetaType;
   }>();
-
-  const [users, setUsers] = useState<UserType[]>([]);
+  
+  const [refreshTable] = useLocalStorage<string>(XRefreshTable, "");
+  const [quests, setQuest] = useState<Quest[]>([]);
   const [meta, setMeta] = useState<MetaType | null>(null);
-  const [refreshTable] = useLocalStorage<string>(XRefreshTable, "false");
 
   const [page] = useNumberQuery("page", 1);
   const [limit] = useNumberQuery("limit", 20);
@@ -39,18 +39,18 @@ export default function UsersTable({ isPreview }: Props) {
 
   useEffect(() => {
     debouncedFetch(async (signal) => {
-      const resUsers = await fetchWithAuth<{
-        users: UserType[];
+      const resQuest = await fetchWithAuth<{
+        quests: Quest[];
         meta: MetaType;
-      }>(`/users?page=${page}&limit=${limit}&search=${search}`, {
+      }>(`/posts/quests?special=true&page=${page}&limit=${limit}&search=${search}`, {
         isAdmin: true,
         signal,
       });
 
-      setUsers(resUsers.data.users);
-      setMeta(resUsers.data.meta);
+      setQuest(resQuest.data.quests);
+      setMeta(resQuest.data.meta);
 
-      return resUsers.data;
+      return resQuest.data;
     });
   }, [limit, page, refreshTable, search, debouncedFetch]);
 
@@ -59,7 +59,7 @@ export default function UsersTable({ isPreview }: Props) {
       <div className="flex sm:justify-between sm:flex-row flex-col-reverse gap-4 sm:items-center">
         <div className="flex items-center gap-3">
           <h2 className="text-2xl font-semibold font-fredoka">
-            {isPreview && "New "}Users
+            {isPreview && "New "}Special Quests
           </h2>
           {isPreview && (
             <span className="grid place-content-center place-items-center p-0.5 px-2 bg-red-500 text-white rounded-full text-xs">
@@ -90,11 +90,11 @@ export default function UsersTable({ isPreview }: Props) {
         </div>
       </div>
       <div className="w-full space-y-8">
-        <DataTable columns={columns} data={users} isLoading={loading} />
+        <DataTable columns={columns} data={quests} isLoading={loading} />
         {meta && !loading && (
           <ShadcnPagination
             meta={meta}
-            baseUrl={isPreview ? "/wherethemagicrestricted" : "/wherethemagicrestricted/users"}
+            baseUrl={isPreview ? "/wherethemagicrestricted" : "/wherethemagicrestricted/quests"}
           />
         )}
       </div>

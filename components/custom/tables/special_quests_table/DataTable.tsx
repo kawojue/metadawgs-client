@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ColumnDef,
   flexRender,
@@ -70,11 +72,9 @@ export function DataTable<TData, TValue>({
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="text-center text-black p-4"
+                className="h-24 text-center text-black"
               >
-                <div className="h-40 flex flex-col items-center justify-center gap-2">
-                  Loading...
-                </div>
+                Loading...
               </TableCell>
             </TableRow>
           )}

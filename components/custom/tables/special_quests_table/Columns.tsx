@@ -1,20 +1,14 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
-import { UserType } from "@/lib/type";
-import {
-  formatNumberWithCommas,
-  generateRandomString,
-  hashAddress,
-} from "@/lib/common";
+import { Quest } from "@/lib/type";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { LoaderIcon } from "lucide-react";
-import { postWithAuth } from "@/lib/api";
+import { LoaderIcon, TrashIcon } from "lucide-react";
+import { generateRandomString, hashAddress } from "@/lib/common";
 import useLocalStorage from "use-local-storage";
+import { useState } from "react";
 import { XRefreshTable } from "@/lib/values";
+import { deleteWithAuth } from "@/lib/api";
 
-export const columns: ColumnDef<UserType>[] = [
+export const columns: ColumnDef<Quest>[] = [
   {
     accessorKey: "checkbox",
     header: () => (
@@ -29,96 +23,58 @@ export const columns: ColumnDef<UserType>[] = [
     ),
   },
   {
-    accessorKey: "username",
-    header: () => <div className="">Username</div>,
+    accessorKey: "name",
+    header: () => <div className="">Quest Name</div>,
+    cell: ({ row }) => <div className="">{row.getValue("name")}</div>,
+  },
+  {
+    accessorKey: "description",
+    header: () => <div className="">Description</div>,
+    cell: ({ row }) => (
+      <div className="line-clamp-2">{row.getValue("description")}</div>
+    ),
+  },
+  {
+    accessorKey: "postUrl",
+    header: () => <div className="">Tweet URL</div>,
     cell: ({ row }) => (
       <div className="">
         <a
-          href={`https://x.com/${row.original.username}`}
-          className="block text-[#0000FF] underline"
+          href={row.getValue("postUrl")}
+          className="block text-[#0000FF] underline line-clamp-1"
           target="_blank"
           rel="noopener noreferrer"
         >
-          {row.getValue("username")}
+          {hashAddress(row.getValue("postUrl"), 15)}
         </a>
       </div>
     ),
   },
   {
-    accessorKey: "walletAddress",
-    header: () => <div className="">Wallet Address</div>,
-    cell: ({ row }) => (
-      <div className="">{hashAddress(row.getValue("walletAddress") ?? "")}</div>
-    ),
-  },
-  {
-    accessorKey: "totalPoints",
-    header: () => <div className="">Total Bones</div>,
-    cell: ({ row }) => (
-      <div className="">
-        {formatNumberWithCommas(row.getValue("totalPoints") ?? "")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "tasks",
-    header: () => <div className="">Tasks Completed</div>,
-    cell: ({ row }) => (
-      <div className="">
-        {formatNumberWithCommas(row.getValue("tasks") ?? "")} Tasks
-      </div>
-    ),
-  },
-
-  {
     accessorKey: "actions",
     header: () => <div className="">Action</div>,
     cell: ({ row }) => {
-      return <Action isBanned={row.original.banned} userId={row.original.id} />;
+      return <Action questId={row.original.id} />;
     },
   },
 ];
 
-const Action = ({
-  isBanned,
-  userId,
-}: {
-  isBanned: boolean;
-  userId: number;
-}) => {
-  const [banned, setBanned] = useState<boolean>(isBanned);
+const Action = ({ questId }: { questId: number }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setRefreshTable] = useLocalStorage<string>(XRefreshTable, "");
 
-  async function Ban() {
+  async function DeleteQuest() {
     if (isLoading) return;
 
     try {
       setIsLoading(true);
 
-      await postWithAuth(`/user/toggle-ban/${userId}`, undefined, {
+      await deleteWithAuth(`/posts/quests/${questId}`, {
         isAdmin: true,
       });
-      setBanned(true);
+      
       setRefreshTable(generateRandomString(10));
-    } catch (error) {
-      console.log(error);
-    } finally {
       setIsLoading(false);
-    }
-  }
-
-  async function Unban() {
-    if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-
-      await postWithAuth(`/user/toggle-ban/${userId}`, undefined, {
-        isAdmin: true,
-      });
-      setBanned(false);
-      setRefreshTable(generateRandomString(10));
     } catch (error) {
       console.log(error);
     } finally {
@@ -127,24 +83,15 @@ const Action = ({
   }
 
   return (
-    <>
-      {!banned ? (
-        <Button
-          className="rounded-full bg-[#FF3B30] text-white"
-          disabled={isLoading}
-          onClick={Ban}
-        >
-          {isLoading && <LoaderIcon />} {!isLoading && <span>Ban</span>}
-        </Button>
-      ) : (
-        <Button
-          className="rounded-full bg-[#FFBE00] text-black"
-          disabled={isLoading}
-          onClick={Unban}
-        >
-          {isLoading && <LoaderIcon />} {!isLoading && <span>Unban</span>}
-        </Button>
-      )}
-    </>
+    <Button
+      className="cursor-pointer"
+      variant={"ghost"}
+      size={"icon"}
+      disabled={isLoading}
+      onClick={DeleteQuest}
+    >
+      {isLoading && <LoaderIcon />}
+      {!isLoading && <TrashIcon className="text-red-500" />}
+    </Button>
   );
 };
