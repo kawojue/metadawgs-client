@@ -42,6 +42,15 @@ function QuestTopCard() {
     setShowEntryInput(true);
   }
 
+   function openQuestJoin() {
+    if (!userToken) {
+      setOpenSignup(true);
+      return;
+    }
+
+    setShowJoinCreators(true);
+  }
+
   function openTweetExamples() {
     if (!userToken) {
       setOpenSignup(true);
@@ -141,7 +150,7 @@ function QuestTopCard() {
         <div className="flex gap-4 gap-y-2 flex-wrap">
           <Button
             className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]"
-            onClick={openEntryInput}
+            onClick={openQuestJoin}
             disabled={userProfile?.creatorClubVerification === "PENDING"}
           >
             <span>Join Creators</span>

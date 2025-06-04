@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,170 +8,137 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowUpRightIcon, CircleX } from "lucide-react";
 import { useState } from "react";
-import { SubmitEntryAlert } from "@/components/custom/modals/SubmitEntryAlert";
-import { QuestErrorAlert } from "./QuestErrorAlert";
-import { XUserToken } from "@/lib/values";
+import { postWithAuth } from "@/lib/api";
+import Image from "next/image";
 import useAuth from "@/hooks/use-auth";
+import { Textarea } from "@/components/ui/textarea";
 
-function JoinCreatorsInputModal({
+function JoinCreatorsClub({
   open,
   onClose,
 }: {
   open: boolean;
   onClose?: () => void;
 }) {
-  const { logout } = useAuth();
-  const [link, setLink] = useState<string>("");
+  const [about, setAbout] = useState<string>("");
+  const [contribute, setContribute] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [isRobo, setIsRobo] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const { refetchProfile } = useAuth();
 
-  async function submitEntry() {
-    const token = localStorage.getItem(XUserToken);
-    if (!token) return;
-
+  async function submitJoin() {
     setLoading(true);
+    try {
+      await postWithAuth("/auth/telegram/verify", {
+        answer1: about,
+        answer2: contribute,
+      });
 
-    const body = { url: link };
+      await refetchProfile();
+      onClose?.();
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/entry`, {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        Authorization: `Bearer ${JSON.parse(token)}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!res.ok) {
-      if (res.status !== 401) {
-        const { message } = await res.json();
-        setIsRobo(![409, 429].includes(res.status));
-        setError(message);
-        setLoading(false);
-      } else {
-        logout();
-        setLoading(false);
-        onClose?.();
-      }
-
-      return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setError(error.message || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
-
-    setSuccess(true);
-    setLink("");
   }
 
-  const isValidLink = (url: string): boolean => {
-    try {
-      const parsedUrl = new URL(url);
-      const isHttpOrHttps =
-        parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
-      const isTwitterDomain =
-        parsedUrl.hostname === "x.com" || parsedUrl.hostname === "www.x.com";
-      const isValidPath = /^\/\w+\/status\/\d+$/.test(parsedUrl.pathname);
-
-      return isHttpOrHttps && isTwitterDomain && isValidPath;
-    } catch {
-      return false;
-    }
-  };
-
-  useEffect(() => {
-    if (link.trim() === "") {
-      setError(null);
-    } else if (!isValidLink(link)) {
-      setError("Please enter a valid tweet link.");
-    } else {
-      setError(null);
-    }
-  }, [link]);
-
   return (
-    <>
-      {!success && (
-        <Dialog
-          open={open}
-          onOpenChange={(x) => {
-            if (!x) {
-              onClose?.();
-            }
-          }}
-        >
-          <DialogContent
-            className="sm:max-w-[456px] bg-black text-white shadow-sm border  border-white/20 rounded-2xl"
-            showCloseButton={false}
-          >
-            <DialogHeader className="flex flex-row justify-between gap-4 items-center">
-              <DialogTitle className="font-fredoka text-2xl text-center">
-                Submit Entry
-              </DialogTitle>
-              <button
-                className="cursor-pointer p-1"
-                id="Close"
-                onClick={() => {
-                  onClose?.();
-                }}
-              >
-                <CircleX size={18} />
-                <span className="sr-only">Close</span>
-              </button>
-            </DialogHeader>
-            <div className="grid gap-5 py-4 content">
-              <div className="row flex flex-col gap-2">
-                <label htmlFor="link" className="text-sm">
-                  Link to tweet
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter link to tweet"
-                  value={link}
-                  onChange={(x) => setLink(x.target.value)}
-                  className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
-                />
-                {/* {!!error && (
-                  <p className="error text-red-500 text-sm">{error}</p>
-                )} */}
-              </div>
+    <Dialog
+      open={open}
+      onOpenChange={(x) => {
+        if (!x) {
+          onClose?.();
+        }
+      }}
+    >
+      <DialogContent
+        className="sm:max-w-[456px] bg-black text-white shadow-sm border border-white/20 rounded-3xl z-[999]"
+        showCloseButton={false}
+      >
+        <DialogHeader className="flex flex-col justify-center gap-2 items-center">
+          <div className="circle bg-white rounded-full p-2.5 mb-1">
+            <Image
+              src={"/images/man-avatar.png"}
+              alt="man"
+              width={100}
+              height={100}
+            />
+          </div>
+          <DialogTitle className="font-fredoka text-2xl text-center">
+            Join Creators
+          </DialogTitle>
+        </DialogHeader>
+        <div className="grid gap-5 py-2 content">
+          <div className="row flex flex-col gap-2">
+            <label htmlFor="code" className="text-sm font-fredoka">
+              Tell Us About Yourself
+            </label>
+            <div className="relative sm:max-w-[405px] w-full max-w-[94svw]">
+              <Textarea
+                className="bg-white/10 min-h-24 min-w-full"
+                maxLength={100}
+                value={about}
+                onChange={(x) => setAbout(x.currentTarget.value)}
+                onInput={() => setError(null)}
+              />
+              <span className="count absolute right-3 bottom-3 text-sm">
+                {about.length}/100
+              </span>
             </div>
-            <DialogFooter className="">
-              <Button
-                type="button"
-                className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
-                disabled={!!error || !link || loading}
-                onClick={submitEntry}
-              >
-                {!loading ? "Submit" : "Submitting"}
-                <ArrowUpRightIcon size={11} />
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      )}
-      {!!error && (
-        <QuestErrorAlert
-          open={!!error}
-          isRobo={isRobo}
-          error={error}
-          onClose={() => {
-            setError(null);
-          }}
-        />
-      )}
-      {success && (
-        <SubmitEntryAlert
-          open={success}
-          onClose={() => {
-            onClose?.();
-            setSuccess(false);
-          }}
-        />
-      )}
-    </>
+          </div>
+          <div className="row flex flex-col gap-2">
+            <label htmlFor="code" className="text-sm font-fredoka">
+              How can you contribute to the creators club on X
+            </label>
+            <div className="relative sm:max-w-[405px] w-full max-w-[94svw]">
+              <Textarea
+                className="bg-white/10 min-h-24"
+                maxLength={100}
+                value={contribute}
+                onChange={(x) => setContribute(x.currentTarget.value)}
+                onInput={() => setError(null)}
+              />
+              <span className="count absolute right-3 bottom-3 text-sm">
+                {contribute.length}/100
+              </span>
+            </div>
+          </div>
+          {!!error && <p className="error text-red-500 text-sm">{error}</p>}
+        </div>
+        <DialogFooter className="w-full flex flex-col sm:flex-col gap-4 sm:justify-start">
+          <Button
+            type="button"
+            className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
+            disabled={
+              !!error ||
+              about.length < 100 ||
+              contribute.length < 100 ||
+              loading
+            }
+            onClick={submitJoin}
+          >
+            {!loading ? "Submit" : "Submitting"}
+          </Button>
+          <Button
+            type="button"
+            disabled={loading}
+            className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black disabled:cursor-not-allowed!"
+            onClick={() => {
+              setAbout("");
+              setContribute("");
+              onClose?.();
+            }}
+          >
+            Close
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
-export default JoinCreatorsInputModal;
+export default JoinCreatorsClub;
