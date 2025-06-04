@@ -79,7 +79,7 @@ function OnboardingModal({
           </DialogHeader>
           <div>
             <div className="links grid gap-4 py-2">
-              {!hideTheRest && !!userProfile?.user.walletApproved && (
+              {!(hideTheRest && userProfile?.user.walletApproved) && (
                 <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
                   <div className="flex gap-3 items-center flex-1">
                     <div className="app-icon text-white">
@@ -116,7 +116,7 @@ function OnboardingModal({
                   />
                 </div>
               )}
-              {!hideTheRest && !!userProfile && (
+              {!(hideTheRest && !!userProfile) && (
                 <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
                   <div className="flex gap-3 items-center flex-1">
                     <div className="app-icon text-white">
