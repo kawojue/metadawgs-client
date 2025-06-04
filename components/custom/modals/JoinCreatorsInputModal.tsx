@@ -79,14 +79,13 @@ function JoinCreatorsClub({
             </label>
             <div className="relative sm:max-w-[405px] w-full max-w-[94svw]">
               <Textarea
-                className="bg-white/10 min-h-24 min-w-full"
-                maxLength={100}
+                className="bg-white/10 min-h-22 max-h-26 scroll min-w-full"
                 value={about}
                 onChange={(x) => setAbout(x.currentTarget.value)}
                 onInput={() => setError(null)}
               />
               <span className="count absolute right-3 bottom-3 text-sm">
-                {about.length}/100
+                {about.trim().split(/\s+/).filter(Boolean).length}/50
               </span>
             </div>
           </div>
@@ -96,14 +95,13 @@ function JoinCreatorsClub({
             </label>
             <div className="relative sm:max-w-[405px] w-full max-w-[94svw]">
               <Textarea
-                className="bg-white/10 min-h-24"
-                maxLength={100}
+                className="bg-white/10 min-h-22 max-h-26 scroll"
                 value={contribute}
                 onChange={(x) => setContribute(x.currentTarget.value)}
                 onInput={() => setError(null)}
               />
               <span className="count absolute right-3 bottom-3 text-sm">
-                {contribute.length}/100
+                {contribute.trim().split(/\s+/).filter(Boolean).length}/50
               </span>
             </div>
           </div>
@@ -115,8 +113,8 @@ function JoinCreatorsClub({
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
             disabled={
               !!error ||
-              about.length < 100 ||
-              contribute.length < 100 ||
+              about.trim().split(/\s+/).filter(Boolean).length < 50 ||
+              contribute.trim().split(/\s+/).filter(Boolean).length < 50 ||
               loading
             }
             onClick={submitJoin}

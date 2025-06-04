@@ -20,7 +20,7 @@ function QuestTopCard() {
 
   const isCreator = useMemo(
     () =>
-      userProfile?.creatorClubVerification === "ACCEPTED" ||
+      userProfile?.creatorClubVerification === "APPROVED" ||
       userProfile?.creatorClubVerification === "REJECTED",
     [userProfile]
   );
@@ -42,7 +42,7 @@ function QuestTopCard() {
     setShowEntryInput(true);
   }
 
-   function openQuestJoin() {
+  function openQuestJoin() {
     if (!userToken) {
       setOpenSignup(true);
       return;
@@ -64,7 +64,7 @@ function QuestTopCard() {
     return (
       <>
         <FadeInUp className="w-full rounded-2xl pool after:rounded-2xl p-5 sm:p-6 sm:py-8 space-y-3 relative after:bg-[linear-gradient(to_right,#000000,#000000d3),url('/images/throne.jpg')] after:bg-fill after:bg-right after:bg-no-repeat">
-          {userProfile?.creatorClubVerification === "ACCEPTED" && (
+          {userProfile?.creatorClubVerification === "APPROVED" && (
             <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[0.5px]">
               <div className="point-pill text-xs font-medium pool after:rounded-full p-2 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
                 Approved
@@ -93,7 +93,7 @@ function QuestTopCard() {
           <h3 className="font-semibold font-fredoka text-3xl max-w-sm">
             Write a post about MetaDawgs on Twitter.
           </h3>
-          {userProfile?.creatorClubVerification === "ACCEPTED" && (
+          {userProfile?.creatorClubVerification === "APPROVED" && (
             <p className="text-white text-[15px] max-w-md">
               Click {"Submit Entry"} button to complete this task. Allow 1-20
               minutes for the system check.
