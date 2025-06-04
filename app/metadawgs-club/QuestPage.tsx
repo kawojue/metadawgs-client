@@ -22,6 +22,7 @@ function QuestPage() {
   const { userToken } = useAuth();
   const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
   const [loading, setLoading] = useState<boolean>(false);
+  const [isSpecial, setIsSpecial] = useState<boolean>(false);
 
   const [posts, setPosts] = useState<PostType[]>([]);
 
@@ -32,7 +33,7 @@ function QuestPage() {
       try {
         setLoading(true);
         const { data } = await fetchWithAuth<PostType[]>(
-          `/posts?tab=${activeTab}`
+          `/posts?tab=${activeTab}&special=${isSpecial}`
         );
 
         setPosts(data);
@@ -44,7 +45,7 @@ function QuestPage() {
     }
 
     getPosts();
-  }, [refreshPosts, activeTab]);
+  }, [refreshPosts, activeTab, isSpecial]);
 
   return (
     <div className="bg-black text-white">
@@ -78,27 +79,39 @@ function QuestPage() {
           <QuestTopCard />
           {!!userToken && (
             <div className="quests-box w-full sm:mt-8 mt-4 max-h-[500px]overflow-y-auto">
-              <div className="flex gap-4 mb-6">
-                <Button
-                  className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer ${
-                    activeTab === "live"
-                      ? "text-black bg-[#FFBE00]"
-                      : "text-white bg-[#1E1E1E]"
-                  }`}
-                  onClick={() => setActiveTab("live")}
-                >
-                  Live
-                </Button>
-                <Button
-                  className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer ${
-                    activeTab === "past"
-                      ? "text-black bg-[#FFBE00]"
-                      : "text-white bg-[#1E1E1E]"
-                  }`}
-                  onClick={() => setActiveTab("past")}
-                >
-                  Past
-                </Button>
+              <div className="flex justify-between gap-4 items-center mb-6">
+                <div className="flex gap-4 ">
+                  <Button
+                    className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer ${
+                      activeTab === "live"
+                        ? "text-black bg-[#FFBE00]"
+                        : "text-white bg-[#1E1E1E]"
+                    }`}
+                    onClick={() => setActiveTab("live")}
+                  >
+                    Live
+                  </Button>
+                  <Button
+                    className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer ${
+                      activeTab === "past"
+                        ? "text-black bg-[#FFBE00]"
+                        : "text-white bg-[#1E1E1E]"
+                    }`}
+                    onClick={() => setActiveTab("past")}
+                  >
+                    Past
+                  </Button>
+                </div>
+                <button className="inline-flex items-center gap-2 pl-3 pr-4 py-1.5 bg-orange-500 text-white text-sm font-medium rounded-full relative" onClick={()=>setIsSpecial(true)}>
+                  <Image
+                    src="/images/packet.png"
+                    alt="Packet icon"
+                    width={45}
+                    height={46}
+                    className="w-auto h-auto absolute left-[-22px] top-1/2 -translate-y-1/2"
+                  />
+                  <span>Special Orders</span>
+                </button>
               </div>
               {loading && (
                 <div className="p-4 text-center">

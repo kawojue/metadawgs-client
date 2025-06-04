@@ -92,7 +92,7 @@ function AddressButton({
   useEffect(() => {
     if (connected) {
       onConnected?.();
-      if (!!userProfile && !userProfile?.hasLinkedTelegram) {
+      if (!!userProfile && !userProfile?.user.walletApproved) {
         toast("Approve your wallet address in profile section");
       }
     }

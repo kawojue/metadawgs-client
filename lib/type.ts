@@ -14,7 +14,7 @@ export interface PostType {
 }
 
 export interface ProfileType {
-  creatorClubVerification: "NOT_APPROVED" | "APPROVED";
+  creatorClubVerification: "NOT_APPLIED" | "ACCEPTED" | "PENDING" | "REJECTED";
   referralCode: string;
   hasLinkedTelegram: false;
   user: {
