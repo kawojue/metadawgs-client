@@ -94,7 +94,6 @@ function AddressButton({
       onConnected?.();
       if (!!userProfile && !userProfile?.hasLinkedTelegram) {
         toast("Approve your wallet address in profile section");
-        setMenuIsOpen(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

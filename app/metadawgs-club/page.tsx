@@ -4,6 +4,7 @@ import { useState } from "react";
 import Onboarding from "./Onboarding";
 import useAuth from "@/hooks/use-auth";
 import OnboardingModal from "./modals/OnboardModal";
+import QuestPage from "@/app/metadawgs-club/QuestPage";
 
 function Page() {
   const { userProfile } = useAuth();
@@ -26,7 +27,7 @@ function Page() {
 
   return (
     <>
-      <div>page</div>
+      <QuestPage/>
       <OnboardingModal
         open={onboardOpen}
         onClose={() => setOnboardOpen(false)}
