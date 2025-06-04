@@ -33,7 +33,7 @@ function QuestPage() {
       try {
         setLoading(true);
         const { data } = await fetchWithAuth<PostType[]>(
-          `/posts?tab=${activeTab}&special=${isSpecial}`
+          `/posts?special=${isSpecial}&tab=${activeTab}`
         );
 
         setPosts(data);
@@ -80,37 +80,44 @@ function QuestPage() {
           {!!userToken && (
             <div className="quests-box w-full sm:mt-8 mt-4 max-h-[500px]overflow-y-auto">
               <div className="flex justify-between gap-4 items-center mb-6">
-                <div className="flex gap-4 ">
-                  <Button
-                    className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer ${
-                      activeTab === "live"
-                        ? "text-black bg-[#FFBE00]"
-                        : "text-white bg-[#1E1E1E]"
-                    }`}
-                    onClick={() => setActiveTab("live")}
-                  >
-                    Live
-                  </Button>
-                  <Button
-                    className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer ${
-                      activeTab === "past"
-                        ? "text-black bg-[#FFBE00]"
-                        : "text-white bg-[#1E1E1E]"
-                    }`}
-                    onClick={() => setActiveTab("past")}
-                  >
-                    Past
-                  </Button>
-                </div>
-                <button className="inline-flex items-center gap-2 pl-3 pr-4 py-1.5 bg-orange-500 text-white text-sm font-medium rounded-full relative" onClick={()=>setIsSpecial(true)}>
+                {!isSpecial && (
+                  <div className="flex sm:gap-4 gap-2 flex-wrap">
+                    <Button
+                      className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer ${
+                        activeTab === "live"
+                          ? "text-black bg-[#FFBE00]"
+                          : "text-white bg-[#1E1E1E]"
+                      }`}
+                      onClick={() => setActiveTab("live")}
+                    >
+                      Live
+                    </Button>
+                    <Button
+                      className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer ${
+                        activeTab === "past"
+                          ? "text-black bg-[#FFBE00]"
+                          : "text-white bg-[#1E1E1E]"
+                      }`}
+                      onClick={() => setActiveTab("past")}
+                    >
+                      Past
+                    </Button>
+                  </div>
+                )}
+                {isSpecial && <div></div>}
+                <button
+                  className="inline-flex items-center gap-2 sm:pl-8 pl-4 pr-4 py-2.5 cursor-pointer font-fredoka radial-gradient-custom text-white sm:text-sm text-xs font-bold rounded-full relative"
+                  onClick={() => setIsSpecial((x) => !x)}
+                >
                   <Image
                     src="/images/packet.png"
                     alt="Packet icon"
                     width={45}
                     height={46}
-                    className="w-auto h-auto absolute left-[-22px] top-1/2 -translate-y-1/2"
+                    className="sm:w-auto w-[32px] h-auto absolute sm:left-[-22px] left-[-18px] top-1/2 -translate-y-1/2"
                   />
-                  <span>Special Orders</span>
+                  {!isSpecial && <span>Special Orders</span>}
+                  {isSpecial && <span>Close Special</span>}
                 </button>
               </div>
               {loading && (
@@ -131,7 +138,7 @@ function QuestPage() {
 
               {!loading && posts.length == 0 && (
                 <div className="p-4 text-center min-h-[150px] flex flex-col items-center justify-center">
-                  <h3 className="text-2xl font-fredoka">No Posts</h3>
+                  <h3 className="text-2xl font-fredoka capitalize">No {isSpecial ? "Special": activeTab} Posts</h3>
                 </div>
               )}
             </div>
