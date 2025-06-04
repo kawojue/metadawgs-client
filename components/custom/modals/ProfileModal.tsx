@@ -141,7 +141,7 @@ function ProfileSidebar({
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6 scroll">
             {/* Profile Section */}
             <div className="profile flex flex-col gap-4 items-center justify-center">
               <Avatar className="w-20 h-20 min-w-20 min-h-20">
@@ -292,7 +292,6 @@ function ProfileSidebar({
 
 export default ProfileSidebar;
 
-// Social links configuration
 const socialLinks = [
   {
     icon: <TwitterIcon />,

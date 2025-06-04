@@ -107,7 +107,7 @@ function SubmitEntryInputModal({
             showCloseButton={false}
           >
             <DialogHeader className="flex flex-row justify-between gap-4 items-center">
-              <DialogTitle className="font-fredoka text-2xl">
+              <DialogTitle className="font-fredoka text-2xl text-center">
                 Submit Entry
               </DialogTitle>
               <button

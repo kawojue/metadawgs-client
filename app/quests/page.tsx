@@ -1,4 +1,4 @@
-import QuestPage from "@/views/QuestPage";
+import QuestPage from "@/app/metadawgs-club/QuestPage";
 
 export const metadata = {
   title: "Complete Quests, Collect Bones, & Earn MetaDawgs Token.",

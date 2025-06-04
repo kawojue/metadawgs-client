@@ -14,7 +14,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
-import { LogOutIcon } from "lucide-react";
+import { LogOutIcon, LucideCreativeCommons } from "lucide-react";
 import useLocalStorage from "use-local-storage";
 import { XAdminProfile, XAdminToken } from "@/lib/values";
 import { AdminProfileType } from "@/lib/type";
@@ -109,6 +109,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </li>
           <li>
             <Link
+              href={"/wherethemagicrestricted/creators-request"}
+              className={cn(
+                "flex items-center gap-3 p-4 px-6 rounded-full hover:opacity-80",
+                pathname.startsWith("/wherethemagicrestricted/creators-request") &&
+                  "bg-[#FFBE00] text-black shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] shadow-[#000000]/20",
+                !pathname.startsWith("/wherethemagicrestricted/creators-request") && "text-[#5F80A0]"
+              )}
+            >
+              <LucideCreativeCommons size={16}/>
+              Creators Requests
+            </Link>
+          </li>
+          <li>
+            <Link
               href={"/wherethemagicrestricted/quests"}
               className={cn(
                 "flex items-center gap-3 p-4 px-6 rounded-full hover:opacity-80",
@@ -188,6 +202,64 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 />
               </svg>
               Create Quest
+            </Link>
+          </li>
+          <li>
+            <Link
+              href={"/wherethemagicrestricted/list-special-quest"}
+              className={cn(
+                "flex items-center gap-3 p-4 px-6 rounded-full hover:opacity-80",
+                pathname.startsWith("/wherethemagicrestricted/list-special-quest") &&
+                  "bg-[#FFBE00] text-black shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] shadow-[#000000]/20",
+                !pathname.startsWith("/wherethemagicrestricted/list-special-quest") && "text-[#5F80A0]"
+              )}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.3334 2.66675C13.5425 2.66675 15.3334 4.45761 15.3334 6.66675V9.33342C15.3334 11.5425 13.5425 13.3334 11.3334 13.3334H4.66669C2.45755 13.3334 0.666687 11.5425 0.666687 9.33342V6.66675C0.666687 4.45761 2.45755 2.66675 4.66669 2.66675H11.3334ZM11.3334 4.00008H4.66669C3.23855 4.00008 2.07263 5.12273 2.00329 6.53365L2.00002 6.66675V9.33342C2.00002 10.7615 3.12267 11.9275 4.53359 11.9968L4.66669 12.0001H11.3334C12.7615 12.0001 13.9274 10.8774 13.9968 9.46648L14 9.33342V6.66675C14 5.23861 12.8774 4.07269 11.4664 4.00335L11.3334 4.00008ZM6.66669 6.00008V7.33342H8.00002V8.66675H6.66602L6.66669 10.0001H5.33335L5.33269 8.66675H4.00002V7.33342H5.33335V6.00008H6.66669ZM12 8.66675V10.0001H10.6667V8.66675H12ZM10.6667 6.00008V7.33342H9.33335V6.00008H10.6667Z"
+                  fill={
+                    pathname.startsWith("/wherethemagicrestricted/create-quest")
+                      ? "black"
+                      : "#5F80A0"
+                  }
+                />
+              </svg>
+              List Special Quest
+            </Link>
+          </li>
+          <li>
+            <Link
+              href={"/wherethemagicrestricted/create-special-quest"}
+              className={cn(
+                "flex items-center gap-3 p-4 px-6 rounded-full hover:opacity-80",
+                pathname.startsWith("/wherethemagicrestricted/create-special-quest") &&
+                  "bg-[#FFBE00] text-black shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] shadow-[#000000]/20",
+                !pathname.startsWith("/wherethemagicrestricted/create-special-quest") && "text-[#5F80A0]"
+              )}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.3334 2.66675C13.5425 2.66675 15.3334 4.45761 15.3334 6.66675V9.33342C15.3334 11.5425 13.5425 13.3334 11.3334 13.3334H4.66669C2.45755 13.3334 0.666687 11.5425 0.666687 9.33342V6.66675C0.666687 4.45761 2.45755 2.66675 4.66669 2.66675H11.3334ZM11.3334 4.00008H4.66669C3.23855 4.00008 2.07263 5.12273 2.00329 6.53365L2.00002 6.66675V9.33342C2.00002 10.7615 3.12267 11.9275 4.53359 11.9968L4.66669 12.0001H11.3334C12.7615 12.0001 13.9274 10.8774 13.9968 9.46648L14 9.33342V6.66675C14 5.23861 12.8774 4.07269 11.4664 4.00335L11.3334 4.00008ZM6.66669 6.00008V7.33342H8.00002V8.66675H6.66602L6.66669 10.0001H5.33335L5.33269 8.66675H4.00002V7.33342H5.33335V6.00008H6.66669ZM12 8.66675V10.0001H10.6667V8.66675H12ZM10.6667 6.00008V7.33342H9.33335V6.00008H10.6667Z"
+                  fill={
+                    pathname.startsWith("/wherethemagicrestricted/create-special-quest")
+                      ? "black"
+                      : "#5F80A0"
+                  }
+                />
+              </svg>
+              Create Special Quest
             </Link>
           </li>
         </ul>

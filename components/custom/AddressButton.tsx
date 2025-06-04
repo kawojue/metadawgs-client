@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { WalletIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -8,17 +8,33 @@ import { hashAddress } from "@/lib/common";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import useLocalStorage from "use-local-storage";
-// import { postWithAuth } from "@/lib/api";
+// import { postWithAuth } from "@/lib/api";k
 import useAuth from "@/hooks/use-auth";
 import useMobileMenu from "@/hooks/use-mobile-menu";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
-const LAST_SYNCED_WALLET_KEY = "last_synced_wallet"; // new key for localstorage
+const LAST_SYNCED_WALLET_KEY = "last_synced_wallet";
 
-function AddressButton() {
-  const { userToken } = useAuth();
+function AddressButton({
+  label,
+  connectedLabel,
+  className,
+  activeClassName,
+  onConnected,
+  onConnect,
+}: {
+  label?: string | ReactNode;
+  connectedLabel?: string | ReactNode;
+  className?: string;
+  activeClassName?: string;
+  onConnected?: () => void;
+  onConnect?: () => void;
+}) {
+  const { userToken, userProfile } = useAuth();
   const { setMenuIsOpen } = useMobileMenu();
 
-  const { publicKey, disconnect } = useWallet();
+  const { publicKey, disconnect, connected } = useWallet();
   const { setVisible } = useWalletModal();
 
   const [lastSyncedWallet, setLastSyncedWallet] = useLocalStorage<
@@ -28,12 +44,16 @@ function AddressButton() {
   const lastSyncedWalletRef = useRef(lastSyncedWallet);
 
   function connectWallet() {
+    onConnect?.();
     setMenuIsOpen(false);
     // if (!userToken) {
     //   setOpenSignUpAlert(true);
     //   return;
     // }
-    setVisible(true);
+
+    setTimeout(() => {
+      setVisible(true);
+    }, 500);
   }
 
   function disconnectWallet() {
@@ -69,25 +89,51 @@ function AddressButton() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicKey, userToken]);
 
+  useEffect(() => {
+    if (connected) {
+      onConnected?.();
+      if (!!userProfile && !userProfile?.user.walletApproved) {
+        toast("Approve your wallet address in profile section");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connected]);
+
   return (
     <>
       {!publicKey ? (
         <Button
-          className="bg-[#FFBE00] text-black rounded-full px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
+          className={cn(
+            "bg-[#FFBE00] text-black rounded-full px-6! py-6! cursor-pointer hover:bg-[#FFBE00]/80!",
+            className
+          )}
           onClick={connectWallet}
         >
-          <WalletIcon size={12} />
-          <span>Connect wallet</span>
+          {!!label && label}
+          {!label && (
+            <>
+              <WalletIcon size={12} />
+              <span>Connect wallet</span>
+            </>
+          )}
         </Button>
       ) : (
         <Button
-          className="bg-[#FFBE00] text-black rounded-full px-3! py-6! cursor-pointer hover:bg-[#FFBE00]/80!"
+          className={cn(
+            "bg-[#FFBE00] text-black rounded-full px-3! py-6! cursor-pointer hover:bg-[#FFBE00]/80!",
+            activeClassName
+          )}
           onClick={disconnectWallet}
         >
-          <Avatar className="w-8 h-8 min-w-8 min-h-8">
-            <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500" />
-          </Avatar>
-          <span>{hashAddress(publicKey.toBase58())}</span>
+          {!connectedLabel && (
+            <>
+              <Avatar className="w-8 h-8 min-w-8 min-h-8">
+                <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500" />
+              </Avatar>
+              <span>{hashAddress(publicKey.toBase58())}</span>
+            </>
+          )}
+          {!!connectedLabel && connectedLabel}
           <svg
             width="15"
             height="14"

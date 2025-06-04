@@ -44,7 +44,7 @@ function CompleteOnboardingModal({
               height={100}
             />
           </div>
-          <DialogTitle className="font-fredoka text-2xl">
+          <DialogTitle className="font-fredoka text-2xl text-center">
             Complete Onboarding
           </DialogTitle>
           <DialogDescription className="text-center text-white px-6">

@@ -77,7 +77,7 @@ function ReferralInputModal({
                   height={100}
                 />
               </div>
-              <DialogTitle className="font-fredoka text-2xl">
+              <DialogTitle className="font-fredoka text-2xl text-center">
                 Referral Code
               </DialogTitle>
             </DialogHeader>
