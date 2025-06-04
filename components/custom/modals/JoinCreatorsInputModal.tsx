@@ -30,7 +30,7 @@ function JoinCreatorsClub({
   async function submitJoin() {
     setLoading(true);
     try {
-      await postWithAuth("/auth/telegram/verify", {
+      await postWithAuth("/user/apply/creator-application", {
         answer1: about,
         answer2: contribute,
       });
