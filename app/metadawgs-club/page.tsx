@@ -1,6 +1,5 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Onboarding from "./Onboarding";
 import useAuth from "@/hooks/use-auth";
 import OnboardingModal from "./modals/OnboardModal";
@@ -8,26 +7,28 @@ import QuestPage from "@/app/metadawgs-club/QuestPage";
 
 function Page() {
   const { userProfile } = useAuth();
-  const [isOnboarded, setIsOnboarded] = useState<boolean>(
-    !!userProfile &&
-      !!userProfile.user.walletApproved
-  );
 
-  const [onboardOpen, setOnboardOpen] = useState<boolean>(
-    !userProfile?.hasLinkedTelegram
-  );
+  const isOnboarded = !!(userProfile && userProfile.user.walletApproved);
+
+  const [onboardOpen, setOnboardOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (userProfile) {
+      setOnboardOpen(!userProfile.hasLinkedTelegram);
+    }
+  }, [userProfile]);
 
   const continueOn = () => {
     setOnboardOpen(false);
   };
 
-  if (!isOnboarded) {
-    return <Onboarding setIsOnboarded={(value) => setIsOnboarded(value)} />;
+  if (!userProfile || !isOnboarded) {
+    return <Onboarding setIsOnboarded={() => {}} />;
   }
 
   return (
     <>
-      <QuestPage/>
+      <QuestPage />
       <OnboardingModal
         open={onboardOpen}
         onClose={() => setOnboardOpen(false)}
