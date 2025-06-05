@@ -64,7 +64,7 @@ export function SubmitReferralAlert({
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
             onClick={() => {
               setRefreshPosts(generateRandomString(10));
-              router.push("/quests#Posts");
+              router.push("/metadawgs-club#Posts");
 
               onClose?.();
             }}

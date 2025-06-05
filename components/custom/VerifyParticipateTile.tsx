@@ -45,7 +45,7 @@ const VerifyParticipate = () => {
             // }
 
             setParticipateVerified(true);
-            router.push("/quests#Posts");
+            router.push("/metadawgs-club#Posts");
           }}
         />
       </SlideInLeft>
