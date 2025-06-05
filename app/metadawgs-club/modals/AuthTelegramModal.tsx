@@ -113,9 +113,9 @@ function AuthTelegramModal({
             </p>
           )}
           {message && (
-            <DialogDescription className="text-center text-white px-6">
-              A link has been sent to the telegram group get your access code
-              there.
+            <DialogDescription className="text-center text-base text-white px-6">
+              A verification link has been sent to the group. It disappears
+              after a minute.
             </DialogDescription>
           )}
         </DialogHeader>
