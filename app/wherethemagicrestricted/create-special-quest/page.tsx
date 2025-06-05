@@ -38,6 +38,7 @@ function Page() {
           postUrl: tweetUrl,
           imageUrl: imageUrl,
           point: Number(point),
+          special: true
         },
         {
           isAdmin: true,
@@ -82,10 +83,10 @@ function Page() {
   return (
     <div className="size-full flex flex-col justify-center items-center p-2 min-h-full">
       <div className="create-quest-modal bg-white rounded-2xl shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)] p-6 sm:p-8 w-full max-w-lg flex flex-col gap-4 justify-center items-center">
-        <h1 className="text-3xl font-semibold font-fredoka">Create Quest</h1>
+        <h1 className="text-3xl font-semibold font-fredoka">Create Special Quest</h1>
         {success && (
           <div className="bg-green-50 text-green-700 p-3 rounded-lg w-full text-sm">
-            Quest created successfully!
+            Special Quest created successfully!
           </div>
         )}
         {error && (
@@ -199,7 +200,7 @@ function Page() {
 
           <div className="div space-y-2">
             <label htmlFor="point" className="text-sm block font-fredoka">
-              Point
+              Claim Point
             </label>
             <NumberInput
               onChange={setPoint}
@@ -216,7 +217,7 @@ function Page() {
             type="submit"
             disabled={loading || !isValidInputs}
           >
-            {loading ? "Creating..." : "Create Quest"}
+            {loading ? "Creating..." : "Create Special Quest"}
             <ArrowUpRightIcon />
           </Button>
         </form>

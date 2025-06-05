@@ -148,6 +148,10 @@ export interface Quest {
   updatedAt: string;
   adminId: string;
   participationCount: number;
+  code: string;
+  special: boolean;
+  hidden: boolean;
+  duration: number;
 }
 
 export interface PoolType {

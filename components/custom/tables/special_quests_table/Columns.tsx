@@ -1,12 +1,13 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Quest } from "@/lib/type";
 import { Button } from "@/components/ui/button";
-import { LoaderIcon, TrashIcon } from "lucide-react";
+import { LoaderIcon, PenIcon, TrashIcon } from "lucide-react";
 import { generateRandomString, hashAddress } from "@/lib/common";
 import useLocalStorage from "use-local-storage";
 import { useState } from "react";
 import { XRefreshTable } from "@/lib/values";
 import { deleteWithAuth } from "@/lib/api";
+import QuestFormModal from "./QuestForm";
 
 export const columns: ColumnDef<Quest>[] = [
   {
@@ -54,14 +55,15 @@ export const columns: ColumnDef<Quest>[] = [
     accessorKey: "actions",
     header: () => <div className="">Action</div>,
     cell: ({ row }) => {
-      return <Action questId={row.original.id} />;
+      return <Action questId={row.original.id} quest={row.original} />;
     },
   },
 ];
 
-const Action = ({ questId }: { questId: number }) => {
+const Action = ({ questId, quest }: { questId: number; quest: Quest }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setRefreshTable] = useLocalStorage<string>(XRefreshTable, "");
+  const [openEdit, setOpenEdit] = useState<boolean>(false);
 
   async function DeleteQuest() {
     if (isLoading) return;
@@ -72,7 +74,7 @@ const Action = ({ questId }: { questId: number }) => {
       await deleteWithAuth(`/posts/quests/${questId}`, {
         isAdmin: true,
       });
-      
+
       setRefreshTable(generateRandomString(10));
       setIsLoading(false);
     } catch (error) {
@@ -83,15 +85,33 @@ const Action = ({ questId }: { questId: number }) => {
   }
 
   return (
-    <Button
-      className="cursor-pointer"
-      variant={"ghost"}
-      size={"icon"}
-      disabled={isLoading}
-      onClick={DeleteQuest}
-    >
-      {isLoading && <LoaderIcon />}
-      {!isLoading && <TrashIcon className="text-red-500" />}
-    </Button>
+    <>
+      <div className="flex gap-2 items-center">
+        <Button
+          className="cursor-pointer"
+          variant={"ghost"}
+          size={"icon"}
+          disabled={isLoading}
+          onClick={DeleteQuest}
+        >
+          {isLoading && <LoaderIcon />}
+          {!isLoading && <TrashIcon className="text-red-500" />}
+        </Button>
+        <Button
+          className="cursor-pointer"
+          variant={"ghost"}
+          size={"icon"}
+          disabled={isLoading}
+          onClick={() => setOpenEdit(true)}
+        >
+          <PenIcon className="text-blue-500" />
+        </Button>
+      </div>
+      <QuestFormModal
+        open={openEdit}
+        onClose={() => setOpenEdit(false)}
+        quest={quest}
+      />
+    </>
   );
 };

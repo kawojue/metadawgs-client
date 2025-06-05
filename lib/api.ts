@@ -99,6 +99,14 @@ export async function patchWithAuth<T, K>(
   return xFetch<T, K>(endpoint, { ...options, method: "PATCH" }, body, true);
 }
 
+export async function putWithAuth<T, K>(
+  endpoint: string,
+  body: K,
+  options: RequestInit & { baseUrl?: string; isAdmin?: boolean } = {}
+): Promise<{ success: boolean; message: string; data: T }> {
+  return xFetch<T, K>(endpoint, { ...options, method: "PUT" }, body, true);
+}
+
 export async function deleteWithAuth<T, K>(
   endpoint: string,
   options: RequestInit & { baseUrl?: string; isAdmin?: boolean } = {}
