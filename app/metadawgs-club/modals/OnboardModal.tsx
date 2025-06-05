@@ -20,9 +20,10 @@ import { ArrowUpRightIcon, WalletIcon } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AuthTelegramModal from "./AuthTelegramModal";
 import { toast } from "sonner";
+import { useBooleanQuery } from "@/hooks/use-query";
 
 function OnboardingModal({
   open,
@@ -37,6 +38,8 @@ function OnboardingModal({
   hideTheRest?: boolean;
 }) {
   const { userProfile, isLoading } = useAuth();
+  const [, setContinueAuth] = useBooleanQuery("c_a", false);
+
   const isMobile = useIsMobile();
   const [openTelegram, setOpenTelegram] = useState(false);
 
@@ -44,6 +47,10 @@ function OnboardingModal({
     () => !!userProfile && !!userProfile.user.walletApproved,
     [userProfile]
   );
+
+  useEffect(() => {
+    setContinueAuth(false);
+  }, []);
 
   return (
     <>
@@ -94,7 +101,10 @@ function OnboardingModal({
                     <Link
                       href={authUrl}
                       onClick={() =>
-                        sessionStorage.setItem("authFrom", "/metadawgs-club")
+                        sessionStorage.setItem(
+                          "authFrom",
+                          "/metadawgs-club?c_a=true"
+                        )
                       }
                       className="w-auto bg-[#FFBE00] text-black font-semibold shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80 text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1"
                     >

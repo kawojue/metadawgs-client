@@ -7,13 +7,15 @@ import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import OnboardingModal from "./modals/OnboardModal";
 import { useState } from "react";
+import { useBooleanQuery } from "@/hooks/use-query";
 
 function Onboarding({
   setIsOnboarded,
 }: {
   setIsOnboarded: (value: boolean) => void;
 }) {
-  const [onboardOpen, setOnboardOpen] = useState<boolean>(false);
+  const [continueAuth] = useBooleanQuery("c_a", false);
+  const [onboardOpen, setOnboardOpen] = useState<boolean>(continueAuth);
 
   const continueOn = () => {
     setIsOnboarded(true);
