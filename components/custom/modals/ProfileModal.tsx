@@ -23,6 +23,7 @@ import useAuth from "@/hooks/use-auth";
 import siteConfig from "@/lib/siteConfig";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { toast } from "sonner";
+import AuthTelegramModal from "@/app/metadawgs-club/modals/AuthTelegramModal";
 
 function ProfileSidebar({
   open,
@@ -38,6 +39,7 @@ function ProfileSidebar({
   const [success, setSuccess] = useState<boolean>(false);
   const [syncAddressing, setSyncAddressing] = useState<boolean>(false);
   const [syncAddressError, setSyncAddressError] = useState<string>("");
+  const [openTelegram, setOpenTelegram] = useState(false);
 
   const currentWallet = publicKey?.toBase58();
 
@@ -57,6 +59,42 @@ function ProfileSidebar({
     {
       value: userProfile?.rank || "NIL",
       label: "Rank Number",
+    },
+  ];
+
+  const socialLinks = [
+    {
+      icon: <TwitterIcon />,
+      label: "Follow On Twitter",
+      buttonText: "Follow",
+      href: siteConfig.socialLinks.twitter,
+    },
+    {
+      icon: <TelegramIcon />,
+      label: "Join Telegram",
+      buttonText: "Join",
+      onClick: () => {
+        if (!userProfile) {
+          toast("Authenticate with X to join telegram channel");
+          return;
+        }
+
+        onClose?.();
+        setOpenTelegram(true);
+      },
+      isNotVisible: userProfile?.hasLinkedTelegram,
+    },
+    {
+      icon: <YoutubeIcon />,
+      label: "Subscribe on Youtube",
+      buttonText: "Subscribe",
+      href: siteConfig.socialLinks.youtube,
+    },
+    {
+      icon: <BookAIcon size={24} />,
+      label: "A guide to metadawgs",
+      buttonText: "Read",
+      href: siteConfig.socialLinks.roadmap,
     },
   ];
 
@@ -235,29 +273,47 @@ function ProfileSidebar({
 
             {/* Social Links Section */}
             <div className="links grid gap-3">
-              {socialLinks.map((link, index) => (
-                <div
-                  key={index}
-                  className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10"
-                >
-                  <div className="flex gap-4 items-center flex-1">
-                    <div className="app-icon text-white">{link.icon}</div>
-                    <p className="info text-[16px] text-start">{link.label}</p>
-                  </div>
-
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-auto"
+              {socialLinks.map((link, index) => {
+                if (link.isNotVisible) {
+                  return;
+                }
+                return (
+                  <div
+                    key={index}
+                    className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10"
                   >
-                    <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1">
-                      <span className="">{link.buttonText}</span>
-                      <ArrowUpRightIcon size={12} />
-                    </Button>
-                  </a>
-                </div>
-              ))}
+                    <div className="flex gap-4 items-center flex-1">
+                      <div className="app-icon text-white">{link.icon}</div>
+                      <p className="info text-[16px] text-start">
+                        {link.label}
+                      </p>
+                    </div>
+
+                    {!!link.href && (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-auto"
+                      >
+                        <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1">
+                          <span className="">{link.buttonText}</span>
+                          <ArrowUpRightIcon size={12} />
+                        </Button>
+                      </a>
+                    )}
+                    {!link.href && (
+                      <Button
+                        className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1"
+                        onClick={link.onClick}
+                      >
+                        <span className="">{link.buttonText}</span>
+                        <ArrowUpRightIcon size={12} />
+                      </Button>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -286,35 +342,12 @@ function ProfileSidebar({
           }}
         />
       )}
+      <AuthTelegramModal
+        open={openTelegram}
+        onClose={() => setOpenTelegram(false)}
+      />
     </>
   );
 }
 
 export default ProfileSidebar;
-
-const socialLinks = [
-  {
-    icon: <TwitterIcon />,
-    label: "Follow On Twitter",
-    buttonText: "Follow",
-    href: siteConfig.socialLinks.twitter,
-  },
-  {
-    icon: <TelegramIcon />,
-    label: "Join Telegram",
-    buttonText: "Join",
-    href: siteConfig.socialLinks.telegram,
-  },
-  {
-    icon: <YoutubeIcon />,
-    label: "Subscribe on Youtube",
-    buttonText: "Subscribe",
-    href: siteConfig.socialLinks.youtube,
-  },
-  {
-    icon: <BookAIcon size={24} />,
-    label: "A guide to metadawgs",
-    buttonText: "Read",
-    href: siteConfig.socialLinks.roadmap,
-  },
-];
