@@ -57,7 +57,7 @@ function CompleteOnboardingModal({
             type="button"
             className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
             onClick={() => {
-              router.push("/quests#Onboarding");
+              router.push("/metadawgs-club#Onboarding");
               onClose?.();
             }}
           >

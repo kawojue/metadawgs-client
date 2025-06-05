@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { postWithAuth } from "@/lib/api";
-import useLocalStorage from "use-local-storage";
-import { XDoThatLater } from "@/lib/values";
 import Image from "next/image";
 import useAuth from "@/hooks/use-auth";
+import siteConfig from "@/lib/siteConfig";
+import Link from "next/link";
 
 function AuthTelegramModal({
   open,
@@ -30,7 +30,6 @@ function AuthTelegramModal({
   const [step2, setStep2] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const { refetchProfile } = useAuth();
-  const [, setWillDoThatLater] = useLocalStorage<boolean>(XDoThatLater, false);
 
   async function validateCode() {
     setLoading(true);
@@ -70,7 +69,6 @@ function AuthTelegramModal({
   }
 
   function willDoThatLater() {
-    setWillDoThatLater(true);
     setUsername("");
     setCode("");
     setTimeout(() => onClose?.(), 0);
@@ -101,6 +99,18 @@ function AuthTelegramModal({
           <DialogTitle className="font-fredoka text-2xl text-center">
             Authenticate Telegram
           </DialogTitle>
+          {!step2 && (
+            <p className="text-center">
+              If you {"haven't"} joined, please join:{" "}
+              <Link
+                href={siteConfig.socialLinks.telegram}
+                className="text-semibold text-blue-400"
+              >
+                MetaDawgs
+              </Link>
+              , then come back to authenticate.
+            </p>
+          )}
           {message && (
             <DialogDescription className="text-center text-white px-6">
               {message}
@@ -168,7 +178,7 @@ function AuthTelegramModal({
                 className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black disabled:cursor-not-allowed!"
                 onClick={willDoThatLater}
               >
-                {"I'll"} do that later
+                Cancel
               </Button>
             </>
           )}

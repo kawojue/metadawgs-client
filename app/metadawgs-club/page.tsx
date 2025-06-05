@@ -1,29 +1,23 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import Onboarding from "./Onboarding";
 import useAuth from "@/hooks/use-auth";
 import OnboardingModal from "./modals/OnboardModal";
 import QuestPage from "@/app/metadawgs-club/QuestPage";
-import useLocalStorage from "use-local-storage";
-import { XDoThatLater } from "@/lib/values";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 function Page() {
   const { userProfile } = useAuth();
+  const { publicKey } = useWallet();
 
-  const [willDoThatLater] = useLocalStorage<boolean>(XDoThatLater, false);
   const isOnboarded = !!(
     userProfile &&
-    userProfile.user.walletApproved &&
-    willDoThatLater
+    // userProfile.user.walletApproved &&
+    publicKey &&
+    userProfile.hasLinkedTelegram
   );
 
   const [onboardOpen, setOnboardOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (userProfile) {
-      setOnboardOpen(!userProfile.hasLinkedTelegram && !willDoThatLater);
-    }
-  }, [userProfile, willDoThatLater]);
 
   const continueOn = () => {
     setOnboardOpen(false);

@@ -43,7 +43,7 @@ function page() {
         </div>
         <FadeInUp>
           <Link
-            href={"/quests/#Posts"}
+            href={"/metadawgs-club/#Posts"}
             className="rounded-full px-5! flex items-center justify-center gap-2 font-medium !py-3 bg-[#FFC36C] text-black shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80"
           >
             <span>Submit an Entry</span>
