@@ -126,7 +126,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                     isSubmitting && "cursor-wait"
                   )}
                   onClick={verifyCode}
-                  disabled={submitted || isSubmitting}
+                  disabled={post.hasVerified}
                 >
                   VerifyCode
                 </Button>
