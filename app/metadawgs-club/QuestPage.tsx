@@ -78,7 +78,7 @@ function QuestPage() {
         </FadeInUp>
       </div> */}
 
-            <div className="conquests space-y-16 lg:py-10 p-6">
+            <div className="conquests space-y-16 p-6">
                 <div className="posts" id="Posts"></div>
 
                 <div className="social_quests md:mx-[5%] lg:mx-[18%]">
@@ -146,7 +146,7 @@ function QuestPage() {
                                     >
                                         {!isSpecial
                                             ? "Special Quests"
-                                            : "Close Quests"}
+                                            : "Normal Quests"}
                                     </span>
 
                                     {/* Sparkle effects */}
