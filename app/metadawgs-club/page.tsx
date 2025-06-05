@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Onboarding from "./Onboarding";
 import useAuth from "@/hooks/use-auth";
 import OnboardingModal from "./modals/OnboardModal";
@@ -30,19 +30,25 @@ function Page() {
   };
 
   if (!userProfile || !isOnboarded) {
-    return <Onboarding setIsOnboarded={() => {}} />;
+    return (
+      <Suspense fallback={"loading..."}>
+        <Onboarding setIsOnboarded={() => {}} />;
+      </Suspense>
+    );
   }
 
   return (
-    <>
-      <QuestPage />
-      <OnboardingModal
-        open={onboardOpen}
-        onClose={() => setOnboardOpen(false)}
-        continueOn={continueOn}
-        hideTheRest={true}
-      />
-    </>
+    <Suspense fallback={"loading..."}>
+      <>
+        <QuestPage />
+        <OnboardingModal
+          open={onboardOpen}
+          onClose={() => setOnboardOpen(false)}
+          continueOn={continueOn}
+          hideTheRest={true}
+        />
+      </>
+    </Suspense>
   );
 }
 
