@@ -40,8 +40,6 @@ const PostCard = ({ post }: { post: PostType }) => {
     setOpenVerifyCode(true);
   };
 
-  const joinQuest = async () => {};
-
   const handleView = async () => {
     setViewing(true);
     try {
@@ -142,7 +140,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                     "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
                     isSubmitting && "cursor-wait"
                   )}
-                  onClick={handleView}
+                  onClick={handleSubmit}
                   disabled={submitted || isSubmitting}
                 >
                   Done
@@ -151,17 +149,25 @@ const PostCard = ({ post }: { post: PostType }) => {
 
             if (btn === "Join")
               return (
-                <Button
+                <a
                   key={index}
-                  className={cn(
-                    "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] ",
-                    isSubmitting && "cursor-wait"
-                  )}
-                  onClick={joinQuest}
-                  disabled={submitted || isSubmitting}
+                  href={post?.postUrl}
+                  className="block"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  Join
-                </Button>
+                  <Button
+                    className={cn(
+                      "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
+                      viewing && "cursor-wait"
+                    )}
+                    onClick={handleView}
+                    disabled={viewing}
+                  >
+                    <span>{viewing ? "Joining" : "Join"}</span>
+                    <ArrowUpRightIcon size={11} />
+                  </Button>
+                </a>
               );
           })}
         </div>
