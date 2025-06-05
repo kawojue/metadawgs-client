@@ -23,6 +23,8 @@ function Footer() {
         <FadeIn className="social-links flex items-center sm:gap-4 gap-2">
           <a
             href={siteConfig.socialLinks.telegram}
+            target="_blank"
+            rel="noopener noreferrer"
             className="sm:w-10 sm:h-10 w-8 h-8 rounded-full bg-white grid place-content-center place-items-center"
           >
             <svg
@@ -44,6 +46,8 @@ function Footer() {
 
           <a
             href={siteConfig.socialLinks.twitter}
+            target="_blank"
+            rel="noopener noreferrer"
             className="sm:w-10 sm:h-10 w-8 h-8 rounded-full bg-white grid place-content-center place-items-center"
           >
             <svg
@@ -65,6 +69,8 @@ function Footer() {
 
           <a
             href={siteConfig.socialLinks.youtube}
+            target="_blank"
+            rel="noopener noreferrer"
             className="sm:w-10 sm:h-10 w-8 h-8 rounded-full bg-white text-black grid place-content-center place-items-center"
           >
             <YoutubeIcon />

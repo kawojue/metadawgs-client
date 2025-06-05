@@ -53,7 +53,7 @@ function AddressButton({
 
   useEffect(() => {
     async function updateUserWallet() {
-      if (!publicKey || !userToken) return;
+      if (!publicKey || !userToken || userProfile?.user.walletApproved) return;
 
       const currentWallet = publicKey.toBase58();
 
