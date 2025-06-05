@@ -38,7 +38,7 @@ function AuthTelegramModal({
       });
 
       await refetchProfile();
-      onClose?.();
+      setTimeout(() => onClose?.(), 100);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
