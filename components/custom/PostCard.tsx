@@ -128,7 +128,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                   onClick={verifyCode}
                   disabled={post.hasVerified}
                 >
-                  VerifyCode
+                  Verify Code
                 </Button>
               );
 
