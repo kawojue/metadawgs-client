@@ -25,7 +25,6 @@ function AuthTelegramModal({
   const [code, setCode] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
   const [step2, setStep2] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const { refetchProfile } = useAuth();
@@ -38,7 +37,7 @@ function AuthTelegramModal({
       });
 
       await refetchProfile();
-      onClose?.();
+      reset();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -51,11 +50,9 @@ function AuthTelegramModal({
   async function getCode() {
     setLoading(true);
     try {
-      const { message } = await postWithAuth("/auth/telegram/link", {
+      await postWithAuth("/auth/telegram/link", {
         username: username,
       });
-
-      setMessage(message);
 
       setStep2(true);
 
@@ -67,10 +64,11 @@ function AuthTelegramModal({
     }
   }
 
-  function willDoThatLater() {
+  function reset() {
     setUsername("");
     setCode("");
-    setTimeout(() => onClose?.(), 0);
+    setStep2(false);
+    setTimeout(() => onClose?.(), 100);
   }
 
   return (
@@ -112,7 +110,7 @@ function AuthTelegramModal({
               , then come back to authenticate.
             </p>
           )}
-          {message && (
+          {step2 && (
             <DialogDescription className="text-center text-base text-white px-6">
               A verification link has been sent to the group. It disappears
               after a minute.
@@ -178,7 +176,7 @@ function AuthTelegramModal({
                 type="button"
                 disabled={loading}
                 className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black disabled:cursor-not-allowed!"
-                onClick={willDoThatLater}
+                onClick={reset}
               >
                 Cancel
               </Button>
