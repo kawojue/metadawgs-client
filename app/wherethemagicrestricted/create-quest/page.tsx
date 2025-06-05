@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { postWithAuth } from "@/lib/api";
 import { ArrowUpRightIcon } from "lucide-react";
 import React, { useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
 
 function Page() {
   const [error, setError] = useState<string>("");
@@ -38,6 +39,7 @@ function Page() {
           postUrl: tweetUrl,
           imageUrl: imageUrl,
           point: Number(point),
+          special: false,
         },
         {
           isAdmin: true,
@@ -51,6 +53,10 @@ function Page() {
     } catch (error: string | unknown) {
       console.error("Error creating quest:", error);
       setError(
+        error?.toString().replace("Error:", "") ||
+          "Failed to create quest. Please try again."
+      );
+      toast(
         error?.toString().replace("Error:", "") ||
           "Failed to create quest. Please try again."
       );

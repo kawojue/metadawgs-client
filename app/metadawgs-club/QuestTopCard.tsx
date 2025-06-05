@@ -101,8 +101,8 @@ function QuestTopCard() {
           )}
 
           {userProfile?.creatorClubVerification === "REJECTED" && (
-            <div className="bg-[#1A1A1A] p-4 rounded-xl flex gap-2 w-fit items-center max-w-sm text-xs mb-4">
-              <BellIcon className="text-[#FFBE00]" fill="#FFBE00" />
+            <div className="bg-[#1A1A1A] p-4 rounded-xl flex gap-3 w-fit items-center max-w-sm text-xs mb-4">
+              <BellIcon className="text-[#FFBE00]" fill="#FFBE00" size={18} />
               <p className="text-white text-[13px] max-w-md w-fit">
                 {"You’re"} not eligible to join the content creators club.{" "}
                 <br />

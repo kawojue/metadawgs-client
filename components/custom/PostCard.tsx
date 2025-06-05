@@ -10,12 +10,14 @@ import { patchWithAuth } from "@/lib/api";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import useAuth from "@/hooks/use-auth";
+import VerifyQuestCode from "./modals/VerifyQuestCode";
 
 const PostCard = ({ post }: { post: PostType }) => {
   const { refetchProfile } = useAuth();
   const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [viewing, setViewing] = useState<boolean>(false);
+  const [openVerifyCode, setOpenVerifyCode] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(post.hasEngaged);
 
   const handleSubmit = async () => {
@@ -32,6 +34,10 @@ const PostCard = ({ post }: { post: PostType }) => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const verifyCode = async () => {
+    setOpenVerifyCode(true);
   };
 
   const handleView = async () => {
@@ -72,35 +78,98 @@ const PostCard = ({ post }: { post: PostType }) => {
           {post.description}
         </p>
         <div className="flex gap-3 items-center">
-          <a
-            href={post?.postUrl}
-            className="block"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button
-              className={cn(
-                "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6]",
-                viewing && "cursor-wait"
-              )}
-              onClick={handleView}
-              disabled={viewing}
-            >
-              <span>{viewing ? "Viewing" : "View"}</span>{" "}
-              <ArrowUpRightIcon size={11} />
-            </Button>
-          </a>
+          {post.buttons.map((btn, index) => {
+            if (btn === "View")
+              return (
+                <a
+                  key={index}
+                  href={post?.postUrl}
+                  className="block"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    className={cn(
+                      "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
+                      viewing && "cursor-wait"
+                    )}
+                    onClick={handleView}
+                    disabled={viewing}
+                  >
+                    <span>{viewing ? "Viewing" : "View"}</span>
+                    <ArrowUpRightIcon size={11} />
+                  </Button>
+                </a>
+              );
 
-          <Button
-            className={cn(
-              "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
-              isSubmitting && "cursor-wait"
-            )}
-            onClick={handleSubmit}
-            disabled={submitted || isSubmitting}
-          >
-            Claim
-          </Button>
+            if (btn === "Claim")
+              return (
+                <Button
+                  key={index}
+                  className={cn(
+                    "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
+                    isSubmitting && "cursor-wait"
+                  )}
+                  onClick={handleSubmit}
+                  disabled={submitted || isSubmitting}
+                >
+                  Claim
+                </Button>
+              );
+
+            if (btn === "Verify Code")
+              return (
+                <Button
+                  key={index}
+                  className={cn(
+                    "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
+                    isSubmitting && "cursor-wait"
+                  )}
+                  onClick={verifyCode}
+                  disabled={submitted || isSubmitting}
+                >
+                  VerifyCode
+                </Button>
+              );
+
+            if (btn === "Done")
+              return (
+                <Button
+                  key={index}
+                  className={cn(
+                    "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
+                    isSubmitting && "cursor-wait"
+                  )}
+                  onClick={handleSubmit}
+                  disabled={submitted || isSubmitting}
+                >
+                  Done
+                </Button>
+              );
+
+            if (btn === "Join")
+              return (
+                <a
+                  key={index}
+                  href={post?.postUrl}
+                  className="block"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    className={cn(
+                      "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
+                      viewing && "cursor-wait"
+                    )}
+                    onClick={handleView}
+                    disabled={viewing}
+                  >
+                    <span>{viewing ? "Joining" : "Join"}</span>
+                    <ArrowUpRightIcon size={11} />
+                  </Button>
+                </a>
+              );
+          })}
         </div>
       </div>
 
@@ -110,6 +179,12 @@ const PostCard = ({ post }: { post: PostType }) => {
           onClose={() => setShowEntryAlert(false)}
         />
       )}
+
+      <VerifyQuestCode
+        open={openVerifyCode}
+        post_id={post.id}
+        onClose={() => setOpenVerifyCode(false)}
+      />
     </div>
   );
 };

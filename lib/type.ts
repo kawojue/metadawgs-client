@@ -11,7 +11,16 @@ export interface PostType {
   updatedAt: string;
   adminId: string;
   hasEngaged: boolean;
+
+  special: boolean;
+  hidden: boolean;
+  duration: null;
+
+  hasVerified: boolean;
+  buttons: PostBtnType[];
 }
+
+export type PostBtnType = "View" | "Claim" | "Verify Code" | "Done" | "Join";
 
 export interface ProfileType {
   creatorClubVerification: "NOT_APPLIED" | "APPROVED" | "PENDING" | "REJECTED";
@@ -148,6 +157,10 @@ export interface Quest {
   updatedAt: string;
   adminId: string;
   participationCount: number;
+  code: string;
+  special: boolean;
+  hidden: boolean;
+  duration: number;
 }
 
 export interface PoolType {

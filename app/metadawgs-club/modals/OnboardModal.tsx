@@ -20,14 +20,14 @@ import { ArrowUpRightIcon, WalletIcon } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AuthTelegramModal from "./AuthTelegramModal";
 import { toast } from "sonner";
+import { useBooleanQuery } from "@/hooks/use-query";
 
 function OnboardingModal({
   open,
   onClose,
-  toggleOpen,
   continueOn,
   hideTheRest,
 }: {
@@ -38,6 +38,8 @@ function OnboardingModal({
   hideTheRest?: boolean;
 }) {
   const { userProfile, isLoading } = useAuth();
+  const [, setContinueAuth] = useBooleanQuery("c_a", false);
+
   const isMobile = useIsMobile();
   const [openTelegram, setOpenTelegram] = useState(false);
 
@@ -45,6 +47,10 @@ function OnboardingModal({
     () => !!userProfile && !!userProfile.user.walletApproved,
     [userProfile]
   );
+
+  useEffect(() => {
+    setContinueAuth(false);
+  }, []);
 
   return (
     <>
@@ -57,8 +63,9 @@ function OnboardingModal({
         }}
       >
         <DialogContent
-          className="sm:max-w-[456px] bg-black text-white shadow-sm border border-white/20 rounded-3xl"
+          className="sm:max-w-[456px] bg-black text-white shadow-sm border border-white/20 rounded-3xl pointer-events-none"
           showCloseButton={false}
+          onInteractOutside={(e) => e.preventDefault()}
         >
           <DialogHeader className="flex flex-col justify-center gap-2 items-center">
             <div className="circle bg-white rounded-full p-2.5 mb-1">
@@ -79,6 +86,46 @@ function OnboardingModal({
           </DialogHeader>
           <div>
             <div className="links grid gap-4 py-2">
+              {!(hideTheRest && !!userProfile) && (
+                <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
+                  <div className="flex gap-3 items-center flex-1">
+                    <div className="app-icon text-white">
+                      <TwitterIcon />
+                    </div>
+                    <p className="info text-[16px] text-start">
+                      Connect Twitter
+                    </p>
+                  </div>
+
+                  {!userProfile && (
+                    <Link
+                      href={authUrl}
+                      onClick={() =>
+                        sessionStorage.setItem(
+                          "authFrom",
+                          "/metadawgs-club?c_a=true"
+                        )
+                      }
+                      className="w-auto bg-[#FFBE00] text-black font-semibold shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80 text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1"
+                    >
+                      <span className="">Connect</span>
+                      <ArrowUpRightIcon size={14} />
+                    </Link>
+                  )}
+
+                  {!!userProfile && (
+                    <UserProfileButton
+                      activeClassName="bg-[#FFBE00] text-black border-none shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80 hover:bg-[#FFBE00] px-5 pr-6"
+                      profile={userProfile}
+                      isLoading={isLoading}
+                      ignoreModalSetup
+                      isMobile={isMobile}
+                      showLogout
+                    />
+                  )}
+                </div>
+              )}
+
               {!(hideTheRest && userProfile?.user.walletApproved) && (
                 <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
                   <div className="flex gap-3 items-center flex-1">
@@ -108,50 +155,15 @@ function OnboardingModal({
                       </>
                     }
                     onConnect={() => {
-                      onClose?.();
+                      // onClose?.();
                     }}
                     onConnected={() => {
-                      toggleOpen?.();
+                      // toggleOpen?.();
                     }}
                   />
                 </div>
               )}
-              {!(hideTheRest && !!userProfile) && (
-                <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
-                  <div className="flex gap-3 items-center flex-1">
-                    <div className="app-icon text-white">
-                      <TwitterIcon />
-                    </div>
-                    <p className="info text-[16px] text-start">
-                      Connect Twitter
-                    </p>
-                  </div>
 
-                  {!userProfile && (
-                    <Link
-                      href={authUrl}
-                      onClick={() =>
-                        sessionStorage.setItem("authFrom", "/metadawgs-club")
-                      }
-                      className="w-auto bg-[#FFBE00] text-black font-semibold shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80 text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1"
-                    >
-                      <span className="">Connect</span>
-                      <ArrowUpRightIcon size={14} />
-                    </Link>
-                  )}
-
-                  {!!userProfile && (
-                    <UserProfileButton
-                      activeClassName="bg-[#FFBE00] text-black border-none shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80 hover:bg-[#FFBE00] px-5 pr-6"
-                      profile={userProfile}
-                      isLoading={isLoading}
-                      ignoreModalSetup
-                      isMobile={isMobile}
-                      showLogout
-                    />
-                  )}
-                </div>
-              )}
               <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
                 <div className="flex gap-3 items-center flex-1">
                   <div className="app-icon text-white">

@@ -223,6 +223,38 @@ body {
 }
 
 .radial-gradient-custom {
-  background: radial-gradient(100% 100% at 0% 0%, #A96CFF 0%, #FFBE00 100%) !important; 
+  background: radial-gradient(100% 100% at 0% 0%, #A96CFF 0%, #FFBE00 100%) !important;
   box-shadow: 0px -2px 3px 0px #00000066 inset !important;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.wallet-adapter-modal-wrapper {
+  z-index: 9999 !important;
+  pointer-events: auto !important;
 }
