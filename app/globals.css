@@ -253,3 +253,8 @@ body {
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
+
+.wallet-adapter-modal-wrapper {
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}

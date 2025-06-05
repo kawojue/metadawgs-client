@@ -27,7 +27,6 @@ import { toast } from "sonner";
 function OnboardingModal({
   open,
   onClose,
-  toggleOpen,
   continueOn,
   hideTheRest,
 }: {
@@ -57,8 +56,9 @@ function OnboardingModal({
         }}
       >
         <DialogContent
-          className="sm:max-w-[456px] bg-black text-white shadow-sm border border-white/20 rounded-3xl"
+          className="sm:max-w-[456px] bg-black text-white shadow-sm border border-white/20 rounded-3xl pointer-events-none"
           showCloseButton={false}
+          onInteractOutside={(e) => e.preventDefault()}
         >
           <DialogHeader className="flex flex-col justify-center gap-2 items-center">
             <div className="circle bg-white rounded-full p-2.5 mb-1">
@@ -79,43 +79,6 @@ function OnboardingModal({
           </DialogHeader>
           <div>
             <div className="links grid gap-4 py-2">
-              {!(hideTheRest && userProfile?.user.walletApproved) && (
-                <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
-                  <div className="flex gap-3 items-center flex-1">
-                    <div className="app-icon text-white">
-                      <WalletIcon size={24} />
-                    </div>
-                    <p className="info text-[16px] text-start">
-                      Connect Wallet
-                    </p>
-                  </div>
-
-                  <AddressButton
-                    className="px-4! py-2!"
-                    activeClassName="px-4! pl-2! py-5.5!"
-                    label={
-                      <>
-                        <span className="">Connect</span>
-                        <ArrowUpRightIcon size={12} />
-                      </>
-                    }
-                    connectedLabel={
-                      <>
-                        <Avatar className="w-7.5 h-7.5 min-w-7.5 min-h-7.5">
-                          <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500" />
-                        </Avatar>
-                        <span className="text-sm">Connected</span>
-                      </>
-                    }
-                    onConnect={() => {
-                      onClose?.();
-                    }}
-                    onConnected={() => {
-                      toggleOpen?.();
-                    }}
-                  />
-                </div>
-              )}
               {!(hideTheRest && !!userProfile) && (
                 <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
                   <div className="flex gap-3 items-center flex-1">
@@ -152,6 +115,45 @@ function OnboardingModal({
                   )}
                 </div>
               )}
+
+              {!(hideTheRest && userProfile?.user.walletApproved) && (
+                <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
+                  <div className="flex gap-3 items-center flex-1">
+                    <div className="app-icon text-white">
+                      <WalletIcon size={24} />
+                    </div>
+                    <p className="info text-[16px] text-start">
+                      Connect Wallet
+                    </p>
+                  </div>
+
+                  <AddressButton
+                    className="px-4! py-2!"
+                    activeClassName="px-4! pl-2! py-5.5!"
+                    label={
+                      <>
+                        <span className="">Connect</span>
+                        <ArrowUpRightIcon size={12} />
+                      </>
+                    }
+                    connectedLabel={
+                      <>
+                        <Avatar className="w-7.5 h-7.5 min-w-7.5 min-h-7.5">
+                          <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500" />
+                        </Avatar>
+                        <span className="text-sm">Connected</span>
+                      </>
+                    }
+                    onConnect={() => {
+                      // onClose?.();
+                    }}
+                    onConnected={() => {
+                      // toggleOpen?.();
+                    }}
+                  />
+                </div>
+              )}
+
               <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
                 <div className="flex gap-3 items-center flex-1">
                   <div className="app-icon text-white">
