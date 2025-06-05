@@ -1,27 +1,23 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect } from "react";
 import { WalletIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { hashAddress } from "@/lib/common";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import useLocalStorage from "use-local-storage";
-// import { postWithAuth } from "@/lib/api";k
 import useAuth from "@/hooks/use-auth";
 import useMobileMenu from "@/hooks/use-mobile-menu";
 import { cn } from "@/lib/utils";
+import { postWithAuth } from "@/lib/api";
 import { toast } from "sonner";
-
-const LAST_SYNCED_WALLET_KEY = "last_synced_wallet";
 
 function AddressButton({
   label,
   connectedLabel,
   className,
   activeClassName,
-  onConnected,
   onConnect,
 }: {
   label?: string | ReactNode;
@@ -31,25 +27,19 @@ function AddressButton({
   onConnected?: () => void;
   onConnect?: () => void;
 }) {
-  const { userToken, userProfile } = useAuth();
+  const { userToken, setUserProfile, userProfile } = useAuth();
   const { setMenuIsOpen } = useMobileMenu();
 
-  const { publicKey, disconnect, connected } = useWallet();
+  const { publicKey, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
-
-  const [lastSyncedWallet, setLastSyncedWallet] = useLocalStorage<
-    string | null
-  >(LAST_SYNCED_WALLET_KEY, null);
-
-  const lastSyncedWalletRef = useRef(lastSyncedWallet);
 
   function connectWallet() {
     onConnect?.();
     setMenuIsOpen(false);
-    // if (!userToken) {
-    //   setOpenSignUpAlert(true);
-    //   return;
-    // }
+    if (!userToken) {
+      toast("Authenticate with X to connect wallet");
+      return;
+    }
 
     setTimeout(() => {
       setVisible(true);
@@ -67,37 +57,29 @@ function AddressButton({
 
       const currentWallet = publicKey.toBase58();
 
-      if (lastSyncedWalletRef.current === currentWallet) {
-        return;
+      try {
+        await postWithAuth("/user/link-wallet", {
+          walletAddress: currentWallet,
+        });
+
+        if (userProfile) {
+          setUserProfile({
+            ...userProfile,
+            user: {
+              ...userProfile.user,
+              walletApproved: true,
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Failed to link wallet:", error);
+        toast("Failed to link wallet wih account");
       }
-
-      setLastSyncedWallet(currentWallet);
-      lastSyncedWalletRef.current = currentWallet;
-
-      // try {
-      //   await postWithAuth("/user/link-wallet", {
-      //     walletAddress: currentWallet,
-      //   });
-      //   setLastSyncedWallet(currentWallet);
-      //   lastSyncedWalletRef.current = currentWallet;
-      // } catch (error) {
-      //   console.error("Failed to link wallet:", error);
-      // }
     }
 
     updateUserWallet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicKey, userToken]);
-
-  useEffect(() => {
-    if (connected) {
-      onConnected?.();
-      if (!!userProfile && !userProfile?.user.walletApproved) {
-        toast("Approve your wallet address in profile section");
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connected]);
 
   return (
     <>

@@ -24,6 +24,7 @@ import { useEffect, useMemo, useState } from "react";
 import AuthTelegramModal from "./AuthTelegramModal";
 import { toast } from "sonner";
 import { useBooleanQuery } from "@/hooks/use-query";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 function OnboardingModal({
   open,
@@ -38,14 +39,19 @@ function OnboardingModal({
   hideTheRest?: boolean;
 }) {
   const { userProfile, isLoading } = useAuth();
+  const { publicKey } = useWallet();
   const [, setContinueAuth] = useBooleanQuery("c_a", false);
 
   const isMobile = useIsMobile();
   const [openTelegram, setOpenTelegram] = useState(false);
 
   const canContinue = useMemo(
-    () => !!userProfile && !!userProfile.user.walletApproved,
-    [userProfile]
+    () =>
+      userProfile &&
+      // userProfile.user.walletApproved &&
+      publicKey &&
+      userProfile.hasLinkedTelegram,
+    [userProfile, publicKey]
   );
 
   useEffect(() => {
@@ -126,7 +132,11 @@ function OnboardingModal({
                 </div>
               )}
 
-              {!(hideTheRest && userProfile?.user.walletApproved) && (
+              {!(
+                hideTheRest &&
+                userProfile?.user.walletApproved &&
+                !!publicKey
+              ) && (
                 <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
                   <div className="flex gap-3 items-center flex-1">
                     <div className="app-icon text-white">
@@ -164,29 +174,31 @@ function OnboardingModal({
                 </div>
               )}
 
-              <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
-                <div className="flex gap-3 items-center flex-1">
-                  <div className="app-icon text-white">
-                    <TelegramIcon />
+              {!(hideTheRest && !!userProfile?.hasLinkedTelegram) && (
+                <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
+                  <div className="flex gap-3 items-center flex-1">
+                    <div className="app-icon text-white">
+                      <TelegramIcon />
+                    </div>
+                    <p className="info text-[16px] text-start">Join Telegram</p>
                   </div>
-                  <p className="info text-[16px] text-start">Join Telegram</p>
+
+                  <Button
+                    className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1"
+                    onClick={() => {
+                      if (!userProfile) {
+                        toast("Authenticate with X to join telegram channel");
+                        return;
+                      }
+
+                      setOpenTelegram(true);
+                    }}
+                  >
+                    <span className="">Join</span>
+                    <ArrowUpRightIcon size={12} />
+                  </Button>
                 </div>
-
-                <Button
-                  className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1"
-                  onClick={() => {
-                    if (!userProfile) {
-                      toast("Authenticate with X to join telegram channel");
-                      return;
-                    }
-
-                    setOpenTelegram(true);
-                  }}
-                >
-                  <span className="">Join</span>
-                  <ArrowUpRightIcon size={12} />
-                </Button>
-              </div>
+              )}
             </div>
           </div>
 

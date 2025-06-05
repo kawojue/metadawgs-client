@@ -73,16 +73,7 @@ function ProfileSidebar({
       icon: <TelegramIcon />,
       label: "Join Telegram",
       buttonText: "Join",
-      onClick: () => {
-        if (!userProfile) {
-          toast("Authenticate with X to join telegram channel");
-          return;
-        }
-
-        onClose?.();
-        setOpenTelegram(true);
-      },
-      isNotVisible: userProfile?.hasLinkedTelegram,
+      href: siteConfig.socialLinks.telegram,
     },
     {
       icon: <YoutubeIcon />,
@@ -274,9 +265,6 @@ function ProfileSidebar({
             {/* Social Links Section */}
             <div className="links grid gap-3">
               {socialLinks.map((link, index) => {
-                if (link.isNotVisible) {
-                  return;
-                }
                 return (
                   <div
                     key={index}
@@ -303,10 +291,7 @@ function ProfileSidebar({
                       </a>
                     )}
                     {!link.href && (
-                      <Button
-                        className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1"
-                        onClick={link.onClick}
-                      >
+                      <Button className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1">
                         <span className="">{link.buttonText}</span>
                         <ArrowUpRightIcon size={12} />
                       </Button>
