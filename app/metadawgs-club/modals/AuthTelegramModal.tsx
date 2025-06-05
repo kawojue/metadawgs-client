@@ -14,7 +14,6 @@ import { postWithAuth } from "@/lib/api";
 import Image from "next/image";
 import useAuth from "@/hooks/use-auth";
 import siteConfig from "@/lib/siteConfig";
-import Link from "next/link";
 
 function AuthTelegramModal({
   open,
@@ -102,18 +101,21 @@ function AuthTelegramModal({
           {!step2 && (
             <p className="text-center">
               If you {"haven't"} joined, please join:{" "}
-              <Link
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
                 href={siteConfig.socialLinks.telegram}
                 className="text-semibold text-blue-400"
               >
                 MetaDawgs
-              </Link>
+              </a>
               , then come back to authenticate.
             </p>
           )}
           {message && (
             <DialogDescription className="text-center text-white px-6">
-              {message}
+              A link has been sent to the telegram group get your access code
+              there.
             </DialogDescription>
           )}
         </DialogHeader>
