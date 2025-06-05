@@ -11,7 +11,16 @@ export interface PostType {
   updatedAt: string;
   adminId: string;
   hasEngaged: boolean;
+
+  special: boolean;
+  hidden: boolean;
+  duration: null;
+
+  hasVerified: boolean;
+  buttons: PostBtnType[];
 }
+
+export type PostBtnType = "View" | "Claim" | "Verify Code" | "Done" | "Join";
 
 export interface ProfileType {
   creatorClubVerification: "NOT_APPLIED" | "APPROVED" | "PENDING" | "REJECTED";

@@ -33,7 +33,9 @@ function QuestPage() {
       try {
         setLoading(true);
         const { data } = await fetchWithAuth<PostType[]>(
-          `/posts?special=${isSpecial}&tab=${activeTab}`
+          isSpecial
+            ? `/posts?special=true`
+            : `/posts?tab=${activeTab}&special=false`
         );
 
         setPosts(data);
@@ -105,19 +107,55 @@ function QuestPage() {
                   </div>
                 )}
                 {isSpecial && <div></div>}
+
                 <button
-                  className="inline-flex items-center gap-2 sm:pl-8 pl-4 pr-4 py-2.5 cursor-pointer font-fredoka radial-gradient-custom text-white sm:text-sm text-xs font-bold rounded-full relative"
+                  className="inline-flex items-center gap-2 sm:pl-8 pl-4 pr-4 py-2.5 cursor-pointer font-bold text-white sm:text-sm text-xs rounded-full relative
+                   radial-gradient-custom
+                   transform transition-all duration-300 ease-in-out
+                   hover:scale-105 hover:shadow-xl
+                   hover:animate-none
+                   shadow-lg shadow-purple-500/25
+                   border-2 border-white/20
+                   group"
                   onClick={() => setIsSpecial((x) => !x)}
                 >
-                  <Image
-                    src="/images/packet.png"
-                    alt="Packet icon"
-                    width={45}
-                    height={46}
-                    className="sm:w-auto w-[32px] h-auto absolute sm:left-[-22px] left-[-18px] top-1/2 -translate-y-1/2"
-                  />
-                  {!isSpecial && <span>Special Orders</span>}
-                  {isSpecial && <span>Close Special</span>}
+                  {/* Animated packet icon */}
+                  <div
+                    className="absolute sm:left-[-22px] left-[-18px] top-1/2 -translate-y-1/2 
+                        transform transition-all duration-300 ease-in-out
+                        group-hover:rotate-12 group-hover:scale-110
+                        animate-bounce"
+                  >
+                    <Image
+                      src="/images/packet.png"
+                      alt="Packet icon"
+                      width={45}
+                      height={46}
+                      className="sm:w-auto w-[32px] h-auto"
+                    />
+                  </div>
+
+                  <span
+                    className="relative z-10 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent
+                         animate-pulse group-hover:animate-none
+                         transition-all duration-300"
+                  >
+                    {!isSpecial ? "Special Quests" : "Close Quests"}
+                  </span>
+
+                  {/* Sparkle effects */}
+                  <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
+                    <div className="absolute top-2 right-2 w-1 h-1 bg-white rounded-full animate-ping"></div>
+                    <div className="absolute bottom-3 left-12 w-1 h-1 bg-yellow-300 rounded-full animate-ping animation-delay-1000"></div>
+                    <div className="absolute top-3 left-1/2 w-1 h-1 bg-pink-300 rounded-full animate-ping animation-delay-2000"></div>
+                  </div>
+
+                  {/* Glowing ring effect */}
+                  <div
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
+                        opacity-0 group-hover:opacity-30 transition-opacity duration-300
+                        animate-pulse scale-110 blur-sm"
+                  ></div>
                 </button>
               </div>
               {loading && (
@@ -138,7 +176,9 @@ function QuestPage() {
 
               {!loading && posts.length == 0 && (
                 <div className="p-4 text-center min-h-[150px] flex flex-col items-center justify-center">
-                  <h3 className="text-2xl font-fredoka capitalize">No {isSpecial ? "Special": activeTab} Posts</h3>
+                  <h3 className="text-2xl font-fredoka capitalize">
+                    No {isSpecial ? "Special" : activeTab} Posts
+                  </h3>
                 </div>
               )}
             </div>

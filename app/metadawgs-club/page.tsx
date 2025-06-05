@@ -4,19 +4,26 @@ import Onboarding from "./Onboarding";
 import useAuth from "@/hooks/use-auth";
 import OnboardingModal from "./modals/OnboardModal";
 import QuestPage from "@/app/metadawgs-club/QuestPage";
+import useLocalStorage from "use-local-storage";
+import { XDoThatLater } from "@/lib/values";
 
 function Page() {
   const { userProfile } = useAuth();
 
-  const isOnboarded = !!(userProfile && userProfile.user.walletApproved);
+  const [willDoThatLater] = useLocalStorage<boolean>(XDoThatLater, false);
+  const isOnboarded = !!(
+    userProfile &&
+    userProfile.user.walletApproved &&
+    willDoThatLater
+  );
 
   const [onboardOpen, setOnboardOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (userProfile) {
-      setOnboardOpen(!userProfile.hasLinkedTelegram);
+      setOnboardOpen(!userProfile.hasLinkedTelegram && !willDoThatLater);
     }
-  }, [userProfile]);
+  }, [userProfile, willDoThatLater]);
 
   const continueOn = () => {
     setOnboardOpen(false);
