@@ -40,7 +40,7 @@ function VerifyQuestCode({
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/posts/${post_id}/apply-code`,
             {
-                method: "POST",
+                method: "PATCH",
                 body: JSON.stringify({
                     code: code,
                 }),

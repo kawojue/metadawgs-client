@@ -16,10 +16,12 @@ function Page() {
   const formRef = useRef<HTMLFormElement>(null);
   const [point, setPoint] = useState<string>("");
   const [imageUrlPreview, setImageUrlPreview] = useState<string>("");
+  const [duration, setDuration] = useState<string>("");
 
   async function submitQuest(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
 
     try {
       const form = e.currentTarget;
@@ -29,6 +31,7 @@ function Page() {
       const description = formData.get("description") as string;
       const tweetUrl = formData.get("tweetUrl") as string;
       const imageUrl = formData.get("imageUrl") as string;
+      const code = formData.get("code") as string;
 
       await postWithAuth(
         "/posts/create",
@@ -38,7 +41,9 @@ function Page() {
           postUrl: tweetUrl,
           imageUrl: imageUrl,
           point: Number(point),
-          special: true
+          special: true,
+          duration: !duration || duration === "0" ? null : Number(duration),
+          code: !code ? null : code,
         },
         {
           isAdmin: true,
@@ -47,6 +52,7 @@ function Page() {
 
       formRef.current?.reset();
       setPoint("");
+      setDuration("");
       setImageUrlPreview("");
       setSuccess(true);
     } catch (error: string | unknown) {
@@ -83,7 +89,9 @@ function Page() {
   return (
     <div className="size-full flex flex-col justify-center items-center p-2 min-h-full">
       <div className="create-quest-modal bg-white rounded-2xl shadow-[0px_4px_10px_0px_rgba(0,_0,_0,_0.1)] p-6 sm:p-8 w-full max-w-lg flex flex-col gap-4 justify-center items-center">
-        <h1 className="text-3xl font-semibold font-fredoka">Create Special Quest</h1>
+        <h1 className="text-3xl font-semibold font-fredoka">
+          Create Special Quest
+        </h1>
         {success && (
           <div className="bg-green-50 text-green-700 p-3 rounded-lg w-full text-sm">
             Special Quest created successfully!
@@ -210,6 +218,32 @@ function Page() {
               name="point"
               placeholder="Point"
               required
+            />
+          </div>
+          <div className="div space-y-2">
+            <label htmlFor="code" className="text-sm block font-fredoka">
+              Code
+            </label>
+            <input
+              type="string"
+              className="w-full rounded-full block px-5 h-[52px] border-2 border-[#F5F5F5]"
+              name="code"
+              placeholder="Code"
+              defaultValue={""}
+            />
+          </div>
+          <div className="div space-y-2">
+            <label htmlFor="duration" className="text-sm block font-fredoka">
+              Duration
+            </label>
+            <NumberInput
+              onChange={setDuration}
+              value={duration}
+              step={1}
+              type="number"
+              className="w-full rounded-full block px-5 h-[52px] border-2 border-[#F5F5F5]"
+              name="duration"
+              placeholder="Duration"
             />
           </div>
           <Button

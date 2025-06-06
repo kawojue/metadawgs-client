@@ -1,13 +1,13 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Quest } from "@/lib/type";
 import { Button } from "@/components/ui/button";
-import { LoaderIcon, PenIcon, TrashIcon } from "lucide-react";
+import { LoaderIcon, TrashIcon } from "lucide-react";
 import { generateRandomString, hashAddress } from "@/lib/common";
 import useLocalStorage from "use-local-storage";
 import { useState } from "react";
 import { XRefreshTable } from "@/lib/values";
 import { deleteWithAuth } from "@/lib/api";
-import QuestFormModal from "./QuestForm";
+// import QuestFormModal from "./QuestForm";
 
 export const columns: ColumnDef<Quest>[] = [
   {
@@ -60,10 +60,10 @@ export const columns: ColumnDef<Quest>[] = [
   },
 ];
 
-const Action = ({ questId, quest }: { questId: number; quest: Quest }) => {
+const Action = ({ questId }: { questId: number; quest: Quest }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setRefreshTable] = useLocalStorage<string>(XRefreshTable, "");
-  const [openEdit, setOpenEdit] = useState<boolean>(false);
+  // const [openEdit, setOpenEdit] = useState<boolean>(false);
 
   async function DeleteQuest() {
     if (isLoading) return;
@@ -97,7 +97,7 @@ const Action = ({ questId, quest }: { questId: number; quest: Quest }) => {
           {isLoading && <LoaderIcon />}
           {!isLoading && <TrashIcon className="text-red-500" />}
         </Button>
-        <Button
+        {/* <Button
           className="cursor-pointer"
           variant={"ghost"}
           size={"icon"}
@@ -105,13 +105,13 @@ const Action = ({ questId, quest }: { questId: number; quest: Quest }) => {
           onClick={() => setOpenEdit(true)}
         >
           <PenIcon className="text-blue-500" />
-        </Button>
+        </Button> */}
       </div>
-      <QuestFormModal
+      {/* <QuestFormModal
         open={openEdit}
         onClose={() => setOpenEdit(false)}
         quest={quest}
-      />
+      /> */}
     </>
   );
 };
