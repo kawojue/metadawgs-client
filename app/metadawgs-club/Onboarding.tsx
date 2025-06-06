@@ -2,7 +2,6 @@
 
 import { FadeIn, FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
-import siteConfig from "@/lib/siteConfig";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import OnboardingModal from "./modals/OnboardModal";
@@ -51,14 +50,8 @@ function Onboarding({
                   Join the MetaDawgs Creators Club
                 </span>
                 <span className="text-[#ACACAC] md:text-xl text-lg">
-                  Join our official{" "}
-                  <a
-                    href={siteConfig.socialLinks.telegram}
-                    className="font-bold text-white"
-                  >
-                    Telegram
-                  </a>{" "}
-                  group - the battleground awaits!
+                  Be part of the metadawgs creators club, talk about metadawgs
+                  on X and earn
                 </span>
               </div>
             </li>
@@ -79,7 +72,8 @@ function Onboarding({
                   Participate In the MetaDawgs Grinders Quest{" "}
                 </span>
                 <span className="text-[#ACACAC] md:text-xl text-lg">
-                  Use our Invite Bot to generate your unique invite link.
+                  Stay active and engage on {"Metadawgs'"} official X Post and
+                  special quests to collect sweet bones and earn rewards.
                 </span>
               </div>
             </li>
@@ -100,7 +94,8 @@ function Onboarding({
                   Grind the MetaDawgs Telegram Quest{" "}
                 </span>
                 <span className="text-[#ACACAC] md:text-xl text-lg">
-                  Join our official Telegram group - the battleground awaits!
+                  Join our official Telegram Arena Quest - the battleground
+                  awaits!
                 </span>
               </div>
             </li>
@@ -121,10 +116,9 @@ function Onboarding({
                   Recruit, Score, Dominate. 🏆
                 </span>
                 <span className="text-[#ACACAC] md:text-xl text-lg">
-                  Share your link far and wide! Every friend you bring in nets
-                  you <strong className="text-white">5 Bones</strong>. Rack up
-                  points, crush the leaderboard, and prove
-                  {"you’re"} the ultimate champion!
+                  Share your referral link far and wide! Every friend you bring
+                  in nets you sweet Bones. Rack up points, crush the
+                  leaderboard, and prove {"you’re"} the ultimate champion!
                 </span>
               </div>
             </li>
