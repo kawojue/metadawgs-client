@@ -29,7 +29,7 @@ export const tokenomics = [
       {
         label: "Anti-Whale & Anti-Bot Measures",
         items: [
-          "Buy limit (1-2% of supply per wallet)",
+          "Buy limit (supply per wallet)",
           "Cooldown timer at launch",
         ],
       },

@@ -64,7 +64,7 @@ function OnboardingModal({
         open={open}
         onOpenChange={(x) => {
           if (!x) {
-            onClose?.();
+            setTimeout(() => onClose?.(), 100);
           }
         }}
       >
