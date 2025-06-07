@@ -5,6 +5,7 @@ import useAuth from "@/hooks/use-auth";
 import OnboardingModal from "./modals/OnboardModal";
 import QuestPage from "@/app/metadawgs-club/QuestPage";
 import { useWallet } from "@solana/wallet-adapter-react";
+// import { Loader } from "lucide-react";
 
 function Page() {
   const { userProfile } = useAuth();
@@ -26,6 +27,14 @@ function Page() {
   const continueOn = () => {
     setOnboardOpen(false);
   };
+
+  // if (isLoading) {
+  //   return (
+  //     <div className="h-dch w-full grid place-content-center place-content-items">
+  //       <Loader size={72} color={"#FFBE00"} className="animate-spin" />
+  //     </div>
+  //   );
+  // }
 
   if (!userProfile || !isOnboarded) {
     return (

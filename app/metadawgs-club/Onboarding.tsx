@@ -33,8 +33,8 @@ function Onboarding({
           </h1>
         </FadeIn>
 
-        <ul className="grid gap-4 max-w-2xl mx-auto">
-          <FadeInUp>
+        <FadeInUp className="flex flex-col gap-6 md:gap-12 justify-center items-center">
+          <ul className="grid gap-4 max-w-2xl mx-auto">
             <li className="flex gap-5 pool rounded-2xl after:rounded-2xl p-6 sm:p-8">
               <div className="border-2 mt-0.5 font-medium shadow-[inset_0px_-1.5px_3px_0px_rgba(0,0,0,0.4)] rounded-full size-[30px] min-w-[30px] border-[#FFBE00]">
                 <Image
@@ -55,8 +55,7 @@ function Onboarding({
                 </span>
               </div>
             </li>
-          </FadeInUp>
-          <FadeInUp>
+
             <li className="flex gap-5 pool rounded-2xl after:rounded-2xl p-6 sm:p-8">
               <div className="border-2 mt-0.5 font-medium shadow-[inset_0px_-1.5px_3px_0px_rgba(0,0,0,0.4)] rounded-full size-[30px] min-w-[30px] border-[#A078FF]">
                 <Image
@@ -77,8 +76,7 @@ function Onboarding({
                 </span>
               </div>
             </li>
-          </FadeInUp>
-          <FadeInUp>
+
             <li className="flex gap-5 pool rounded-2xl after:rounded-2xl p-6 sm:p-8">
               <div className="border-2 mt-0.5 font-medium shadow-[inset_0px_-1.5px_3px_0px_rgba(0,0,0,0.4)] rounded-full size-[30px] min-w-[30px] border-[#00C159]">
                 <Image
@@ -99,8 +97,7 @@ function Onboarding({
                 </span>
               </div>
             </li>
-          </FadeInUp>
-          <FadeInUp>
+
             <li className="flex gap-5 pool rounded-2xl after:rounded-2xl p-6 sm:p-8">
               <div className="border-2 mt-0.5 font-medium shadow-[inset_0px_-1.5px_3px_0px_rgba(0,0,0,0.4)] rounded-full size-[30px] min-w-[30px] border-[#c12700]">
                 <Image
@@ -122,15 +119,15 @@ function Onboarding({
                 </span>
               </div>
             </li>
-          </FadeInUp>
-        </ul>
+          </ul>
 
-        <Button
-          className="rounded-full px-7! font-medium !py-6 bg-[#08A5D9]"
-          onClick={() => setOnboardOpen(true)}
-        >
-          Join Metadawgs Club <ArrowUpRight strokeWidth={3} />
-        </Button>
+          <Button
+            className="rounded-full px-7! font-medium !py-6 bg-[#08A5D9]"
+            onClick={() => setOnboardOpen(true)}
+          >
+            Join Metadawgs Club <ArrowUpRight strokeWidth={3} />
+          </Button>
+        </FadeInUp>
       </div>
 
       <OnboardingModal
