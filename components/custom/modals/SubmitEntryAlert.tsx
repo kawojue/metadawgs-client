@@ -20,9 +20,11 @@ import useLocalStorage from "use-local-storage";
 export function SubmitEntryAlert({
   open,
   onClose,
+  message,
 }: {
   open?: boolean;
   onClose?: () => void;
+  message?: string;
 }) {
   const [, setRefreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
   const router = useRouter();
@@ -47,14 +49,24 @@ export function SubmitEntryAlert({
             />
           </div>
           <AlertDialogTitle className="text-center font-fredoka text-3xl capitalize">
-            Quest submitted!
-            <br />
-            Bones awarded! 🎉
+            {!message && (
+              <>
+                Quest submitted!
+                <br />
+                Bones awarded! 🎉
+              </>
+            )}
+            {message && (
+              <>
+                Special Quest <br /> is verified! 🎉
+              </>
+            )}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
-            An admin will review your entry soon to make sure everything checks
+            {message ??
+              `An admin will review your entry soon to make sure everything checks
             out. If something doesn’t add up, your account could face penalties.
-            So play fair, adventurer! ⚔️
+            So play fair, adventurer! ⚔️`}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="grid! grid-cols-2! gap-4 mt-2">

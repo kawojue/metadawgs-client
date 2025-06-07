@@ -52,6 +52,21 @@ export const columns: ColumnDef<Quest>[] = [
     ),
   },
   {
+    accessorKey: "code",
+    header: () => <div className="">Quest Code</div>,
+    cell: ({ row }) => <div className="">{row.getValue("code") || "NIL"}</div>,
+  },
+  {
+    accessorKey: "duration",
+    header: () => <div className="">Quest Duration</div>,
+    cell: ({ row }) => (
+      <div className="">
+        {row.getValue("duration")}{" "}
+        {(row.getValue("duration") as string) ? "Day" : "NIL"}
+      </div>
+    ),
+  },
+  {
     accessorKey: "actions",
     header: () => <div className="">Action</div>,
     cell: ({ row }) => {

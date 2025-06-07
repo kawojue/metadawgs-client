@@ -17,7 +17,7 @@ import {
 } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { ArrowUpRightIcon, BookAIcon, CircleX, CopyIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { SubmitReferralAlert } from "./SubmitReferralAlert";
 import useAuth from "@/hooks/use-auth";
 import siteConfig from "@/lib/siteConfig";
@@ -43,24 +43,27 @@ function ProfileSidebar({
 
   const currentWallet = publicKey?.toBase58();
 
-  const statsConfig = [
-    {
-      value: formatNumberWithCommas(Number(userProfile?.user.tasks)) || 0,
-      label: "Tasks Completed",
-    },
-    {
-      value:
-        Number(userProfile?.overallPoints)?.toLocaleString("en-US", {
-          maximumFractionDigits: 2,
-          minimumFractionDigits: 2,
-        }) || 0,
-      label: "Overall Bones",
-    },
-    {
-      value: userProfile?.rank || "NIL",
-      label: "Rank Number",
-    },
-  ];
+  const statsConfig = useMemo(
+    () => [
+      {
+        value: formatNumberWithCommas(Number(userProfile?.user.tasks)) || 0,
+        label: "Tasks Completed",
+      },
+      {
+        value:
+          Number(userProfile?.overallPoints)?.toLocaleString("en-US", {
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2,
+          }) || 0,
+        label: "Overall Bones",
+      },
+      {
+        value: userProfile?.rank || "NIL",
+        label: "Rank Number",
+      },
+    ],
+    [userProfile]
+  );
 
   const socialLinks = [
     {
