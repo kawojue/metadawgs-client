@@ -1,5 +1,5 @@
 "use client";
-import { useState, Suspense } from "react";
+import { useState, Suspense, useMemo } from "react";
 import Onboarding from "./Onboarding";
 import useAuth from "@/hooks/use-auth";
 import OnboardingModal from "./modals/OnboardModal";
@@ -10,11 +10,15 @@ function Page() {
   const { userProfile } = useAuth();
   const { publicKey } = useWallet();
 
-  const isOnboarded = !!(
-    userProfile &&
-    // userProfile.user.walletApproved &&
-    publicKey &&
-    userProfile.hasLinkedTelegram
+  const isOnboarded = useMemo(
+    () =>
+      !!(
+        userProfile &&
+        // userProfile.user.walletApproved &&
+        publicKey &&
+        userProfile.hasLinkedTelegram
+      ),
+    [userProfile, publicKey]
   );
 
   const [onboardOpen, setOnboardOpen] = useState<boolean>(false);
@@ -35,12 +39,15 @@ function Page() {
     <Suspense fallback={"loading..."}>
       <>
         <QuestPage />
-        <OnboardingModal
-          open={onboardOpen}
-          onClose={() => setOnboardOpen(false)}
-          continueOn={continueOn}
-          hideTheRest={true}
-        />
+
+        {onboardOpen && (
+          <OnboardingModal
+            open={onboardOpen}
+            onClose={() => setOnboardOpen(false)}
+            continueOn={continueOn}
+            hideTheRest={true}
+          />
+        )}
       </>
     </Suspense>
   );
