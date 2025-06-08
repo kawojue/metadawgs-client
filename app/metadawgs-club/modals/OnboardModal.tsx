@@ -79,7 +79,7 @@ function OnboardingModal({
                 }}
             >
                 <DialogContent
-                    className="sm:max-w-[456px] bg-black text-white shadow-sm border border-white/20 rounded-3xl pointer-events-none"
+                    className="sm:max-w-[456px] bg-black text-white shadow-sm border border-white/20 rounded-3xl"
                     showCloseButton={false}
                     onInteractOutside={(e) => e.preventDefault()}
                 >

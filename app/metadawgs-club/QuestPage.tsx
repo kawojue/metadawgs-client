@@ -11,7 +11,7 @@ import {
     // XVerifyParticipate,
 } from "@/lib/values";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useLocalStorage from "use-local-storage";
 import { authUrl } from "@/lib/utils";
 import Link from "next/link";
@@ -27,16 +27,6 @@ function QuestPage() {
     const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
     const [posts, setPosts] = useState<PostType[]>([]);
     const [activeTab, setActiveTab] = useState<"live" | "past">("live");
-    const postsRef = useRef<HTMLDivElement>(null);
-
-    const scrollToPosts = useCallback(() => {
-        if (postsRef.current) {
-            postsRef.current.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-            });
-        }
-    }, []);
 
     const fetchPosts = useCallback(async () => {
         if (!userToken) {
@@ -54,8 +44,6 @@ function QuestPage() {
 
             const { data } = await fetchWithAuth<PostType[]>(endpoint);
             setPosts(data);
-            // Scroll to posts after data is loaded
-            setTimeout(scrollToPosts, 100);
         } catch (error) {
             console.error("Failed to fetch posts:", error);
             setError("Failed to load quests. Please try again later.");
@@ -63,7 +51,7 @@ function QuestPage() {
         } finally {
             setLoading(false);
         }
-    }, [userToken, isSpecial, activeTab, scrollToPosts]);
+    }, [userToken, isSpecial, activeTab]);
 
     // Fetch posts when dependencies change
     useEffect(() => {
@@ -71,19 +59,14 @@ function QuestPage() {
     }, [fetchPosts, refreshPosts]);
 
     // Handle tab changes
-    const handleTabChange = useCallback(
-        (tab: "live" | "past") => {
-            setActiveTab(tab);
-            setTimeout(scrollToPosts, 100);
-        },
-        [scrollToPosts]
-    );
+    const handleTabChange = useCallback((tab: "live" | "past") => {
+        setActiveTab(tab);
+    }, []);
 
     // Handle special quests toggle
     const handleSpecialToggle = useCallback(() => {
         setIsSpecial((prev) => !prev);
-        setTimeout(scrollToPosts, 100);
-    }, [scrollToPosts]);
+    }, []);
 
     // Memoize the posts grid to prevent unnecessary re-renders
     const postsGrid = useMemo(() => {
@@ -249,7 +232,7 @@ function QuestPage() {
                                 </button>
                             </div>
 
-                            <div ref={postsRef}>{postsGrid}</div>
+                            <div>{postsGrid}</div>
                         </div>
                     )}
                     {!userToken && (
