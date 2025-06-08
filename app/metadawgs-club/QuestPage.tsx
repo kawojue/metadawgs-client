@@ -119,7 +119,7 @@ function QuestPage() {
     }, [loading, error, posts, isSpecial, activeTab, fetchPosts]);
 
     return (
-        <div className="bg-black text-white">
+        <div className="bg-black text-white min-h-screen">
             {/* <div className="p-4 sm:p-6 md:p-15 md:pb-5 py-5 flex flex-col gap-5 justify-center items-center">
         <FadeInUp>
           <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
@@ -144,12 +144,10 @@ function QuestPage() {
       </div> */}
 
             <div className="conquests space-y-16 p-6">
-                <div className="posts" id="Posts"></div>
-
                 <div className="social_quests md:mx-[5%] lg:mx-[18%]">
                     <QuestTopCard />
                     {!!userToken && (
-                        <div className="quests-box w-full sm:mt-8 mt-4 max-h-[500px] overflow-y-auto">
+                        <div className="quests-box w-full sm:mt-8 mt-4">
                             <div className="flex justify-between gap-4 items-center mb-6">
                                 {!isSpecial && (
                                     <div className="flex sm:gap-4 gap-2 flex-wrap">
