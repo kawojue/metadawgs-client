@@ -1,5 +1,5 @@
 "use client";
-import { useState, Suspense, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Onboarding from "./Onboarding";
 import useAuth from "@/hooks/use-auth";
 import OnboardingModal from "./modals/OnboardModal";
@@ -12,13 +12,7 @@ function Page() {
     const { publicKey } = useWallet();
 
     const isOnboarded = useMemo(
-        () =>
-            !!(
-                userProfile &&
-                // userProfile.user.walletApproved &&
-                publicKey &&
-                userProfile.hasLinkedTelegram
-            ),
+        () => !!(userProfile && publicKey && userProfile.hasLinkedTelegram),
         [userProfile, publicKey]
     );
 
@@ -30,7 +24,7 @@ function Page() {
 
     if (isLoading) {
         return (
-            <div className="h-dch w-full grid place-content-center place-content-items">
+            <div className="h-dch w-full grid place-content-center">
                 <Loader size={72} color={"#FFBE00"} className="animate-spin" />
             </div>
         );
@@ -38,46 +32,24 @@ function Page() {
 
     if (!userProfile || !isOnboarded) {
         return (
-            <Suspense
-                fallback={
-                    <div className="h-dch w-full grid place-content-center place-content-items">
-                        <Loader
-                            size={72}
-                            color={"#FFBE00"}
-                            className="animate-spin"
-                        />
-                    </div>
-                }
-            >
+            <div>
                 <Onboarding setIsOnboarded={() => setOnboardOpen(true)} />
-            </Suspense>
+            </div>
         );
     }
 
     return (
-        <Suspense
-            fallback={
-                <div className="h-dch w-full grid place-content-center place-content-items">
-                    <Loader
-                        size={72}
-                        color={"#FFBE00"}
-                        className="animate-spin"
-                    />
-                </div>
-            }
-        >
-            <>
-                <QuestPage />
-                {onboardOpen && (
-                    <OnboardingModal
-                        open={onboardOpen}
-                        onClose={() => setOnboardOpen(false)}
-                        continueOn={continueOn}
-                        hideTheRest={true}
-                    />
-                )}
-            </>
-        </Suspense>
+        <div>
+            <QuestPage />
+            {onboardOpen && (
+                <OnboardingModal
+                    open={onboardOpen}
+                    onClose={() => setOnboardOpen(false)}
+                    continueOn={continueOn}
+                    hideTheRest={true}
+                />
+            )}
+        </div>
     );
 }
 

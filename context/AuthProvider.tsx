@@ -88,8 +88,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             if (rankData) {
                 const {
                     data: { rank, overallPoints },
-                } = rankData as { data: { rank: number, overallPoints: number } };
-                setUserProfile((prev) => (prev ? { ...prev, rank, overallPoints: overallPoints  } : null));
+                } = rankData as {
+                    data: { rank: number; overallPoints: number };
+                };
+                setUserProfile((prev) =>
+                    prev
+                        ? { ...prev, rank, overallPoints: overallPoints }
+                        : null
+                );
             }
         } catch (error) {
             console.error("Failed to fetch profile:", error);
@@ -108,6 +114,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             fetchProfile();
         } else {
             setUserProfile(null);
+            setIsLoading(false);
         }
 
         return () => {
