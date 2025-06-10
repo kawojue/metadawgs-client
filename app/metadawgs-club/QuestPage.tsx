@@ -23,10 +23,16 @@ function QuestPage() {
     const { userToken } = useAuth();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [isSpecial, setIsSpecial] = useLocalStorage<boolean>("QUEST_IS_SPECIAL",false);
+    const [isSpecial, setIsSpecial] = useLocalStorage<boolean>(
+        "QUEST_IS_SPECIAL",
+        false
+    );
     const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
     const [posts, setPosts] = useState<PostType[]>([]);
-    const [activeTab, setActiveTab] = useLocalStorage<"live" | "past">("ACTIVE_TAB","live");
+    const [activeTab, setActiveTab] = useLocalStorage<"live" | "past">(
+        "ACTIVE_TAB",
+        "live"
+    );
 
     const fetchPosts = useCallback(async () => {
         if (!userToken) {
@@ -53,22 +59,18 @@ function QuestPage() {
         }
     }, [userToken, isSpecial, activeTab]);
 
-    // Fetch posts when dependencies change
     useEffect(() => {
         fetchPosts();
     }, [fetchPosts, refreshPosts]);
 
-    // Handle tab changes
     const handleTabChange = useCallback((tab: "live" | "past") => {
         setActiveTab(tab);
     }, []);
 
-    // Handle special quests toggle
     const handleSpecialToggle = useCallback(() => {
         setIsSpecial((prev) => !prev);
     }, []);
 
-    // Memoize the posts grid to prevent unnecessary re-renders
     const postsGrid = useMemo(() => {
         if (loading) {
             return (
