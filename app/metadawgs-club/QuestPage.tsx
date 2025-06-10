@@ -23,10 +23,10 @@ function QuestPage() {
     const { userToken } = useAuth();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [isSpecial, setIsSpecial] = useState<boolean>(false);
+    const [isSpecial, setIsSpecial] = useLocalStorage<boolean>("QUEST_IS_SPECIAL",false);
     const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
     const [posts, setPosts] = useState<PostType[]>([]);
-    const [activeTab, setActiveTab] = useState<"live" | "past">("live");
+    const [activeTab, setActiveTab] = useLocalStorage<"live" | "past">("ACTIVE_TAB","live");
 
     const fetchPosts = useCallback(async () => {
         if (!userToken) {
