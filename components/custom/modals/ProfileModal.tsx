@@ -69,7 +69,7 @@ function ProfileSidebar({
             {
                 value: "NIL",
                 label: "Airdrop Tokens",
-                isAirdrop: true,
+                isAirdrop: false,
             },
         ],
         [userProfile]
@@ -229,28 +229,42 @@ function ProfileSidebar({
                         </div>
 
                         {/* Stats Section */}
-                        <div className="stats grid grid-cols-3 gap-3">
+                        <div className="stats grid grid-cols-2 gap-3">
                             {statsConfig.map((stat, index) => (
                                 <div
                                     key={index}
                                     className={cn(
                                         "grid gap-1 col-span-1 text-center bg-[#FFBE00] text-black rounded-xl p-3 py-4 shadow-[inset_0px_-4px_3px_0px_rgba(0,0,0,0.4)]",
-                                        stat.isAirdrop && "col-span-3"
+                                        stat.isAirdrop &&
+                                            "col-span-2 flex flex-row items-center justify-between"
                                     )}
                                 >
-                                    <span className="font-semibold text-lg">
-                                        {stat.value}
-                                    </span>
-                                    <span className="text-xs">
-                                        {stat.label}
-                                    </span>
-                                    {stat.isAirdrop && (
-                                        <Button
-                                            disabled
-                                            className="mt-2 bg-black/20 text-black hover:bg-black/30 cursor-not-allowed"
-                                        >
-                                            Claim Tokens
-                                        </Button>
+                                    {stat.isAirdrop ? (
+                                        <>
+                                            <div className="flex flex-col items-start gap-1">
+                                                <span className="font-semibold text-lg">
+                                                    {stat.value}
+                                                </span>
+                                                <span className="text-xs">
+                                                    {stat.label}
+                                                </span>
+                                            </div>
+                                            <Button
+                                                disabled
+                                                className="bg-[#A078FF] text-white hover:bg-[#A078FF]/80 px-4 py-1.5 text-sm rounded-full cursor-not-allowed opacity-50"
+                                            >
+                                                Claim
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="font-semibold text-lg">
+                                                {stat.value}
+                                            </span>
+                                            <span className="text-xs">
+                                                {stat.label}
+                                            </span>
+                                        </>
                                     )}
                                 </div>
                             ))}
