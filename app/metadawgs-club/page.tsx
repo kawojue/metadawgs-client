@@ -25,6 +25,8 @@ function Page() {
     useEffect(() => {
         if (!isOnboarded && pathname === "/metadawgs-club") {
             setOnboardOpen(true);
+        } else {
+            setOnboardOpen(false);
         }
     }, [isOnboarded, pathname]);
 
