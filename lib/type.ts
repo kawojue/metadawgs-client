@@ -1,213 +1,219 @@
 export interface PostType {
-  id: number;
-  postId: string;
-  point: number;
-  name: string;
-  description: string;
-  postUrl: string;
-  imageUrl: string;
-  deletedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-  adminId: string;
-  hasEngaged: boolean;
+    id: number;
+    postId: string;
+    point: number;
+    name: string;
+    description: string;
+    postUrl: string;
+    imageUrl: string;
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    adminId: string;
+    hasEngaged: boolean;
 
-  special: boolean;
-  hidden: boolean;
-  duration: null;
+    special: boolean;
+    hidden: boolean;
+    duration: null;
 
-  hasVerified: boolean;
-  buttons: PostBtnType[];
+    hasVerified: boolean;
+    buttons: PostBtnType[];
 }
 
 export type PostBtnType = "View" | "Claim" | "Verify Code" | "Done" | "Join";
 
 export interface ProfileType {
-  creatorClubVerification: "NOT_APPLIED" | "APPROVED" | "PENDING" | "REJECTED";
-  referralCode: string;
-  hasLinkedTelegram: false;
-  user: {
-    id: string;
-    tasks: number;
-    avatar: string;
-    username: string;
-    joinedAt: string;
-    displayName: string;
-    verified: boolean;
-    walletApproved: boolean;
-  };
-  rank: number;
-  overallPoints: number;
+    creatorClubVerification:
+        | "NOT_APPLIED"
+        | "APPROVED"
+        | "PENDING"
+        | "REJECTED";
+    referralCode: string;
+    hasLinkedTelegram: false;
+    airdropTokens: number | null;
+    airdropStatus: boolean;
+    user: {
+        id: string;
+        tasks: number;
+        avatar: string;
+        username: string;
+        joinedAt: string;
+        displayName: string;
+        verified: boolean;
+        walletApproved: boolean;
+    };
+    rank: number;
+    overallPoints: number;
 }
 
 export interface AdminProfileType {
-  id: string;
-  username: string;
-  deletedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
+    id: string;
+    username: string;
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface TelegramLeaderboardType {
-  userId: string;
-  username: string;
-  points: number;
-  messages: number;
-  reactions: number;
-  invites: number;
-  avatar: string;
+    userId: string;
+    username: string;
+    points: number;
+    messages: number;
+    reactions: number;
+    invites: number;
+    avatar: string;
 }
 
 export interface OverallLeaderboardType {
-  userId: string;
-  displayName: string;
-  username: string;
-  tasks: number;
-  points: number;
-  rank: number;
-  avatar: string;
-  verified: boolean;
+    userId: string;
+    displayName: string;
+    username: string;
+    tasks: number;
+    points: number;
+    rank: number;
+    avatar: string;
+    verified: boolean;
 }
 
 export interface GrindersLeaderboardType {
-  userId: string;
-  displayName: string;
-  username: string;
-  tasks: number;
-  points: number;
-  rank: number;
-  avatar: string;
-  verified: boolean;
+    userId: string;
+    displayName: string;
+    username: string;
+    tasks: number;
+    points: number;
+    rank: number;
+    avatar: string;
+    verified: boolean;
 }
 
 export interface CreatorsLeaderboardType {
-  userId: string;
-  displayName: string;
-  username: string;
-  tasks: number;
-  points: number;
-  rank: number;
-  avatar: string;
-  verified: boolean;
+    userId: string;
+    displayName: string;
+    username: string;
+    tasks: number;
+    points: number;
+    rank: number;
+    avatar: string;
+    verified: boolean;
 }
 
 export interface MetaType {
-  size: number;
-  hasNext: boolean;
-  hasPrev: boolean;
-  totalPages: number;
-  currentPage: number;
-  offset: number;
-  totalItems: number;
-  nextPage: number | null;
-  previousPage: number | null;
+    size: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+    totalPages: number;
+    currentPage: number;
+    offset: number;
+    totalItems: number;
+    nextPage: number | null;
+    previousPage: number | null;
 }
 
 export interface QuestType {
-  id: number;
-  point: number;
-  todo: string;
-  app_name: string;
-  link: string;
-  inApp: boolean;
+    id: number;
+    point: number;
+    todo: string;
+    app_name: string;
+    link: string;
+    inApp: boolean;
 }
 
 export interface UserType {
-  id: number;
-  avatar: string;
-  username: string;
-  walletAddress: string | null;
-  tasks: number;
-  banned: boolean;
-  displayName: string;
-  providerId: string;
-  deletedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-  totalPoints: number;
+    id: number;
+    avatar: string;
+    username: string;
+    walletAddress: string | null;
+    tasks: number;
+    banned: boolean;
+    displayName: string;
+    providerId: string;
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    totalPoints: number;
 }
 
 export interface EntryType {
-  id: number;
-  postId: string;
-  postUrl: string;
-  deletedAt: null;
-  createdAt: string;
-  updatedAt: string;
-  userId: string;
-  pointId: string;
-  user: {
-    username: string;
-  };
-  point: {
-    value: string;
-  };
+    id: number;
+    postId: string;
+    postUrl: string;
+    deletedAt: null;
+    createdAt: string;
+    updatedAt: string;
+    userId: string;
+    pointId: string;
+    user: {
+        username: string;
+    };
+    point: {
+        value: string;
+    };
 }
 
 export interface Quest {
-  id: number;
-  postId: string;
-  point: number;
-  name: string;
-  description: string;
-  postUrl: string;
-  imageUrl: string;
-  deletedAt: null;
-  createdAt: string;
-  updatedAt: string;
-  adminId: string;
-  participationCount: number;
-  code: string;
-  special: boolean;
-  hidden: boolean;
-  duration: number;
+    id: number;
+    postId: string;
+    point: number;
+    name: string;
+    description: string;
+    postUrl: string;
+    imageUrl: string;
+    deletedAt: null;
+    createdAt: string;
+    updatedAt: string;
+    adminId: string;
+    participationCount: number;
+    code: string;
+    special: boolean;
+    hidden: boolean;
+    duration: number;
 }
 
 export interface PoolType {
-  title: string;
-  description: string;
-  icon: string;
-  currency: string;
-  stakes: string;
-  stakesEarned: string;
-  stakesIcon: string;
-  details: {
-    label: string;
-    value: string;
-  }[];
+    title: string;
+    description: string;
+    icon: string;
+    currency: string;
+    stakes: string;
+    stakesEarned: string;
+    stakesIcon: string;
+    details: {
+        label: string;
+        value: string;
+    }[];
 }
 
 export type LeaderboardType = "overall" | "grinders" | "telegram" | "creators";
 
 export type Approval = {
-  id: string;
-  avatar: string;
-  username: string;
-  approved: boolean;
-  verified: boolean;
-  walletApproved: boolean;
-  tweetsCount: number;
-  followersCount: number;
-  walletAddress: string;
-  telegramHandle: null;
-  tasks: number;
-  banned: boolean;
-  lastAppSubmittedAt: string;
-  displayName: string;
-  xAccessToken: string;
-  xRefreshToken: string;
-  providerId: string;
-  deletedAt: null;
-  updatedAt: string;
-  createdAt: string;
-  lastWalletAddressChangeAt: string;
-  applicationSubmission: {
     id: string;
-    answer1: string;
-    answer2: string;
+    avatar: string;
+    username: string;
+    approved: boolean;
+    verified: boolean;
+    walletApproved: boolean;
+    tweetsCount: number;
+    followersCount: number;
+    walletAddress: string;
+    telegramHandle: null;
+    tasks: number;
+    banned: boolean;
+    lastAppSubmittedAt: string;
+    displayName: string;
+    xAccessToken: string;
+    xRefreshToken: string;
+    providerId: string;
     deletedAt: null;
-    createdAt: string;
     updatedAt: string;
-    userId: string;
-  };
+    createdAt: string;
+    lastWalletAddressChangeAt: string;
+    applicationSubmission: {
+        id: string;
+        answer1: string;
+        answer2: string;
+        deletedAt: null;
+        createdAt: string;
+        updatedAt: string;
+        userId: string;
+    };
 };

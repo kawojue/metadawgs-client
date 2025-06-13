@@ -67,9 +67,9 @@ function ProfileSidebar({
                 label: "Rank Number",
             },
             {
-                value: "NIL",
                 label: "Airdrop Tokens",
-                isAirdrop: false,
+                value: userProfile?.airdropTokens || "NIL",
+                isAirdrop: userProfile?.airdropStatus || false,
             },
         ],
         [userProfile]
