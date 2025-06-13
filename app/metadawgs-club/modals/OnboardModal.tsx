@@ -81,7 +81,6 @@ function OnboardingModal({
                 <DialogContent
                     className="sm:max-w-[456px] bg-black text-white shadow-sm border border-white/20 rounded-3xl"
                     showCloseButton={false}
-                    onInteractOutside={(e) => e.preventDefault()}
                 >
                     <DialogHeader className="flex flex-col justify-center gap-2 items-center">
                         <div className="circle bg-white rounded-full p-2.5 mb-1">
