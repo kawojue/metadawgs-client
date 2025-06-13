@@ -5,11 +5,7 @@ import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import { fetchWithAuth } from "@/lib/api";
 import { PostType } from "@/lib/type";
-// import { authWithTwitter } from "@/lib/utils";
-import {
-    XRefreshPosts,
-    // XVerifyParticipate,
-} from "@/lib/values";
+import { XRefreshPosts } from "@/lib/values";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useLocalStorage from "use-local-storage";

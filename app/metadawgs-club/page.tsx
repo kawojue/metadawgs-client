@@ -1,22 +1,32 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Onboarding from "./Onboarding";
 import useAuth from "@/hooks/use-auth";
 import OnboardingModal from "./modals/OnboardModal";
 import QuestPage from "@/app/metadawgs-club/QuestPage";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Loader } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 function Page() {
     const { userProfile, isLoading } = useAuth();
     const { publicKey } = useWallet();
+    const pathname = usePathname();
 
     const isOnboarded = useMemo(
         () => !!(userProfile && publicKey && userProfile.hasLinkedTelegram),
         [userProfile, publicKey]
     );
 
-    const [onboardOpen, setOnboardOpen] = useState<boolean>(false);
+    const [onboardOpen, setOnboardOpen] = useState<boolean>(
+        !isOnboarded && pathname === "/metadawgs-club"
+    );
+
+    useEffect(() => {
+        if (!isOnboarded && pathname === "/metadawgs-club") {
+            setOnboardOpen(true);
+        }
+    }, [isOnboarded, pathname]);
 
     const continueOn = () => {
         setOnboardOpen(false);
@@ -34,6 +44,11 @@ function Page() {
         return (
             <div>
                 <Onboarding setIsOnboarded={() => setOnboardOpen(true)} />
+                <OnboardingModal
+                    open={onboardOpen}
+                    onClose={() => setOnboardOpen(false)}
+                    continueOn={continueOn}
+                />
             </div>
         );
     }
@@ -41,14 +56,11 @@ function Page() {
     return (
         <div>
             <QuestPage />
-            {onboardOpen && (
-                <OnboardingModal
-                    open={onboardOpen}
-                    onClose={() => setOnboardOpen(false)}
-                    continueOn={continueOn}
-                    hideTheRest={true}
-                />
-            )}
+            <OnboardingModal
+                open={onboardOpen}
+                onClose={() => setOnboardOpen(false)}
+                continueOn={continueOn}
+            />
         </div>
     );
 }
