@@ -68,7 +68,14 @@ function ProfileSidebar({
             },
             {
                 label: "Airdrop Tokens",
-                value: userProfile?.airdropTokens || "NIL",
+                value:
+                    Number(userProfile?.airdropTokens)?.toLocaleString(
+                        "en-US",
+                        {
+                            maximumFractionDigits: 2,
+                            minimumFractionDigits: 2,
+                        }
+                    ) || "NIL",
                 isAirdrop: userProfile?.airdropStatus || false,
             },
         ],
