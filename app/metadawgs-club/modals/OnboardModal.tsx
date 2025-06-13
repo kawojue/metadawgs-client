@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
-    //   DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -17,13 +16,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { TelegramIcon, TwitterIcon } from "@/lib/icons";
 import { authUrl } from "@/lib/utils";
 import { ArrowUpRightIcon, WalletIcon } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import AuthTelegramModal from "./AuthTelegramModal";
 import { toast } from "sonner";
-import { useBooleanQuery } from "@/hooks/use-query";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 function OnboardingModal({
@@ -40,7 +37,6 @@ function OnboardingModal({
 }) {
     const { userProfile, isLoading } = useAuth();
     const { publicKey } = useWallet();
-    const [, setContinueAuth] = useBooleanQuery("c_a", false);
 
     const isMobile = useIsMobile();
     const [openTelegram, setOpenTelegram] = useState(false);
@@ -50,15 +46,9 @@ function OnboardingModal({
         [userProfile, publicKey]
     );
 
-    useEffect(() => {
-        if (open) {
-            setContinueAuth(false);
-        }
-    }, [open, setContinueAuth]);
-
     const handleClose = () => {
         if (onClose) {
-            setTimeout(() => onClose(), 100);
+            onClose();
         }
     };
 
@@ -80,7 +70,8 @@ function OnboardingModal({
             >
                 <DialogContent
                     className="sm:max-w-[456px] bg-black text-white shadow-sm border border-white/20 rounded-3xl"
-                    showCloseButton={false}
+                    showCloseButton={true}
+                    onInteractOutside={(e) => e.preventDefault()}
                 >
                     <DialogHeader className="flex flex-col justify-center gap-2 items-center">
                         <div className="circle bg-white rounded-full p-2.5 mb-1">
@@ -95,9 +86,6 @@ function OnboardingModal({
                             Join The Metadawgs <br />
                             GrindFi Club!
                         </DialogTitle>
-                        {/* <DialogDescription className="text-center text-white px-6">
-            Please complete the onboarding process to get started.
-          </DialogDescription> */}
                     </DialogHeader>
                     <div>
                         <div className="links grid gap-4 py-2">
@@ -222,15 +210,6 @@ function OnboardingModal({
                         >
                             Continue
                         </Button>
-                        {/* <Button
-            type="button"
-            className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black disabled:cursor-not-allowed!"
-            onClick={() => {
-              onClose?.();
-            }}
-          >
-            Close
-          </Button> */}
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

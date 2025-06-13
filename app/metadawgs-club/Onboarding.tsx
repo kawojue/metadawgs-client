@@ -5,16 +5,27 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import OnboardingModal from "./modals/OnboardModal";
-import { useState } from "react";
-import { useBooleanQuery } from "@/hooks/use-query";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 function Onboarding({
     setIsOnboarded,
 }: {
     setIsOnboarded: (value: boolean) => void;
 }) {
-    const [continueAuth] = useBooleanQuery("c_a", false);
-    const [onboardOpen, setOnboardOpen] = useState<boolean>(continueAuth);
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const [onboardOpen, setOnboardOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        const continueAuth = searchParams.get("c_a") === "true";
+        if (continueAuth) {
+            setOnboardOpen(true);
+            const url = new URL(window.location.href);
+            url.searchParams.delete("c_a");
+            router.replace(url.pathname);
+        }
+    }, [searchParams, router]);
 
     const continueOn = () => {
         setIsOnboarded(true);
@@ -117,7 +128,7 @@ function Onboarding({
                                     Share your referral link far and wide! Every
                                     friend you bring in nets you sweet Bones.
                                     Rack up points, crush the leaderboard, and
-                                    prove {"you’re"} the ultimate champion!
+                                    prove {"you're"} the ultimate champion!
                                 </span>
                             </div>
                         </li>

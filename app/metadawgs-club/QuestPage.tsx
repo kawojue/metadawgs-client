@@ -63,13 +63,19 @@ function QuestPage() {
         fetchPosts();
     }, [fetchPosts, refreshPosts]);
 
-    const handleTabChange = useCallback((tab: "live" | "past") => {
-        setActiveTab(tab);
-    }, []);
+    const handleTabChange = useCallback(
+        (value: "live" | "past") => {
+            setActiveTab(value);
+        },
+        [setActiveTab]
+    );
 
-    const handleSpecialToggle = useCallback(() => {
-        setIsSpecial((prev) => !prev);
-    }, []);
+    const handleSpecialChange = useCallback(
+        (value: boolean) => {
+            setIsSpecial(value);
+        },
+        [setIsSpecial]
+    );
 
     const postsGrid = useMemo(() => {
         if (loading) {
@@ -190,7 +196,9 @@ function QuestPage() {
                    shadow-lg shadow-purple-500/25
                    border-2 border-white/20
                    group"
-                                    onClick={handleSpecialToggle}
+                                    onClick={() =>
+                                        handleSpecialChange(!isSpecial)
+                                    }
                                 >
                                     <div
                                         className="absolute sm:left-[-22px] left-[-18px] top-1/2 -translate-y-1/2 
