@@ -68,14 +68,15 @@ function ProfileSidebar({
             },
             {
                 label: "Airdrop Tokens",
-                value:
-                    Number(userProfile?.airdropTokens)?.toLocaleString(
-                        "en-US",
-                        {
-                            maximumFractionDigits: 2,
-                            minimumFractionDigits: 2,
-                        }
-                    ) || "NIL",
+                value: userProfile?.airdropStatus
+                    ? Number(userProfile?.airdropTokens)?.toLocaleString(
+                          "en-US",
+                          {
+                              maximumFractionDigits: 2,
+                              minimumFractionDigits: 2,
+                          }
+                      )
+                    : "TBA",
                 isAirdrop: userProfile?.airdropStatus || false,
             },
         ],
@@ -114,6 +115,7 @@ function ProfileSidebar({
             setSyncAddressing(true);
             await postWithAuth("/user/link-wallet", {
                 walletAddress: currentWallet,
+                approved: true,
             });
 
             if (userProfile) {

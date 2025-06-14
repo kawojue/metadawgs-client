@@ -81,7 +81,7 @@ function OnboardingModal({
                             />
                         </div>
                         <DialogTitle className="font-fredoka text-2xl text-center">
-                            Join The Metadawgs <br />
+                            Sign In to Join The Metadawgs <br />
                             GrindFi Club!
                         </DialogTitle>
                     </DialogHeader>
@@ -175,7 +175,7 @@ function OnboardingModal({
                                         onClick={() => {
                                             if (!userProfile) {
                                                 toast.error(
-                                                    "Please connect your Twitter account first"
+                                                    "🛑 Whoa! You're skipping a level. Link your Twitter to continue."
                                                 );
                                                 return;
                                             }

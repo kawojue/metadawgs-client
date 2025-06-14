@@ -40,6 +40,13 @@ function AddressButton({
             setMenuIsOpen(false);
         }
 
+        if (!userToken) {
+            toast(
+                "🧭 Wrong path, adventurer. Link your Twitter before summoning Connect Wallet."
+            );
+            return;
+        }
+
         onConnect?.();
 
         setTimeout(() => {
@@ -63,22 +70,26 @@ function AddressButton({
 
     useEffect(() => {
         async function updateUserWallet() {
-            if (!publicKey || !userToken || userProfile?.user.walletApproved)
-                return;
+            if (!publicKey || !userToken) return;
 
             const currentWallet = publicKey.toBase58();
 
             try {
-                await postWithAuth("/user/link-wallet", {
+                const response = await postWithAuth("/user/link-wallet", {
                     walletAddress: currentWallet,
+                    approved: false,
                 });
+
+                const data = response.data as {
+                    walletApproved: boolean;
+                };
 
                 if (userProfile) {
                     setUserProfile({
                         ...userProfile,
                         user: {
                             ...userProfile.user,
-                            walletApproved: true,
+                            walletApproved: data?.walletApproved || false,
                         },
                     });
                 }
