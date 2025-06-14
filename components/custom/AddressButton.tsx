@@ -93,7 +93,6 @@ function AddressButton({
                         },
                     });
                 }
-                window.location.reload();
             } catch (error) {
                 console.error("Failed to link wallet:", error);
                 toast("Failed to link wallet wih account");
