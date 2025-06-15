@@ -13,7 +13,6 @@ import {
     TelegramIcon,
     TwitterIcon,
     VerificationBadge,
-    YoutubeIcon,
 } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
