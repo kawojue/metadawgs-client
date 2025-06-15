@@ -97,12 +97,6 @@ function ProfileSidebar({
             href: siteConfig.socialLinks.telegram,
         },
         {
-            icon: <YoutubeIcon />,
-            label: "Subscribe on Youtube",
-            buttonText: "Subscribe",
-            href: siteConfig.socialLinks.youtube,
-        },
-        {
             icon: <BookAIcon size={24} />,
             label: "A guide to metadawgs",
             buttonText: "Read",
