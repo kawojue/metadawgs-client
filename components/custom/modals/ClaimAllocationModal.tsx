@@ -50,7 +50,7 @@ function ClaimAllocationModal({
           </DialogTitle>
           <DialogDescription className="text-center text-white px-6">
             Your allocation will go live at TGE, to be eligible participate in
-            the quest.
+            quests.
           </DialogDescription>
         </DialogHeader>
 
