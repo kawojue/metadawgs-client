@@ -1,3 +1,4 @@
+import Claim from "@/components/custom/ClaimBtn";
 import { FadeIn } from "@/components/custom/ScrollAnimation";
 import PresaleForm from "@/views/PresaleForm";
 
@@ -30,6 +31,9 @@ function page() {
             </h1>
           )}
         </FadeIn>
+      </div>
+      <div className="flex items-center justify-center">
+        <Claim />
       </div>
       <div className="box md:p-[8%] p-6 md:pt-[5%] pt-10">
         <PresaleForm isComing={isComingSoon} />

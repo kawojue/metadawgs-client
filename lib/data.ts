@@ -28,10 +28,7 @@ export const tokenomics = [
     distributions: [
       {
         label: "Anti-Whale & Anti-Bot Measures",
-        items: [
-          "Buy limit (supply per wallet)",
-          "Cooldown timer at launch",
-        ],
+        items: ["Buy limit (supply per wallet)", "Cooldown timer at launch"],
       },
       {
         label: "Best for",
@@ -160,7 +157,7 @@ export const pools = [
     icon: "/images/solana.png",
     currency: "SOL",
     stakes: "0 MetaDawgs",
-    stakesIcon: '/images/man-avatar.png',
+    stakesIcon: "/images/man-avatar.png",
     stakesEarned: "0 SOL",
     details: [
       { label: "Total Staked", value: "Coming Soon" },
@@ -176,7 +173,7 @@ export const pools = [
     icon: "/images/man-avatar.png",
     currency: "MetaDawgs",
     stakes: "0 SOL",
-    stakesIcon: '/images/solana.png',
+    stakesIcon: "/images/solana.png",
     stakesEarned: "0 MetaDawgs",
     details: [
       { label: "Total Staked", value: "Coming Soon" },
@@ -192,7 +189,7 @@ export const pools = [
     icon: "/images/man-avatar.png",
     currency: "SOL",
     stakes: "0 MetaDawgs",
-    stakesIcon: '/images/man-avatar.png',
+    stakesIcon: "/images/man-avatar.png",
     stakesEarned: "0 SOL",
     details: [
       { label: "Total Staked", value: "Coming Soon" },
@@ -208,7 +205,7 @@ export const pools = [
     icon: "/images/usdc.svg",
     currency: "USDC",
     stakes: "0 MetaDawgs",
-    stakesIcon: '/images/man-avatar.png',
+    stakesIcon: "/images/man-avatar.png",
     stakesEarned: "0 USDC",
     details: [
       { label: "Total Staked", value: "Coming Soon" },
@@ -233,6 +230,8 @@ export const sampleTweets = [
     comments: 9,
     views: "1.2K",
     verified: true,
+    image:
+      "https://res.cloudinary.com/kawojue/image/upload/v1748125653/Adobe_After_Effects_2022_-_C__Users_GODWIN_IZIOMO_..._tion_and_motion_graphics_Motion_graphics_After_effects_files_Metadawg.aep_21_05_2025_16_18_05_xpd2i2.png",
   },
   {
     id: 2,
@@ -247,6 +246,8 @@ export const sampleTweets = [
     comments: 3,
     views: "812",
     verified: false,
+    image:
+      "https://res.cloudinary.com/kawojue/image/upload/v1748125049/MD2-1_a7hg6m.png",
   },
   {
     id: 3,
@@ -261,6 +262,8 @@ export const sampleTweets = [
     comments: 17,
     views: "2.4K",
     verified: true,
+    image:
+      "https://res.cloudinary.com/kawojue/image/upload/v1748125653/Adobe_After_Effects_2022_-_C__Users_GODWIN_IZIOMO_..._tion_and_motion_graphics_Motion_graphics_After_effects_files_Metadawg.aep_21_05_2025_16_16_13_pnnvsg.png",
   },
   {
     id: 4,
