@@ -15,7 +15,7 @@ export default function Claim() {
 
   return (
     <>
-      <div className="max-w-lg w-full mx-auto space-y-2">
+      <div className="max-w-lg w-full mx-auto space-y-2 px-6 pt-4 md:pt-0">
         <h3 className="text-lg font-bold">Your Allocated Airdrop</h3>
         <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
           <div className="flex gap-2 items-center flex-1">
