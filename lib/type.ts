@@ -32,6 +32,7 @@ export interface ProfileType {
     hasLinkedTelegram: false;
     airdropTokens: number | null;
     airdropStatus: boolean;
+    referrals: number;
     user: {
         id: string;
         tasks: number;
