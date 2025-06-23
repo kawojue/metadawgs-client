@@ -17,9 +17,11 @@ import useLocalStorage from "use-local-storage";
 export function SubmitQuestAlert({
     open,
     onClose,
+    message,
 }: {
     open?: boolean;
     onClose?: () => void;
+    message?: string;
 }) {
     const [, setRefreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
 
@@ -46,7 +48,8 @@ export function SubmitQuestAlert({
                         Quest Claimed! Bones awarded! 🎉
                     </AlertDialogTitle>
                     <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
-                        {`Your quest claim has been logged in the Hall of Records.\nGlory awaits, adventurer — stay sharp, the journey has just begun! ⚔️🗺️`}
+                        {message ||
+                            `Your quest claim has been logged in the Hall of Records.\nGlory awaits, adventurer — stay sharp, the journey has just begun! ⚔️🗺️`}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="grid! grid-cols-1! gap-4 mt-2">

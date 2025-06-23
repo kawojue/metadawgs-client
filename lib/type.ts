@@ -159,7 +159,7 @@ export interface Quest {
     description: string;
     postUrl: string;
     imageUrl: string;
-    deletedAt: null;
+    deletedAt: string | null;
     createdAt: string;
     updatedAt: string;
     adminId: string;
