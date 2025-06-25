@@ -154,40 +154,46 @@ function QuestPage() {
                 <div className="social_quests md:mx-[5%] lg:mx-[18%]">
                     <QuestTopCard />
                     {!!userToken && (
-                        <div className="quests-box w-full sm:mt-8 mt-4">
-                            <div className="flex justify-between gap-4 items-center mb-6">
-                                {!isSpecial && (
-                                    <div className="flex sm:gap-4 gap-2 flex-wrap">
-                                        <Button
-                                            className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
-                                                activeTab === "live"
-                                                    ? "text-black bg-[#FFBE00]"
-                                                    : "text-white bg-[#1E1E1E]"
-                                            }`}
-                                            onClick={() =>
-                                                handleTabChange("live")
-                                            }
-                                        >
-                                            Live
-                                        </Button>
-                                        <Button
-                                            className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
-                                                activeTab === "past"
-                                                    ? "text-black bg-[#FFBE00]"
-                                                    : "text-white bg-[#1E1E1E]"
-                                            }`}
-                                            onClick={() =>
-                                                handleTabChange("past")
-                                            }
-                                        >
-                                            Past
-                                        </Button>
-                                    </div>
-                                )}
-                                {isSpecial && <div></div>}
+                        <>
+                            <div className="text-center mt-12 mb-8">
+                                <h2 className="title md:text-[48px] sm:text-4xl text-3xl font-fredoka font-bold text-white">
+                                    Metadawgs Raiders Quest
+                                </h2>
+                            </div>
+                            <div className="quests-box w-full sm:mt-8 mt-4">
+                                <div className="flex justify-between gap-4 items-center mb-6">
+                                    {!isSpecial && (
+                                        <div className="flex sm:gap-4 gap-2 flex-wrap">
+                                            <Button
+                                                className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
+                                                    activeTab === "live"
+                                                        ? "text-black bg-[#FFBE00]"
+                                                        : "text-white bg-[#1E1E1E]"
+                                                }`}
+                                                onClick={() =>
+                                                    handleTabChange("live")
+                                                }
+                                            >
+                                                Live
+                                            </Button>
+                                            <Button
+                                                className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
+                                                    activeTab === "past"
+                                                        ? "text-black bg-[#FFBE00]"
+                                                        : "text-white bg-[#1E1E1E]"
+                                                }`}
+                                                onClick={() =>
+                                                    handleTabChange("past")
+                                                }
+                                            >
+                                                Past
+                                            </Button>
+                                        </div>
+                                    )}
+                                    {isSpecial && <div></div>}
 
-                                <button
-                                    className="inline-flex items-center gap-2 sm:pl-8 pl-4 pr-4 py-2.5 cursor-pointer font-bold text-white sm:text-sm text-xs rounded-full relative
+                                    <button
+                                        className="inline-flex items-center gap-2 sm:pl-8 pl-4 pr-4 py-2.5 cursor-pointer font-bold text-white sm:text-sm text-xs rounded-full relative
                    radial-gradient-custom
                    transform transition-all duration-300 ease-in-out
                    hover:scale-105 hover:shadow-xl
@@ -195,52 +201,53 @@ function QuestPage() {
                    shadow-lg shadow-purple-500/25
                    border-2 border-white/20
                    group"
-                                    onClick={() =>
-                                        handleSpecialChange(!isSpecial)
-                                    }
-                                >
-                                    <div
-                                        className="absolute sm:left-[-22px] left-[-18px] top-1/2 -translate-y-1/2 
+                                        onClick={() =>
+                                            handleSpecialChange(!isSpecial)
+                                        }
+                                    >
+                                        <div
+                                            className="absolute sm:left-[-22px] left-[-18px] top-1/2 -translate-y-1/2 
                         transform transition-all duration-300 ease-in-out
                         group-hover:rotate-12 group-hover:scale-110
                         animate-bounce"
-                                    >
-                                        <Image
-                                            src="/images/packet.png"
-                                            alt="Packet icon"
-                                            width={45}
-                                            height={46}
-                                            className="sm:w-auto w-[32px] h-auto"
-                                            priority
-                                        />
-                                    </div>
+                                        >
+                                            <Image
+                                                src="/images/packet.png"
+                                                alt="Packet icon"
+                                                width={45}
+                                                height={46}
+                                                className="sm:w-auto w-[32px] h-auto"
+                                                priority
+                                            />
+                                        </div>
 
-                                    <span
-                                        className="relative z-10 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent
+                                        <span
+                                            className="relative z-10 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent
                          animate-pulse group-hover:animate-none
                          transition-all duration-300"
-                                    >
-                                        {!isSpecial
-                                            ? "Special Quests"
-                                            : "Normal Quests"}
-                                    </span>
+                                        >
+                                            {!isSpecial
+                                                ? "Special Quests"
+                                                : "Normal Quests"}
+                                        </span>
 
-                                    <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
-                                        <div className="absolute top-2 right-2 w-1 h-1 bg-white rounded-full animate-ping"></div>
-                                        <div className="absolute bottom-3 left-12 w-1 h-1 bg-yellow-300 rounded-full animate-ping animation-delay-1000"></div>
-                                        <div className="absolute top-3 left-1/2 w-1 h-1 bg-pink-300 rounded-full animate-ping animation-delay-2000"></div>
-                                    </div>
+                                        <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
+                                            <div className="absolute top-2 right-2 w-1 h-1 bg-white rounded-full animate-ping"></div>
+                                            <div className="absolute bottom-3 left-12 w-1 h-1 bg-yellow-300 rounded-full animate-ping animation-delay-1000"></div>
+                                            <div className="absolute top-3 left-1/2 w-1 h-1 bg-pink-300 rounded-full animate-ping animation-delay-2000"></div>
+                                        </div>
 
-                                    <div
-                                        className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
+                                        <div
+                                            className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
                         opacity-0 group-hover:opacity-30 transition-opacity duration-300
                         animate-pulse scale-110 blur-sm"
-                                    ></div>
-                                </button>
-                            </div>
+                                        ></div>
+                                    </button>
+                                </div>
 
-                            <div>{postsGrid}</div>
-                        </div>
+                                <div>{postsGrid}</div>
+                            </div>
+                        </>
                     )}
                     {!userToken && (
                         <div className="lg:py-[5%] p-6 md:mx-[5%] lg:mx-[15%]">
