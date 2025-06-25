@@ -9,6 +9,7 @@ import { XRefreshPosts } from "@/lib/values";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useLocalStorage from "use-local-storage";
+import { useRouter, useSearchParams } from "next/navigation";
 import { authUrl } from "@/lib/utils";
 import Link from "next/link";
 import useAuth from "@/hooks/use-auth";
@@ -17,6 +18,8 @@ import { Loader } from "lucide-react";
 
 function QuestPage() {
     const { userToken } = useAuth();
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [isSpecial, setIsSpecial] = useLocalStorage<boolean>(
@@ -25,10 +28,8 @@ function QuestPage() {
     );
     const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
     const [posts, setPosts] = useState<PostType[]>([]);
-    const [activeTab, setActiveTab] = useLocalStorage<"live" | "past">(
-        "ACTIVE_TAB",
-        "live"
-    );
+
+    const activeTab = (searchParams.get("tab") as "live" | "past") || "live";
 
     const fetchPosts = useCallback(async () => {
         if (!userToken) {
@@ -61,9 +62,11 @@ function QuestPage() {
 
     const handleTabChange = useCallback(
         (value: "live" | "past") => {
-            setActiveTab(value);
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("tab", value);
+            router.push(`?${params.toString()}`);
         },
-        [setActiveTab]
+        [router, searchParams]
     );
 
     const handleSpecialChange = useCallback(
