@@ -33,8 +33,6 @@ const PostCard = ({ post }: { post: PostType }) => {
             setSubmitted(true);
             setAlertMessage(message);
             setShowEntryAlert(true);
-
-            await refetchProfile();
         } catch (error: unknown) {
             toast(error instanceof Error ? error.message : "Failed to submit.");
             console.error("Failed to submit:", error);
