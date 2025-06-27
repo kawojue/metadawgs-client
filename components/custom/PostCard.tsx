@@ -23,6 +23,7 @@ const PostCard = ({ post }: { post: PostType }) => {
 
     const handleSubmit = async (e: React.MouseEvent) => {
         e.preventDefault();
+        e.stopPropagation();
         setIsSubmitting(true);
         try {
             const { message } = await patchWithAuth(
@@ -42,11 +43,15 @@ const PostCard = ({ post }: { post: PostType }) => {
         }
     };
 
-    const verifyCode = async () => {
+    const verifyCode = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
         setOpenVerifyCode(true);
     };
 
-    const handleView = async () => {
+    const handleView = async (e?: React.MouseEvent) => {
+        e?.preventDefault();
+        e?.stopPropagation();
         setViewing(true);
         try {
             await patchWithAuth(`/posts/${post.id}/click`, {});
@@ -87,28 +92,24 @@ const PostCard = ({ post }: { post: PostType }) => {
                     {post.buttons.map((btn, index) => {
                         if (btn === "View")
                             return (
-                                <a
+                                <Button
                                     key={index}
-                                    href={post?.postUrl}
-                                    className="block"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    type="button"
+                                    className={cn(
+                                        "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
+                                        viewing && "cursor-wait"
+                                    )}
+                                    onClick={(e) => {
+                                        handleView(e);
+                                        window.open(post?.postUrl, '_blank', 'noopener,noreferrer');
+                                    }}
+                                    disabled={viewing}
                                 >
-                                    <Button
-                                        type="button"
-                                        className={cn(
-                                            "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
-                                            viewing && "cursor-wait"
-                                        )}
-                                        onClick={handleView}
-                                        disabled={viewing}
-                                    >
-                                        <span>
-                                            {viewing ? "Viewing" : "View"}
-                                        </span>
-                                        <ArrowUpRightIcon size={11} />
-                                    </Button>
-                                </a>
+                                    <span>
+                                        {viewing ? "Viewing" : "View"}
+                                    </span>
+                                    <ArrowUpRightIcon size={11} />
+                                </Button>
                             );
 
                         if (btn === "Claim")
@@ -120,7 +121,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                                         "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
                                         isSubmitting && "cursor-wait"
                                     )}
-                                    onClick={handleSubmit}
+                                    onClick={(e) => handleSubmit(e)}
                                     disabled={submitted || isSubmitting}
                                 >
                                     Claim
@@ -152,7 +153,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                                         "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
                                         isSubmitting && "cursor-wait"
                                     )}
-                                    onClick={handleSubmit}
+                                    onClick={(e) => handleSubmit(e)}
                                     disabled={submitted || isSubmitting}
                                 >
                                     Done
@@ -161,28 +162,24 @@ const PostCard = ({ post }: { post: PostType }) => {
 
                         if (btn === "Join")
                             return (
-                                <a
+                                <Button
                                     key={index}
-                                    href={post?.postUrl}
-                                    className="block"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    type="button"
+                                    className={cn(
+                                        "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
+                                        viewing && "cursor-wait"
+                                    )}
+                                    onClick={(e) => {
+                                        handleView(e);
+                                        window.open(post?.postUrl, '_blank', 'noopener,noreferrer');
+                                    }}
+                                    disabled={viewing}
                                 >
-                                    <Button
-                                        type="button"
-                                        className={cn(
-                                            "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
-                                            viewing && "cursor-wait"
-                                        )}
-                                        onClick={handleView}
-                                        disabled={viewing}
-                                    >
-                                        <span>
-                                            {viewing ? "Joining" : "Join"}
-                                        </span>
-                                        <ArrowUpRightIcon size={11} />
-                                    </Button>
-                                </a>
+                                    <span>
+                                        {viewing ? "Joining" : "Join"}
+                                    </span>
+                                    <ArrowUpRightIcon size={11} />
+                                </Button>
                             );
                     })}
                 </div>
