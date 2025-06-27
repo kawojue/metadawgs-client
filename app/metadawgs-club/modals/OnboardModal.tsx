@@ -40,7 +40,9 @@ function OnboardingModal({
     const [openTelegram, setOpenTelegram] = useState(false);
 
     const canContinue = useMemo(
-        () => userProfile && publicKey && userProfile.hasLinkedTelegram,
+        () =>
+            userProfile &&
+            (userProfile?.user?.walletAddress || publicKey?.toBase58()),
         [userProfile, publicKey]
     );
 

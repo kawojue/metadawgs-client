@@ -40,7 +40,9 @@ function ProfileSidebar({
     const [syncAddressError, setSyncAddressError] = useState<string>("");
     const [openTelegram, setOpenTelegram] = useState(false);
 
-    const currentWallet = publicKey?.toBase58();
+    const currentWallet = userProfile?.user?.walletApproved
+        ? userProfile?.user?.walletAddress || publicKey?.toBase58()
+        : publicKey?.toBase58() || userProfile?.user?.walletAddress;
 
     const statsConfig = useMemo(
         () => [

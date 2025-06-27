@@ -41,6 +41,7 @@ export interface ProfileType {
         joinedAt: string;
         displayName: string;
         verified: boolean;
+        walletAddress: string | null;
         walletApproved: boolean;
     };
     rank: number;

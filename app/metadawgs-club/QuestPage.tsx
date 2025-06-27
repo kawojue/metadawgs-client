@@ -1,7 +1,6 @@
 "use client";
 
 import PostCard from "@/components/custom/PostCard";
-import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import { fetchWithAuth } from "@/lib/api";
 import { PostType } from "@/lib/type";
@@ -115,13 +114,11 @@ function QuestPage() {
         }
 
         return (
-            <FadeInUp>
-                <div className="grid xl:grid-cols-3 md:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:place-items-center grid-cols-2 gap-3 mt-7">
-                    {posts.map((post) => (
-                        <PostCard post={post} key={post.id} />
-                    ))}
-                </div>
-            </FadeInUp>
+            <div className="grid xl:grid-cols-3 md:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:place-items-center grid-cols-2 gap-3 mt-7">
+                {posts.map((post) => (
+                    <PostCard post={post} key={post.id} />
+                ))}
+            </div>
         );
     }, [loading, error, posts, isSpecial, activeTab, fetchPosts]);
 

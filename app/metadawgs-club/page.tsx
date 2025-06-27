@@ -14,7 +14,11 @@ function Page() {
     const pathname = usePathname();
 
     const isOnboarded = useMemo(
-        () => !!(userProfile && publicKey && userProfile.hasLinkedTelegram),
+        () =>
+            !!(
+                userProfile &&
+                (userProfile?.user?.walletAddress || publicKey?.toBase58())
+            ),
         [userProfile, publicKey]
     );
 
