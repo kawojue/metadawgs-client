@@ -25,7 +25,6 @@ const PostCard = ({ post }: { post: PostType }) => {
     try {
       await patchWithAuth(`/posts/${post.id}/engage`, {});
       setSubmitted(true);
-      await refetchProfile();
       setShowEntryAlert(true);
 
     } catch (error: unknown) {
