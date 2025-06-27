@@ -95,6 +95,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                                     rel="noopener noreferrer"
                                 >
                                     <Button
+                                        type="button"
                                         className={cn(
                                             "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
                                             viewing && "cursor-wait"
@@ -114,6 +115,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                             return (
                                 <Button
                                     key={index}
+                                    type="button"
                                     className={cn(
                                         "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
                                         isSubmitting && "cursor-wait"
@@ -129,6 +131,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                             return (
                                 <Button
                                     key={index}
+                                    type="button"
                                     className={cn(
                                         "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
                                         isSubmitting && "cursor-wait"
@@ -144,6 +147,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                             return (
                                 <Button
                                     key={index}
+                                    type="button"
                                     className={cn(
                                         "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]",
                                         isSubmitting && "cursor-wait"
@@ -165,6 +169,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                                     rel="noopener noreferrer"
                                 >
                                     <Button
+                                        type="button"
                                         className={cn(
                                             "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
                                             viewing && "cursor-wait"

@@ -58,6 +58,7 @@ export function SubmitQuestAlert({
                         onClick={() => {
                             setRefreshPosts(generateRandomString(10));
                             onClose?.();
+                            // window.location.reload();
                         }}
                     >
                         Close
