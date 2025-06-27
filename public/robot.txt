@@ -11,7 +11,7 @@ Disallow: /metadawgs-club/
 Disallow: /tweet-examples/
 
 # Optional: Disallow temporary or early access pages
-Disallow: /presale/
+Disallow: /dawgs-tge/
 
 # Allow public/SEO-important pages
 Allow: /leaderboard/

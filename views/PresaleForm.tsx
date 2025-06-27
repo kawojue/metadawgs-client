@@ -78,8 +78,8 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
 
         try {
             setStatusMessage("Preparing SOL payment...");
-            const lamportsToSend = Math.round(
-                parseFloat(amount) * LAMPORTS_PER_SOL
+            const lamportsToSend = BigInt(
+                Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL)
             );
             const treasuryPublicKey = new PublicKey(TREASURY_ADDRESS);
 
@@ -290,15 +290,13 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
     // Return point
 
     if (isInitializing) {
-        return (
-            <div className="p-4 text-center">Initializing Presale Form.</div>
-        );
+        return <div className="p-4 text-center">Initializing TGE.</div>;
     }
 
     if (!isInitializing && !metrics) {
         return (
             <div className="p-4 text-center">
-                {"Couldn't"} get presale form metrics.
+                {"Couldn't"} get TGE form metrics.
             </div>
         );
     }
@@ -329,18 +327,12 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                     </div>
                     <div className="progress-value">
                         <p className="text-lg">
-                            Total Raised:{" "}
+                            MetaDawgs:{" "}
                             <strong>
                                 {isComing
                                     ? "TBA"
                                     : formatNumberWithCommas(
                                           metrics?.totalSoldSol
-                                      )}{" "}
-                                SOL /{" "}
-                                {isComing
-                                    ? "TBA"
-                                    : formatNumberWithCommas(
-                                          metrics?.targetSol
                                       )}{" "}
                                 SOL
                             </strong>
@@ -357,45 +349,41 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                     <div className="amount-input flex flex-col gap-2">
                         <div className="flex flex-col items-start gap-0 mb-2">
                             <span className="text-lg font-semibold">
-                                Hard Cap:{" "}
+                                Verified Entry:{" "}
                                 <span className="font-fredoka font-semibold">
                                     {isComing
                                         ? "TBA"
                                         : formatNumberWithCommas(
                                               metrics.targetSol || 0
-                                          )}{" "}
-                                    SOL
+                                          )}
                                 </span>
                             </span>
                             <span className="text-lg font-semibold">
-                                Minimum Buy:{" "}
+                                Listing Time:{" "}
                                 <span className="font-fredoka font-semibold">
                                     {isComing
                                         ? "TBA"
                                         : formatNumberWithCommas(
                                               metrics.minPerWallet || 0
-                                          )}{" "}
-                                    SOL
+                                          )}
                                 </span>
                             </span>
-                            <span className="text-lg font-semibold">
+                            {/* <span className="text-lg font-semibold">
                                 Maximum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
                                     {isComing
                                         ? "TBA"
                                         : formatNumberWithCommas(
                                               metrics.maxPerWallet
-                                          )}{" "}
-                                    SOL
+                                          )}
                                 </span>
-                            </span>
+                            </span> */}
                             <span className="text-lg font-semibold">
                                 Allocated Token:{" "}
                                 <span className="font-fredoka font-semibold">
                                     {isComing
                                         ? "TBA"
-                                        : formatNumberWithCommas(0)}{" "}
-                                    SOL
+                                        : formatNumberWithCommas(0)}
                                 </span>
                             </span>
                         </div>
@@ -434,7 +422,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                             onClick={handlePurchase}
                             disabled={isLoading || exchanging}
                         >
-                            {isLoading ? "Processing..." : "Buy Tokens"}
+                            {isLoading ? "Processing..." : "Enter TGE"}
                             <ArrowUpRightIcon />
                         </Button>
                     )}

@@ -66,6 +66,11 @@ function ProfileSidebar({
                 label: "Rank Number",
             },
             {
+                value:
+                    formatNumberWithCommas(Number(userProfile?.referrals)) || 0,
+                label: "Referrals",
+            },
+            {
                 label: "Airdrop Tokens",
                 value: userProfile?.airdropStatus
                     ? Number(userProfile?.airdropTokens)?.toLocaleString(

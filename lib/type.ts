@@ -32,6 +32,7 @@ export interface ProfileType {
     hasLinkedTelegram: false;
     airdropTokens: number | null;
     airdropStatus: boolean;
+    referrals: number;
     user: {
         id: string;
         tasks: number;
@@ -158,7 +159,7 @@ export interface Quest {
     description: string;
     postUrl: string;
     imageUrl: string;
-    deletedAt: null;
+    deletedAt: string | null;
     createdAt: string;
     updatedAt: string;
     adminId: string;
