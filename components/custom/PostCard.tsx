@@ -101,13 +101,15 @@ const PostCard = ({ post }: { post: PostType }) => {
                                     )}
                                     onClick={(e) => {
                                         handleView(e);
-                                        window.open(post?.postUrl, '_blank', 'noopener,noreferrer');
+                                        window.open(
+                                            post?.postUrl,
+                                            "_blank",
+                                            "noopener,noreferrer"
+                                        );
                                     }}
                                     disabled={viewing}
                                 >
-                                    <span>
-                                        {viewing ? "Viewing" : "View"}
-                                    </span>
+                                    <span>{viewing ? "Viewing" : "View"}</span>
                                     <ArrowUpRightIcon size={11} />
                                 </Button>
                             );
@@ -171,13 +173,15 @@ const PostCard = ({ post }: { post: PostType }) => {
                                     )}
                                     onClick={(e) => {
                                         handleView(e);
-                                        window.open(post?.postUrl, '_blank', 'noopener,noreferrer');
+                                        window.open(
+                                            post?.postUrl,
+                                            "_blank",
+                                            "noopener,noreferrer"
+                                        );
                                     }}
                                     disabled={viewing}
                                 >
-                                    <span>
-                                        {viewing ? "Joining" : "Join"}
-                                    </span>
+                                    <span>{viewing ? "Joining" : "Join"}</span>
                                     <ArrowUpRightIcon size={11} />
                                 </Button>
                             );
