@@ -28,6 +28,7 @@ export function SubmitQuestAlert({
             open={open}
             onOpenChange={(x) => {
                 if (!x) {
+                    setRefreshPosts(generateRandomString(10));
                     onClose?.();
                 }
             }}

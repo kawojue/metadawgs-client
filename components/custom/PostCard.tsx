@@ -25,9 +25,9 @@ const PostCard = ({ post }: { post: PostType }) => {
     try {
       await patchWithAuth(`/posts/${post.id}/engage`, {});
       setSubmitted(true);
+      await refetchProfile();
       setShowEntryAlert(true);
 
-      await refetchProfile();
     } catch (error: unknown) {
       toast(error instanceof Error ? error.message : "Failed to submit.");
       console.error("Failed to submit:", error);
