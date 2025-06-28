@@ -47,9 +47,9 @@ const PostCard = ({ post }: { post: PostType }) => {
         const { message } = await res.json();
 
         setIsSubmitting(false);
+        setAlertMessage(message);
 
         if (!res.ok) {
-            setAlertMessage(message);
             if ([409, 429].includes(res.status)) {
                 setShowErrorAlert(true);
                 return;
@@ -221,9 +221,9 @@ const PostCard = ({ post }: { post: PostType }) => {
 
             {showErrorAlert && (
                 <QuestErrorAlert
-                    open={!!alertMessage}
-                    isRobo={!showErrorAlert}
-                    error={alertMessage as string}
+                    open={showErrorAlert}
+                    isRobo={false}
+                    error={alertMessage}
                     onClose={() => {
                         setAlertMessage("");
                     }}
