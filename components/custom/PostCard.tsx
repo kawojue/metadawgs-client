@@ -37,15 +37,14 @@ const PostCard = ({ post }: { post: PostType }) => {
             setAlertMessage(message);
             setShowEntryAlert(true);
         } catch (error: unknown) {
-            if ((error as { status: number }).status === 429) {
-                setIsRobo(true);
-                setRoboMessage((error as { message: string })?.message || "");
-            } else {
-                toast(
-                    error instanceof Error ? error.message : "Failed to submit."
-                );
-                console.error("Failed to submit:", error);
-            }
+            console.log(error);
+            toast(error instanceof Error ? error.message : "Failed to submit.");
+            console.error("Failed to submit:", error);
+            // if ((error as { status: number }).status === 429) {
+            //     setIsRobo(true);
+            //     setRoboMessage((error as { message: string })?.message || "");
+            // } else {
+            // }
         } finally {
             setIsSubmitting(false);
         }
