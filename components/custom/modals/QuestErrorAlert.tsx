@@ -36,7 +36,7 @@ export function QuestErrorAlert({
             <AlertDialogContent className="bg-black text-white border-white/20 rounded-2xl">
                 <AlertDialogHeader className="flex flex-col justify-center items-center gap-4">
                     <div className="mb-1">
-                        {!isRobo && (
+                        {isRobo && (
                             <Image
                                 src={"/images/robo.svg"}
                                 alt="robo"
@@ -45,7 +45,7 @@ export function QuestErrorAlert({
                             />
                         )}
 
-                        {isRobo && (
+                        {!isRobo && (
                             <Image
                                 src={"/images/clock.svg"}
                                 alt="clock"

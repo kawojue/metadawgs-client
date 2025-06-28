@@ -53,7 +53,7 @@ function SubmitEntryInputModal({
         if (!res.ok) {
             if (res.status !== 401) {
                 const { message } = await res.json();
-                setIsRobo([409, 429].includes(res.status));
+                setIsRobo(![409, 429].includes(res.status));
                 setError(message);
                 setLoading(false);
             } else {

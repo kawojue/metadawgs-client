@@ -16,8 +16,7 @@ import { QuestErrorAlert } from "./modals/QuestErrorAlert";
 
 const PostCard = ({ post }: { post: PostType }) => {
     const { refetchProfile } = useAuth();
-    const [isRobo, setIsRobo] = useState<boolean>(false);
-    const [roboMessage, setRoboMessage] = useState<string>("");
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(true);
     const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [viewing, setViewing] = useState<boolean>(false);
@@ -49,18 +48,20 @@ const PostCard = ({ post }: { post: PostType }) => {
 
         setIsSubmitting(false);
 
-        if (res.status === 429) {
-            setIsRobo(true);
-            setRoboMessage(message);
-            return;
-        }
-
         if (!res.ok) {
-            toast(message || "Failed to submit.");
+            setAlertMessage(message);
+            if ([409, 429].includes(res.status)) {
+                setShowErrorAlert(true);
+                return;
+            } else {
+                toast(message || "Failed to submit.");
+                return;
+            }
         } else {
             setSubmitted(true);
             setAlertMessage(message);
             setShowEntryAlert(true);
+            return;
         }
     };
 
@@ -218,13 +219,13 @@ const PostCard = ({ post }: { post: PostType }) => {
                 />
             )}
 
-            {isRobo && (
+            {showErrorAlert && (
                 <QuestErrorAlert
-                    open={!!roboMessage}
-                    isRobo={isRobo}
-                    error={roboMessage as string}
+                    open={!!alertMessage}
+                    isRobo={!showErrorAlert}
+                    error={alertMessage as string}
                     onClose={() => {
-                        setRoboMessage("");
+                        setAlertMessage("");
                     }}
                 />
             )}
