@@ -36,7 +36,7 @@ export function QuestErrorAlert({
             <AlertDialogContent className="bg-black text-white border-white/20 rounded-2xl">
                 <AlertDialogHeader className="flex flex-col justify-center items-center gap-4">
                     <div className="mb-1">
-                        {isRobo && (
+                        {!isRobo && (
                             <Image
                                 src={"/images/robo.svg"}
                                 alt="robo"
@@ -45,7 +45,7 @@ export function QuestErrorAlert({
                             />
                         )}
 
-                        {!isRobo && (
+                        {isRobo && (
                             <Image
                                 src={"/images/clock.svg"}
                                 alt="clock"
@@ -58,7 +58,7 @@ export function QuestErrorAlert({
                         {!isOthers && "Submit Failed"}
                         {isOthers && "Request Failed"}
                     </AlertDialogTitle>
-                    <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
+                    <AlertDialogDescription className="text-center max-w-[380px] text-white font-semibold">
                         {!isRobo &&
                             (error ||
                                 "You've hit the button too many times. Wait a bit ans try again shortly")}

@@ -62,27 +62,6 @@ const PostCard = ({ post }: { post: PostType }) => {
             setAlertMessage(message);
             setShowEntryAlert(true);
         }
-
-        // try {
-        //     const { message } = await patchWithAuth(
-        //         `/posts/${post.id}/engage`,
-        //         {}
-        //     );
-        //     setSubmitted(true);
-        //     setAlertMessage(message);
-        //     setShowEntryAlert(true);
-        // } catch (error: unknown) {
-        //     console.log(error);
-        //     toast(error instanceof Error ? error.message : "Failed to submit.");
-        //     console.error("Failed to submit:", error);
-        //     // if ((error as { status: number }).status === 429) {
-        //     //     setIsRobo(true);
-        //     //     setRoboMessage((error as { message: string })?.message || "");
-        //     // } else {
-        //     // }
-        // } finally {
-        //     setIsSubmitting(false);
-        // }
     };
 
     const verifyCode = async (e: React.MouseEvent) => {
