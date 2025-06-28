@@ -11,9 +11,12 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import useAuth from "@/hooks/use-auth";
 import VerifyQuestCode from "./modals/VerifyQuestCode";
+import { QuestErrorAlert } from "./modals/QuestErrorAlert";
 
 const PostCard = ({ post }: { post: PostType }) => {
     const { refetchProfile } = useAuth();
+    const [isRobo, setIsRobo] = useState<boolean>(false);
+    const [roboMessage, setRoboMessage] = useState<string>("");
     const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [viewing, setViewing] = useState<boolean>(false);
@@ -34,8 +37,15 @@ const PostCard = ({ post }: { post: PostType }) => {
             setAlertMessage(message);
             setShowEntryAlert(true);
         } catch (error: unknown) {
-            toast(error instanceof Error ? error.message : "Failed to submit.");
-            console.error("Failed to submit:", error);
+            if ((error as { status: number }).status === 429) {
+                setIsRobo(true);
+                setRoboMessage((error as { message: string })?.message || "");
+            } else {
+                toast(
+                    error instanceof Error ? error.message : "Failed to submit."
+                );
+                console.error("Failed to submit:", error);
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -192,6 +202,17 @@ const PostCard = ({ post }: { post: PostType }) => {
                     open={showEntryAlert}
                     message={alertMessage}
                     onClose={() => setShowEntryAlert(false)}
+                />
+            )}
+
+            {isRobo && (
+                <QuestErrorAlert
+                    open={!!roboMessage}
+                    isRobo={isRobo}
+                    error={roboMessage as string}
+                    onClose={() => {
+                        setRoboMessage("");
+                    }}
                 />
             )}
 
