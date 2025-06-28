@@ -224,8 +224,10 @@ const PostCard = ({ post }: { post: PostType }) => {
                     open={showErrorAlert}
                     isRobo={false}
                     error={alertMessage}
+                    isOthers={true}
                     onClose={() => {
                         setAlertMessage("");
+                        setShowErrorAlert(false);
                     }}
                 />
             )}

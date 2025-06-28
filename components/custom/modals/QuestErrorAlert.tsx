@@ -55,8 +55,8 @@ export function QuestErrorAlert({
                         )}
                     </div>
                     <AlertDialogTitle className="text-center font-fredoka text-3xl px-10 capitalize">
-                        {!isOthers && "Submit Failed"}
-                        {isOthers && "Request Failed"}
+                        {!isOthers && "Submission Failed "}
+                        {isOthers && "Failed"}
                     </AlertDialogTitle>
                     <AlertDialogDescription className="text-center max-w-[380px] text-white font-semibold">
                         {!isRobo &&
