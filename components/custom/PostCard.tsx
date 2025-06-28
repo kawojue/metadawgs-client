@@ -11,12 +11,12 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import useAuth from "@/hooks/use-auth";
 import VerifyQuestCode from "./modals/VerifyQuestCode";
-import { QuestErrorAlert } from "./modals/QuestErrorAlert";
+// import { QuestErrorAlert } from "./modals/QuestErrorAlert";
 
 const PostCard = ({ post }: { post: PostType }) => {
     const { refetchProfile } = useAuth();
-    const [isRobo, setIsRobo] = useState<boolean>(false);
-    const [roboMessage, setRoboMessage] = useState<string>("");
+    // const [isRobo, setIsRobo] = useState<boolean>(false);
+    // const [roboMessage, setRoboMessage] = useState<string>("");
     const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [viewing, setViewing] = useState<boolean>(false);
@@ -204,7 +204,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                 />
             )}
 
-            {isRobo && (
+            {/* {isRobo && (
                 <QuestErrorAlert
                     open={!!roboMessage}
                     isRobo={isRobo}
@@ -213,7 +213,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                         setRoboMessage("");
                     }}
                 />
-            )}
+            )} */}
 
             <VerifyQuestCode
                 open={openVerifyCode}
