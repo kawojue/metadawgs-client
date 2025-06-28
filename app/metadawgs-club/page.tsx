@@ -4,22 +4,16 @@ import Onboarding from "./Onboarding";
 import useAuth from "@/hooks/use-auth";
 import OnboardingModal from "./modals/OnboardModal";
 import QuestPage from "@/app/metadawgs-club/QuestPage";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { Loader } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 function Page() {
     const { userProfile, isLoading } = useAuth();
-    const { publicKey } = useWallet();
     const pathname = usePathname();
 
     const isOnboarded = useMemo(
-        () =>
-            !!(
-                userProfile &&
-                (userProfile?.user?.walletAddress || publicKey?.toBase58())
-            ),
-        [userProfile, publicKey]
+        () => userProfile && userProfile?.hasLinkedTelegram,
+        [userProfile]
     );
 
     const [onboardOpen, setOnboardOpen] = useState<boolean>(

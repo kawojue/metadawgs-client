@@ -19,7 +19,6 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import AuthTelegramModal from "./AuthTelegramModal";
 import { toast } from "sonner";
-import { useWallet } from "@solana/wallet-adapter-react";
 
 function OnboardingModal({
     open,
@@ -32,16 +31,13 @@ function OnboardingModal({
     continueOn?: () => void;
 }) {
     const { userProfile, isLoading } = useAuth();
-    const { publicKey } = useWallet();
 
     const isMobile = useIsMobile();
     const [openTelegram, setOpenTelegram] = useState(false);
 
     const canContinue = useMemo(
-        () =>
-            userProfile &&
-            (userProfile?.user?.walletAddress || publicKey?.toBase58()),
-        [userProfile, publicKey]
+        () => userProfile && userProfile?.hasLinkedTelegram,
+        [userProfile]
     );
 
     const handleClose = () => {
