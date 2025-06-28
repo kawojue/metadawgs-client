@@ -52,15 +52,14 @@ const PostCard = ({ post }: { post: PostType }) => {
         if (!res.ok) {
             if ([409, 429].includes(res.status)) {
                 setShowErrorAlert(true);
-                return;
             } else {
                 toast(message || "Failed to submit.");
-                return;
             }
+            return;
         } else {
             setSubmitted(true);
-            setAlertMessage(message);
             setShowEntryAlert(true);
+            setAlertMessage(message);
             return;
         }
     };
