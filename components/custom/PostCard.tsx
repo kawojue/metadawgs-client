@@ -11,12 +11,13 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import useAuth from "@/hooks/use-auth";
 import VerifyQuestCode from "./modals/VerifyQuestCode";
-// import { QuestErrorAlert } from "./modals/QuestErrorAlert";
+import { XUserToken } from "@/lib/values";
+import { QuestErrorAlert } from "./modals/QuestErrorAlert";
 
 const PostCard = ({ post }: { post: PostType }) => {
     const { refetchProfile } = useAuth();
-    // const [isRobo, setIsRobo] = useState<boolean>(false);
-    // const [roboMessage, setRoboMessage] = useState<string>("");
+    const [isRobo, setIsRobo] = useState<boolean>(false);
+    const [roboMessage, setRoboMessage] = useState<string>("");
     const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [viewing, setViewing] = useState<boolean>(false);
@@ -27,27 +28,61 @@ const PostCard = ({ post }: { post: PostType }) => {
     const handleSubmit = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
+
+        const token = localStorage.getItem(XUserToken);
+        if (!token) return;
+
         setIsSubmitting(true);
-        try {
-            const { message } = await patchWithAuth(
-                `/posts/${post.id}/engage`,
-                {}
-            );
+
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/posts/${post.id}/engage`,
+            {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(token)}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        const { message } = await res.json();
+
+        setIsSubmitting(false);
+
+        if (res.status === 429) {
+            setIsRobo(true);
+            setRoboMessage(message);
+            return;
+        }
+
+        if (!res.ok) {
+            toast(message || "Failed to submit.");
+        } else {
             setSubmitted(true);
             setAlertMessage(message);
             setShowEntryAlert(true);
-        } catch (error: unknown) {
-            console.log(error);
-            toast(error instanceof Error ? error.message : "Failed to submit.");
-            console.error("Failed to submit:", error);
-            // if ((error as { status: number }).status === 429) {
-            //     setIsRobo(true);
-            //     setRoboMessage((error as { message: string })?.message || "");
-            // } else {
-            // }
-        } finally {
-            setIsSubmitting(false);
         }
+
+        // try {
+        //     const { message } = await patchWithAuth(
+        //         `/posts/${post.id}/engage`,
+        //         {}
+        //     );
+        //     setSubmitted(true);
+        //     setAlertMessage(message);
+        //     setShowEntryAlert(true);
+        // } catch (error: unknown) {
+        //     console.log(error);
+        //     toast(error instanceof Error ? error.message : "Failed to submit.");
+        //     console.error("Failed to submit:", error);
+        //     // if ((error as { status: number }).status === 429) {
+        //     //     setIsRobo(true);
+        //     //     setRoboMessage((error as { message: string })?.message || "");
+        //     // } else {
+        //     // }
+        // } finally {
+        //     setIsSubmitting(false);
+        // }
     };
 
     const verifyCode = async (e: React.MouseEvent) => {
@@ -204,7 +239,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                 />
             )}
 
-            {/* {isRobo && (
+            {isRobo && (
                 <QuestErrorAlert
                     open={!!roboMessage}
                     isRobo={isRobo}
@@ -213,7 +248,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                         setRoboMessage("");
                     }}
                 />
-            )} */}
+            )}
 
             <VerifyQuestCode
                 open={openVerifyCode}
