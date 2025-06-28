@@ -1,8 +1,6 @@
 "use client";
 
-import AddressButton from "@/components/custom/AddressButton";
 import UserProfileButton from "@/components/custom/UserProfileBtn";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -15,7 +13,7 @@ import useAuth from "@/hooks/use-auth";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { TelegramIcon, TwitterIcon } from "@/lib/icons";
 import { authUrl } from "@/lib/utils";
-import { ArrowUpRightIcon, WalletIcon } from "lucide-react";
+import { ArrowUpRightIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -127,7 +125,7 @@ function OnboardingModal({
                                 )}
                             </div>
 
-                            <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
+                            {/* <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
                                 <div className="flex gap-3 items-center flex-1">
                                     <div className="app-icon text-white">
                                         <WalletIcon size={24} />
@@ -159,7 +157,7 @@ function OnboardingModal({
                                     onConnect={() => {}}
                                     onConnected={() => {}}
                                 />
-                            </div>
+                            </div> */}
 
                             <div className="link rounded-full h-16 w-full flex text-white justify-between items-center gap-4 p-4 px-5 bg-black/60 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden relative after:absolute after:-z-10 after:rounded-full after:left-0 after:top-0 after:size-full after:bg-[url('/images/quest-bg2.png')] after:bg-black/60 after:bg-blend-darken after:bg-no-repeat after:bg-center after:bg-cover z-10">
                                 <div className="flex gap-3 items-center flex-1">
