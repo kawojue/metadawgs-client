@@ -56,6 +56,7 @@ function SubmitEntryInputModal({
                 setIsRobo(![409, 429].includes(res.status));
                 setError(message);
                 setLoading(false);
+                onClose?.();
             } else {
                 logout();
                 setLoading(false);
@@ -164,6 +165,7 @@ function SubmitEntryInputModal({
                     error={error}
                     onClose={() => {
                         setError(null);
+                        onClose?.(); // Ensure parent modal state is also reset
                     }}
                 />
             )}
