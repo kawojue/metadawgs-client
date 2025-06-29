@@ -25,7 +25,8 @@ function SubmitEntryInputModal({
 }) {
     const { logout } = useAuth();
     const [link, setLink] = useState<string>("");
-    const [error, setError] = useState<string | null>(null);
+    const [validationError, setValidationError] = useState<string | null>(null);
+    const [apiError, setApiError] = useState<string | null>(null);
     const [isRobo, setIsRobo] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -54,7 +55,7 @@ function SubmitEntryInputModal({
             if (res.status !== 401) {
                 const { message } = await res.json();
                 setIsRobo(![409, 429].includes(res.status));
-                setError(message);
+                setApiError(message);
                 setLoading(false);
                 onClose?.();
             } else {
@@ -89,11 +90,11 @@ function SubmitEntryInputModal({
 
     useEffect(() => {
         if (link.trim() === "") {
-            setError(null);
+            setValidationError(null);
         } else if (!isValidLink(link)) {
-            setError("Please enter a valid tweet link.");
+            setValidationError("Please enter a valid tweet link.");
         } else {
-            setError(null);
+            setValidationError(null);
         }
     }, [link]);
 
@@ -139,16 +140,18 @@ function SubmitEntryInputModal({
                                     onChange={(x) => setLink(x.target.value)}
                                     className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
                                 />
-                                {/* {!!error && (
-                  <p className="error text-red-500 text-sm">{error}</p>
-                )} */}
+                                {!!validationError && (
+                                    <p className="error text-red-500 text-sm">
+                                        {validationError}
+                                    </p>
+                                )}
                             </div>
                         </div>
                         <DialogFooter className="">
                             <Button
                                 type="button"
                                 className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
-                                disabled={!!error || !link || loading}
+                                disabled={!!validationError || !link || loading}
                                 onClick={submitEntry}
                             >
                                 {!loading ? "Submit" : "Submitting"}
@@ -158,13 +161,13 @@ function SubmitEntryInputModal({
                     </DialogContent>
                 </Dialog>
             )}
-            {!!error && (
+            {!!apiError && (
                 <QuestErrorAlert
-                    open={!!error}
+                    open={!!apiError}
                     isRobo={isRobo}
-                    error={error}
+                    error={apiError}
                     onClose={() => {
-                        setError(null);
+                        setApiError(null);
                         onClose?.(); // Ensure parent modal state is also reset
                     }}
                 />
