@@ -95,7 +95,14 @@ function QuestTopCard() {
                         </div>
                     )}
                     <h3 className="font-semibold font-fredoka text-3xl max-w-sm">
-                        Write a post about MetaDawgs on Twitter.
+                        Write a post about MetaDawgs on{" "}
+                        <a
+                            href="https://x.com"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            X.com
+                        </a>
                     </h3>
                     {userProfile?.creatorClubVerification === "APPROVED" && (
                         <p className="text-white text-[15px] max-w-md">
