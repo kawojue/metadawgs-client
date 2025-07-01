@@ -43,6 +43,8 @@ export function TelegramLeaderboardTable() {
     const [state, setState] = useState<
         LeaderboardState<TelegramLeaderboardType>
     >(initialLeaderboardState);
+    const [allData, setAllData] = useState<TelegramLeaderboardType[]>([]);
+    const [page, setPage] = useNumberQuery("page", 1);
 
     useEffect(() => {
         if (!socket) {
@@ -73,7 +75,31 @@ export function TelegramLeaderboardTable() {
         }
 
         const handleLeaderboard = (data: TelegramLeaderboardType[]) => {
-            setState({ data, loading: false, error: null });
+            setAllData(data);
+
+            const startIndex = (page - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const paginatedData = data.slice(startIndex, endIndex);
+
+            const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
+            const meta = {
+                currentPage: page,
+                totalPages,
+                totalItems: data.length,
+                size: ITEMS_PER_PAGE,
+                hasNext: page < totalPages,
+                hasPrev: page > 1,
+                offset: (page - 1) * ITEMS_PER_PAGE,
+                nextPage: page < totalPages ? page + 1 : null,
+                previousPage: page > 1 ? page - 1 : null,
+            };
+
+            setState({
+                data: paginatedData,
+                loading: false,
+                error: null,
+                meta,
+            });
         };
 
         const handleError = (error: Error) => {
@@ -97,6 +123,29 @@ export function TelegramLeaderboardTable() {
             socket.off("error", handleError);
         };
     }, [socket, isConnected, isConnecting, socketError]);
+
+    useEffect(() => {
+        if (allData.length > 0) {
+            const startIndex = (page - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const paginatedData = allData.slice(startIndex, endIndex);
+
+            const totalPages = Math.ceil(allData.length / ITEMS_PER_PAGE);
+            const meta = {
+                currentPage: page,
+                totalPages,
+                totalItems: allData.length,
+                size: ITEMS_PER_PAGE,
+                hasNext: page < totalPages,
+                hasPrev: page > 1,
+                offset: (page - 1) * ITEMS_PER_PAGE,
+                nextPage: page < totalPages ? page + 1 : null,
+                previousPage: page > 1 ? page - 1 : null,
+            };
+
+            setState((prev) => ({ ...prev, data: paginatedData, meta }));
+        }
+    }, [page, allData]);
 
     if (state.loading || isConnecting) {
         return (
@@ -130,6 +179,15 @@ export function TelegramLeaderboardTable() {
                 isLoading={false}
                 error={null}
             />
+            {state.meta && state.meta.totalPages > 1 && (
+                <DarkPagination
+                    meta={state.meta}
+                    onPageChange={(value) => {
+                        setPage(value);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                />
+            )}
         </div>
     );
 }
