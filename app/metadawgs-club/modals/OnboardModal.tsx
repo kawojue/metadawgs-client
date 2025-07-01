@@ -15,7 +15,6 @@ import { TelegramIcon, TwitterIcon } from "@/lib/icons";
 import { authUrl } from "@/lib/utils";
 import { ArrowUpRightIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import AuthTelegramModal from "./AuthTelegramModal";
 import { toast } from "sonner";
@@ -50,6 +49,22 @@ function OnboardingModal({
         if (canContinue && continueOn) {
             continueOn();
         }
+    };
+
+    const handleTwitterConnect = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get("ref");
+
+        let connectUrl;
+        if (ref) {
+            connectUrl = `https://socialfi.metadawgs.com/auth/x?ref=${ref}`;
+        } else {
+            connectUrl = authUrl;
+        }
+
+        sessionStorage.setItem("authFrom", "/metadawgs-club?c_a=true");
+
+        window.location.href = connectUrl;
     };
 
     return (
@@ -94,19 +109,13 @@ function OnboardingModal({
                                 </div>
 
                                 {!userProfile && (
-                                    <Link
-                                        href={authUrl}
-                                        onClick={() => {
-                                            sessionStorage.setItem(
-                                                "authFrom",
-                                                "/metadawgs-club?c_a=true"
-                                            );
-                                        }}
+                                    <button
+                                        onClick={handleTwitterConnect}
                                         className="w-auto bg-[#FFBE00] text-black font-semibold shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80 text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1"
                                     >
                                         <span className="">Connect</span>
                                         <ArrowUpRightIcon size={14} />
-                                    </Link>
+                                    </button>
                                 )}
 
                                 {!!userProfile && (

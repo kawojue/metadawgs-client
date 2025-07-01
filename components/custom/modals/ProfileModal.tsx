@@ -219,7 +219,7 @@ function ProfileSidebar({
                                     className="bg-[#A078FF] p-1.5 px-2.5 rounded-full cursor-pointer text-sm hover:bg-[#A078FF]/80 flex items-center gap-2"
                                     onClick={() => {
                                         copyToClipboard(
-                                            `https://socialfi.metadawgs.com/auth/x?ref=${userProfile?.referralCode}`
+                                            `https://metadawgs.com/metadawgs-club?ref=${userProfile?.referralCode}`
                                         );
                                         toast(
                                             "Referral link is saved to the clipboard"
@@ -228,7 +228,7 @@ function ProfileSidebar({
                                 >
                                     <span className=".5">
                                         {hashAddress(
-                                            `https://socialfi.metadawgs.com/auth/x?ref=${userProfile?.referralCode}`,
+                                            `https://metadawgs.com/metadawgs-club?ref=${userProfile?.referralCode}`,
                                             10
                                         )}
                                     </span>
