@@ -13,6 +13,7 @@ import useAuth from "@/hooks/use-auth";
 import VerifyQuestCode from "./modals/VerifyQuestCode";
 import { XUserToken } from "@/lib/values";
 import { QuestErrorAlert } from "./modals/QuestErrorAlert";
+import { ViewWarningModal } from "./modals/ViewWarningModal";
 
 const PostCard = ({ post }: { post: PostType }) => {
     const { refetchProfile } = useAuth();
@@ -23,6 +24,7 @@ const PostCard = ({ post }: { post: PostType }) => {
     const [openVerifyCode, setOpenVerifyCode] = useState<boolean>(false);
     const [submitted, setSubmitted] = useState<boolean>(post.hasEngaged);
     const [alertMessage, setAlertMessage] = useState<string>("");
+    const [showViewWarning, setShowViewWarning] = useState<boolean>(false);
 
     const handleSubmit = async (e: React.MouseEvent) => {
         e.preventDefault();
@@ -86,6 +88,21 @@ const PostCard = ({ post }: { post: PostType }) => {
         }
     };
 
+    const handleViewClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setShowViewWarning(true);
+    };
+
+    const proceedWithView = () => {
+        handleView();
+        window.open(
+            post?.postUrl,
+            "_blank",
+            "noopener,noreferrer"
+        );
+    };
+
     return (
         <div className="card rounded-2xl col-span-1 grid after:rounded-2xl max-w-[320px] pool overflow-hidden">
             <div className="banner aspect-video overflow-hidden rounded-t-2xl pool after:bg-[#101928]! after:bottom-0! text-transparent after:rounded-t-2xl">
@@ -120,14 +137,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                                         "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
                                         viewing && "cursor-wait"
                                     )}
-                                    onClick={(e) => {
-                                        handleView(e);
-                                        window.open(
-                                            post?.postUrl,
-                                            "_blank",
-                                            "noopener,noreferrer"
-                                        );
-                                    }}
+                                    onClick={handleViewClick}
                                     disabled={viewing}
                                 >
                                     <span>{viewing ? "Viewing" : "View"}</span>
@@ -192,14 +202,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                                         "rounded-full !px-5 !py-4 font-medium text-[14px] cursor-pointer text-black bg-[#92A1C6] flex gap-2 items-center",
                                         viewing && "cursor-wait"
                                     )}
-                                    onClick={(e) => {
-                                        handleView(e);
-                                        window.open(
-                                            post?.postUrl,
-                                            "_blank",
-                                            "noopener,noreferrer"
-                                        );
-                                    }}
+                                    onClick={handleViewClick}
                                     disabled={viewing}
                                 >
                                     <span>{viewing ? "Joining" : "Join"}</span>
@@ -235,6 +238,12 @@ const PostCard = ({ post }: { post: PostType }) => {
                 open={openVerifyCode}
                 post_id={post.id}
                 onClose={() => setOpenVerifyCode(false)}
+            />
+
+            <ViewWarningModal
+                open={showViewWarning}
+                onClose={() => setShowViewWarning(false)}
+                onProceed={proceedWithView}
             />
         </div>
     );
