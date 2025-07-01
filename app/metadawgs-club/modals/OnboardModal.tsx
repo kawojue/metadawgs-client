@@ -57,7 +57,7 @@ function OnboardingModal({
 
         let connectUrl;
         if (ref) {
-            connectUrl = `https://socialfi.metadawgs.com/auth/x?ref=${ref}`;
+            connectUrl = `${authUrl}?ref=${ref}`;
         } else {
             connectUrl = authUrl;
         }
