@@ -3,7 +3,6 @@
 import {
     AlertDialog,
     AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
@@ -46,7 +45,7 @@ export function ViewWarningModal({
                     </AlertDialogTitle>
                     <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
                         Before you proceed, make sure you <strong>like</strong>{" "}
-                        and <strong>retweet</strong> that post! 🔥
+                        and <strong>retweet</strong> this post! 🔥
                         <br />
                         <br />
                         Our quest detectives are watching, and if you skip this
@@ -57,15 +56,7 @@ export function ViewWarningModal({
                         Play fair and keep those bones coming! 🦴✨
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <AlertDialogFooter className="grid! grid-cols-2! gap-4 mt-2">
-                    <AlertDialogCancel
-                        className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black shadow-[black]/40"
-                        onClick={() => {
-                            onClose?.();
-                        }}
-                    >
-                        Cancel
-                    </AlertDialogCancel>
+                <AlertDialogFooter className="grid! grid-cols-1! gap-4 mt-2">
                     <AlertDialogAction
                         className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black"
                         onClick={() => {
