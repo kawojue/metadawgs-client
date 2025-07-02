@@ -32,7 +32,7 @@ function VerifyQuestCode({
     const [success, setSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    async function submitEntry() {
+    async function submitCode() {
         const token = localStorage.getItem(XUserToken);
         if (!token) return;
 
@@ -52,26 +52,27 @@ function VerifyQuestCode({
             }
         );
 
+        const { message } = await res.json();
+
+        setLoading(false);
+
         if (!res.ok) {
             if (res.status !== 401) {
-                const { message } = await res.json();
                 setIsRobo(![409, 429].includes(res.status));
+                onClose?.();
                 setError(message);
-                setLoading(false);
             } else {
                 logout();
-                setLoading(false);
                 onClose?.();
             }
 
             return;
+        } else {
+            setSuccess(true);
+            setCode("");
+            setMessage(message);
+            return;
         }
-
-        const { message } = await res.json();
-
-        setSuccess(true);
-        setCode("");
-        setMessage(message);
     }
 
     return (
@@ -124,7 +125,7 @@ function VerifyQuestCode({
                                 type="button"
                                 className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
                                 disabled={!!error || !code || loading}
-                                onClick={submitEntry}
+                                onClick={submitCode}
                             >
                                 {!loading ? "Validate" : "Validating"}
                             </Button>
