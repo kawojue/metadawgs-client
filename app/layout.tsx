@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import type { Metadata } from "next";
 import { Geist_Mono, Fredoka, Josefin_Sans } from "next/font/google";
 import "./globals.css";
