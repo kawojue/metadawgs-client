@@ -114,7 +114,7 @@ function QuestTopCard() {
                             </p>
                             <p className="text-white text-[15px] max-w-md">
                                 You must mention either @Meta_Dawgs, include
-                                https://metadawgs.com, or mention
+                                your referral link, or mention
                                 &apos;metadawgs&apos; in the Tweet
                             </p>
                         </>
