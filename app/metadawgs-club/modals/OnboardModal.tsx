@@ -178,12 +178,12 @@ function OnboardingModal({
                                     <Button
                                         className="verify bg-[#FFBE00] text-black text-sm rounded-full px-4! py-2 cursor-pointer hover:bg-[#FFBE00]/80 transition-colors flex items-center gap-1"
                                         onClick={() => {
-                                            if (!userProfile) {
-                                                toast.error(
-                                                    "🛑 Whoa! You're skipping a level. Link your Twitter to continue."
-                                                );
-                                                return;
-                                            }
+                                            // if (!userProfile) {
+                                            //     toast.error(
+                                            //         "🛑 Whoa! You're skipping a level. Link your Twitter to continue."
+                                            //     );
+                                            //     return;
+                                            // }
 
                                             setOpenTelegram(true);
                                         }}
@@ -232,6 +232,9 @@ function OnboardingModal({
             <AuthTelegramModal
                 open={openTelegram}
                 onClose={() => setOpenTelegram(false)}
+                onReopenParent={() => {
+                    setOpenTelegram(false);
+                }}
             />
         </>
     );

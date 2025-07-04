@@ -33,7 +33,7 @@ export function QuestErrorAlert({
                 }
             }}
         >
-            <AlertDialogContent className="bg-black text-white border-white/20 rounded-2xl">
+            <AlertDialogContent className="bg-black text-white border-white/20 rounded-2xl z-[9999]">
                 <AlertDialogHeader className="flex flex-col justify-center items-center gap-4">
                     <div className="mb-1">
                         {isRobo && (

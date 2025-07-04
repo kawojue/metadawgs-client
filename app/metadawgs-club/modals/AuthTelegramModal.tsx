@@ -19,9 +19,11 @@ import { XUserToken } from "@/lib/values";
 function AuthTelegramModal({
     open,
     onClose,
+    onReopenParent,
 }: {
     open: boolean;
     onClose?: () => void;
+    onReopenParent?: () => void;
 }) {
     const [code, setCode] = useState<string>("");
     const [username, setUsername] = useState<string>("");
@@ -62,16 +64,19 @@ function AuthTelegramModal({
                     setErrorMessage(
                         response.message || "An unexpected error occurred"
                     );
-                    setShowErrorModal(true);
+                    onClose?.();
+                    setTimeout(() => setShowErrorModal(true), 100);
                 }
                 return;
             }
 
             await refetchProfile();
             reset();
+            onClose?.();
         } catch {
             setErrorMessage("Network error occurred");
-            setShowErrorModal(true);
+            onClose?.();
+            setTimeout(() => setShowErrorModal(true), 100);
         } finally {
             setLoading(false);
         }
@@ -106,7 +111,9 @@ function AuthTelegramModal({
                     setErrorMessage(
                         response.message || "An unexpected error occurred"
                     );
-                    setShowErrorModal(true);
+                    // Close the main modal first to prevent z-index issues
+                    onClose?.();
+                    setTimeout(() => setShowErrorModal(true), 100);
                 }
                 return;
             }
@@ -115,7 +122,9 @@ function AuthTelegramModal({
             setStep2(true);
         } catch {
             setErrorMessage("Network error occurred");
-            setShowErrorModal(true);
+            // Close the main modal first to prevent z-index issues
+            onClose?.();
+            setTimeout(() => setShowErrorModal(true), 100);
         } finally {
             setLoading(false);
         }
@@ -129,7 +138,6 @@ function AuthTelegramModal({
         setError(null);
         setShowErrorModal(false);
         setErrorMessage("");
-        setTimeout(() => onClose?.(), 100);
     }
 
     const handleClose = () => {
@@ -315,7 +323,12 @@ function AuthTelegramModal({
 
             <QuestErrorAlert
                 open={showErrorModal}
-                onClose={() => setShowErrorModal(false)}
+                onClose={() => {
+                    setShowErrorModal(false);
+                    // Reset all states and reopen parent modal
+                    reset();
+                    onReopenParent?.();
+                }}
                 error={errorMessage}
                 isOthers={true}
             />
