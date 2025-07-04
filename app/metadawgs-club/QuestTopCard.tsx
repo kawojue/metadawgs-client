@@ -108,9 +108,9 @@ function QuestTopCard() {
                     {userProfile?.creatorClubVerification === "APPROVED" && (
                         <>
                             <p className="text-white text-[15px] max-w-md">
-                                Click &apos;Submit Entry&apos; button to
-                                complete this task. Allow 1-20 minutes for the
-                                system check.
+                                Click the &apos;Submit&apos; button to complete
+                                this task. Allow 1-30 minutes for the system
+                                check.
                             </p>
                             <p>
                                 You must mention either @Meta_Dawgs, include
