@@ -108,13 +108,14 @@ function QuestTopCard() {
                     {userProfile?.creatorClubVerification === "APPROVED" && (
                         <>
                             <p className="text-white text-[15px] max-w-md">
-                                Click {"Submit Entry"} button to complete this
-                                task. Allow 1-20 minutes for the system check.
+                                Click &apos;Submit Entry&apos; button to
+                                complete this task. Allow 1-20 minutes for the
+                                system check.
                             </p>
                             <p>
                                 You must mention either @Meta_Dawgs, include
-                                https://metadawgs.com, or mention 'metadawgs' in
-                                the Tweet
+                                https://metadawgs.com, or mention
+                                &apos;metadawgs&apos; in the Tweet
                             </p>
                         </>
                     )}
