@@ -95,7 +95,8 @@ function QuestTopCard() {
                         </div>
                     )}
                     <h3 className="font-semibold font-fredoka text-3xl max-w-sm">
-                        Write a post about MetaDawgs on{" "}
+                        Stand a Chance to Win $1,500 Weekly by Writing Posts
+                        about MetaDawgs on{" "}
                         <a
                             href="https://x.com"
                             target="_blank"
