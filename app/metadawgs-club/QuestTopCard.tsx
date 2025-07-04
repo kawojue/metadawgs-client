@@ -112,7 +112,7 @@ function QuestTopCard() {
                                 this task. Allow 1-30 minutes for the system
                                 check.
                             </p>
-                            <p>
+                            <p className="text-white text-[15px] max-w-md">
                                 You must mention either @Meta_Dawgs, include
                                 https://metadawgs.com, or mention
                                 &apos;metadawgs&apos; in the Tweet
