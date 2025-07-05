@@ -17,7 +17,7 @@ import DarkPagination from "../../DarkPagination";
 import { useNumberQuery } from "@/hooks/use-query";
 import { Loader } from "lucide-react";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 15;
 
 type LeaderboardState<T> = {
     data: T[];
