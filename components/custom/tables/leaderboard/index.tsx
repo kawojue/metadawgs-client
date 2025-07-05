@@ -17,7 +17,7 @@ import DarkPagination from "../../DarkPagination";
 import { useNumberQuery } from "@/hooks/use-query";
 import { Loader } from "lucide-react";
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 10;
 
 type LeaderboardState<T> = {
     data: T[];
@@ -74,7 +74,7 @@ export function TelegramLeaderboardTable() {
             return;
         }
 
-        const handleLeaderboard = (data: TelegramLeaderboardType[]) => {
+        const handleTgLeaderboard = (data: TelegramLeaderboardType[]) => {
             setAllData(data);
 
             const startIndex = (page - 1) * ITEMS_PER_PAGE;
@@ -111,7 +111,7 @@ export function TelegramLeaderboardTable() {
             }));
         };
 
-        socket.on("leaderboard", handleLeaderboard);
+        socket.on("leaderboard", handleTgLeaderboard);
         socket.on("error", handleError);
 
         if (isConnected) {
@@ -119,7 +119,7 @@ export function TelegramLeaderboardTable() {
         }
 
         return () => {
-            socket.off("leaderboard", handleLeaderboard);
+            socket.off("leaderboard", handleTgLeaderboard);
             socket.off("error", handleError);
         };
     }, [socket, isConnected, isConnecting, socketError]);
