@@ -25,7 +25,7 @@ export default function Home() {
             <FadeInUp className="md:space-y-6 space-y-4">
               <p className="text-xl md:text-2xl xl:text-[#ACACAC] text-white md:leading-[35px] max-w-[600px]">
                 We’ve seen the bottom, felt the fear, and kept moving. Meta
-                Dawgs don’t fold—we adapt, evolve, and lead. Born in the
+                Dawgs don’t fold we adapt, evolve, and lead. Born in the
                 trenches of the digital frontier, we turn volatility into
                 opportunity. Join the pack. Own your story.
               </p>

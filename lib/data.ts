@@ -71,7 +71,7 @@ export const faqs = [
   {
     question: "What is Metadawgs?",
     answer:
-      "Meta Dawgs is a movement for the ones who don’t fold—born in red candles and built to dominate.",
+      "Meta Dawgs is a movement for the ones who don’t fold born in red candles and built to dominate.",
   },
   {
     question: "Is there a buy/sell tax? How is it used?",
@@ -96,7 +96,7 @@ export const faqs = [
   {
     question: "Are there any upcoming events for Metadawgs?",
     answer:
-      "Yes, we regularly host AMAs, giveaways, and community challenges—stay tuned on our socials for updates.",
+      "Yes, we regularly host AMAs, giveaways, and community challenges stay tuned on our socials for updates.",
   },
   {
     question: "What are the benefits of holding Metadawgs?",
@@ -223,7 +223,7 @@ export const sampleTweets = [
     handle: "@metadawgs_user",
     profilePic: "/api/placeholder/48/48",
     content:
-      "We don't chase clout—we build legacy.\nMeta Dawgs grind, survive, and earn bones and metadawgs through the storm.\nIf you're still here, you are the alpha.\nTagging in with @Meta_Dawgs 🐾\n#MetaDawgs #SocialFi #EarnBones",
+      "We don't chase clout we build legacy.\nMeta Dawgs grind, survive, and earn bones and metadawgs through the storm.\nIf you're still here, you are the alpha.\nTagging in with @Meta_Dawgs 🐾\n#MetaDawgs #SocialFi #EarnBones",
     timestamp: "2h",
     likes: 124,
     retweets: 37,
@@ -239,7 +239,7 @@ export const sampleTweets = [
     handle: "@web3_fan",
     profilePic: "/api/placeholder/48/48",
     content:
-      "Just claimed my spot in the Meta Dawgs pack 🐶\nRed candles? I bark louder.\nEarning BONES with the realest—@Meta_Dawgs\n#MetaDawgs #SocialFi #EarnBones",
+      "Just claimed my spot in the Meta Dawgs pack 🐶\nRed candles? I bark louder.\nEarning BONES with the realest @Meta_Dawgs\n#MetaDawgs #SocialFi #EarnBones",
     timestamp: "5h",
     likes: 89,
     retweets: 14,

@@ -45,7 +45,7 @@ function page() {
           <p className="text-center text-2xl max-w-5xl mx-auto">
             MetaDawgs Nexus is your all-in-one command center for conquering
             Solana. From sniping tokens and tracking alpha to claiming airdrops
-            and deploying smart tools—this is where elite dawgs gather, build,
+            and deploying smart tools this is where elite dawgs gather, build,
             and dominate the chain
           </p>
         </FadeInUp>
