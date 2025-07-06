@@ -21,9 +21,9 @@ export interface PostType {
 }
 
 export interface Collabs {
-  link: string;
-  about: string;
-  username: string;
+  otherUrl: string;
+  telegramHandle: string;
+  answer: string;
 }
 
 export type PostBtnType = "View" | "Claim" | "Verify Code" | "Done" | "Join";

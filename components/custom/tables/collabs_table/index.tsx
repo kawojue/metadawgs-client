@@ -42,7 +42,7 @@ export default function CollabsTable({ isPreview }: Props) {
       const resCollabs = await fetchWithAuth<{
         data: Collabs[];
         meta: MetaType;
-      }>(`/users/collabs?page=${page}&limit=${limit}&search=${search}`, {
+      }>(`/user/collab-applications?page=${page}&limit=${limit}&search=${search}`, {
         isAdmin: true,
         signal,
       });

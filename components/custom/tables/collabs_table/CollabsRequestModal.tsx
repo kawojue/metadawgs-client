@@ -105,15 +105,15 @@ function CollabsRequestModal({
           </div>
 
           <DialogTitle className="font-semibold text-xl text-center text-black">
-            {data.username}
+            {data.telegramHandle}
           </DialogTitle>
           <a
-            href={`https://x.com/${data.username}`}
+            href={`https://t.me/${data.telegramHandle}`}
             className="block text-[#0000FF] underline hover:text-[#0000FF]/80 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
-            @{data.username}
+            @{data.telegramHandle}
           </a>
         </DialogHeader>
 
@@ -124,7 +124,7 @@ function CollabsRequestModal({
             </label>
             <div className="bg-gray-50 rounded-lg p-4 min-h-24 border max-h-26 overflow-y-auto scroll">
               <p className="text-sm text-gray-800 leading-relaxed">
-                {data.about}
+                {data.answer}
               </p>
             </div>
           </div>
@@ -134,12 +134,12 @@ function CollabsRequestModal({
               Submit a link to your social or any relevant link (Optional)
             </label>
             <a
-              href={`https://x.com/${data.username}`}
+              href={`${data.otherUrl}`}
               className="block text-[#0000FF] underline hover:text-[#0000FF]/80 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
-              @{data.username}
+              {data.otherUrl}
             </a>
           </div>
 
@@ -171,7 +171,7 @@ function CollabsRequestModal({
 
           <Button
             type="button"
-            className="flex-1 py-5! rounded-full cursor-pointer bg-white hover:bg-white hover:opacity-80 text-black font-medium disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
+            className="flex-1 py-6! rounded-full cursor-pointer bg-black hover:bg-black hover:opacity-80 text-white font-medium disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
             onClick={() => onClose?.()}
           >
             Close

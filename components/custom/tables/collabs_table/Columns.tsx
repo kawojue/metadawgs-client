@@ -21,40 +21,40 @@ export const columns: ColumnDef<Collabs>[] = [
     ),
   },
   {
-    accessorKey: "username",
-    header: () => <div className="">Username</div>,
+    accessorKey: "telegramHandle",
+    header: () => <div className="">Telegram Handle</div>,
     cell: ({ row }) => (
       <div className="">
         <a
-          href={`https://x.com/${row.original.username}`}
+          href={`https://t.me/${row.original.telegramHandle}`}
           className="block text-[#0000FF] underline"
           target="_blank"
           rel="noopener noreferrer"
         >
-          {row.getValue("username")}
+          {row.getValue("telegramHandle")}
         </a>
       </div>
     ),
   },
   {
-    accessorKey: "about",
-    header: () => <div className="">About</div>,
+    accessorKey: "answer",
+    header: () => <div className="">Answer</div>,
     cell: ({ row }) => (
-      <div className="truncate max-w-2xs">{row.original.about}</div>
+      <div className="truncate max-w-2xs">{row.original.answer}</div>
     ),
   },
   {
-    accessorKey: "link",
-    header: () => <div className="">link</div>,
+    accessorKey: "otherUrl",
+    header: () => <div className="">Other Url</div>,
     cell: ({ row }) => (
       <div className="">
         <a
-          href={`${row.original.link}`}
+          href={`${row.original.otherUrl}`}
           className="block text-[#0000FF] underline"
           target="_blank"
           rel="noopener noreferrer"
         >
-          {row.getValue("link")}
+          {row.getValue("otherUrl")}
         </a>
       </div>
     ),

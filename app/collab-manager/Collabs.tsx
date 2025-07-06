@@ -3,6 +3,7 @@
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/use-auth";
+import { postWithAuth } from "@/lib/api";
 import { authUrl, cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,16 +26,21 @@ function CollabsPage() {
 
   async function handleSubmit() {
     setLoading(true);
-    setError("");
-    // some code
+    try {
+      await postWithAuth("/user/collab-application", {
+        answer: formData.about,
+        telegramHandle: formData.telegram_handle,
+        otherUrl: formData.link,
+      });
 
-    // success true
-    console.log(formData);
-    setSuccess(true);
-    setLoading(false);
-
-    //reset form
-    setFormData(defaultFormData);
+      setSuccess(true);
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   const handleTwitterConnect = () => {
