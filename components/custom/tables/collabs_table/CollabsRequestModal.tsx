@@ -118,7 +118,7 @@ function CollabsRequestModal({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                @{data.telegramHandle}
+                @{data.user.username}
               </a>
             </div>
 
