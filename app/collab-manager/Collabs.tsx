@@ -209,7 +209,7 @@ function CollabsPage() {
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          about: e.currentTarget.value.trim(),
+                          about: e.currentTarget.value,
                         })
                       }
                       className="bg-white/10 text-white disabled:cursor-not-allowed disabled:bg-white/20 min-h-18 h-full px-4 py-4 min-w-full max-h-40 rounded-sm"
