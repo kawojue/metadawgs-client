@@ -48,7 +48,7 @@ export function SubmitQuestAlert({
                     </AlertDialogTitle>
                     <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
                         {message ||
-                            `Your quest claim has been logged in the Hall of Records.\nGlory awaits, adventurer — stay sharp, the journey has just begun! ⚔️🗺️`}
+                            `Your quest claim has been logged in the Hall of Records.\nGlory awaits, adventurer   stay sharp, the journey has just begun! ⚔️🗺️`}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="grid! grid-cols-1! gap-4 mt-2">

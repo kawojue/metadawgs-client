@@ -18,7 +18,7 @@ const defaultFormData = {
 function CollabsPage() {
   const { userProfile } = useAuth();
   const [formData, setFormData] = useState(defaultFormData);
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(
     !userProfile ? "Connect X account to fill form." : ""
@@ -91,11 +91,11 @@ function CollabsPage() {
                     </div>
                     <div className="flex flex-col gap-1">
                       <span className="font-semibold font-fredoka text-lg md:text-xl">
-                        Join the MetaDawgs Creators Club
+                        Get Access to Metadawgs Team Benefit
                       </span>
                       <span className="text-[#ACACAC] md:text-lg text-base">
-                        Be part of the metadawgs creators club, talk about
-                        metadawgs on X and earn
+                        Outstanding performance can earn you an exclusive
+                        invitation to join the Metadawgs core team
                       </span>
                     </div>
                   </li>
@@ -112,12 +112,12 @@ function CollabsPage() {
                     </div>
                     <div className="flex flex-col gap-1">
                       <span className="font-semibold font-fredoka text-lg md:text-xl">
-                        Participate In the MetaDawgs Grinders Quest{" "}
+                        Get Early Access to Metadawgs Info-fi affiliate program
                       </span>
                       <span className="text-[#ACACAC] md:text-lg text-base">
-                        Stay active and engage on {"Metadawgs'"} official X Post
-                        and special quests to collect sweet bones and earn
-                        rewards.
+                        Metadawgs is pioneering the first Info-fi application on
+                        Solana. Get early access to earn from the Metadawgs
+                        upcoming Info-fi affiliate program.
                       </span>
                     </div>
                   </li>
@@ -134,11 +134,13 @@ function CollabsPage() {
                     </div>
                     <div className="flex flex-col gap-1">
                       <span className="font-semibold font-fredoka text-lg md:text-xl">
-                        Grind the MetaDawgs Telegram Quest{" "}
+                        Get special Solana reward at TGE
                       </span>
                       <span className="text-[#ACACAC] md:text-lg text-base">
-                        Join our official Telegram Arena Quest - the
-                        battleground awaits!
+                        Participate actively and qualify for exclusive
+                        Solana-based rewards during the Token Generation Event
+                        (TGE) our way of recognizing early contributors and
+                        community champions.
                       </span>
                     </div>
                   </li>
@@ -155,12 +157,13 @@ function CollabsPage() {
                     </div>
                     <div className="flex flex-col gap-1">
                       <span className="font-semibold font-fredoka text-lg md:text-xl">
-                        Recruit, Score, Dominate. 🏆
+                        Earn Exclusive Token Rewards
                       </span>
                       <span className="text-[#ACACAC] md:text-lg text-base">
-                        Share your referral link far and wide! Every friend you
-                        bring in nets you sweet Bones. Rack up points, crush the
-                        leaderboard, and prove {"you're"} the ultimate champion!
+                        Stand out as a top contributor and earn exclusive token
+                        rewards. Your efforts won’t go unnoticed get rewarded
+                        directly in our native token for driving impact across
+                        the Metadawgs ecosystem.
                       </span>
                     </div>
                   </li>
@@ -294,23 +297,23 @@ function CollabsPage() {
                       />
                     </div>
                     <div className="text-center font-fredoka text-3xl px-10 capitalize">
-                      Collabs Agreed smth
+                      Collabs Application Submitted
                     </div>
                     <div className="text-center max-w-[380px] text-white text-base">
-                      {`An admin will review your collabs soon. If something doesn’t add up, your account may face penalties. Play fair, adventurer! ⚔️`}
+                      {`An Admin will review your submission, and if you're selected, you will be tagged in the group.`}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 gap-4 mt-6 w-full items-center justify-center">
                     <button
                       className="w-full py-3.5 rounded-full text-sm font-medium h-fit cursor-pointer bg-[#FFBE00] text-black shadow-[black]/40 flex items-center gap-2 justify-center shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] hover:opacity-80"
                       onClick={() => {
-                        window.open("https://twitter.com/MetaDawgs", "_blank");
+                        window.open("https://t.me/+LiGTsDTk4YwyYzRk", "_blank");
 
                         // update to the right place
                       }}
                       type="button"
                     >
-                      Join Now
+                      Join Collab Request Group
                       <svg
                         width="15"
                         height="15"
