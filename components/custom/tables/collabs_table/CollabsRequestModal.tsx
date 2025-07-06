@@ -8,10 +8,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { TelegramIcon2 } from "@/lib/icons";
 // import { postWithAuth } from "@/lib/api";
 // import { generateRandomString } from "@/lib/common";
 // import { XRefreshTable } from "@/lib/values";
 import { Collabs } from "@/lib/type";
+import { Dot, LinkIcon, Twitter } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 // import useLocalStorage from "use-local-storage";
@@ -107,14 +109,32 @@ function CollabsRequestModal({
           <DialogTitle className="font-semibold text-xl text-center text-black">
             {data.telegramHandle}
           </DialogTitle>
-          <a
-            href={`https://t.me/${data.telegramHandle}`}
-            className="block text-[#0000FF] underline hover:text-[#0000FF]/80 transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            @{data.telegramHandle}
-          </a>
+          <div className="flex gap-2 items-center flex-wrap justify-center">
+            <div className="flex gap-2 items-center">
+              <Twitter color="black" />
+              <a
+                href={`https://x.com/${data.user.username}`}
+                className="block text-[#0000FF] underline hover:text-[#0000FF]/80 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @{data.telegramHandle}
+              </a>
+            </div>
+
+            <Dot />
+            <div className="flex gap-2 items-center">
+              <TelegramIcon2 />
+              <a
+                href={`https://t.me/${data.telegramHandle}`}
+                className="block text-[#0000FF] underline hover:text-[#0000FF]/80 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @{data.telegramHandle}
+              </a>
+            </div>
+          </div>
         </DialogHeader>
 
         <div className="grid gap-4 py-4 content">
@@ -135,11 +155,11 @@ function CollabsRequestModal({
             </label>
             <a
               href={`${data.otherUrl}`}
-              className="block text-[#0000FF] underline hover:text-[#0000FF]/80 transition-colors"
+              className="text-[#0000FF] underline hover:text-[#0000FF]/80 transition-colors flex gap-2 items-center"
               target="_blank"
               rel="noopener noreferrer"
             >
-              {data.otherUrl}
+              <LinkIcon size={16}/> {data.otherUrl}
             </a>
           </div>
 

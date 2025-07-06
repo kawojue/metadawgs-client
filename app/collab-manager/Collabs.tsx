@@ -18,7 +18,7 @@ const defaultFormData = {
 function CollabsPage() {
   const { userProfile } = useAuth();
   const [formData, setFormData] = useState(defaultFormData);
-  const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(
     !userProfile ? "Connect X account to fill form." : ""

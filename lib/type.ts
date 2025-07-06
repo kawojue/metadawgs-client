@@ -21,6 +21,7 @@ export interface PostType {
 }
 
 export interface Collabs {
+  user: { username: string };
   otherUrl: string;
   telegramHandle: string;
   answer: string;

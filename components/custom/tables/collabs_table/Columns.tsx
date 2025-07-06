@@ -21,6 +21,22 @@ export const columns: ColumnDef<Collabs>[] = [
     ),
   },
   {
+    accessorKey: "user.username",
+    header: () => <div className="">Username</div>,
+    cell: ({ row }) => (
+      <div className="">
+        <a
+          href={`https://x.com/${row.original.user.username}`}
+          className="block text-[#0000FF] underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {row.original.user.username}
+        </a>
+      </div>
+    ),
+  },
+  {
     accessorKey: "telegramHandle",
     header: () => <div className="">Telegram Handle</div>,
     cell: ({ row }) => (
