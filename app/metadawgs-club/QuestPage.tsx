@@ -154,7 +154,7 @@ function QuestPage() {
                         <>
                             <div className="text-center mt-12 mb-8">
                                 <h2 className="title md:text-[48px] sm:text-4xl text-3xl font-fredoka font-bold text-white">
-                                    Metadawgs Raiders Quest
+                                    Metadawgs Raiders Quests
                                 </h2>
                             </div>
                             <div className="quests-box w-full sm:mt-8 mt-4">

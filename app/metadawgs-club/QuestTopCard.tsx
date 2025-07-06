@@ -62,6 +62,12 @@ function QuestTopCard() {
     }
 
     function openMindShareCreatorsClub() {
+        if (!userToken) {
+            setOpenSignup(true);
+            return;
+        }
+
+        // router.push("/metadawgs-club/mindshare");
         toast("Coming Soon!");
     }
 
