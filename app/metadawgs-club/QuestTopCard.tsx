@@ -94,9 +94,8 @@ function QuestTopCard() {
                             </div>
                         </div>
                     )}
-                    <h3 className="font-semibold font-fredoka text-3xl max-w-sm">
-                        Stand a Chance to Win $1,500 Weekly by Writing Posts
-                        about MetaDawgs on{" "}
+                    <h3 className="font-semibold font-fredoka text-2xl max-w-sm">
+                        Win $1,500 Monthly by Writing Posts about MetaDawgs on{" "}
                         <a
                             href="https://x.com"
                             target="_blank"
@@ -106,18 +105,11 @@ function QuestTopCard() {
                         </a>
                     </h3>
                     {userProfile?.creatorClubVerification === "APPROVED" && (
-                        <>
-                            <p className="text-white text-[15px] max-w-md">
-                                Click the &apos;Submit&apos; button to complete
-                                this task. Allow 1-30 minutes for the system
-                                check.
-                            </p>
-                            <p className="text-white text-[15px] max-w-md">
-                                You must mention either @Meta_Dawgs, include
-                                your referral link, or mention
-                                &apos;metadawgs&apos; in the Tweet
-                            </p>
-                        </>
+                        <p className="text-white text-[12px] max-w-md">
+                            You must mention either @Meta_Dawgs, include your
+                            referral link, or mention &apos;metadawgs&apos; in
+                            the Tweet
+                        </p>
                     )}
 
                     {userProfile?.creatorClubVerification === "REJECTED" && (
