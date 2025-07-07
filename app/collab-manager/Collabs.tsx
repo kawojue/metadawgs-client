@@ -64,7 +64,7 @@ function CollabsPage() {
       <div className="flex flex-col-reverse md:grid md:grid-cols-2 min-h-svh gap-y-6">
         <div className="col-span-1 flex-1 flex justify-center items-center flex-col">
           <div className="info flex flex-col gap-1 p-6 py-8">
-            <h1 className="text-4xl font-bold pb-2">Benefits</h1>
+            <h1 className="text-4xl font-bold pb-2">Metadawgs Collabs Manager</h1>
             {/* <div className="hidden md:block">
               <Link href={"/"} className="logo">
                 <Image
