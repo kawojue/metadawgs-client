@@ -202,6 +202,9 @@ function CollabsPage() {
                     if (!userProfile) return;
                     await handleSubmit();
                   }}
+                  onInput={() => {
+                    setError("");
+                  }}
                 >
                   <div className="grid gap-2">
                     <label htmlFor="about">Tell us about yourself:</label>
