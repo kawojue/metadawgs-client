@@ -9,7 +9,7 @@ import { XOpenSignUpModal } from "@/lib/values";
 import { BellIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import useLocalStorage from "use-local-storage";
 
 function QuestTopCard() {
@@ -67,8 +67,8 @@ function QuestTopCard() {
             return;
         }
 
-        // router.push("/metadawgs-club/mindshare");
-        toast("Coming Soon!");
+        router.push("/metadawgs-club/mindshare");
+        // toast("Coming Soon!");
     }
 
     if (isCreator) {
