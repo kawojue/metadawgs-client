@@ -172,6 +172,7 @@ function TopBanner() {
       <SubmitEntryInputModal
         open={showEntryInput}
         onClose={() => setShowEntryInput(false)}
+        isMindShare
       />
     </>
   );
