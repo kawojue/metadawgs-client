@@ -222,3 +222,70 @@ export type Approval = {
     userId: string;
   };
 };
+
+export type UserStats = {
+  postsCount: number;
+  engagements: {
+    likes: number;
+    impressions: number;
+    reposts: number;
+    total: number;
+  };
+  bonesEarned: number;
+  mindShareEngagements: number;
+  superPoints: number;
+};
+
+export type MindShareBtnType = "View" | "Claim" | "Ignore";
+
+export type MindShareType = {
+  id: string;
+  postId: string;
+  postUrl: string;
+  superb: boolean;
+  processed: boolean;
+  finalized: boolean;
+  likes: number;
+  impressions: number;
+  reposts: number;
+  score: number;
+  public: boolean;
+  deletedAt: null;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+  pointId: string;
+  hasEngaged: boolean;
+  buttons: MindShareBtnType[];
+
+  platform: "TikTok" | "Youtube" | "Tweet";
+  bones: number;
+  username: string;
+};
+
+export type AdminMindShareType = {
+  id: string;
+  postId: null;
+  postUrl: string;
+  superb: boolean;
+  processed: boolean;
+  finalized: boolean;
+  special: boolean;
+  platform: string;
+  likes: number;
+  impressions: number;
+  reposts: number;
+  score: number;
+  public: boolean;
+  deletedAt: null;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+  pointId: null;
+  user: {
+    username: string;
+  };
+
+  //more bones
+  bones?: string;
+};

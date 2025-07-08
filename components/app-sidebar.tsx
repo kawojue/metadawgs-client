@@ -208,6 +208,36 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               Entries
             </Link>
           </li>
+           <li>
+            <Link
+              href={"/wherethemagicrestricted/mindshares"}
+              className={cn(
+                "flex items-center gap-3 p-4 px-6 rounded-full hover:opacity-80",
+                pathname.startsWith("/wherethemagicrestricted/mindshares") &&
+                  "bg-[#FFBE00] text-black shadow-[inset_0px_-3px_3px_0px_rgba(0,0,0,0.4)] shadow-[#000000]/20",
+                !pathname.startsWith("/wherethemagicrestricted/mindshares") &&
+                  "text-[#5F80A0]"
+              )}
+            >
+              <svg
+                width="16"
+                height="12"
+                viewBox="0 0 16 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8.00327 0.668457C12.0533 0.668457 15.3366 2.45932 15.3366 4.66845V7.33512C15.3366 9.54425 12.0533 11.3351 8.00327 11.3351C4.0255 11.3351 0.787429 9.60765 0.673049 7.45305L0.669922 7.33512V4.66845C0.669922 2.45932 3.95317 0.668457 8.00327 0.668457ZM8.00327 8.66845C5.52296 8.66845 3.33025 7.99678 2.00311 6.96878L2.00326 7.33512C2.00326 8.58992 4.59168 10.0018 8.00327 10.0018C11.3437 10.0018 13.8951 8.64812 13.9999 7.41372L14.0033 7.33512L14.0041 6.96825C12.677 7.99658 10.484 8.66845 8.00327 8.66845ZM8.00327 2.00179C4.59168 2.00179 2.00326 3.41366 2.00326 4.66845C2.00326 5.92325 4.59168 7.33512 8.00327 7.33512C11.4149 7.33512 14.0033 5.92325 14.0033 4.66845C14.0033 3.41366 11.4149 2.00179 8.00327 2.00179Z"
+                  fill={
+                    pathname.startsWith("/wherethemagicrestricted/mindshares")
+                      ? "black"
+                      : "#5F80A0"
+                  }
+                />
+              </svg>
+              Mind Shares
+            </Link>
+          </li>
           <li>
             <Link
               href={"/wherethemagicrestricted/create-quest"}
