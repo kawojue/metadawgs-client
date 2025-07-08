@@ -1,14 +1,20 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { EntryType } from "@/lib/type";
-import { formatNumberWithCommas, generateRandomString, hashAddress } from "@/lib/common";
+import { AdminMindShareType } from "@/lib/type";
+import {
+  formatNumberWithCommas,
+  generateRandomString,
+  hashAddress,
+} from "@/lib/common";
 import { useState } from "react";
 import useLocalStorage from "use-local-storage";
 import { XRefreshTable } from "@/lib/values";
-import { deleteWithAuth } from "@/lib/api";
+import { deleteWithAuth, patchWithAuth } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { LoaderIcon, TrashIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
-export const columns: ColumnDef<EntryType>[] = [
+export const columns: ColumnDef<AdminMindShareType>[] = [
   {
     accessorKey: "checkbox",
     header: () => (
@@ -57,31 +63,39 @@ export const columns: ColumnDef<EntryType>[] = [
     header: () => <div className="">Bones</div>,
     cell: ({ row }) => (
       <div className="">
-        {formatNumberWithCommas(Number(row.original.point.value) || 0)}
+        {/* //TODO: use bones */}
+        {formatNumberWithCommas(Number(row.original.score) || 0)}
       </div>
     ),
   },
   {
     accessorKey: "actions",
-    header: () => <div className="">Action</div>,
+    header: () => <div className="">Actions</div>,
     cell: ({ row }) => {
-      return <Action questId={row.original.id} quest={row.original} />;
+      return <Action entryId={row.original.id} entry={row.original} />;
     },
   },
 ];
 
-const Action = ({ questId }: { questId: number; quest: EntryType }) => {
+const Action = ({
+  entryId,
+  entry,
+}: {
+  entryId: string;
+  entry: AdminMindShareType;
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setRefreshTable] = useLocalStorage<string>(XRefreshTable, "");
+  const [isSpecial, setIsSpecial] = useState(entry.special);
   // const [openEdit, setOpenEdit] = useState<boolean>(false);
 
-  async function DeleteQuest() {
+  async function DeleteSpecialEntry() {
     if (isLoading) return;
 
     try {
       setIsLoading(true);
 
-      await deleteWithAuth(`/posts/quests/${questId}`, {
+      await deleteWithAuth(`/posts/mindshare/entries/${entryId}`, {
         isAdmin: true,
       });
 
@@ -89,6 +103,37 @@ const Action = ({ questId }: { questId: number; quest: EntryType }) => {
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      toast(
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function toggleSpecial() {
+    if (isLoading) return;
+
+    try {
+      setIsLoading(true);
+
+      await patchWithAuth(
+        `/posts/mindshare/entries/${entryId}/publicity`,
+        undefined,
+        {
+          isAdmin: true,
+        }
+      );
+
+      setIsSpecial(!isSpecial);
+
+      setRefreshTable(generateRandomString(10));
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast(
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -96,17 +141,37 @@ const Action = ({ questId }: { questId: number; quest: EntryType }) => {
 
   return (
     <>
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-4 items-center">
         <Button
           className="cursor-pointer"
           variant={"ghost"}
           size={"icon"}
+          title="Delete"
           disabled={isLoading}
-          onClick={DeleteQuest}
+          onClick={DeleteSpecialEntry}
         >
           {isLoading && <LoaderIcon />}
-          {!isLoading && <TrashIcon className="text-red-500" />}
+          {!isLoading && <TrashIcon size={32} className="text-red-500" />}
         </Button>
+
+        <button
+          className={cn(
+            "toggle rounded-full h-5 w-10 relative cursor-pointer bg-gray-300 disabled:opacity-60",
+            isSpecial && "",
+            !isSpecial && ""
+          )}
+          onClick={toggleSpecial}
+          title="Toggle Special Mind Share Publicity"
+          disabled={isLoading}
+        >
+          <span
+            className={cn(
+              "h-6 w-6 rounded-full absolute top-1/2 -translate-y-1/2 transition duration-100",
+              isSpecial && "-right-1 bg-[#FFBE00]",
+              !isSpecial && "-left-1 bg-black"
+            )}
+          ></span>
+        </button>
         {/* <Button
           className="cursor-pointer"
           variant={"ghost"}
@@ -117,10 +182,10 @@ const Action = ({ questId }: { questId: number; quest: EntryType }) => {
           <PenIcon className="text-blue-500" />
         </Button> */}
       </div>
-      {/* <QuestFormModal
+      {/* <EntryFormModal
         open={openEdit}
         onClose={() => setOpenEdit(false)}
-        quest={quest}
+        entry={entry}
       /> */}
     </>
   );

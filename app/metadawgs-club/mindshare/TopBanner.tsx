@@ -16,7 +16,7 @@ import { UserStats } from "@/lib/type";
 import {
   CopyIcon,
   FileUser,
-  ThumbsUp,
+  Heart,
   SparklesIcon,
   Users,
 } from "lucide-react";
@@ -81,7 +81,7 @@ function TopBanner() {
                 </div>
               )}
             </div>
-            <div className="icon">
+            <div className="icon text-3xl">
               <Avatar className="w-10 h-10 min-w-10 min-h-10">
                 <AvatarImage src={userProfile?.user?.avatar} />
                 <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
@@ -89,35 +89,47 @@ function TopBanner() {
             </div>
           </div>
           <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
-            <div className="flex flex-col gap-3gap-2 sm:">
+            <div className="flex flex-col gap-3 sm:gap-2">
               <h4 className="title text-text-sm sm:base">No. of posts</h4>
               <p className="text-3xl font-bold">
                 {formatNumberWithCommas(userStats?.postsCount || 0) || "0"}
               </p>
             </div>
-            <div className="icon">
+            <div className="icon text-3xl">
               <FileUser size={32} />
             </div>
           </div>
           <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
-            <div className="flex flex-col gap-3gap-2 sm:">
+            <div className="flex flex-col gap-3 sm:gap-2">
               <h4 className="title text-text-sm sm:base">No. of engagements</h4>
               <p className="text-3xl font-bold">
                 {formatNumberWithCommas(userStats?.engagements.total || 0)}
               </p>
             </div>
-            <div className="icon">
-              <ThumbsUp size={32} />
+            <div className="icon text-3xl">
+              <Heart fill="red" className="text-[red]" size={32} />
             </div>
           </div>
           <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
-            <div className="flex flex-col gap-3gap-2 sm:">
+            <div className="flex flex-col gap-3 sm:gap-2">
               <h4 className="title text-text-sm sm:base">Aggr. Bones Earned</h4>
               <p className="text-3xl font-bold">
                 {formatNumberWithCommas(userStats?.bonesEarned || 0)}
               </p>
             </div>
             <div className="icon text-3xl">🍖</div>
+          </div>
+
+          <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
+            <div className="flex flex-col gap-3 sm:gap-2">
+              <h4 className="title text-text-sm sm:base">Aggr. Super Points</h4>
+              <p className="text-3xl font-bold">
+                {formatNumberWithCommas(userStats?.superPoints || 0)}
+              </p>
+            </div>
+            <div className="icon text-3xl">
+              <SparklesIcon size={32} fill="#FFBE00" className="text-[#FFBE00]" />
+            </div>
           </div>
           <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
             <div className="flex flex-col gap-3 sm:gap-3">
@@ -148,19 +160,8 @@ function TopBanner() {
                 </Button>
               </p>
             </div>
-            <div className="icon">
+            <div className="icon text-3xl">
               <Users size={32} />
-            </div>
-          </div>
-          <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
-            <div className="flex flex-col gap-3gap-2 sm:">
-              <h4 className="title text-text-sm sm:base">Aggr. Super Points</h4>
-              <p className="text-3xl font-bold">
-                {formatNumberWithCommas(userStats?.superPoints || 0)}
-              </p>
-            </div>
-            <div className="icon">
-              <SparklesIcon size={32} />
             </div>
           </div>
         </div>

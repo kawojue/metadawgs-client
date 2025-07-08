@@ -1,6 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { EntryType } from "@/lib/type";
-import { formatNumberWithCommas, hashAddress } from "@/lib/common";
+import { formatNumberWithCommas, generateRandomString, hashAddress } from "@/lib/common";
+import { Button } from "@/components/ui/button";
+import { LoaderIcon, TrashIcon } from "lucide-react";
+import { deleteWithAuth } from "@/lib/api";
+import { useState } from "react";
+import useLocalStorage from "use-local-storage";
+import { XRefreshTable } from "@/lib/values";
 
 export const columns: ColumnDef<EntryType>[] = [
   {
@@ -55,4 +61,67 @@ export const columns: ColumnDef<EntryType>[] = [
       </div>
     ),
   },
+{
+    accessorKey: "actions",
+    header: () => <div className="">Action</div>,
+    cell: ({ row }) => {
+      return <Action questId={row.original.id} entry={row.original} />;
+    },
+  },
 ];
+
+const Action = ({ questId }: { questId: number; entry: EntryType }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setRefreshTable] = useLocalStorage<string>(XRefreshTable, "");
+  // const [openEdit, setOpenEdit] = useState<boolean>(false);
+
+  async function DeleteEntry() {
+    if (isLoading) return;
+
+    try {
+      setIsLoading(true);
+
+      await deleteWithAuth(`/posts/entries/${questId}`, {
+        isAdmin: true,
+      });
+
+      setRefreshTable(generateRandomString(10));
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <>
+      <div className="flex gap-2 items-center">
+        <Button
+          className="cursor-pointer"
+          variant={"ghost"}
+          size={"icon"}
+          disabled={isLoading}
+          onClick={DeleteEntry}
+        >
+          {isLoading && <LoaderIcon />}
+          {!isLoading && <TrashIcon className="text-red-500" />}
+        </Button>
+        {/* <Button
+          className="cursor-pointer"
+          variant={"ghost"}
+          size={"icon"}
+          disabled={isLoading}
+          onClick={() => setOpenEdit(true)}
+        >
+          <PenIcon className="text-blue-500" />
+        </Button> */}
+      </div>
+      {/* <EntryFormModal
+        open={openEdit}
+        onClose={() => setOpenEdit(false)}
+        entry={entry}
+      /> */}
+    </>
+  );
+};

@@ -107,7 +107,7 @@ const MindCard = ({ post }: { post: MindShareType }) => {
       <div className="info space-y-3 p-4 sm:p-5">
         <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px]">
           <div className="point-pill text-xs font-medium bg-[#101928] p-1.5 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
-            {post.score} Bones
+            {post.bones} Bones
           </div>
         </div>
 
@@ -118,12 +118,14 @@ const MindCard = ({ post }: { post: MindShareType }) => {
             </div>
           </div>
         )}
-        <h3 className="title font-semibold font-fredoka text-xl line-clamp-2">
-          {post?.title}
-        </h3>
-        <p className="text-white text-[15px] line-clamp-4">
-          {post?.description}
-        </p>
+        <div className="space-y-0 py-2">
+          <p className="text-white text-[15px] line-clamp-4">
+            {new Date(post?.createdAt).toDateString()}
+          </p>
+          <h3 className="title font-semibold font-fredoka text-xl line-clamp-2">
+            {post?.username} Tweet
+          </h3>
+        </div>
         <div className="flex flex-wrap gap-3 items-center">
           {post.buttons.map((btn, index) => {
             if (btn === "View")

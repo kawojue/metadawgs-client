@@ -258,7 +258,31 @@ export type MindShareType = {
   hasEngaged: boolean;
   buttons: MindShareBtnType[];
 
-  //TODO: adjust
-  title: string;
-  description: string;
+  platform: "TikTok" | "Youtube" | "Tweet";
+  bones: number;
+  username: string;
+};
+
+export type AdminMindShareType = {
+  id: string;
+  postId: null;
+  postUrl: string;
+  superb: boolean;
+  processed: boolean;
+  finalized: boolean;
+  special: boolean;
+  platform: string;
+  likes: number;
+  impressions: number;
+  reposts: number;
+  score: number;
+  public: boolean;
+  deletedAt: null;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+  pointId: null;
+  user: {
+    username: string;
+  };
 };

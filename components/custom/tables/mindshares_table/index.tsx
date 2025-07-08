@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
-import { MetaType, EntryType } from "@/lib/type";
+import { AdminMindShareType, MetaType } from "@/lib/type";
 
 import { fetchWithAuth } from "@/lib/api";
 import useLocalStorage from "use-local-storage";
@@ -19,11 +19,11 @@ type Props = {
 
 export default function MindSharesTable({ isPreview }: Props) {
   const { debouncedFetch, loading } = useDebouncedFetch<{
-    MindShares: EntryType[];
+    data: AdminMindShareType[];
     meta: MetaType;
   }>();
 
-  const [MindShares, setMindShares] = useState<EntryType[]>([]);
+  const [MindShares, setMindShares] = useState<AdminMindShareType[]>([]);
   const [meta, setMeta] = useState<MetaType | null>(null);
   const [refreshTable] = useLocalStorage<string>(XRefreshTable, "");
 
@@ -40,14 +40,14 @@ export default function MindSharesTable({ isPreview }: Props) {
   useEffect(() => {
     debouncedFetch(async (signal) => {
       const resMindShares = await fetchWithAuth<{
-        MindShares: EntryType[];
+        data: AdminMindShareType[];
         meta: MetaType;
       }>(`/posts/mindshare/entries/special?page=${page}&limit=${limit}`, {
         isAdmin: true,
         signal,
       });
 
-      setMindShares(resMindShares.data.MindShares);
+      setMindShares(resMindShares.data.data);
       setMeta(resMindShares.data.meta);
 
       return resMindShares.data;
@@ -59,7 +59,7 @@ export default function MindSharesTable({ isPreview }: Props) {
       <div className="flex sm:justify-between sm:flex-row flex-col-reverse gap-4 sm:items-center">
         <div className="flex items-center gap-3">
           <h2 className="text-2xl font-semibold font-fredoka">
-            {isPreview && "New "}Mind Shares
+            {isPreview && "New "}Special Mind Shares
           </h2>
           {isPreview && (
             <span className="grid place-content-center place-items-center p-0.5 px-2 bg-red-500 text-white rounded-full text-xs">
