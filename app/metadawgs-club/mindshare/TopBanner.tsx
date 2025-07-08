@@ -193,7 +193,7 @@ function TopBanner() {
                         className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00] hover:bg-[#E6A800] transition-colors duration-200"
                         onClick={openEntryInput}
                     >
-                        <span>Submit TikTok/Youtube Video</span>
+                        <span>Submit Twitter/TikTok/Youtube Link</span>
                     </Button>
                 </div>
             </div>
