@@ -285,4 +285,7 @@ export type AdminMindShareType = {
   user: {
     username: string;
   };
+
+  //more bones
+  bones?: string;
 };

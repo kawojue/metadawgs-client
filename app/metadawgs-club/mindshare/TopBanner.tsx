@@ -13,13 +13,7 @@ import {
 } from "@/lib/common";
 import { VerificationBadge } from "@/lib/icons";
 import { UserStats } from "@/lib/type";
-import {
-  CopyIcon,
-  FileUser,
-  Heart,
-  SparklesIcon,
-  Users,
-} from "lucide-react";
+import { CopyIcon, Heart, SparklesIcon } from "lucide-react";
 import { fetchWithAuth } from "@/lib/api";
 import SubmitEntryInputModal from "@/components/custom/modals/SubmitEntryInputModal";
 import { Button } from "@/components/ui/button";
@@ -95,9 +89,7 @@ function TopBanner() {
                 {formatNumberWithCommas(userStats?.postsCount || 0) || "0"}
               </p>
             </div>
-            <div className="icon text-3xl">
-              <FileUser size={32} />
-            </div>
+            <div className="icon text-3xl">💬</div>
           </div>
           <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
             <div className="flex flex-col gap-3 sm:gap-2">
@@ -128,7 +120,12 @@ function TopBanner() {
               </p>
             </div>
             <div className="icon text-3xl">
-              <SparklesIcon size={32} fill="#FFBE00" className="text-[#FFBE00]" />
+              <SparklesIcon
+                size={32}
+                fill="#FFBE00"
+                className="text-[#FFBE00]"
+                strokeWidth={1}
+              />
             </div>
           </div>
           <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
@@ -160,9 +157,7 @@ function TopBanner() {
                 </Button>
               </p>
             </div>
-            <div className="icon text-3xl">
-              <Users size={32} />
-            </div>
+            <div className="icon text-3xl">🤝</div>
           </div>
         </div>
         <div className="flex gap-4 gap-y-2 flex-wrap">

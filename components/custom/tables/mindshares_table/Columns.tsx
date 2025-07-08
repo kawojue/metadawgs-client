@@ -64,7 +64,7 @@ export const columns: ColumnDef<AdminMindShareType>[] = [
     cell: ({ row }) => (
       <div className="">
         {/* //TODO: use bones */}
-        {formatNumberWithCommas(Number(row.original.score) || 0)}
+        {formatNumberWithCommas(Number(row.original?.bones) || 0)}
       </div>
     ),
   },
@@ -89,13 +89,13 @@ const Action = ({
   const [isSpecial, setIsSpecial] = useState(entry.special);
   // const [openEdit, setOpenEdit] = useState<boolean>(false);
 
-  async function DeleteSpecialEntry() {
+  async function DeleteEntry() {
     if (isLoading) return;
 
     try {
       setIsLoading(true);
 
-      await deleteWithAuth(`/posts/mindshare/entries/${entryId}`, {
+      await deleteWithAuth(`/posts/entries/${entryId}`, {
         isAdmin: true,
       });
 
@@ -148,7 +148,7 @@ const Action = ({
           size={"icon"}
           title="Delete"
           disabled={isLoading}
-          onClick={DeleteSpecialEntry}
+          onClick={DeleteEntry}
         >
           {isLoading && <LoaderIcon />}
           {!isLoading && <TrashIcon size={32} className="text-red-500" />}

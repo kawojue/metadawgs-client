@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import useAuth from "@/hooks/use-auth";
 import { QuestErrorAlert } from "./modals/QuestErrorAlert";
 import { ViewWarningModal } from "./modals/ViewWarningModal";
+import { TikTokIcon, TwitterIcon, YoutubeIcon } from "@/lib/icons";
 
 const MindCard = ({ post }: { post: MindShareType }) => {
   const { refetchProfile } = useAuth();
@@ -118,13 +119,20 @@ const MindCard = ({ post }: { post: MindShareType }) => {
             </div>
           </div>
         )}
-        <div className="space-y-0 py-2">
-          <p className="text-white text-[15px] line-clamp-4">
-            {new Date(post?.createdAt).toDateString()}
-          </p>
-          <h3 className="title font-semibold font-fredoka text-xl line-clamp-2">
-            {post?.username} Tweet
-          </h3>
+        <div className="flex flex-col gap-4 py-2">
+          <div className="platform">
+            {post.platform === "TikTok" && <TikTokIcon/>}
+            {post.platform === "Youtube" && <YoutubeIcon/>}
+            {post.platform === "Tweet" && <TwitterIcon />}
+          </div>
+          <div className="space-y-0">
+            <p className="text-white text-[15px] line-clamp-4">
+              {new Date(post?.createdAt).toDateString()}
+            </p>
+            <h3 className="title font-semibold font-fredoka text-xl line-clamp-2">
+              {post?.username} Tweet
+            </h3>
+          </div>
         </div>
         <div className="flex flex-wrap gap-3 items-center">
           {post.buttons.map((btn, index) => {
