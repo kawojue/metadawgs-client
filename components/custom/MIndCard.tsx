@@ -51,6 +51,7 @@ const MindCard = ({ post }: { post: MindShareType }) => {
             });
 
             await refetchProfile();
+            toast("Report sent. Thank you!");
         } catch (error: unknown) {
             toast(error instanceof Error ? error.message : "Failed to view.");
             console.error("Failed to view:", error);
@@ -182,7 +183,7 @@ const MindCard = ({ post }: { post: MindShareType }) => {
                                     disabled={ignoring || post.hasEngaged}
                                     onClick={reportPost}
                                 >
-                                    {ignoring ? "Ignoring" : "Ignore"}
+                                    {ignoring ? "Reporting" : "Report"}
                                 </Button>
                             );
                     })}
