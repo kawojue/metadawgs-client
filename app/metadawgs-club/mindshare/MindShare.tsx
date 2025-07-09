@@ -24,6 +24,7 @@ function MindShare() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
+    const activeTab = (searchParams.get("tab") as "live" | "past") || "live";
     const currentPage = parseInt(searchParams.get("page") || "1", 10);
     const limit = 25;
 
@@ -39,7 +40,7 @@ function MindShare() {
                 setLoading(true);
                 setError(null);
 
-                const endpoint = `/posts/mindshare/entries?page=${page}&limit=${limit}`;
+                const endpoint = `/posts/mindshare/entries?tab=${activeTab}&page=${page}&limit=${limit}`;
 
                 const response = await fetchWithAuth<{
                     data: MindShareType[];
@@ -57,7 +58,7 @@ function MindShare() {
                 setLoading(false);
             }
         },
-        [userToken, limit]
+        [userToken, limit, activeTab]
     );
 
     useEffect(() => {
@@ -69,6 +70,16 @@ function MindShare() {
         params.set("page", page.toString());
         router.push(`?${params.toString()}`);
     };
+
+    const handleTabChange = useCallback(
+        (value: "live" | "past") => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("tab", value);
+            params.delete("page");
+            router.push(`?${params.toString()}`);
+        },
+        [router, searchParams]
+    );
 
     const postsGrid = useMemo(() => {
         if (loading) {
@@ -102,7 +113,7 @@ function MindShare() {
             return (
                 <div className="p-4 text-center min-h-[150px] flex flex-col items-center justify-center">
                     <h3 className="text-2xl font-fredoka capitalize">
-                        No Posts
+                        No {activeTab} Posts
                     </h3>
                 </div>
             );
@@ -139,6 +150,29 @@ function MindShare() {
                             <h2 className="title text-center md:text-[48px] sm:text-4xl text-3xl font-fredoka font-bold text-white">
                                 MindShare Quests
                             </h2>
+
+                            <div className="flex justify-center gap-4 mb-6">
+                                <Button
+                                    className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
+                                        activeTab === "live"
+                                            ? "text-black bg-[#FFBE00]"
+                                            : "text-white bg-[#1E1E1E]"
+                                    }`}
+                                    onClick={() => handleTabChange("live")}
+                                >
+                                    Live
+                                </Button>
+                                <Button
+                                    className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
+                                        activeTab === "past"
+                                            ? "text-black bg-[#FFBE00]"
+                                            : "text-white bg-[#1E1E1E]"
+                                    }`}
+                                    onClick={() => handleTabChange("past")}
+                                >
+                                    Past
+                                </Button>
+                            </div>
 
                             <div>{postsGrid}</div>
                         </div>
