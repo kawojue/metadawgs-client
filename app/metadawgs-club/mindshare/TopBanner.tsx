@@ -4,14 +4,14 @@ import { XOpenSignUpModal, XRefreshPosts } from "@/lib/values";
 import { useCallback, useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
 import { toast } from "sonner";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useAuth from "@/hooks/use-auth";
 import {
     copyToClipboard,
     formatNumberWithCommas,
     hashAddress,
 } from "@/lib/common";
-import { VerificationBadge } from "@/lib/icons";
+// import { VerificationBadge } from "@/lib/icons";
 import { UserStats } from "@/lib/type";
 import { CopyIcon, Heart, SparklesIcon } from "lucide-react";
 import { fetchWithAuth } from "@/lib/api";
@@ -64,7 +64,7 @@ function TopBanner() {
         <>
             <div className="w-full rounded-2xl pool after:rounded-2xl p-5 sm:p-5 sm:py-7 space-y-5 relative after:bg-[linear-gradient(to_right,#000000,#000000d3),url('/images/throne.jpg')] after:bg-fill after:bg-right after:bg-no-repeat">
                 <div className="grid gap-4 max-[350px]:grid-cols-1 grid-cols-2 md:grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]">
-                    <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
+                    {/* <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
                         <div className="flex flex-col gap-3 sm:gap-3">
                             <h4 className="title text-sm sm:text-base">
                                 Profile
@@ -85,7 +85,7 @@ function TopBanner() {
                                 <AvatarFallback className="bg-gradient-to-r from-pink-500 to-purple-500"></AvatarFallback>
                             </Avatar>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
                         <div className="flex flex-col gap-3 sm:gap-2">
                             <h4 className="title text-text-sm sm:base">

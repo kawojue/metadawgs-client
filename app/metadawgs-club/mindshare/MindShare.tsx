@@ -10,7 +10,7 @@ import TopBanner from "./TopBanner";
 import { MindShareType, MetaType } from "@/lib/type";
 import { XRefreshPosts } from "@/lib/values";
 import { Loader } from "lucide-react";
-import CustomPagination from "@/components/custom/CustomPagination";
+import DarkPagination from "@/components/custom/DarkPagination";
 import { useSearchParams, useRouter } from "next/navigation";
 
 function MindShare() {
@@ -118,7 +118,7 @@ function MindShare() {
 
                 {meta && meta.totalPages > 1 && (
                     <div className="mt-8 flex justify-center">
-                        <CustomPagination
+                        <DarkPagination
                             meta={meta}
                             onPageChange={handlePageChange}
                         />

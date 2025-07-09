@@ -3,7 +3,7 @@
 import PostCard from "@/components/custom/PostCard";
 import { Button } from "@/components/ui/button";
 import { fetchWithAuth } from "@/lib/api";
-import { PostType } from "@/lib/type";
+import { PostType, MetaType } from "@/lib/type";
 import { XRefreshPosts } from "@/lib/values";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -14,6 +14,7 @@ import Link from "next/link";
 import useAuth from "@/hooks/use-auth";
 import QuestTopCard from "./QuestTopCard";
 import { Loader } from "lucide-react";
+import DarkPagination from "@/components/custom/DarkPagination";
 
 function QuestPage() {
     const { userToken } = useAuth();
@@ -27,42 +28,72 @@ function QuestPage() {
     );
     const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
     const [posts, setPosts] = useState<PostType[]>([]);
+    const [meta, setMeta] = useState<MetaType>({
+        size: 0,
+        hasNext: false,
+        hasPrev: false,
+        totalPages: 0,
+        currentPage: 1,
+        offset: 0,
+        totalItems: 0,
+        nextPage: null,
+        previousPage: null,
+    });
 
     const activeTab = (searchParams.get("tab") as "live" | "past") || "live";
+    const currentPage = parseInt(searchParams.get("page") || "1", 10);
 
-    const fetchPosts = useCallback(async () => {
-        if (!userToken) {
-            setPosts([]);
-            return;
-        }
+    const fetchPosts = useCallback(
+        async (page: number = 1) => {
+            if (!userToken) {
+                setPosts([]);
+                return;
+            }
 
-        try {
-            setLoading(true);
-            setError(null);
+            try {
+                setLoading(true);
+                setError(null);
 
-            const endpoint = isSpecial
-                ? `/posts?special=true`
-                : `/posts?tab=${activeTab}&special=false`;
+                const limit = 15;
+                const endpoint = isSpecial
+                    ? `/posts?special=true&page=${page}&limit=${limit}`
+                    : `/posts?tab=${activeTab}&special=false&page=${page}&limit=${limit}`;
 
-            const { data } = await fetchWithAuth<PostType[]>(endpoint);
-            setPosts(data);
-        } catch (error) {
-            console.error("Failed to fetch posts:", error);
-            setError("Failed to load quests. Please try again later.");
-            setPosts([]);
-        } finally {
-            setLoading(false);
-        }
-    }, [userToken, isSpecial, activeTab]);
+                const response = await fetchWithAuth<{
+                    data: PostType[];
+                    meta: MetaType;
+                }>(endpoint);
+                setPosts(response.data.data);
+                setMeta(response.data.meta);
+            } catch (error) {
+                console.error("Failed to fetch posts:", error);
+                setError("Failed to load quests. Please try again later.");
+                setPosts([]);
+            } finally {
+                setLoading(false);
+            }
+        },
+        [userToken, isSpecial, activeTab]
+    );
 
     useEffect(() => {
-        fetchPosts();
-    }, [fetchPosts, refreshPosts]);
+        fetchPosts(currentPage);
+    }, [fetchPosts, refreshPosts, currentPage]);
 
     const handleTabChange = useCallback(
         (value: "live" | "past") => {
             const params = new URLSearchParams(searchParams.toString());
             params.set("tab", value);
+            params.delete("page");
+            router.push(`?${params.toString()}`);
+        },
+        [router, searchParams]
+    );
+
+    const handlePageChange = useCallback(
+        (page: number) => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("page", page.toString());
             router.push(`?${params.toString()}`);
         },
         [router, searchParams]
@@ -71,8 +102,12 @@ function QuestPage() {
     const handleSpecialChange = useCallback(
         (value: boolean) => {
             setIsSpecial(value);
+            // Reset to first page when changing quest type
+            const params = new URLSearchParams(searchParams.toString());
+            params.delete("page");
+            router.push(`?${params.toString()}`);
         },
-        [setIsSpecial]
+        [setIsSpecial, router, searchParams]
     );
 
     const postsGrid = useMemo(() => {
@@ -94,7 +129,7 @@ function QuestPage() {
                         {error}
                     </h3>
                     <Button
-                        onClick={fetchPosts}
+                        onClick={() => fetchPosts(currentPage)}
                         className="mt-4 bg-[#FFBE00] text-black hover:bg-[#FFBE00]/80"
                     >
                         Try Again
@@ -243,6 +278,14 @@ function QuestPage() {
                                 </div>
 
                                 <div>{postsGrid}</div>
+                                {meta.totalPages > 1 && (
+                                    <div className="mt-8 flex justify-center">
+                                        <DarkPagination
+                                            meta={meta}
+                                            onPageChange={handlePageChange}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </>
                     )}
