@@ -151,7 +151,7 @@ function MindShare() {
                                 MindShare Quests
                             </h2>
 
-                            <div className="flex justify-center gap-4 mb-6">
+                            <div className="flex justify-start gap-4 mb-6">
                                 <Button
                                     className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
                                         activeTab === "live"

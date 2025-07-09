@@ -64,13 +64,13 @@ function TopBanner() {
     }
     return (
         <>
+            <Button
+                onClick={() => router.push("/metadawgs-club")}
+                className="mb-4 bg-[#FFBE00] hover:bg-[#E6A800] text-black border-none rounded-full p-2 h-10 w-10 flex items-center justify-center transition-colors duration-200"
+            >
+                <ArrowLeft size={20} />
+            </Button>
             <div className="w-full rounded-2xl pool after:rounded-2xl p-5 sm:p-5 sm:py-7 space-y-5 relative after:bg-[linear-gradient(to_right,#000000,#000000d3),url('/images/throne.jpg')] after:bg-fill after:bg-right after:bg-no-repeat">
-                <Button
-                    onClick={() => router.push("/metadawgs-club")}
-                    className="absolute top-5 left-5 z-10 bg-white/10 hover:bg-white/20 text-white border-none rounded-full p-2 h-10 w-10 flex items-center justify-center transition-colors duration-200"
-                >
-                    <ArrowLeft size={20} />
-                </Button>
                 <div className="grid gap-4 max-[350px]:grid-cols-1 grid-cols-2 md:grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]">
                     {/* <div className="card bg-white/5 col-span-1 flex-col-reverse sm:flex-row h-full rounded-md flex sm:items-center sm:justify-between gap-4 gap-y-5 p-4">
                         <div className="flex flex-col gap-3 sm:gap-3">
