@@ -84,8 +84,8 @@ function Footer() {
                         &copy; {new Date().getFullYear()} MetaDawgs. All rights
                         reserved.
                     </p>
-                    <Link 
-                        href="/disclaimer" 
+                    <Link
+                        href="/disclaimer"
                         className="text-sm text-[#9D4EDD] hover:text-[#9D4EDD]/80 transition-colors underline"
                     >
                         Disclaimer
