@@ -12,6 +12,7 @@ import useAuth from "@/hooks/use-auth";
 import { QuestErrorAlert } from "./modals/QuestErrorAlert";
 import { ViewWarningModal } from "./modals/ViewWarningModal";
 import { TikTokIcon, TwitterIcon, YoutubeIcon } from "@/lib/icons";
+import { XUserToken } from "@/lib/values";
 
 const MindCard = ({ post }: { post: MindShareType }) => {
     const { refetchProfile } = useAuth();
@@ -28,35 +29,80 @@ const MindCard = ({ post }: { post: MindShareType }) => {
         e.preventDefault();
         e.stopPropagation();
 
+        const token = localStorage.getItem(XUserToken);
+        if (!token) return;
+
         setIsSubmitting(true);
-        try {
-            await patchWithAuth(`/posts/mindshare/entries/${post.id}`, {
-                action: "Claim",
-            });
+
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/posts/mindshare/entries/${post.id}`,
+            {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(token)}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    action: "Claim",
+                }),
+            }
+        );
+
+        const { message } = await res.json();
+
+        setIsSubmitting(false);
+        setAlertMessage(message);
+
+        if (!res.ok) {
+            if ([409, 429].includes(res.status)) {
+                setShowErrorAlert(true);
+            } else {
+                toast(message || "Failed to claim.");
+            }
+            return;
+        } else {
             setSubmitted(true);
             await refetchProfile();
-        } catch (error: unknown) {
-            toast(error instanceof Error ? error.message : "Failed to view.");
-            console.error("Failed to view:", error);
-        } finally {
-            setIsSubmitting(false);
+            return;
         }
     };
 
     const handleReport = async () => {
-        setIgnoring(true);
-        try {
-            await patchWithAuth(`/posts/mindshare/entries/${post.id}`, {
-                action: "Report",
-            });
+        const token = localStorage.getItem(XUserToken);
+        if (!token) return;
 
+        setIgnoring(true);
+
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/posts/mindshare/entries/${post.id}`,
+            {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(token)}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    action: "Report",
+                }),
+            }
+        );
+
+        const { message } = await res.json();
+
+        setIgnoring(false);
+        setAlertMessage(message);
+
+        if (!res.ok) {
+            if ([409, 429].includes(res.status)) {
+                setShowErrorAlert(true);
+            } else {
+                toast(message || "Failed to report.");
+            }
+            return;
+        } else {
             await refetchProfile();
             toast("Report sent. Thank you!");
-        } catch (error: unknown) {
-            toast(error instanceof Error ? error.message : "Failed to view.");
-            console.error("Failed to view:", error);
-        } finally {
-            setIgnoring(false);
+            return;
         }
     };
 
