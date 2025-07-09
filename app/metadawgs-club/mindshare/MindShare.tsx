@@ -1,55 +1,74 @@
 "use client";
 
 import MindCard from "@/components/custom/MIndCard";
-// import { FadeIn } from "@/components/custom/ScrollAnimation";
-
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/use-auth";
 import { fetchWithAuth } from "@/lib/api";
-
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-
 import useLocalStorage from "use-local-storage";
 import TopBanner from "./TopBanner";
-import { MindShareType } from "@/lib/type";
+import { MindShareType, MetaType } from "@/lib/type";
 import { XRefreshPosts } from "@/lib/values";
 import { Loader } from "lucide-react";
+import CustomPagination from "@/components/custom/CustomPagination";
+import { useSearchParams, useRouter } from "next/navigation";
 
 function MindShare() {
     const { userToken } = useAuth();
     const [loading, setLoading] = useState<boolean>(false);
-
     const [error, setError] = useState<string | null>(null);
     const [posts, setPosts] = useState<MindShareType[]>([]);
-
+    const [meta, setMeta] = useState<MetaType | null>(null);
     const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
 
-    const fetchPosts = useCallback(async () => {
-        if (!userToken) {
-            setPosts([]);
-            return;
-        }
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
-        try {
-            setLoading(true);
-            setError(null);
+    const currentPage = parseInt(searchParams.get("page") || "1", 10);
+    const limit = 25;
 
-            const endpoint = `/posts/mindshare/entries`;
+    const fetchPosts = useCallback(
+        async (page: number = 1) => {
+            if (!userToken) {
+                setPosts([]);
+                setMeta(null);
+                return;
+            }
 
-            const { data } = await fetchWithAuth<MindShareType[]>(endpoint);
-            setPosts(data);
-        } catch (error) {
-            console.error("Failed to fetch posts:", error);
-            setError("Failed to load quests. Please try again later.");
-            setPosts([]);
-        } finally {
-            setLoading(false);
-        }
-    }, [userToken]);
+            try {
+                setLoading(true);
+                setError(null);
+
+                const endpoint = `/posts/mindshare/entries?page=${page}&limit=${limit}`;
+
+                const response = await fetchWithAuth<{
+                    data: MindShareType[];
+                    meta: MetaType;
+                }>(endpoint);
+
+                setPosts(response.data.data);
+                setMeta(response.data.meta);
+            } catch (error) {
+                console.error("Failed to fetch posts:", error);
+                setError("Failed to load quests. Please try again later.");
+                setPosts([]);
+                setMeta(null);
+            } finally {
+                setLoading(false);
+            }
+        },
+        [userToken, limit]
+    );
 
     useEffect(() => {
-        fetchPosts();
-    }, [fetchPosts, refreshPosts]);
+        fetchPosts(currentPage);
+    }, [fetchPosts, refreshPosts, currentPage]);
+
+    const handlePageChange = (page: number) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("page", page.toString());
+        router.push(`?${params.toString()}`);
+    };
 
     const postsGrid = useMemo(() => {
         if (loading) {
@@ -70,7 +89,7 @@ function MindShare() {
                         {error}
                     </h3>
                     <Button
-                        onClick={fetchPosts}
+                        onClick={() => fetchPosts(currentPage)}
                         className="mt-4 bg-[#FFBE00] text-black hover:bg-[#FFBE00]/80"
                     >
                         Try Again
@@ -90,13 +109,24 @@ function MindShare() {
         }
 
         return (
-            <div className="grid xl:grid-cols-3 md:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:place-items-center grid-cols-2 gap-3 mt-7">
-                {posts.map((post) => (
-                    <MindCard post={post} key={post.id} />
-                ))}
-            </div>
+            <>
+                <div className="grid xl:grid-cols-3 md:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:place-items-center grid-cols-2 gap-3 mt-7">
+                    {posts.map((post) => (
+                        <MindCard post={post} key={post.id} />
+                    ))}
+                </div>
+
+                {meta && meta.totalPages > 1 && (
+                    <div className="mt-8 flex justify-center">
+                        <CustomPagination
+                            meta={meta}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
+                )}
+            </>
         );
-    }, [loading, error, posts, fetchPosts]);
+    }, [loading, error, posts, meta, currentPage, fetchPosts]);
 
     return (
         <>
