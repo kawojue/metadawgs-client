@@ -1,4 +1,4 @@
-// import AddressButton from "@/components/custom/AddressButton";
+import AddressButton from "@/components/custom/AddressButton";
 import Pool from "@/components/custom/Pool";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { pools } from "@/lib/data";
@@ -21,7 +21,7 @@ function page() {
                     continuous passive income for your holdings. Featuring
                     multiple ecosystem staking pools.
                 </p>
-                {/* <AddressButton /> */}
+                <AddressButton />
             </div>
 
             <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 md:gap-10 max-w-screen-lg mx-auto">

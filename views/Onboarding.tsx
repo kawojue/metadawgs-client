@@ -5,7 +5,6 @@ import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import VerifyParticipate from "@/components/custom/VerifyParticipateTile";
 import { useEffect } from "react";
 import useAuth from "@/hooks/use-auth";
-// import { useWallet } from "@solana/wallet-adapter-react";
 
 interface OnboardingProps {
     setIsOnboarded: () => void;
@@ -13,7 +12,6 @@ interface OnboardingProps {
 
 function Onboarding({ setIsOnboarded }: OnboardingProps) {
     const { userProfile } = useAuth();
-    // const { publicKey } = useWallet();
 
     useEffect(() => {
         if (userProfile && userProfile.hasLinkedTelegram) {

@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-// import { postWithAuth } from "@/lib/api";
+import { postWithAuth } from "@/lib/api";
 import {
     copyToClipboard,
     formatNumberWithCommas,
@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import useAuth from "@/hooks/use-auth";
 import siteConfig from "@/lib/siteConfig";
 import { useState, useEffect, useMemo } from "react";
-// import { useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { SubmitReferralAlert } from "./SubmitReferralAlert";
 import { ArrowUpRightIcon, BookAIcon, CircleX, CopyIcon } from "lucide-react";
 import AuthTelegramModal from "@/app/metadawgs-club/modals/AuthTelegramModal";
@@ -33,17 +33,16 @@ function ProfileSidebar({
     onClose: () => void;
     logout: () => void;
 }) {
-    const { userProfile } = useAuth();
-    // const { userProfile, setUserProfile } = useAuth();
-    // const { publicKey } = useWallet();
+    const { userProfile, setUserProfile } = useAuth();
+    const { publicKey } = useWallet();
     const [success, setSuccess] = useState<boolean>(false);
-    // const [syncAddressing, setSyncAddressing] = useState<boolean>(false);
-    // const [syncAddressError, setSyncAddressError] = useState<string>("");
+    const [syncAddressing, setSyncAddressing] = useState<boolean>(false);
+    const [syncAddressError, setSyncAddressError] = useState<string>("");
     const [openTelegram, setOpenTelegram] = useState(false);
 
-    // const currentWallet = userProfile?.user?.walletApproved
-    //     ? userProfile?.user?.walletAddress || publicKey?.toBase58()
-    //     : publicKey?.toBase58() || userProfile?.user?.walletAddress;
+    const currentWallet = userProfile?.user?.walletApproved
+        ? userProfile?.user?.walletAddress || publicKey?.toBase58()
+        : publicKey?.toBase58() || userProfile?.user?.walletAddress;
 
     const statsConfig = useMemo(
         () => [
@@ -111,33 +110,33 @@ function ProfileSidebar({
         },
     ];
 
-    // async function approveWallet() {
-    //     try {
-    //         setSyncAddressing(true);
-    //         await postWithAuth("/user/link-wallet", {
-    //             walletAddress: currentWallet,
-    //             approved: true,
-    //         });
+    async function approveWallet() {
+        try {
+            setSyncAddressing(true);
+            await postWithAuth("/user/link-wallet", {
+                walletAddress: currentWallet,
+                approved: true,
+            });
 
-    //         if (userProfile) {
-    //             setUserProfile({
-    //                 ...userProfile,
-    //                 user: {
-    //                     ...userProfile.user,
-    //                     walletApproved: true,
-    //                 },
-    //             });
-    //         }
-    //         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //     } catch (error: any) {
-    //         setSyncAddressError(
-    //             error.toString() || "An unexpected error occurred"
-    //         );
-    //         console.error("Failed to link wallet:", error);
-    //     } finally {
-    //         setSyncAddressing(false);
-    //     }
-    // }
+            if (userProfile) {
+                setUserProfile({
+                    ...userProfile,
+                    user: {
+                        ...userProfile.user,
+                        walletApproved: true,
+                    },
+                });
+            }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            setSyncAddressError(
+                error.toString() || "An unexpected error occurred"
+            );
+            console.error("Failed to link wallet:", error);
+        } finally {
+            setSyncAddressing(false);
+        }
+    }
 
     // Handle escape key
     useEffect(() => {
@@ -281,7 +280,7 @@ function ProfileSidebar({
                         </div>
 
                         {/* Wallet Section */}
-                        {/* {!!currentWallet && (
+                        {!!currentWallet && (
                             <div className="wallet-approval-section space-y-4">
                                 <div className="w-full flex flex-col gap-3">
                                     <label className="text-sm text-[#ACACAC] font-semibold">
@@ -322,7 +321,7 @@ function ProfileSidebar({
                                     </p>
                                 )}
                             </div>
-                        )} */}
+                        )}
 
                         {/* Social Links Section */}
                         <div className="links grid gap-3">

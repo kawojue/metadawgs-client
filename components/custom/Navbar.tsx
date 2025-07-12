@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import { authUrl, cn } from "@/lib/utils";
+import AddressButton from "@/components/custom/AddressButton";
 import ProfileModal from "@/components/custom/modals/ProfileModal";
-
-// import AddressButton from "@/components/custom/AddressButton";
 
 import useAuth from "@/hooks/use-auth";
 import UserProfileButton from "./UserProfileBtn";
@@ -73,7 +72,7 @@ function Navbar() {
                         toggleProfile={toggleProfile}
                     />
                 )}
-                {/* <AddressButton /> */}
+                <AddressButton />
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -133,7 +132,7 @@ function Navbar() {
                             </Button>
                         </Link>
                     )}
-                    {/* <AddressButton /> */}
+                    <AddressButton />
                 </div>
             </div>
 

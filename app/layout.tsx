@@ -5,7 +5,7 @@ import { Geist_Mono, Fredoka, Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import MainLayout from "./MainLayout";
 import { SocketProvider } from "./SocketProvider";
-// import WalletConnectionProvider from "./WalletProvider";
+import WalletConnectionProvider from "./WalletProvider";
 import siteConfig from "@/lib/siteConfig";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -171,14 +171,11 @@ export default function RootLayout({
             <body
                 className={`${josefinSans.variable} ${geistMono.variable} ${fredoka.variable} antialiased`}
             >
-                <SocketProvider>
-                    <MainLayout>{children}</MainLayout>
-                </SocketProvider>
-                {/* <WalletConnectionProvider>
+                <WalletConnectionProvider>
                     <SocketProvider>
                         <MainLayout>{children}</MainLayout>
                     </SocketProvider>
-                </WalletConnectionProvider> */}
+                </WalletConnectionProvider>
 
                 <Toaster />
             </body>
