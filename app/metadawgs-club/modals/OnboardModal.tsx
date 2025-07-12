@@ -232,6 +232,9 @@ function OnboardingModal({
             <AuthTelegramModal
                 open={openTelegram}
                 onClose={() => setOpenTelegram(false)}
+                onReopenParent={() => {
+                    setOpenTelegram(false);
+                }}
             />
         </>
     );

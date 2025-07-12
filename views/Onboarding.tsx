@@ -5,21 +5,19 @@ import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import VerifyParticipate from "@/components/custom/VerifyParticipateTile";
 import { useEffect } from "react";
 import useAuth from "@/hooks/use-auth";
-import { useWallet } from "@solana/wallet-adapter-react";
 
 interface OnboardingProps {
     setIsOnboarded: () => void;
 }
 
 function Onboarding({ setIsOnboarded }: OnboardingProps) {
-    const { userProfile, isLoading } = useAuth();
-    const { publicKey } = useWallet();
+    const { userProfile } = useAuth();
 
     useEffect(() => {
-        if (userProfile && publicKey && userProfile.hasLinkedTelegram) {
+        if (userProfile && userProfile.hasLinkedTelegram) {
             setIsOnboarded();
         }
-    }, [userProfile, publicKey, setIsOnboarded]);
+    }, [userProfile, setIsOnboarded]);
 
     return (
         <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 justify-center items-center md:pt-10 max-[750px]:my-15">

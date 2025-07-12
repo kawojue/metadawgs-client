@@ -19,9 +19,11 @@ import useAuth from "@/hooks/use-auth";
 function SubmitEntryInputModal({
     open,
     onClose,
+    isMindShare,
 }: {
     open: boolean;
     onClose?: () => void;
+    isMindShare?: boolean;
 }) {
     const { logout } = useAuth();
     const [link, setLink] = useState<string>("");
@@ -71,32 +73,13 @@ function SubmitEntryInputModal({
         setLink("");
     }
 
-    const isValidLink = (url: string): boolean => {
-        try {
-            const parsedUrl = new URL(url);
-            const isHttpOrHttps =
-                parsedUrl.protocol === "http:" ||
-                parsedUrl.protocol === "https:";
-            const isTwitterDomain =
-                parsedUrl.hostname === "x.com" ||
-                parsedUrl.hostname === "www.x.com";
-            const isValidPath = /^\/\w+\/status\/\d+$/.test(parsedUrl.pathname);
-
-            return isHttpOrHttps && isTwitterDomain && isValidPath;
-        } catch {
-            return false;
-        }
-    };
-
     useEffect(() => {
         if (link.trim() === "") {
             setValidationError(null);
-        } else if (!isValidLink(link)) {
-            setValidationError("Please enter a valid tweet link.");
         } else {
             setValidationError(null);
         }
-    }, [link]);
+    }, [link, isMindShare]);
 
     return (
         <>
@@ -131,11 +114,14 @@ function SubmitEntryInputModal({
                         <div className="grid gap-5 py-4 content">
                             <div className="row flex flex-col gap-2">
                                 <label htmlFor="link" className="text-sm">
-                                    Link to tweet
+                                    Link to{" "}
+                                    {isMindShare ? "tweet or reel" : "tweet"}
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder="Enter link to tweet"
+                                    placeholder={`Enter link to ${
+                                        isMindShare ? "tweet or reel" : "tweet"
+                                    }`}
                                     value={link}
                                     onChange={(x) => setLink(x.target.value)}
                                     className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"

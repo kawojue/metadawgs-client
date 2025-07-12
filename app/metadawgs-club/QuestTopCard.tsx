@@ -9,6 +9,7 @@ import { XOpenSignUpModal } from "@/lib/values";
 import { BellIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+// import { toast } from "sonner";
 import useLocalStorage from "use-local-storage";
 
 function QuestTopCard() {
@@ -60,10 +61,28 @@ function QuestTopCard() {
         router.push("/tweet-examples");
     }
 
+    function openMindShareCreatorsClub() {
+        if (!userToken) {
+            setOpenSignup(true);
+            return;
+        }
+
+        router.push("/metadawgs-club/mindshare");
+        // toast("Coming Soon!");
+    }
+
     if (isCreator) {
         return (
             <>
                 <FadeInUp className="w-full rounded-2xl pool after:rounded-2xl p-5 sm:p-5 sm:py-7 space-y-3 relative after:bg-[linear-gradient(to_right,#000000,#000000d3),url('/images/throne.jpg')] after:bg-fill after:bg-right after:bg-no-repeat">
+                    {/* Tweet Examples Button - Top Right */}
+                    <Button
+                        onClick={openTweetExamples}
+                        className="absolute top-5 right-5 z-10 rounded-full !px-4 !py-2 font-medium text-[12px] cursor-pointer text-white bg-black/50 hover:bg-black/70 border border-white/20 backdrop-blur-sm transition-all duration-200"
+                    >
+                        <span>Tweet Examples</span>
+                    </Button>
+
                     {userProfile?.creatorClubVerification === "APPROVED" && (
                         <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[0.5px]">
                             <div className="point-pill text-xs font-medium pool after:rounded-full p-2 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
@@ -94,8 +113,8 @@ function QuestTopCard() {
                             </div>
                         </div>
                     )}
-                    <h3 className="font-semibold font-fredoka text-3xl max-w-sm">
-                        Write a post about MetaDawgs on{" "}
+                    <h3 className="font-semibold font-fredoka text-2xl max-w-sm">
+                        Win $1,500 Weekly by Writing Posts about MetaDawgs on{" "}
                         <a
                             href="https://x.com"
                             target="_blank"
@@ -105,9 +124,10 @@ function QuestTopCard() {
                         </a>
                     </h3>
                     {userProfile?.creatorClubVerification === "APPROVED" && (
-                        <p className="text-white text-[15px] max-w-md">
-                            Click {"Submit Entry"} button to complete this task.
-                            Allow 1-20 minutes for the system check.
+                        <p className="text-white text-[12px] max-w-md">
+                            If it&apos;s an X post, you must mention either
+                            @Meta_Dawgs, or include your referral link in the
+                            Tweet
                         </p>
                     )}
 
@@ -130,18 +150,32 @@ function QuestTopCard() {
 
                     <div className="flex gap-4 gap-y-2 flex-wrap">
                         <Button
-                            className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]"
+                            className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00] hover:bg-[#E6A800] transition-colors duration-200"
                             onClick={openEntryInput}
                             disabled={isNotRealCreator}
                         >
-                            <span>Submit X Post</span>
+                            <span>Submit Post</span>
                         </Button>
-                        <Button
-                            onClick={openTweetExamples}
-                            className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-black bg-[#D5D5D5]"
-                        >
-                            <span>Tweet Examples</span>
-                        </Button>
+                        <div className="rounded-full overflow-hidden bg-gradient-to-r from-[#FFBE00] via-[#FF6B6B] to-[#4ECDC4] p-[2px]">
+                            <Button
+                                className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-white bg-black hover:bg-gray-900 transition-colors duration-200 flex items-center gap-2"
+                                onClick={openMindShareCreatorsClub}
+                            >
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
+                                        fill="currentColor"
+                                    />
+                                </svg>
+                                <span>MindShare Creators Club</span>
+                            </Button>
+                        </div>
                     </div>
                 </FadeInUp>
 
@@ -156,6 +190,13 @@ function QuestTopCard() {
     return (
         <>
             <FadeInUp className="w-full rounded-2xl pool after:rounded-2xl p-6 sm:py-10 space-y-3 relative after:bg-[linear-gradient(to_right,#000000,#000000c8),url('/images/throne.jpg')] after:bg-cover after:bg-no-repeat">
+                <Button
+                    onClick={openTweetExamples}
+                    className="absolute top-6 right-6 z-10 rounded-full !px-4 !py-2 font-medium text-[12px] cursor-pointer text-white bg-black/50 hover:bg-black/70 border border-white/20 backdrop-blur-sm transition-all duration-200"
+                >
+                    <span>Tweet Examples</span>
+                </Button>
+
                 <h3 className="font-semibold font-fredoka text-3xl max-w-sm">
                     Join the MetaDawgs Creators Club
                 </h3>
@@ -165,19 +206,13 @@ function QuestTopCard() {
 
                 <div className="flex gap-4 gap-y-2 flex-wrap">
                     <Button
-                        className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00]"
+                        className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00] hover:bg-[#E6A800] transition-colors duration-200"
                         onClick={openQuestJoin}
                         disabled={
                             userProfile?.creatorClubVerification === "PENDING"
                         }
                     >
                         <span>Join Creators</span>
-                    </Button>
-                    <Button
-                        onClick={openTweetExamples}
-                        className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-black bg-[#D5D5D5]"
-                    >
-                        <span>Tweet Examples</span>
                     </Button>
                 </div>
                 {userProfile?.creatorClubVerification === "PENDING" && (

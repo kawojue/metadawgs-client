@@ -13,9 +13,9 @@ import {
 } from "@solana/web3.js";
 import { Buffer } from "buffer";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { debounce, formatNumberWithCommas } from "@/lib/common";
 import NumberInput from "@/components/custom/NumberInput";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import useLocalStorage from "use-local-storage";
 import { XComingSoonModal } from "@/lib/values";
 // import { SignupAlert } from "@/components/custom/modals/SignupAlert";
@@ -193,6 +193,9 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
     }, [publicKey, sendTransaction, signTransaction, connection, amount]);
 
     useEffect(() => {
+        setError("");
+        setStatusMessage("");
+        setIsLoading(false);
         const fetchExchangeRate = debounce(async () => {
             setExchanging(true);
             try {
@@ -287,8 +290,6 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
         setVisible(true);
     }
 
-    // Return point
-
     if (isInitializing) {
         return <div className="p-4 text-center">Initializing TGE.</div>;
     }
@@ -368,7 +369,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                                           )}
                                 </span>
                             </span>
-                            {/* <span className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                                 Maximum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
                                     {isComing
@@ -377,7 +378,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                                               metrics.maxPerWallet
                                           )}
                                 </span>
-                            </span> */}
+                            </span>
                             <span className="text-lg font-semibold">
                                 Allocated Token:{" "}
                                 <span className="font-fredoka font-semibold">

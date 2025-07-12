@@ -17,7 +17,7 @@ import ComingSoonModal from "@/components/custom/modals/ComingSoonModal";
 import CompleteOnboardingModal from "@/components/custom/modals/CompleteOnboardingModal";
 import { AuthProvider } from "@/context/AuthProvider";
 
-const IGNORED_ROUTE_PATTERNS = [/^\/auth/, /^\/wherethemagicrestricted(\/.*)?$/];
+const IGNORED_ROUTE_PATTERNS = [/^\/auth/, /^\/collab-manager/, /^\/wherethemagicrestricted(\/.*)?$/];
 
 function MainLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
