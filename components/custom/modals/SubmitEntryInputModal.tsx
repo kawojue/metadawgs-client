@@ -58,19 +58,20 @@ function SubmitEntryInputModal({
                 const { message } = await res.json();
                 setIsRobo(![409, 429].includes(res.status));
                 setApiError(message);
-                setLoading(false);
                 onClose?.();
             } else {
                 logout();
-                setLoading(false);
                 onClose?.();
             }
+
+            setLoading(false);
 
             return;
         }
 
-        setSuccess(true);
         setLink("");
+        setSuccess(true);
+        setLoading(false);
     }
 
     useEffect(() => {
