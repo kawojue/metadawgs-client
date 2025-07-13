@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,27 +8,27 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowUpRightIcon, CircleX } from "lucide-react";
+import { ArrowUpRightIcon } from "lucide-react";
 import { useState } from "react";
 import { SubmitEntryAlert } from "@/components/custom/modals/SubmitEntryAlert";
 import { QuestErrorAlert } from "./QuestErrorAlert";
 import { XUserToken } from "@/lib/values";
 import useAuth from "@/hooks/use-auth";
+import Image from "next/image";
 
-function SubmitEntryInputModal({
+function CreateDawgHouseModal({
   open,
   onClose,
-  isMindShare,
-  isVideo,
 }: {
   open: boolean;
   onClose?: () => void;
-  isMindShare?: boolean;
-  isVideo?: boolean;
 }) {
-  const { logout } = useAuth();
-  const [link, setLink] = useState<string>("");
-  const [validationError, setValidationError] = useState<string | null>(null);
+  const { logout, userProfile } = useAuth();
+  const [name, setName] = useState<string>(userProfile?.user.displayName ?? "");
+  const [identifier, setIdentifier] = useState<string>(
+    userProfile?.user.username ?? ""
+  );
+
   const [apiError, setApiError] = useState<string | null>(null);
   const [isRobo, setIsRobo] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -41,7 +40,7 @@ function SubmitEntryInputModal({
 
     setLoading(true);
 
-    const body = { url: link, isVideo: isVideo };
+    const body = { name: name };
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/entry`, {
       method: "POST",
@@ -68,18 +67,10 @@ function SubmitEntryInputModal({
       return;
     }
 
-    setLink("");
+    setName("");
     setSuccess(true);
     setLoading(false);
   }
-
-  useEffect(() => {
-    if (link.trim() === "") {
-      setValidationError(null);
-    } else {
-      setValidationError(null);
-    }
-  }, [link, isMindShare]);
 
   return (
     <>
@@ -94,52 +85,59 @@ function SubmitEntryInputModal({
         >
           <DialogContent
             className="sm:max-w-[456px] bg-black text-white shadow-sm border  border-white/20 rounded-2xl"
-            showCloseButton={false}
+            showCloseButton={true}
           >
-            <DialogHeader className="flex flex-row justify-between gap-4 items-center">
-              <DialogTitle className="font-fredoka text-2xl text-center">
-                Submit {isVideo ? "Video" : "Post"}
+            <DialogHeader className="flex flex-col justify-start gap-4 items-center">
+              <div className="circle bg-white rounded-full p-2.5 mb-1 overflow-hidden">
+                <Image
+                  src={
+                    "https://res.cloudinary.com/kawojue/image/upload/v1752273768/h69u_vn5p_220810_sjapqa.jpg"
+                  }
+                  alt="check"
+                  width={100}
+                  height={100}
+                />
+              </div>
+              <DialogTitle className="font-fredoka text-3xl text-center">
+                Create Dawghouse
               </DialogTitle>
-              <button
-                className="cursor-pointer p-1"
-                id="Close"
-                onClick={() => {
-                  onClose?.();
-                }}
-              >
-                <CircleX size={18} />
-                <span className="sr-only">Close</span>
-              </button>
             </DialogHeader>
             <div className="grid gap-5 py-4 content">
               <div className="row flex flex-col gap-2">
-                <label htmlFor="link" className="text-sm">
-                  Link to {isMindShare ? "tweet or reel" : "tweet"}
+                <label htmlFor="name" className="text-sm">
+                  Name{" "}
                 </label>
                 <input
                   type="text"
-                  placeholder={`Enter link to ${
-                    isMindShare ? "tweet or reel" : "tweet"
-                  }`}
-                  value={link}
-                  onChange={(x) => setLink(x.target.value)}
+                  placeholder={`Enter dawghouse name`}
+                  value={name}
+                  name="name"
+                  onChange={(x) => setName(x.target.value)}
                   className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
                 />
-                {!!validationError && (
-                  <p className="error text-red-500 text-sm">
-                    {validationError}
-                  </p>
-                )}
+              </div>
+              <div className="row flex flex-col gap-2">
+                <label htmlFor="name" className="text-sm">
+                  Identifier{" "}
+                </label>
+                <input
+                  type="text"
+                  placeholder={`Enter identifier`}
+                  value={identifier}
+                  name="identifier"
+                  onChange={(x) => setIdentifier(x.target.value)}
+                  className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
+                />
               </div>
             </div>
             <DialogFooter className="">
               <Button
                 type="button"
                 className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
-                disabled={!!validationError || !link || loading}
+                disabled={!name || loading}
                 onClick={submitEntry}
               >
-                {!loading ? "Submit" : "Submitting"}
+                {!loading ? "Create" : "Creating..."}
                 <ArrowUpRightIcon size={11} />
               </Button>
             </DialogFooter>
@@ -170,4 +168,4 @@ function SubmitEntryInputModal({
   );
 }
 
-export default SubmitEntryInputModal;
+export default CreateDawgHouseModal;

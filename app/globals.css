@@ -122,6 +122,10 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .drill {
+    @apply relative after:bg-[linear-gradient(to_right,#000000,#000000d3),url('https://res.cloudinary.com/kawojue/image/upload/v1748125653/Adobe_After_Effects_2022_-_C__Users_GODWIN_IZIOMO_..._tion_and_motion_graphics_Motion_graphics_After_effects_files_Metadawg.aep_21_05_2025_16_16_13_pnnvsg.png')] after:bg-cover after:bg-right after:bg-no-repeat;
+  }
 }
 
 body {
@@ -134,6 +138,8 @@ body {
   position: relative;
   z-index: 1;
 }
+
+
 
 .pool::after {
   content: '';
