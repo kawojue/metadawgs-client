@@ -67,8 +67,7 @@ function QuestTopCard() {
             return;
         }
 
-        toast("This feature is currently being upgraded to Dawghouse!");
-        // router.push("/metadawgs-club/mindshare");
+        router.push("/metadawgs-club/mindshare");
     }
 
     if (isCreator) {
