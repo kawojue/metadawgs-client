@@ -52,7 +52,7 @@ function MindShare() {
             } catch (error) {
                 console.error("Failed to fetch posts:", error);
                 setError(
-                    "The MindShare feature is currently going through upgrades to the Dawghouse! Go and participate in the Raider's quests while you wait."
+                    "Submit Post Only and Earn bones! The MindShare feature is currently going through some upgrades to the Dawghouse! Go and participate in the Raider's quests while you wait."
                 );
                 setPosts([]);
                 setMeta(null);
