@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/use-auth";
 import { XOpenSignUpModal } from "@/lib/values";
 import { BellIcon } from "lucide-react";
-import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import useLocalStorage from "use-local-storage";
 
@@ -18,13 +18,6 @@ function QuestTopCard() {
     const [showEntryInput, setShowEntryInput] = useState<boolean>(false);
     const [showJoinCreators, setShowJoinCreators] = useState<boolean>(false);
     const router = useRouter();
-    const pathname = usePathname();
-
-    useEffect(() => {
-        if (pathname === "/metadawgs-club/mindshare") {
-            router.push("/metadawgs-club");
-        }
-    }, [router, pathname]);
 
     const isCreator = useMemo(
         () =>

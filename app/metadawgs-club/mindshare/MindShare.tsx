@@ -51,7 +51,9 @@ function MindShare() {
                 setMeta(response.data.meta);
             } catch (error) {
                 console.error("Failed to fetch posts:", error);
-                setError("Failed to load quests. Please try again later.");
+                setError(
+                    "This feature is currently going through upgrades! Go and participate the Raider's quests instead."
+                );
                 setPosts([]);
                 setMeta(null);
             } finally {
