@@ -8,7 +8,7 @@ import useAuth from "@/hooks/use-auth";
 import { XOpenSignUpModal } from "@/lib/values";
 import { BellIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import useLocalStorage from "use-local-storage";
 
@@ -18,6 +18,10 @@ function QuestTopCard() {
     const [showEntryInput, setShowEntryInput] = useState<boolean>(false);
     const [showJoinCreators, setShowJoinCreators] = useState<boolean>(false);
     const router = useRouter();
+
+    useEffect(() => {
+        router.push("/metadawgs-club");
+    }, [router]);
 
     const isCreator = useMemo(
         () =>
