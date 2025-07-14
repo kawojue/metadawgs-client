@@ -159,7 +159,7 @@ const MindCard = ({ post }: { post: MindShareType }) => {
                     </div>
                 </div>
 
-                {post.superb && (
+                {post.special && (
                     <div className="rounded-full w-fit overflow-hidden bg-[linear-gradient(90deg,_#FFBE00_0%,_#229EFF_100%)] p-[1px] right-4 top-5 absolute">
                         <div className="point-pill text-xs font-medium bg-[#101928] p-1.5 px-3 rounded-full flex flex-nowrap items-center gap-0.5 text-nowrap">
                             Special

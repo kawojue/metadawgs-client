@@ -13,3 +13,4 @@ export const XVerifyParticipate = "X_VERIFY_PARTICIPATE";
 export const XOpenSignUpModal = "X_OPEN_SIGNUP_MODAL";
 export const XComingSoonModal = "X_COMING_SOON_MODAL";
 export const XCompleteOnboarding = "X_COMPLETE_ONBOARDING_MODAL";
+export const XRefreshHouse = 'X_DAWG_HOUSE'

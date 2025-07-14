@@ -6,7 +6,7 @@ import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/use-auth";
 import { XOpenSignUpModal } from "@/lib/values";
-import { BellIcon } from "lucide-react";
+import { BellIcon, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 // import { toast } from "sonner";
@@ -26,22 +26,22 @@ function QuestTopCard() {
         [userProfile]
     );
 
-    const isNotRealCreator = useMemo(
-        () =>
-            userProfile?.creatorClubVerification === "NOT_APPLIED" ||
-            userProfile?.creatorClubVerification === "REJECTED" ||
-            userProfile?.creatorClubVerification === "PENDING",
-        [userProfile]
-    );
+    //   const isNotRealCreator = useMemo(
+    //     () =>
+    //       userProfile?.creatorClubVerification === "NOT_APPLIED" ||
+    //       userProfile?.creatorClubVerification === "REJECTED" ||
+    //       userProfile?.creatorClubVerification === "PENDING",
+    //     [userProfile]
+    //   );
 
-    function openEntryInput() {
-        if (!userToken) {
-            setOpenSignup(true);
-            return;
-        }
+    //   function openEntryInput() {
+    //     if (!userToken) {
+    //       setOpenSignup(true);
+    //       return;
+    //     }
 
-        setShowEntryInput(true);
-    }
+    //     setShowEntryInput(true);
+    //   }
 
     function openQuestJoin() {
         if (!userToken) {
@@ -67,7 +67,7 @@ function QuestTopCard() {
             return;
         }
 
-        router.push("/metadawgs-club/mindshare");
+        router.push("/metadawgs-club/dawghouses");
     }
 
     if (isCreator) {
@@ -148,31 +148,20 @@ function QuestTopCard() {
                     )}
 
                     <div className="flex gap-4 gap-y-2 flex-wrap">
-                        <Button
+                        {/* <Button
                             className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-black bg-[#FFBE00] hover:bg-[#E6A800] transition-colors duration-200"
                             onClick={openEntryInput}
                             disabled={isNotRealCreator}
                         >
                             <span>Submit Post</span>
-                        </Button>
+                        </Button> */}
                         <div className="rounded-full overflow-hidden bg-gradient-to-r from-[#FFBE00] via-[#FF6B6B] to-[#4ECDC4] p-[2px]">
                             <Button
                                 className="rounded-full !px-6 !py-5 pt-5.5! font-medium text-[14px] cursor-pointer text-white bg-black hover:bg-gray-900 transition-colors duration-200 flex items-center gap-2"
                                 onClick={openMindShareCreatorsClub}
                             >
-                                <svg
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
-                                        fill="currentColor"
-                                    />
-                                </svg>
-                                <span>MindShare Creators Club</span>
+                                <PlusIcon size={14} />
+                                <span>Dawghouses</span>
                             </Button>
                         </div>
                     </div>

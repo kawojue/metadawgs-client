@@ -18,7 +18,9 @@ const WalletConnectionProvider: FC<{ children: ReactNode }> = ({
 }) => {
     const network = WalletAdapterNetwork.Devnet;
     const endpoint = useMemo(
-        () => process.env.NEXT_PUBLIC_SOLANA_RPC_ENDPOINT || "https://api.devnet.solana.com",
+        () =>
+            process.env.NEXT_PUBLIC_SOLANA_RPC_ENDPOINT ||
+            "https://api.devnet.solana.com",
         []
     );
 
