@@ -13,14 +13,14 @@ import { useSearchParams, useRouter } from "next/navigation";
 import TopBanner from "./TopBanner";
 import { Button } from "@/components/ui/button";
 import PostsGrid from "./PostsGrid";
-import { SearchIcon } from "lucide-react";
+import { Loader, SearchIcon } from "lucide-react";
 import HousesGrid from "./HousesGrid";
 
 function DawgHouses() {
   const { userToken } = useAuth();
   const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
   const [refreshHouse] = useLocalStorage<string>(XRefreshHouse, "");
-  const [, s_setLoading] = useState<boolean>(false);
+  const [s_loading, s_setLoading] = useState<boolean>(false);
   const [userStats, setUserStats] = useState<DawgMetrics | null>(null);
   const [search, setSearch] = useState<string>("");
   const inDawgsHouse = useMemo(
@@ -69,6 +69,14 @@ function DawgHouses() {
     fetchStats();
   }, [refreshPosts, fetchStats, refreshHouse]);
 
+  if (s_loading) {
+    return (
+      <div className="h-dch w-full grid place-content-center">
+        <Loader size={72} color={"#FFBE00"} className="animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="bg-black text-white min-h-screen">
@@ -78,7 +86,9 @@ function DawgHouses() {
             <br />
             <div className="space-y-5">
               <h2 className="title text-center md:text-[48px] sm:text-4xl text-3xl font-fredoka font-bold text-white">
-                {inDawgsHouse ? `Smth Dawghouse` : "Dawghouses to Join"}
+                {userStats?.type === "dawghouse"
+                  ? `${userStats.dawghouse.name} Dawghouse`
+                  : "Dawghouses to Join"}
               </h2>
               {!inDawgsHouse && (
                 <form

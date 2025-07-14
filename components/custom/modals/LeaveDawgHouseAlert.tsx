@@ -99,7 +99,7 @@ export function LeaveDawgHouseAlert({
               Are you sure you want to leave?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">
-              {`This is an irrefutable operation and all points accumulated will be lost indefinitely smth`}
+              {`Leaving a dawghouse comes with a 24 hours restriction to join a new dawghouse, you can rejoin this dawghouse and keep grinding.`}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="grid! grid-cols-2! gap-4 mt-2">
@@ -111,9 +111,8 @@ export function LeaveDawgHouseAlert({
               {loading ? "Leaving..." : "Leave"} Dawghouse <ArrowUpRightIcon />
             </Button>
             <AlertDialogCancel
-              className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black shadow-[black]/40"
+              className="w-full py-5.5! rounded-full cursor-pointer bg-[white] text-black shadow-[black]/40"
               onClick={() => {
-                setRefreshPosts(generateRandomString(10));
                 onClose?.();
               }}
             >

@@ -146,7 +146,7 @@ function JoinDawgHouseModal({
           open={success}
           onClose={() => setSuccess(false)}
           title="Dawghouse Joined!"
-          message="Your are now in smth Dawghouse"
+          message={`Your are now in ${dawgHouse.name} Dawghouse`}
           onAdvance={() => router.push("/metadawgs-club/dawghouses")}
           advanceLabel="Go to Dawghouse"
         />

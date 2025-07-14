@@ -22,6 +22,7 @@ import { dawghouseCards, elseCards } from "./data";
 import { formatNumberWithCommas, formatTime } from "@/lib/common";
 import { LeaveDawgHouseAlert } from "@/components/custom/modals/LeaveDawgHouseAlert";
 import { DawgMetrics } from "@/lib/type";
+import PromptJoinHouseModal from "@/components/custom/modals/PromptJoinHouse";
 
 function TopBanner({
   userStats,
@@ -40,24 +41,35 @@ function TopBanner({
 
   const [isInputVideo, setIsInputVideo] = useState<boolean>(false);
 
+  const [openJoinHouse, setOpenJoinHouse] = useState(false);
+
   const [timeLeft, setTimeLeft] = useState<number>(0);
 
   useEffect(() => {
     if (userStats) {
-      setTimeLeft(userStats?.tournamentDuration.elapsed ?? 0);
+      setTimeLeft(userStats?.tournamentDuration?.remaining ?? 0);
     }
   }, [userStats]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prev) => prev && (prev > 0 ? prev - 1 : 0));
+      setTimeLeft((prev) => {
+        if (prev === null || prev <= 0) return 0;
+        return prev - 1000;
+      });
     }, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
   function openEntryInput(isVideo?: boolean) {
     if (!userToken) {
       setOpenSignup(true);
+      return;
+    }
+
+    if (!inDawgsHouse) {
+      setOpenJoinHouse(true);
       return;
     }
 
@@ -85,12 +97,19 @@ function TopBanner({
 
   return (
     <>
-      <Button
-        onClick={() => router.push("/metadawgs-club")}
-        className="mb-4 bg-[#FFBE00] hover:bg-[#E6A800] text-black border-none rounded-full p-2 h-10 w-10 flex items-center justify-center transition-colors duration-200"
-      >
-        <ArrowLeft size={20} />
-      </Button>
+      <div className="flex justify-between gap-4 flex-wrap items-center">
+        <Button
+          onClick={() => router.push("/metadawgs-club")}
+          className="mb-4 bg-[#FFBE00] hover:bg-[#E6A800] text-black border-none rounded-full p-2 h-10 w-10 flex items-center justify-center transition-colors duration-200"
+        >
+          <ArrowLeft size={20} />
+        </Button>
+        <span className="text-3xl font-bold">
+          {userStats?.type === "individual" && "Personalized Metrics"}
+          {userStats?.type === "dawghouse" &&
+            `${userStats.dawghouse.name} dawghouse Metrics`}
+        </span>
+      </div>
       <div className="w-full rounded-2xl pool after:rounded-2xl p-5 sm:p-5 sm:py-7 space-y-5 relative after:bg-[linear-gradient(to_right,#000000,#000000d3),url('/images/throne.jpg')] after:bg-fill after:bg-right after:bg-no-repeat">
         <StatsGrid
           utils={{
@@ -121,9 +140,7 @@ function TopBanner({
                   totalDawgs: formatNumberWithCommas(
                     userStats.totalParticipants
                   ),
-                  dawghouseRank: formatNumberWithCommas(
-                    userStats.dawghouseRank
-                  ),
+                  dawghouseRank: userStats.dawghouseRank,
                   bonesReward: formatNumberWithCommas(userStats.bonesReward),
                   // referral: "referral_link",
                 }
@@ -203,6 +220,11 @@ function TopBanner({
       <LeaveDawgHouseAlert
         open={showLeaveHouse}
         onClose={() => setShowLeaveHouse(false)}
+      />
+
+      <PromptJoinHouseModal
+        open={openJoinHouse}
+        onClose={() => setOpenJoinHouse(false)}
       />
     </>
   );

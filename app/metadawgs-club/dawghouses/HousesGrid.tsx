@@ -13,6 +13,7 @@ import { Loader } from "lucide-react";
 import DarkPagination from "@/components/custom/DarkPagination";
 import { useRouter, useSearchParams } from "next/navigation";
 import JoinDawgHouseModal from "@/components/custom/modals/JoinDawgHouseModal";
+import { formatNumberWithCommas } from "@/lib/common";
 
 function HousesGrid() {
   const searchParams = useSearchParams();
@@ -125,7 +126,7 @@ function HousesGrid() {
         {houses.map((house) => (
           <div
             key={house.id}
-            className="card rounded-2xl col-span-1 grid after:rounded-2xl max-w-[320px] mx-auto pool overflow-hidden drill"
+            className="card rounded-2xl col-span-1 grid after:rounded-2xl max-w-[450px] w-full mx-auto pool overflow-hidden drill"
           >
             {/* <div className="absolute left-1/2 -translate-x-1/2 -top-4">
                       <Image
@@ -139,10 +140,11 @@ function HousesGrid() {
                       />
                     </div> */}
             <div className="absolute right-6 top-6">
-              <div className=" bg-transparent font-bold text-2xl p-4 flex justify-center items-center flex-col w-full">
+              <div className=" bg-transparent font-extrabold text-3xl p-4 flex justify-center items-center flex-col w-full">
                 {/* <div className="flex w-full justify-end"></div> */}
-                <div className="">
-                  <span>#{house.rank}</span>
+                <div className="flex items-center gap-1">
+                  <span className="text-xl">🏆</span>
+                  <span>{house.rank}</span>
                 </div>
               </div>
             </div>
@@ -153,23 +155,25 @@ function HousesGrid() {
                   {house.creator.displayName[0]}
                 </AvatarFallback>
               </Avatar>
-              <h3 className="text-3xl md:text-4xl font-bold capitalize">
-                {house.name} <br />
-                Dawghouse
+              <h3 className="text-2xl md:text-3xl flex flex-col font-bold capitalize">
+                <span className="text-wrap line-clamp-3">{house.name}</span>{" "}
+                <span>Dawghouse</span>
               </h3>
               <div className="flex justify-between mt-5 gap-20 items-end">
                 <div className="-space-y-1">
                   <span className="block text-3xl md:text-4xl font-bold mt-1">
-                    {house.totalParticipants}
+                    {formatNumberWithCommas(house.totalParticipants)}
                   </span>
                   <span className="block text-xs sm:text-sm">Participants</span>
                 </div>
-                <Button
-                  className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors text-black bg-[#FFBE00]`}
-                  onClick={() => joinHouse(house)}
-                >
-                  Join <UsersRound />
-                </Button>
+                <div className="rounded-full overflow-hidden bg-gradient-to-r from-[#FFBE00] via-[#FF6B6B] to-[#4ECDC4] p-[2px]">
+                  <Button
+                    className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors text-white bg-black`}
+                    onClick={() => joinHouse(house)}
+                  >
+                    Join <UsersRound />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

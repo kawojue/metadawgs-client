@@ -292,8 +292,6 @@ export type AdminMindShareType = {
   bones?: string;
 };
 
-// coco melon
-
 type ServerErrorResponse = {
   message: string;
   statusCode: number;
@@ -362,6 +360,7 @@ export type TournamentDuration = {
   daysRemaining: number;
   totalDays: number;
   elapsed: number;
+  remaining: number;
   start: Date;
   end: Date;
 };

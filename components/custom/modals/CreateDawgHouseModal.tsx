@@ -28,7 +28,7 @@ function CreateDawgHouseModal({
 }) {
   const { logout, userProfile, refetchProfile } = useAuth();
   const router = useRouter();
-  const [name, setName] = useState<string>(userProfile?.user.displayName ?? "");
+  const [name, setName] = useState<string>("");
   const [identifier, setIdentifier] = useState<string>(
     userProfile?.user.username ?? ""
   );
@@ -73,7 +73,7 @@ function CreateDawgHouseModal({
     }
 
     setRefreshHouse(generateRandomString(10));
-    refetchProfile()
+    refetchProfile();
     setSuccess(true);
     setLoading(false);
     onClose?.();
@@ -114,14 +114,19 @@ function CreateDawgHouseModal({
                 <label htmlFor="name" className="text-sm">
                   Name{" "}
                 </label>
-                <input
-                  type="text"
-                  placeholder={`Enter dawghouse name`}
-                  value={name}
-                  name="name"
-                  onChange={(x) => setName(x.target.value)}
-                  className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder={`Enter dawghouse name`}
+                    value={name}
+                    name="name"
+                    maxLength={14}
+                    onChange={(x) => setName(x.target.value)}
+                    className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
+                  />
+
+                  <span className="absolute top-1/2 right-5 -translate-y-1/2 text-xs">{name.length}/14</span>
+                </div>
               </div>
               <div className="row flex flex-col gap-2">
                 <label htmlFor="name" className="text-sm">
@@ -132,6 +137,7 @@ function CreateDawgHouseModal({
                   placeholder={`Enter identifier`}
                   value={identifier}
                   name="identifier"
+                  maxLength={14}
                   onChange={(x) => setIdentifier(x.target.value)}
                   className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
                 />

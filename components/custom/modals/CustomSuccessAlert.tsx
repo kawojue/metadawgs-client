@@ -47,7 +47,7 @@ export function SuccessAlertModal({
               height={100}
             />
           </div>
-          <AlertDialogTitle className="text-center font-fredoka text-3xl capitalize">
+          <AlertDialogTitle className="text-center font-fredoka text-3xl capitalize whitespace-pre">
             {title}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center max-w-[380px] text-white text-base">

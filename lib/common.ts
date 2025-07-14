@@ -151,7 +151,8 @@ export function getTimeRemaining(joinedAt: string): {
   return { hours, minutes, seconds, hasPassed };
 }
 
-export const formatTime = (seconds: number) => {
+export const formatTime = (milliseconds: number) => {
+  const seconds = Math.floor(milliseconds / 1000); // to seconds
   const days = Math.floor(seconds / 86400);
   const hours = Math.floor((seconds % 86400) / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);

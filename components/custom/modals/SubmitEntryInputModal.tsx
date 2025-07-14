@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/dialog";
 import { ArrowUpRightIcon, CircleX } from "lucide-react";
 import { useState } from "react";
-import { SubmitEntryAlert } from "@/components/custom/modals/SubmitEntryAlert";
 import { QuestErrorAlert } from "./QuestErrorAlert";
 import { XUserToken } from "@/lib/values";
 import useAuth from "@/hooks/use-auth";
+import { SuccessAlertModal } from "./CustomSuccessAlert";
+import { useRouter } from "next/navigation";
 
 function SubmitEntryInputModal({
   open,
@@ -34,6 +35,7 @@ function SubmitEntryInputModal({
   const [isRobo, setIsRobo] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   async function submitEntry() {
     const token = localStorage.getItem(XUserToken);
@@ -114,13 +116,23 @@ function SubmitEntryInputModal({
             <div className="grid gap-5 py-4 content">
               <div className="row flex flex-col gap-2">
                 <label htmlFor="link" className="text-sm">
-                  Link to {isMindShare ? "tweet or reel" : "tweet"}
+                  {isVideo && (
+                    <>
+                      {!isMindShare && "Link to tweet"}
+                      {isMindShare &&
+                        `Link to your Tweeted, TikTok and Youtube Video`}
+                    </>
+                  )}
+                  {!isVideo && (
+                    <>
+                      {!isMindShare && "Link to tweet"}
+                      {isMindShare && `Link to tweet`}
+                    </>
+                  )}
                 </label>
                 <input
                   type="text"
-                  placeholder={`Enter link to ${
-                    isMindShare ? "tweet or reel" : "tweet"
-                  }`}
+                  placeholder={`Enter link`}
                   value={link}
                   onChange={(x) => setLink(x.target.value)}
                   className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
@@ -158,12 +170,13 @@ function SubmitEntryInputModal({
         />
       )}
       {success && (
-        <SubmitEntryAlert
+        <SuccessAlertModal
           open={success}
-          onClose={() => {
-            onClose?.();
-            setSuccess(false);
-          }}
+          onClose={() => setSuccess(false)}
+          title={`Quest submitted!\nBones awarded! 🎉`}
+          message="An admin will review your entry soon to make sure everything checks out. If something doesn’t add up, your account could face penalties. So play fair, adventurer! ⚔️"
+          onAdvance={() => router.push("/metadawgs-club/dawghouses")}
+          advanceLabel="Go to Dawghouse"
         />
       )}
     </>
