@@ -29,7 +29,7 @@ function AddressButton({
     onConnect?: () => void;
     preventAutoClose?: boolean;
 }) {
-    const { userToken, setUserProfile, userProfile } = useAuth();
+    const { userToken, setUserProfile, userProfile, isLoading: authLoading } = useAuth();
     const { setMenuIsOpen } = useMobileMenu();
 
     const { publicKey, disconnect } = useWallet();
@@ -70,7 +70,7 @@ function AddressButton({
 
     useEffect(() => {
         async function updateUserWallet() {
-            if (!publicKey || !userToken) return;
+            if (!publicKey || !userToken || authLoading) return;
 
             const currentWallet = publicKey.toBase58();
 

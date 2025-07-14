@@ -152,7 +152,7 @@ const StatsGrid: React.FC<StatsGridProps> = ({
     }
 
     return (
-      <p className="text-3xl font-bold">
+      <p className="text-2xl font-bold">
         {value || "0"}
         {totalValue && (
           <span className="text-lg text-gray-400 ml-1">/{totalValue}</span>

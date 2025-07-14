@@ -41,7 +41,7 @@ function SubmitEntryInputModal({
 
     setLoading(true);
 
-    const body = { url: link, isVideo: isVideo };
+    const body = { url: link };
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/entry`, {
       method: "POST",

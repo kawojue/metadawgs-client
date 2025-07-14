@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -18,20 +19,20 @@ import { SuccessAlertModal } from "./CustomSuccessAlert";
 import { useRouter } from "next/navigation";
 import useLocalStorage from "use-local-storage";
 import { generateRandomString } from "@/lib/common";
+import { IDawghouse } from "@/lib/type";
 
-function CreateDawgHouseModal({
+function JoinDawgHouseModal({
   open,
   onClose,
+  dawgHouse,
 }: {
   open: boolean;
   onClose?: () => void;
+  dawgHouse: IDawghouse;
 }) {
-  const { logout, userProfile, refetchProfile } = useAuth();
+  const { logout, refetchProfile } = useAuth();
   const router = useRouter();
-  const [name, setName] = useState<string>(userProfile?.user.displayName ?? "");
-  const [identifier, setIdentifier] = useState<string>(
-    userProfile?.user.username ?? ""
-  );
+
   const [, setRefreshHouse] = useLocalStorage<string>(XRefreshHouse, "");
 
   const [apiError, setApiError] = useState<string | null>(null);
@@ -39,29 +40,31 @@ function CreateDawgHouseModal({
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  async function submitEntry() {
+  async function joinDawghouse() {
     const token = localStorage.getItem(XUserToken);
     if (!token) return;
 
     setLoading(true);
 
-    const body = { name: name, identifier: identifier };
+    const body = { identifier: dawgHouse.identifier };
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dawghouses`, {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        Authorization: `Bearer ${JSON.parse(token)}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/dawghouses/join`,
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          Authorization: `Bearer ${JSON.parse(token)}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!res.ok) {
       if (res.status !== 401) {
         const { message } = await res.json();
         setIsRobo(![409, 429].includes(res.status));
         setApiError(message);
-        onClose?.();
       } else {
         logout();
         onClose?.();
@@ -73,10 +76,10 @@ function CreateDawgHouseModal({
     }
 
     setRefreshHouse(generateRandomString(10));
-    refetchProfile()
+    refetchProfile();
+    onClose?.();
     setSuccess(true);
     setLoading(false);
-    onClose?.();
   }
 
   return (
@@ -106,45 +109,21 @@ function CreateDawgHouseModal({
                 />
               </div>
               <DialogTitle className="font-fredoka text-3xl text-center">
-                Create Dawghouse
+                Join Dawghouse
               </DialogTitle>
+              <DialogDescription>
+                Are sure you want to join {dawgHouse.name} Dawghouse
+              </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-5 py-4 content">
-              <div className="row flex flex-col gap-2">
-                <label htmlFor="name" className="text-sm">
-                  Name{" "}
-                </label>
-                <input
-                  type="text"
-                  placeholder={`Enter dawghouse name`}
-                  value={name}
-                  name="name"
-                  onChange={(x) => setName(x.target.value)}
-                  className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
-                />
-              </div>
-              <div className="row flex flex-col gap-2">
-                <label htmlFor="name" className="text-sm">
-                  Identifier{" "}
-                </label>
-                <input
-                  type="text"
-                  placeholder={`Enter identifier`}
-                  value={identifier}
-                  name="identifier"
-                  onChange={(x) => setIdentifier(x.target.value)}
-                  className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
-                />
-              </div>
-            </div>
+
             <DialogFooter className="">
               <Button
                 type="button"
                 className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
-                disabled={!name || loading}
-                onClick={submitEntry}
+                disabled={loading}
+                onClick={joinDawghouse}
               >
-                {!loading ? "Create" : "Creating..."}
+                {!loading ? "Join" : "Joining..."}
                 <ArrowUpRightIcon size={11} />
               </Button>
             </DialogFooter>
@@ -166,8 +145,8 @@ function CreateDawgHouseModal({
         <SuccessAlertModal
           open={success}
           onClose={() => setSuccess(false)}
-          title="Dawghouse Created"
-          message="Your new Dawghouse is now live. You can start inviting others to join."
+          title="Dawghouse Joined!"
+          message="Your are now in smth Dawghouse"
           onAdvance={() => router.push("/metadawgs-club/dawghouses")}
           advanceLabel="Go to Dawghouse"
         />
@@ -176,4 +155,4 @@ function CreateDawgHouseModal({
   );
 }
 
-export default CreateDawgHouseModal;
+export default JoinDawgHouseModal;

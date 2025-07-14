@@ -1,13 +1,11 @@
 "use client";
 
-import { XOpenSignUpModal, XRefreshPosts } from "@/lib/values";
-import { useCallback, useEffect, useState } from "react";
+import { XOpenSignUpModal } from "@/lib/values";
+import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
-import { toast } from "sonner";
 import useAuth from "@/hooks/use-auth";
 
 // import { VerificationBadge } from "@/lib/icons";
-import { UserStats } from "@/lib/type";
 import {
   ArrowLeft,
   FilePenLine,
@@ -15,22 +13,26 @@ import {
   HousePlusIcon,
   LogOutIcon,
 } from "lucide-react";
-import { fetchWithAuth } from "@/lib/api";
 import SubmitEntryInputModal from "@/components/custom/modals/SubmitEntryInputModal";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import CreateDawgHouseModal from "@/components/custom/modals/CreateDawgHouseModal";
 import StatsGrid from "@/components/custom/StatsGrid";
 import { dawghouseCards, elseCards } from "./data";
-import { formatTime } from "@/lib/common";
+import { formatNumberWithCommas, formatTime } from "@/lib/common";
 import { LeaveDawgHouseAlert } from "@/components/custom/modals/LeaveDawgHouseAlert";
+import { DawgMetrics } from "@/lib/type";
 
-function TopBanner({ inDawgsHouse }: { inDawgsHouse?: boolean }) {
-  const [refreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
+function TopBanner({
+  userStats,
+  inDawgsHouse,
+}: {
+  userStats: DawgMetrics | null;
+  inDawgsHouse: boolean;
+}) {
   const { userToken, userProfile } = useAuth();
   const router = useRouter();
-  const [, s_setLoading] = useState<boolean>(false);
-  const [userStats, setUserStats] = useState<UserStats | null>(null);
+
   const [, setOpenSignup] = useLocalStorage(XOpenSignUpModal, false);
   const [showEntryInput, setShowEntryInput] = useState<boolean>(false);
   const [showCreateHouse, setShowCreateHouse] = useState<boolean>(false);
@@ -38,37 +40,17 @@ function TopBanner({ inDawgsHouse }: { inDawgsHouse?: boolean }) {
 
   const [isInputVideo, setIsInputVideo] = useState<boolean>(false);
 
-  const [timeLeft, setTimeLeft] = useState(86400);
-
-  const fetchStats = useCallback(async () => {
-    if (!userToken) {
-      setUserStats(null);
-      return;
-    }
-
-    try {
-      s_setLoading(true);
-
-      const endpoint = `/user/mindshare/aggregation`;
-
-      const { data } = await fetchWithAuth<UserStats>(endpoint);
-      setUserStats(data);
-    } catch (error) {
-      console.error("Failed to fetch user stats:", error);
-      toast("Failed to load your stats. Please try again later.");
-      setUserStats(null);
-    } finally {
-      s_setLoading(false);
-    }
-  }, [userToken]);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
 
   useEffect(() => {
-    fetchStats();
-  }, [refreshPosts, fetchStats]);
+    if (userStats) {
+      setTimeLeft(userStats?.tournamentDuration.elapsed ?? 0);
+    }
+  }, [userStats]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      setTimeLeft((prev) => prev && (prev > 0 ? prev - 1 : 0));
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -115,31 +97,57 @@ function TopBanner({ inDawgsHouse }: { inDawgsHouse?: boolean }) {
             userProfile: userProfile || undefined,
           }}
           data={
-            inDawgsHouse
+            userStats?.type === "dawghouse"
               ? {
-                  totalReferrals: 100,
-                  totalReferralsTotal: 150,
-                  totalEngagements: 10,
-                  totalEngagementsTotal: 300,
-                  totalBones: userStats?.bonesEarned,
-                  totalBonesTotal: 100000,
+                  totalReferrals: formatNumberWithCommas(
+                    userStats.totalReferrals
+                  ),
+                  totalReferralsTotal: formatNumberWithCommas(
+                    userStats.referralsGoal
+                  ),
+                  totalEngagements: formatNumberWithCommas(
+                    userStats.totalEngagements
+                  ),
+                  totalEngagementsTotal: formatNumberWithCommas(
+                    userStats.engagementsGoal
+                  ),
+                  totalBones: formatNumberWithCommas(userStats?.totalBones),
+                  totalBonesTotal: formatNumberWithCommas(userStats.bonesGoal),
                   tournamentDuration: formatTime(timeLeft),
-                  twitterPosts: userStats?.postsCount,
-                  totalVideos: 12,
-                  totalDawgs: 45,
-                  dawghouseRank: 3,
-                  bonesReward: 1500,
-                  referral: "referral_link",
+                  twitterPosts: formatNumberWithCommas(
+                    userStats?.totalTwitterPosts
+                  ),
+                  totalVideos: formatNumberWithCommas(userStats.totalVideos),
+                  totalDawgs: formatNumberWithCommas(
+                    userStats.totalParticipants
+                  ),
+                  dawghouseRank: formatNumberWithCommas(
+                    userStats.dawghouseRank
+                  ),
+                  bonesReward: formatNumberWithCommas(userStats.bonesReward),
+                  // referral: "referral_link",
                 }
               : {
                   tournamentDuration: formatTime(timeLeft),
-                  bonesReward: 250,
-                  posts: 15,
-                  engagements: 120,
-                  superBones: 50,
-                  referralsGoal: 100,
-                  bonesGoal: 10000,
-                  engagementsGoal: 500,
+                  bonesReward: formatNumberWithCommas(
+                    userStats?.bonesReward ?? 0
+                  ),
+                  posts: formatNumberWithCommas(userStats?.postEntries ?? 0),
+                  engagements: formatNumberWithCommas(
+                    userStats?.engagements ?? 0
+                  ),
+                  superBones: formatNumberWithCommas(
+                    userStats?.superBones ?? 0
+                  ),
+                  referralsGoal: formatNumberWithCommas(
+                    userStats?.goals.referrals ?? 0
+                  ),
+                  bonesGoal: formatNumberWithCommas(
+                    userStats?.goals.bones ?? 0
+                  ),
+                  engagementsGoal: formatNumberWithCommas(
+                    userStats?.goals.engagements ?? 0
+                  ),
                 }
           }
           statsCards={inDawgsHouse ? dawghouseCards : elseCards}
