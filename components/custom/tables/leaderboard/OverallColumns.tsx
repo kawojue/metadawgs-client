@@ -72,6 +72,16 @@ export const x_columns: ColumnDef<OverallLeaderboardType>[] = [
         ),
     },
     {
+        accessorKey: "referralCount",
+        header: () => <div className="text-white">Referred Dawgs</div>,
+        cell: ({ row }) => (
+            <div className="text-white">
+                <span>🐾</span>
+                <span> {row.getValue("referralCount")} Dawgs</span>
+            </div>
+        ),
+    },
+    {
         accessorKey: "points",
         header: () => <div className="text-white">Bones</div>,
         cell: ({ row }) => {
