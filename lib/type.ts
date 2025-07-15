@@ -83,7 +83,7 @@ export interface OverallLeaderboardType {
     rank: number;
     avatar: string;
     verified: boolean;
-    referralCount: number;
+    referralCount?: number;
 }
 
 export interface GrindersLeaderboardType {
