@@ -6,156 +6,198 @@ import { formatNumberWithCommas } from "@/lib/common";
 import { useEffect, useState } from "react";
 
 type Metrics = {
-  totalPoints: string;
-  totalUsers: number;
-  totalPostEntries: number;
-  totalEngaged: number;
-  totalReferred: number;
-  totalTgPoints: number;
+    totalPoints: string;
+    totalUsers: number;
+    totalPostEntries: number;
+    totalEngaged: number;
+    totalReferred: number;
+    totalTgPoints: number;
 };
 
 const Page = () => {
-  const [metrics, setMetrics] = useState<Metrics | null>(null);
+    const [metrics, setMetrics] = useState<Metrics | null>(null);
 
-  useEffect(() => {
-    async function getData() {
-      const resMetrics = await fetchWithAuth<Metrics>("/stats", {
-        isAdmin: true,
-      });
+    useEffect(() => {
+        async function getData() {
+            const resMetrics = await fetchWithAuth<Metrics>("/stats", {
+                isAdmin: true,
+            });
 
-      setMetrics(resMetrics.data);
-    }
+            setMetrics(resMetrics.data);
+        }
 
-    getData();
-  }, []);
+        getData();
+    }, []);
 
-  return (
-    <div className="space-y-8">
-      <div className="space-y-5">
-        <h1 className="text-2xl font-semibold font-fredoka">Dashboard</h1>
-        <div className="grid xl:grid-cols-3 grid-cols-2 max-[450px]:grid-cols-1 gap-4">
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#000000] text-white w-full col-span-1">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16.0065 5.33716C24.1067 5.33716 30.6732 8.91888 30.6732 13.3371V18.6705C30.6732 23.0887 24.1067 26.6705 16.0065 26.6705C8.05099 26.6705 1.57486 23.2155 1.3461 18.9063L1.33984 18.6705V13.3371C1.33984 8.91888 7.90634 5.33716 16.0065 5.33716ZM16.0065 21.3371C11.0459 21.3371 6.6605 19.9938 4.00622 17.9378L4.00651 18.6705C4.00651 21.1801 9.18335 24.0038 16.0065 24.0038C22.6875 24.0038 27.7901 21.2965 27.9999 18.8277L28.0065 18.6705L28.0081 17.9367C25.354 19.9934 20.968 21.3371 16.0065 21.3371ZM16.0065 8.00382C9.18335 8.00382 4.00651 10.8276 4.00651 13.3371C4.00651 15.8467 9.18335 18.6705 16.0065 18.6705C22.8297 18.6705 28.0065 15.8467 28.0065 13.3371C28.0065 10.8276 22.8297 8.00382 16.0065 8.00382Z"
-                fill="white"
-              />
-            </svg>
+    return (
+        <div className="space-y-8">
+            <div className="space-y-5">
+                <h1 className="text-2xl font-semibold font-fredoka">
+                    Metadawgs Analytics
+                </h1>
+                <div className="grid xl:grid-cols-3 grid-cols-2 max-[450px]:grid-cols-1 gap-6">
+                    <div className="rounded-3xl overflow-hidden bg-gradient-to-r from-[#FFBE00] via-[#FF6B6B] to-[#4ECDC4] p-[2px]">
+                        <div className="group relative overflow-hidden space-y-4 p-6 rounded-3xl text-white w-full col-span-1 bg-gradient-to-br from-[#FFBE00] via-[#FF6B6B] to-[#4ECDC4] shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm">
+                            <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M16.0065 5.33716C24.1067 5.33716 30.6732 8.91888 30.6732 13.3371V18.6705C30.6732 23.0887 24.1067 26.6705 16.0065 26.6705C8.05099 26.6705 1.57486 23.2155 1.3461 18.9063L1.33984 18.6705V13.3371C1.33984 8.91888 7.90634 5.33716 16.0065 5.33716ZM16.0065 21.3371C11.0459 21.3371 6.6605 19.9938 4.00622 17.9378L4.00651 18.6705C4.00651 21.1801 9.18335 24.0038 16.0065 24.0038C22.6875 24.0038 27.7901 21.2965 27.9999 18.8277L28.0065 18.6705L28.0081 17.9367C25.354 19.9934 20.968 21.3371 16.0065 21.3371ZM16.0065 8.00382C9.18335 8.00382 4.00651 10.8276 4.00651 13.3371C4.00651 15.8467 9.18335 18.6705 16.0065 18.6705C22.8297 18.6705 28.0065 15.8467 28.0065 13.3371C28.0065 10.8276 22.8297 8.00382 16.0065 8.00382Z"
+                                    fill="white"
+                                />
+                            </svg>
 
-            <p className="text-sm">Total Point Accumulated</p>
-            <span className="total font-extrabold text-3xl">
-              {metrics?.totalPoints || 0}
-            </span>
-          </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full col-span-1">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12.7333 15.3334C11.0764 15.3334 9.73329 13.9902 9.73329 12.3334C9.73329 10.6766 11.0764 9.33342 12.7333 9.33342C14.3901 9.33342 15.7333 10.6766 15.7333 12.3334C15.7333 13.9902 14.3901 15.3334 12.7333 15.3334ZM13.3333 26.3307V21.8667C13.3333 21.2155 13.5256 20.617 13.8721 20.0833C13.4782 20.0285 13.0757 20.0001 12.6666 20.0001C10.576 20.0001 8.65821 20.7403 7.16117 21.973C8.59875 24.0962 10.7812 25.6738 13.3333 26.3307ZM5.93711 19.5467C7.81905 18.1558 10.1468 17.3334 12.6666 17.3334C14.058 17.3334 15.3908 17.5841 16.6222 18.0429C17.7929 17.5851 19.1898 17.3334 20.6666 17.3334C22.8796 17.3334 24.9132 17.8986 26.2746 18.8751C26.5301 17.9605 26.6666 16.9962 26.6666 16.0001C26.6666 10.109 21.891 5.33341 16 5.33341C10.1089 5.33341 5.33329 10.109 5.33329 16.0001C5.33329 17.2434 5.54604 18.4371 5.93711 19.5467ZM25.1725 21.4479C24.6482 20.7369 22.8944 20.0001 20.6666 20.0001C17.9918 20.0001 16 21.0623 16 21.8667V26.6667C19.9006 26.6667 23.3124 24.5729 25.1725 21.4479ZM16 29.3334C8.63616 29.3334 2.66663 23.3638 2.66663 16.0001C2.66663 8.63628 8.63616 2.66675 16 2.66675C23.3637 2.66675 29.3333 8.63628 29.3333 16.0001C29.3333 23.3638 23.3637 29.3334 16 29.3334ZM20.6666 16.6667C19.1938 16.6667 18 15.4729 18 14.0001C18 12.5273 19.1938 11.3334 20.6666 11.3334C22.1394 11.3334 23.3333 12.5273 23.3333 14.0001C23.3333 15.4729 22.1394 16.6667 20.6666 16.6667Z"
-                fill="black"
-              />
-            </svg>
+                            <p className="text-base font-medium opacity-90">
+                                Total Bones Accumulated
+                            </p>
+                            <span className="total font-extrabold text-4xl tracking-tight drop-shadow-lg">
+                                {metrics?.totalPoints || 0}
+                            </span>
+                            <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+                        </div>
+                    </div>
+                    <div className="rounded-3xl overflow-hidden bg-gradient-to-r from-[#FFBE00] via-[#FF6B6B] to-[#4ECDC4] p-[2px]">
+                        <div className="group relative overflow-hidden space-y-4 p-6 rounded-3xl bg-gradient-to-br from-white to-gray-50 w-full col-span-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                            <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M12.7333 15.3334C11.0764 15.3334 9.73329 13.9902 9.73329 12.3334C9.73329 10.6766 11.0764 9.33342 12.7333 9.33342C14.3901 9.33342 15.7333 10.6766 15.7333 12.3334C15.7333 13.9902 14.3901 15.3334 12.7333 15.3334ZM13.3333 26.3307V21.8667C13.3333 21.2155 13.5256 20.617 13.8721 20.0833C13.4782 20.0285 13.0757 20.0001 12.6666 20.0001C10.576 20.0001 8.65821 20.7403 7.16117 21.973C8.59875 24.0962 10.7812 25.6738 13.3333 26.3307ZM5.93711 19.5467C7.81905 18.1558 10.1468 17.3334 12.6666 17.3334C14.058 17.3334 15.3908 17.5841 16.6222 18.0429C17.7929 17.5851 19.1898 17.3334 20.6666 17.3334C22.8796 17.3334 24.9132 17.8986 26.2746 18.8751C26.5301 17.9605 26.6666 16.9962 26.6666 16.0001C26.6666 10.109 21.891 5.33341 16 5.33341C10.1089 5.33341 5.33329 10.109 5.33329 16.0001C5.33329 17.2434 5.54604 18.4371 5.93711 19.5467ZM25.1725 21.4479C24.6482 20.7369 22.8944 20.0001 20.6666 20.0001C17.9918 20.0001 16 21.0623 16 21.8667V26.6667C19.9006 26.6667 23.3124 24.5729 25.1725 21.4479ZM16 29.3334C8.63616 29.3334 2.66663 23.3638 2.66663 16.0001C2.66663 8.63628 8.63616 2.66675 16 2.66675C23.3637 2.66675 29.3333 8.63628 29.3333 16.0001C29.3333 23.3638 23.3637 29.3334 16 29.3334ZM20.6666 16.6667C19.1938 16.6667 18 15.4729 18 14.0001C18 12.5273 19.1938 11.3334 20.6666 11.3334C22.1394 11.3334 23.3333 12.5273 23.3333 14.0001C23.3333 15.4729 22.1394 16.6667 20.6666 16.6667Z"
+                                    fill="black"
+                                />
+                            </svg>
 
-            <p className="text-sm">Total Users</p>
-            <span className="total font-extrabold text-3xl">
-              {formatNumberWithCommas(metrics?.totalUsers || 0)}
-            </span>
-          </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full col-span-1">
-            <svg
-              width="30"
-              height="22"
-              viewBox="0 0 30 22"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M15.0065 0.337158C23.1067 0.337158 29.6732 3.91888 29.6732 8.33714V13.6705C29.6732 18.0887 23.1067 21.6705 15.0065 21.6705C7.05099 21.6705 0.574857 18.2155 0.346097 13.9063L0.339844 13.6705V8.33714C0.339844 3.91888 6.90634 0.337158 15.0065 0.337158ZM15.0065 16.3371C10.0459 16.3371 5.6605 14.9938 3.00622 12.9378L3.00651 13.6705C3.00651 16.1801 8.18335 19.0038 15.0065 19.0038C21.6875 19.0038 26.7901 16.2965 26.9999 13.8277L27.0065 13.6705L27.0081 12.9367C24.354 14.9934 19.968 16.3371 15.0065 16.3371ZM15.0065 3.00382C8.18335 3.00382 3.00651 5.82756 3.00651 8.33714C3.00651 10.8467 8.18335 13.6705 15.0065 13.6705C21.8297 13.6705 27.0065 10.8467 27.0065 8.33714C27.0065 5.82756 21.8297 3.00382 15.0065 3.00382Z"
-                fill="black"
-              />
-            </svg>
+                            <p className="text-base font-medium text-gray-600">
+                                Total Dawgs
+                            </p>
+                            <span className="total font-extrabold text-4xl tracking-tight text-gray-800">
+                                {formatNumberWithCommas(
+                                    metrics?.totalUsers || 0
+                                )}
+                            </span>
+                            <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-blue-100 rounded-full blur-xl opacity-50"></div>
+                        </div>
+                    </div>
+                    <div className="rounded-3xl overflow-hidden bg-gradient-to-r from-[#FFBE00] via-[#FF6B6B] to-[#4ECDC4] p-[2px]">
+                        <div className="group relative overflow-hidden space-y-4 p-6 rounded-3xl bg-gradient-to-br from-white to-gray-50 w-full col-span-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                            <svg
+                                width="30"
+                                height="22"
+                                viewBox="0 0 30 22"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M15.0065 0.337158C23.1067 0.337158 29.6732 3.91888 29.6732 8.33714V13.6705C29.6732 18.0887 23.1067 21.6705 15.0065 21.6705C7.05099 21.6705 0.574857 18.2155 0.346097 13.9063L0.339844 13.6705V8.33714C0.339844 3.91888 6.90634 0.337158 15.0065 0.337158ZM15.0065 16.3371C10.0459 16.3371 5.6605 14.9938 3.00622 12.9378L3.00651 13.6705C3.00651 16.1801 8.18335 19.0038 15.0065 19.0038C21.6875 19.0038 26.7901 16.2965 26.9999 13.8277L27.0065 13.6705L27.0081 12.9367C24.354 14.9934 19.968 16.3371 15.0065 16.3371ZM15.0065 3.00382C8.18335 3.00382 3.00651 5.82756 3.00651 8.33714C3.00651 10.8467 8.18335 13.6705 15.0065 13.6705C21.8297 13.6705 27.0065 10.8467 27.0065 8.33714C27.0065 5.82756 21.8297 3.00382 15.0065 3.00382Z"
+                                    fill="black"
+                                />
+                            </svg>
 
-            <p className="text-sm">Total Post Entries</p>
-            <span className="total font-extrabold text-3xl">
-              {formatNumberWithCommas(metrics?.totalPostEntries || 0)}
-            </span>
-          </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full col-span-1">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11.3333 9.33333C11.3333 10.8061 10.1394 12 8.66663 12C7.19387 12 5.99996 10.8061 5.99996 9.33333C5.99996 7.86057 7.19387 6.66667 8.66663 6.66667C10.1394 6.66667 11.3333 7.86057 11.3333 9.33333ZM3.33329 9.33333C3.33329 12.2789 5.72111 14.6667 8.66663 14.6667C11.6121 14.6667 14 12.2789 14 9.33333C14 6.38781 11.6121 4 8.66663 4C5.72111 4 3.33329 6.38781 3.33329 9.33333ZM12 22C12 20.1591 10.5076 18.6667 8.66663 18.6667C6.82568 18.6667 5.33329 20.1591 5.33329 22V25.3333H12V22ZM14.6666 28H2.66663V22C2.66663 18.6863 5.35292 16 8.66663 16C11.9803 16 14.6666 18.6863 14.6666 22V28ZM26 9.33333C26 10.8061 24.8061 12 23.3333 12C21.8605 12 20.6666 10.8061 20.6666 9.33333C20.6666 7.86057 21.8605 6.66667 23.3333 6.66667C24.8061 6.66667 26 7.86057 26 9.33333ZM18 9.33333C18 12.2789 20.3878 14.6667 23.3333 14.6667C26.2788 14.6667 28.6666 12.2789 28.6666 9.33333C28.6666 6.38781 26.2788 4 23.3333 4C20.3878 4 18 6.38781 18 9.33333ZM26.6666 22C26.6666 20.1591 25.1742 18.6667 23.3333 18.6667C21.4924 18.6667 20 20.1591 20 22V25.3333H26.6666V22ZM17.3333 25.3333V22C17.3333 18.6863 20.0196 16 23.3333 16C26.647 16 29.3333 18.6863 29.3333 22V28H17.3333V25.3333Z"
-                fill="black"
-              />
-            </svg>
+                            <p className="text-base font-medium text-gray-600">
+                                Total Post Entries
+                            </p>
+                            <span className="total font-extrabold text-4xl tracking-tight text-gray-800">
+                                {formatNumberWithCommas(
+                                    metrics?.totalPostEntries || 0
+                                )}
+                            </span>
+                            <div className="absolute -top-4 -right-4 w-20 h-20 bg-green-100 rounded-full blur-xl opacity-50"></div>
+                        </div>
+                    </div>
+                    <div className="rounded-3xl overflow-hidden bg-gradient-to-r from-[#FFBE00] via-[#FF6B6B] to-[#4ECDC4] p-[2px]">
+                        <div className="group relative overflow-hidden space-y-4 p-6 rounded-3xl bg-gradient-to-br from-white to-gray-50 w-full col-span-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                            <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M11.3333 9.33333C11.3333 10.8061 10.1394 12 8.66663 12C7.19387 12 5.99996 10.8061 5.99996 9.33333C5.99996 7.86057 7.19387 6.66667 8.66663 6.66667C10.1394 6.66667 11.3333 7.86057 11.3333 9.33333ZM3.33329 9.33333C3.33329 12.2789 5.72111 14.6667 8.66663 14.6667C11.6121 14.6667 14 12.2789 14 9.33333C14 6.38781 11.6121 4 8.66663 4C5.72111 4 3.33329 6.38781 3.33329 9.33333ZM12 22C12 20.1591 10.5076 18.6667 8.66663 18.6667C6.82568 18.6667 5.33329 20.1591 5.33329 22V25.3333H12V22ZM14.6666 28H2.66663V22C2.66663 18.6863 5.35292 16 8.66663 16C11.9803 16 14.6666 18.6863 14.6666 22V28ZM26 9.33333C26 10.8061 24.8061 12 23.3333 12C21.8605 12 20.6666 10.8061 20.6666 9.33333C20.6666 7.86057 21.8605 6.66667 23.3333 6.66667C24.8061 6.66667 26 7.86057 26 9.33333ZM18 9.33333C18 12.2789 20.3878 14.6667 23.3333 14.6667C26.2788 14.6667 28.6666 12.2789 28.6666 9.33333C28.6666 6.38781 26.2788 4 23.3333 4C20.3878 4 18 6.38781 18 9.33333ZM26.6666 22C26.6666 20.1591 25.1742 18.6667 23.3333 18.6667C21.4924 18.6667 20 20.1591 20 22V25.3333H26.6666V22ZM17.3333 25.3333V22C17.3333 18.6863 20.0196 16 23.3333 16C26.647 16 29.3333 18.6863 29.3333 22V28H17.3333V25.3333Z"
+                                    fill="black"
+                                />
+                            </svg>
 
-            <p className="text-sm">Total Engaged</p>
-            <span className="total font-extrabold text-3xl">
-              {formatNumberWithCommas(metrics?.totalEngaged || 0)}
-            </span>
-          </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full col-span-1">
-            <svg
-              width="26"
-              height="29"
-              viewBox="0 0 26 29"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M13.6667 18.0026V20.7885C12.8326 20.4937 11.9351 20.3333 11 20.3333C6.58176 20.3333 3.00004 23.915 3.00004 28.3333H0.333374C0.333374 22.4422 5.109 17.6666 11 17.6666C11.9208 17.6666 12.8144 17.7833 13.6667 18.0026ZM11 16.3333C6.58004 16.3333 3.00004 12.7533 3.00004 8.33325C3.00004 3.91325 6.58004 0.333252 11 0.333252C15.42 0.333252 19 3.91325 19 8.33325C19 12.7533 15.42 16.3333 11 16.3333ZM11 13.6666C13.9467 13.6666 16.3334 11.2799 16.3334 8.33325C16.3334 5.38659 13.9467 2.99992 11 2.99992C8.05337 2.99992 5.66671 5.38659 5.66671 8.33325C5.66671 11.2799 8.05337 13.6666 11 13.6666ZM19 21.6666V17.6666H21.6667V21.6666H25.6667V24.3333H21.6667V28.3333H19V24.3333H15V21.6666H19Z"
-                fill="black"
-              />
-            </svg>
+                            <p className="text-base font-medium text-gray-600">
+                                Total Engaged
+                            </p>
+                            <span className="total font-extrabold text-4xl tracking-tight text-gray-800">
+                                {formatNumberWithCommas(
+                                    metrics?.totalEngaged || 0
+                                )}
+                            </span>
+                            <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-purple-100 rounded-full blur-xl opacity-50"></div>
+                        </div>
+                    </div>
+                    <div className="rounded-3xl overflow-hidden bg-gradient-to-r from-[#FFBE00] via-[#FF6B6B] to-[#4ECDC4] p-[2px]">
+                        <div className="group relative overflow-hidden space-y-4 p-6 rounded-3xl bg-gradient-to-br from-white to-gray-50 w-full col-span-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                            <svg
+                                width="26"
+                                height="29"
+                                viewBox="0 0 26 29"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M13.6667 18.0026V20.7885C12.8326 20.4937 11.9351 20.3333 11 20.3333C6.58176 20.3333 3.00004 23.915 3.00004 28.3333H0.333374C0.333374 22.4422 5.109 17.6666 11 17.6666C11.9208 17.6666 12.8144 17.7833 13.6667 18.0026ZM11 16.3333C6.58004 16.3333 3.00004 12.7533 3.00004 8.33325C3.00004 3.91325 6.58004 0.333252 11 0.333252C15.42 0.333252 19 3.91325 19 8.33325C19 12.7533 15.42 16.3333 11 16.3333ZM11 13.6666C13.9467 13.6666 16.3334 11.2799 16.3334 8.33325C16.3334 5.38659 13.9467 2.99992 11 2.99992C8.05337 2.99992 5.66671 5.38659 5.66671 8.33325C5.66671 11.2799 8.05337 13.6666 11 13.6666ZM19 21.6666V17.6666H21.6667V21.6666H25.6667V24.3333H21.6667V28.3333H19V24.3333H15V21.6666H19Z"
+                                    fill="black"
+                                />
+                            </svg>
 
-            <p className="text-sm">Total Users Referral</p>
-            <span className="total font-extrabold text-3xl">
-              {formatNumberWithCommas(metrics?.totalReferred || 0)}
-            </span>
-          </div>
-          <div className="col space-y-4 p-5 py-5 rounded-2xl bg-[#F5F5F5] w-full col-span-1">
-            <svg
-              width="26"
-              height="23"
-              viewBox="0 0 26 23"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M21.7924 3.52866C22.5832 3.24172 22.9757 3.13846 23.1932 3.10152C23.1948 3.17106 23.1932 3.22743 23.1896 3.26442C22.8795 6.52297 21.5208 14.5398 20.8229 18.2702C20.6596 19.1438 20.5343 19.5597 19.6905 19.0641C19.1352 18.7377 18.6327 18.327 18.0943 17.9741C16.3281 16.8162 13.8 15.0919 14.0076 15.1957C12.2688 14.0498 12.9967 13.3482 13.9673 12.4125C14.1245 12.261 14.288 12.1034 14.4484 11.9367C14.52 11.8623 14.8703 11.5366 15.3641 11.0775C16.9483 9.60475 20.0095 6.75879 20.0868 6.42944C20.0995 6.37541 20.1112 6.17402 19.9915 6.06766C19.8719 5.96131 19.6953 5.99768 19.5679 6.0266C19.3872 6.0676 16.5101 7.96928 10.9366 11.7315C10.1199 12.2923 9.38022 12.5657 8.71748 12.5513L8.72341 12.5542C7.85041 12.2463 6.97986 11.9813 6.10473 11.7147C5.52981 11.5395 4.95292 11.3638 4.37205 11.175C4.22998 11.1289 4.09137 11.085 3.9611 11.0441C9.99708 8.41461 14.0173 6.68332 16.0319 5.84541C18.9579 4.6284 20.6935 3.92743 21.7924 3.52866ZM25.0225 0.957496C24.6847 0.683336 24.3133 0.557509 24.0553 0.495882C23.7889 0.432242 23.5357 0.411762 23.3437 0.415149C22.7085 0.426335 22.0263 0.606989 20.8828 1.02191C19.7164 1.44518 17.924 2.17026 15.0077 3.38323C12.9517 4.2384 8.8585 6.00162 2.7382 8.66808C2.20061 8.88302 1.70781 9.12688 1.31845 9.41595C0.958916 9.68301 0.455636 10.1607 0.36357 10.8953C0.294022 11.4499 0.455756 11.9619 0.783756 12.3651C1.0693 12.7161 1.43513 12.9293 1.71372 13.0642C2.12726 13.2645 2.68368 13.4389 3.17269 13.5922C3.93685 13.8317 4.69925 14.0763 5.46505 14.3107C7.83588 15.0365 9.78754 15.6338 11.9349 17.0489C13.51 18.0869 15.0547 19.1701 16.6324 20.2042C17.2079 20.5814 17.7457 21.0143 18.3399 21.3633C18.9888 21.7446 19.8139 22.0923 20.8181 21.9998C22.3359 21.8602 23.1255 20.4639 23.4441 18.7605C24.1403 15.0395 25.5212 6.91143 25.8443 3.51707C25.8864 3.074 25.8371 2.57742 25.796 2.33766C25.7537 2.09075 25.6245 1.44606 25.0225 0.957496Z"
-                fill="black"
-              />
-            </svg>
+                            <p className="text-base font-medium text-gray-600">
+                                Total Dawgs Referred
+                            </p>
+                            <span className="total font-extrabold text-4xl tracking-tight text-gray-800">
+                                {formatNumberWithCommas(
+                                    metrics?.totalReferred || 0
+                                )}
+                            </span>
+                            <div className="absolute -top-4 -left-4 w-20 h-20 bg-orange-100 rounded-full blur-xl opacity-50"></div>
+                        </div>
+                    </div>
+                    <div className="rounded-3xl overflow-hidden bg-gradient-to-r from-[#FFBE00] via-[#FF6B6B] to-[#4ECDC4] p-[2px]">
+                        <div className="group relative overflow-hidden space-y-4 p-6 rounded-3xl bg-gradient-to-br from-white to-gray-50 w-full col-span-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                            <svg
+                                width="26"
+                                height="23"
+                                viewBox="0 0 26 23"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M21.7924 3.52866C22.5832 3.24172 22.9757 3.13846 23.1932 3.10152C23.1948 3.17106 23.1932 3.22743 23.1896 3.26442C22.8795 6.52297 21.5208 14.5398 20.8229 18.2702C20.6596 19.1438 20.5343 19.5597 19.6905 19.0641C19.1352 18.7377 18.6327 18.327 18.0943 17.9741C16.3281 16.8162 13.8 15.0919 14.0076 15.1957C12.2688 14.0498 12.9967 13.3482 13.9673 12.4125C14.1245 12.261 14.288 12.1034 14.4484 11.9367C14.52 11.8623 14.8703 11.5366 15.3641 11.0775C16.9483 9.60475 20.0095 6.75879 20.0868 6.42944C20.0995 6.37541 20.1112 6.17402 19.9915 6.06766C19.8719 5.96131 19.6953 5.99768 19.5679 6.0266C19.3872 6.0676 16.5101 7.96928 10.9366 11.7315C10.1199 12.2923 9.38022 12.5657 8.71748 12.5513L8.72341 12.5542C7.85041 12.2463 6.97986 11.9813 6.10473 11.7147C5.52981 11.5395 4.95292 11.3638 4.37205 11.175C4.22998 11.1289 4.09137 11.085 3.9611 11.0441C9.99708 8.41461 14.0173 6.68332 16.0319 5.84541C18.9579 4.6284 20.6935 3.92743 21.7924 3.52866ZM25.0225 0.957496C24.6847 0.683336 24.3133 0.557509 24.0553 0.495882C23.7889 0.432242 23.5357 0.411762 23.3437 0.415149C22.7085 0.426335 22.0263 0.606989 20.8828 1.02191C19.7164 1.44518 17.924 2.17026 15.0077 3.38323C12.9517 4.2384 8.8585 6.00162 2.7382 8.66808C2.20061 8.88302 1.70781 9.12688 1.31845 9.41595C0.958916 9.68301 0.455636 10.1607 0.36357 10.8953C0.294022 11.4499 0.455756 11.9619 0.783756 12.3651C1.0693 12.7161 1.43513 12.9293 1.71372 13.0642C2.12726 13.2645 2.68368 13.4389 3.17269 13.5922C3.93685 13.8317 4.69925 14.0763 5.46505 14.3107C7.83588 15.0365 9.78754 15.6338 11.9349 17.0489C13.51 18.0869 15.0547 19.1701 16.6324 20.2042C17.2079 20.5814 17.7457 21.0143 18.3399 21.3633C18.9888 21.7446 19.8139 22.0923 20.8181 21.9998C22.3359 21.8602 23.1255 20.4639 23.4441 18.7605C24.1403 15.0395 25.5212 6.91143 25.8443 3.51707C25.8864 3.074 25.8371 2.57742 25.796 2.33766C25.7537 2.09075 25.6245 1.44606 25.0225 0.957496Z"
+                                    fill="black"
+                                />
+                            </svg>
 
-            <p className="text-sm">Total Telegram Points</p>
-            <span className="total font-extrabold text-3xl">
-              {formatNumberWithCommas(metrics?.totalTgPoints || 0)}
-            </span>
-          </div>
+                            <p className="text-base font-medium text-gray-600">
+                                Total Telegram Bones
+                            </p>
+                            <span className="total font-extrabold text-4xl tracking-tight text-gray-800">
+                                {formatNumberWithCommas(
+                                    metrics?.totalTgPoints || 0
+                                )}
+                            </span>
+                            <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-cyan-100 rounded-full blur-xl opacity-50"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="table-x w-full">
+                <UsersTable isPreview={true} />
+            </div>
         </div>
-      </div>
-
-      <div className="table-x w-full">
-        <UsersTable isPreview={true} />
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Page;
