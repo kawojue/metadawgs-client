@@ -101,7 +101,7 @@ export default function MindSharesTable({ isPreview }: Props) {
                         baseUrl={
                             isPreview
                                 ? "/wherethemagicrestricted"
-                                : "/wherethemagicrestricted/MindShares"
+                                : "/wherethemagicrestricted/mindshares"
                         }
                     />
                 )}
