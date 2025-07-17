@@ -63,7 +63,9 @@ const Page = () => {
                                 Total Bones Accumulated
                             </p>
                             <span className="total font-extrabold text-4xl tracking-tight drop-shadow-lg">
-                                {metrics?.totalPoints || 0}
+                                {formatNumberWithCommas(
+                                    Number(metrics?.totalPoints) || 0
+                                )}
                             </span>
                             <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
                         </div>
