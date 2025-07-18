@@ -76,9 +76,9 @@ export interface TelegramLeaderboardType {
 
 export interface OverallLeaderboardType {
     userId: string;
-    displayName: string;
+    displayName?: string;
     username: string;
-    tasks: number;
+    tasks?: number;
     points: number;
     rank: number;
     avatar: string;
@@ -106,6 +106,16 @@ export interface CreatorsLeaderboardType {
     rank: number;
     avatar: string;
     verified: boolean;
+}
+
+export interface ReferralsLeaderboardType {
+    userId: string;
+    username: string;
+    points: number;
+    rank: number;
+    avatar: string;
+    verified: boolean;
+    referralCount: number;
 }
 
 export interface MetaType {
@@ -194,7 +204,12 @@ export interface PoolType {
     }[];
 }
 
-export type LeaderboardType = "overall" | "grinders" | "telegram" | "creators";
+export type LeaderboardType =
+    | "overall"
+    | "grinders"
+    | "telegram"
+    | "creators"
+    | "referrals";
 
 export type Approval = {
     id: string;

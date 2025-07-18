@@ -1,21 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { DataTable } from "./DataTable";
 import {
-    CreatorsLeaderboardType,
-    GrindersLeaderboardType,
     MetaType,
     OverallLeaderboardType,
+    CreatorsLeaderboardType,
+    GrindersLeaderboardType,
     TelegramLeaderboardType,
+    ReferralsLeaderboardType,
 } from "@/lib/type";
-import { useSocket } from "@/app/SocketProvider";
+import { Loader } from "lucide-react";
+import { DataTable } from "./DataTable";
 import { fetchWithAuth } from "@/lib/api";
-import { telegram_columns } from "./TelegramColumns";
-import { x_columns } from "./OverallColumns";
+import { useEffect, useState } from "react";
+import { useSocket } from "@/app/SocketProvider";
 import DarkPagination from "../../DarkPagination";
 import { useNumberQuery } from "@/hooks/use-query";
-import { Loader } from "lucide-react";
+import { telegram_columns } from "./TelegramColumns";
+import { x_columns as overall_columns } from "./OverallColumns";
+import { x_columns as grinders_columns } from "./GrindersColumns";
+import { x_columns as creators_columns } from "./CreatorsColumns";
+import { x_columns as referrals_columns } from "./ReferralsColumn";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -263,10 +267,10 @@ export function OverallLeaderboardTable() {
     return (
         <div className="w-full max-w-4xl space-y-8">
             <DataTable
-                columns={x_columns}
+                columns={overall_columns}
                 data={state.data}
-                isLoading={false}
-                error={null}
+                isLoading={state.loading}
+                error={state.error}
             />
             {state.meta && state.meta.totalPages > 1 && (
                 <DarkPagination
@@ -352,7 +356,96 @@ export function CreatorsLeaderboardTable() {
     return (
         <div className="w-full max-w-4xl space-y-8">
             <DataTable
-                columns={x_columns}
+                columns={creators_columns}
+                data={state.data}
+                isLoading={false}
+                error={null}
+            />
+            {state.meta && state.meta.totalPages > 1 && (
+                <DarkPagination
+                    meta={state.meta}
+                    onPageChange={(value) => {
+                        setPage(value);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                />
+            )}
+        </div>
+    );
+}
+
+export function ReferralsLeaderboardTable() {
+    const [state, setState] = useState<
+        LeaderboardState<ReferralsLeaderboardType>
+    >(initialLeaderboardState);
+
+    const [page, setPage] = useNumberQuery("page", 1);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        async function getLeaderboard() {
+            try {
+                setState((prev) => ({ ...prev, loading: true, error: null }));
+
+                const {
+                    data: { data, meta },
+                } = await fetchWithAuth<{
+                    data: ReferralsLeaderboardType[];
+                    meta: MetaType;
+                }>(
+                    `/user/leaderboard/referrals?page=${page}&limit=${ITEMS_PER_PAGE}`
+                );
+
+                if (isMounted) {
+                    setState({ data, loading: false, error: null, meta });
+                }
+            } catch (error) {
+                console.error("Error fetching leaderboard:", error);
+                if (isMounted) {
+                    setState((prev) => ({
+                        ...prev,
+                        loading: false,
+                        error: "Failed to fetch leaderboard. Please try again.",
+                        meta: undefined,
+                    }));
+                }
+            }
+        }
+
+        getLeaderboard();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [page]);
+
+    if (state.loading) {
+        return (
+            <div className="w-full max-w-4xl space-y-8 flex justify-center items-center min-h-[200px]">
+                <Loader size={48} className="animate-spin text-[#FFBE00]" />
+            </div>
+        );
+    }
+
+    if (state.error) {
+        return (
+            <div className="w-full max-w-4xl space-y-8 text-center min-h-[200px] flex flex-col justify-center items-center">
+                <p className="text-red-500 text-lg">{state.error}</p>
+                <button
+                    onClick={() => setPage(1)}
+                    className="mt-4 px-4 py-2 bg-[#FFBE00] text-black rounded-full hover:bg-[#FFBE00]/80 transition-colors"
+                >
+                    Try Again
+                </button>
+            </div>
+        );
+    }
+
+    return (
+        <div className="w-full max-w-4xl space-y-8">
+            <DataTable
+                columns={referrals_columns}
                 data={state.data}
                 isLoading={false}
                 error={null}
@@ -441,7 +534,7 @@ export function GrindersLeaderboardTable() {
     return (
         <div className="w-full max-w-4xl space-y-8">
             <DataTable
-                columns={x_columns}
+                columns={grinders_columns}
                 data={state.data}
                 isLoading={false}
                 error={null}

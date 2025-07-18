@@ -1,10 +1,10 @@
 import { InfoIcon } from "lucide-react";
-import { OverallLeaderboardType } from "@/lib/type";
+import { ReferralsLeaderboardType } from "@/lib/type";
 import { getNumberSuffix } from "@/lib/common";
 import { ColumnDef } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export const x_columns: ColumnDef<OverallLeaderboardType>[] = [
+export const x_columns: ColumnDef<ReferralsLeaderboardType>[] = [
     {
         accessorKey: "rank",
         header: () => (
@@ -65,10 +65,13 @@ export const x_columns: ColumnDef<OverallLeaderboardType>[] = [
         ),
     },
     {
-        accessorKey: "tasks",
-        header: () => <div className="text-white">Tasks Completed</div>,
+        accessorKey: "referralCount",
+        header: () => <div className="text-white">Referred Dawgs</div>,
         cell: ({ row }) => (
-            <div className="text-white">{row.getValue("tasks")} Tasks</div>
+            <div className="text-white">
+                <span>🐾</span>
+                <span> {row.getValue("referralCount")} Dawgs</span>
+            </div>
         ),
     },
     {
