@@ -21,6 +21,9 @@ const IGNORED_ROUTE_PATTERNS = [
     /^\/auth/,
     /^\/collab-manager/,
     /^\/wherethemagicrestricted(\/.*)?$/,
+    /^\/leaderboard(\/.*)?$/,
+    /^\/dawgs-tge$/,
+    /^\/dawg-bot$/,
 ];
 
 function MainLayout({ children }: { children: ReactNode }) {
