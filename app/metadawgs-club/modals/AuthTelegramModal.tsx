@@ -53,6 +53,7 @@ function AuthTelegramModal({
                     },
                     body: JSON.stringify({
                         code: code,
+                        username: username,
                     }),
                 }
             );
