@@ -285,14 +285,6 @@ function AuthTelegramModal({
                                 >
                                     Join Telegram
                                 </Button>
-                                <Button
-                                    type="button"
-                                    disabled={loading}
-                                    className="w-full py-6! rounded-full cursor-pointer bg-transparent border border-white/20 text-white disabled:cursor-not-allowed!"
-                                    onClick={() => setStep2(true)}
-                                >
-                                    Already have a code?
-                                </Button>
                             </>
                         )}
                         {step2 && (
