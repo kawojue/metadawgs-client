@@ -9,7 +9,7 @@ import React, {
 import { ProfileType } from "@/lib/type";
 import { XUserProfile, XUserToken } from "@/lib/values";
 import useLocalStorage from "use-local-storage";
-import { QuestErrorAlert } from "@/components/custom/modals/QuestErrorAlert";
+// import { QuestErrorAlert } from "@/components/custom/modals/QuestErrorAlert";
 
 export interface AuthContextType {
     userToken: string;
@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         null
     );
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const abortControllerRef = useRef<AbortController | null>(null);
 
     const handleApiError = async (response: Response) => {
@@ -44,10 +43,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             return true;
         }
 
-        try {
-            const err = await response.json();
-            setError(err.message);
-        } catch {}
+        // try {
+        //     const err = await response.json();
+        //     setError(err.message);
+        // } catch {}
         return false;
     };
 
@@ -76,7 +75,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         try {
             setIsLoading(true);
-            setError(null);
 
             const profileData = await fetchWithAuth("/auth/profile");
             if (!profileData) return;
@@ -137,7 +135,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         userProfile,
         setUserProfile,
         isLoading,
-        error,
+        error: null,
         login,
         logout,
         setUserToken,
@@ -147,7 +145,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return (
         <AuthContext.Provider value={auth}>
             {children}
-            {error && (
+            {/* {error && (
                 <QuestErrorAlert
                     open={!!error}
                     isOthers={true}
@@ -155,7 +153,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     error={error}
                     onClose={() => setError(null)}
                 />
-            )}
+            )} */}
         </AuthContext.Provider>
     );
 };
