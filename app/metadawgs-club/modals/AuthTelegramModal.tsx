@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import Image from "next/image";
-import useAuth from "@/hooks/use-auth";
 import siteConfig from "@/lib/siteConfig";
 import { QuestErrorAlert } from "@/components/custom/modals/QuestErrorAlert";
 import { XUserToken } from "@/lib/values";
@@ -25,65 +24,16 @@ function AuthTelegramModal({
     onClose?: () => void;
     onReopenParent?: () => void;
 }) {
-    const [code, setCode] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
     const [step2, setStep2] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const [codeUrl, setCodeUrl] = useState<string | null>(null);
+    const [tgAuthUrl, setTgAuthUrl] = useState<string | null>(null);
     const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
-    const { refetchProfile } = useAuth();
+    const [countdown, setCountdown] = useState<number>(30);
 
-    async function validateCode() {
-        setLoading(true);
-        setError(null);
-
-        const token = localStorage.getItem(XUserToken);
-        if (!token) return;
-
-        try {
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/auth/telegram/verify`,
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${JSON.parse(token)}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        code: code,
-                        username: username,
-                    }),
-                }
-            );
-
-            const response = await res.json();
-
-            if (!res.ok) {
-                if (res.status !== 401) {
-                    setErrorMessage(
-                        response.message || "An unexpected error occurred"
-                    );
-                    onClose?.();
-                    setTimeout(() => setShowErrorModal(true), 100);
-                }
-                return;
-            }
-
-            await refetchProfile();
-            reset();
-            onClose?.();
-        } catch {
-            setErrorMessage("Network error occurred");
-            onClose?.();
-            setTimeout(() => setShowErrorModal(true), 100);
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    async function getCode() {
+    async function getTgAuthUrl() {
         setLoading(true);
         setError(null);
 
@@ -112,18 +62,29 @@ function AuthTelegramModal({
                     setErrorMessage(
                         response.message || "An unexpected error occurred"
                     );
-                    // Close the main modal first to prevent z-index issues
                     onClose?.();
                     setTimeout(() => setShowErrorModal(true), 100);
                 }
                 return;
             }
 
-            setCodeUrl(response.data.url);
+            setTgAuthUrl(response.data.url);
             setStep2(true);
+
+            const countdownInterval = setInterval(() => {
+                setCountdown((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(countdownInterval);
+                        window.location.reload();
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+
+            return () => clearInterval(countdownInterval);
         } catch {
             setErrorMessage("Network error occurred");
-            // Close the main modal first to prevent z-index issues
             onClose?.();
             setTimeout(() => setShowErrorModal(true), 100);
         } finally {
@@ -133,12 +94,12 @@ function AuthTelegramModal({
 
     function reset() {
         setUsername("");
-        setCode("");
         setStep2(false);
-        setCodeUrl(null);
+        setTgAuthUrl(null);
         setError(null);
         setShowErrorModal(false);
         setErrorMessage("");
+        setCountdown(30);
     }
 
     const handleClose = () => {
@@ -191,19 +152,24 @@ function AuthTelegramModal({
                         )}
                         {step2 && (
                             <DialogDescription className="text-center text-base text-white px-6">
-                                The link to get your code has been sent to the
-                                group, but if you didn&apos;t see it,{" "}
-                                {codeUrl && (
-                                    <a
-                                        href={codeUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-400 underline"
-                                    >
-                                        click on this link to retrieve your code
-                                    </a>
+                                Please click the link below to authorize your
+                                Telegram account.
+                                {tgAuthUrl && (
+                                    <div className="mt-4">
+                                        <a
+                                            href={tgAuthUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-blue-400 underline font-semibold"
+                                        >
+                                            Click here to authorize
+                                        </a>
+                                        <p className="text-sm text-gray-400 mt-2">
+                                            Page will automatically reload in{" "}
+                                            {countdown} seconds
+                                        </p>
+                                    </div>
                                 )}
-                                .
                             </DialogDescription>
                         )}
                     </DialogHeader>
@@ -234,32 +200,6 @@ function AuthTelegramModal({
                                 )}
                             </div>
                         )}
-
-                        {step2 && (
-                            <div className="row flex flex-col gap-2">
-                                <label
-                                    htmlFor="code"
-                                    className="text-base font-fredoka font-semibold"
-                                >
-                                    Input Code
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter code"
-                                    value={code}
-                                    name="code"
-                                    onInput={() => setError(null)}
-                                    maxLength={6}
-                                    onChange={(x) => setCode(x.target.value)}
-                                    className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
-                                />
-                                {!!error && (
-                                    <p className="error text-red-500 text-sm">
-                                        {error}
-                                    </p>
-                                )}
-                            </div>
-                        )}
                     </div>
                     <DialogFooter className="w-full flex flex-col sm:flex-col gap-4 sm:justify-start">
                         {!step2 && (
@@ -268,7 +208,7 @@ function AuthTelegramModal({
                                     type="button"
                                     className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
                                     disabled={!!error || !username || loading}
-                                    onClick={getCode}
+                                    onClick={getTgAuthUrl}
                                 >
                                     {loading ? "Loading..." : "Get Code"}
                                 </Button>
@@ -292,25 +232,20 @@ function AuthTelegramModal({
                                 <Button
                                     type="button"
                                     className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
-                                    disabled={
-                                        !!error || code.length < 6 || loading
-                                    }
-                                    onClick={validateCode}
+                                    onClick={() => {
+                                        if (tgAuthUrl) {
+                                            window.open(tgAuthUrl, "_blank");
+                                        }
+                                    }}
                                 >
-                                    {!loading ? "Confirm" : "Confirming"}
+                                    Open Authorization Link
                                 </Button>
                                 <Button
                                     type="button"
                                     disabled={loading}
                                     className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black disabled:cursor-not-allowed!"
                                     onClick={() => {
-                                        setStep2(false);
-                                        setUsername("");
-                                        setCode("");
-                                        setCodeUrl(null);
-                                        setError(null);
-                                        setShowErrorModal(false);
-                                        setErrorMessage("");
+                                        reset();
                                         onClose?.();
                                     }}
                                 >
