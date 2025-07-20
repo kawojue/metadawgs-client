@@ -31,7 +31,7 @@ function AuthTelegramModal({
     const [tgAuthUrl, setTgAuthUrl] = useState<string | null>(null);
     const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
-    const [countdown, setCountdown] = useState<number>(30);
+    const [countdown, setCountdown] = useState<number>(20);
 
     async function getTgAuthUrl() {
         setLoading(true);
@@ -99,7 +99,7 @@ function AuthTelegramModal({
         setError(null);
         setShowErrorModal(false);
         setErrorMessage("");
-        setCountdown(30);
+        setCountdown(20);
     }
 
     const handleClose = () => {
