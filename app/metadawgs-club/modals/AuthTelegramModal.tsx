@@ -210,7 +210,7 @@ function AuthTelegramModal({
                                     disabled={!!error || !username || loading}
                                     onClick={getTgAuthUrl}
                                 >
-                                    {loading ? "Loading..." : "Get Code"}
+                                    {loading ? "Loading..." : "Get Link"}
                                 </Button>
                                 <Button
                                     type="button"
