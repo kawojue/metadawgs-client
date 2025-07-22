@@ -74,28 +74,26 @@ export const x_columns: ColumnDef<ReferralsLeaderboardType>[] = [
             </div>
         ),
     },
-    {
-        accessorKey: "points",
-        header: () => <div className="text-white">Bones</div>,
-        cell: ({ row }) => {
-            // const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF"];
-            // const color = colors[Math.floor(Math.random() * colors.length)];
+    // {
+    //     accessorKey: "points",
+    //     header: () => <div className="text-white">Bones</div>,
+    //     cell: ({ row }) => {
 
-            return (
-                <div className="flex items-center gap-2">
-                    <span>🍖</span>
+    //         return (
+    //             <div className="flex items-center gap-2">
+    //                 <span>🍖</span>
 
-                    <span className="text-white">
-                        {Number(row.getValue("points"))?.toLocaleString(
-                            "en-US",
-                            {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                            }
-                        )}
-                    </span>
-                </div>
-            );
-        },
-    },
+    //                 <span className="text-white">
+    //                     {Number(row.getValue("points"))?.toLocaleString(
+    //                         "en-US",
+    //                         {
+    //                             minimumFractionDigits: 2,
+    //                             maximumFractionDigits: 2,
+    //                         }
+    //                     )}
+    //                 </span>
+    //             </div>
+    //         );
+    //     },
+    // },
 ];
