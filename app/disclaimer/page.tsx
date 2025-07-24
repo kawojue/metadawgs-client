@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";

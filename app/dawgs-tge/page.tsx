@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import Claim from "@/components/custom/ClaimBtn";
 import { FadeIn } from "@/components/custom/ScrollAnimation";
 import PresaleForm from "@/views/PresaleForm";

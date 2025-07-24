@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { FadeInUp, FadeIn } from "@/components/custom/ScrollAnimation";
 import { Button } from "@/components/ui/button";
 import FAQ from "@/views/FAQ";

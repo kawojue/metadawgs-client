@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import AvatarGroup from "@/components/custom/AvatarGroup";
 import { TweetCard } from "@/components/custom/twitter";
 import { sampleTweets } from "@/lib/data";

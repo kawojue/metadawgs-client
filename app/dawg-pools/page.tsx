@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import AddressButton from "@/components/custom/AddressButton";
 import Pool from "@/components/custom/Pool";
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
