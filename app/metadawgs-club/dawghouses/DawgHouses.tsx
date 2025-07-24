@@ -13,6 +13,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import TopBanner from "./TopBanner";
 import { Button } from "@/components/ui/button";
 import PostsGrid from "./PostsGrid";
+import RaidersGrid from "./RaidersGrid";
 import { Loader, SearchIcon } from "lucide-react";
 import HousesGrid from "./HousesGrid";
 
@@ -32,11 +33,23 @@ function DawgHouses() {
     const router = useRouter();
 
     const activeTab = (searchParams.get("tab") as "live" | "past") || "live";
+    const contentType =
+        (searchParams.get("type") as "mindshare" | "raiders") || "mindshare";
 
     const handleTabChange = useCallback(
         (value: "live" | "past") => {
             const params = new URLSearchParams(searchParams.toString());
             params.set("tab", value);
+            params.delete("page");
+            router.push(`?${params.toString()}`);
+        },
+        [router, searchParams]
+    );
+
+    const handleContentTypeChange = useCallback(
+        (value: "mindshare" | "raiders") => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("type", value);
             params.delete("page");
             router.push(`?${params.toString()}`);
         },
@@ -125,32 +138,124 @@ function DawgHouses() {
                                 </form>
                             )}
                             {inDawgsHouse && (
-                                <div className="flex justify-start gap-4 mb-6">
-                                    <Button
-                                        className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
-                                            activeTab === "live"
-                                                ? "text-black bg-[#FFBE00]"
-                                                : "text-white bg-[#1E1E1E]"
-                                        }`}
-                                        onClick={() => handleTabChange("live")}
-                                    >
-                                        Live
-                                    </Button>
-                                    <Button
-                                        className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
-                                            activeTab === "past"
-                                                ? "text-black bg-[#FFBE00]"
-                                                : "text-white bg-[#1E1E1E]"
-                                        }`}
-                                        onClick={() => handleTabChange("past")}
-                                    >
-                                        Past
-                                    </Button>
+                                <div className="space-y-6">
+                                    <div className="flex justify-center gap-4 mb-8">
+                                        <button
+                                            className={`inline-flex items-center gap-3 px-8 py-4 cursor-pointer font-bold text-sm rounded-full relative
+                                                transform transition-all duration-300 ease-in-out
+                                                hover:scale-105 hover:shadow-xl
+                                                shadow-lg border-2
+                                                group ${
+                                                    contentType === "mindshare"
+                                                        ? "bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 text-white border-blue-400/50 shadow-blue-500/25"
+                                                        : "bg-[#1E1E1E] text-white/70 border-white/20 hover:border-blue-400/50"
+                                                }`}
+                                            onClick={() =>
+                                                handleContentTypeChange(
+                                                    "mindshare"
+                                                )
+                                            }
+                                        >
+                                            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center">
+                                                <svg
+                                                    width="12"
+                                                    height="12"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"
+                                                        fill="white"
+                                                    />
+                                                </svg>
+                                            </div>
+                                            <span className="relative z-10 font-fredoka">
+                                                MindShare
+                                            </span>
+                                            {contentType === "mindshare" && (
+                                                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 opacity-20 animate-pulse"></div>
+                                            )}
+                                        </button>
+
+                                        <button
+                                            className={`inline-flex items-center gap-3 px-8 py-4 cursor-pointer font-bold text-sm rounded-full relative
+                                                transform transition-all duration-300 ease-in-out
+                                                hover:scale-105 hover:shadow-xl
+                                                shadow-lg border-2
+                                                group ${
+                                                    contentType === "raiders"
+                                                        ? "bg-gradient-to-r from-orange-600 via-red-600 to-orange-800 text-white border-orange-400/50 shadow-orange-500/25"
+                                                        : "bg-[#1E1E1E] text-white/70 border-white/20 hover:border-orange-400/50"
+                                                }`}
+                                            onClick={() =>
+                                                handleContentTypeChange(
+                                                    "raiders"
+                                                )
+                                            }
+                                        >
+                                            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center">
+                                                <svg
+                                                    width="12"
+                                                    height="12"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        d="M12 2L15.09 8.26L22 9L15.09 9.74L12 16L8.91 9.74L2 9L8.91 8.26L12 2Z"
+                                                        fill="white"
+                                                    />
+                                                    <path
+                                                        d="M12 6L13.5 10.5L18 12L13.5 13.5L12 18L10.5 13.5L6 12L10.5 10.5L12 6Z"
+                                                        fill="white"
+                                                    />
+                                                </svg>
+                                            </div>
+                                            <span className="relative z-10 font-fredoka">
+                                                Raiders&apos;
+                                            </span>
+                                            {contentType === "raiders" && (
+                                                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 opacity-20 animate-pulse"></div>
+                                            )}
+                                        </button>
+                                    </div>
+
+                                    <div className="flex justify-start gap-4 mb-6">
+                                        <Button
+                                            className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
+                                                activeTab === "live"
+                                                    ? "text-black bg-[#FFBE00]"
+                                                    : "text-white bg-[#1E1E1E]"
+                                            }`}
+                                            onClick={() =>
+                                                handleTabChange("live")
+                                            }
+                                        >
+                                            Live
+                                        </Button>
+                                        <Button
+                                            className={`rounded-full !px-6 !py-4 font-medium text-[14px] cursor-pointer transition-colors ${
+                                                activeTab === "past"
+                                                    ? "text-black bg-[#FFBE00]"
+                                                    : "text-white bg-[#1E1E1E]"
+                                            }`}
+                                            onClick={() =>
+                                                handleTabChange("past")
+                                            }
+                                        >
+                                            Past
+                                        </Button>
+                                    </div>
                                 </div>
                             )}
 
-                            {inDawgsHouse && (
+                            {inDawgsHouse && contentType === "mindshare" && (
                                 <PostsGrid activeTab={activeTab} />
+                            )}
+
+                            {inDawgsHouse && contentType === "raiders" && (
+                                <RaidersGrid activeTab={activeTab} />
                             )}
 
                             {!inDawgsHouse && <HousesGrid />}

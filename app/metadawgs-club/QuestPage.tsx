@@ -159,29 +159,6 @@ function QuestPage() {
 
     return (
         <div className="bg-black text-white min-h-screen">
-            {/* <div className="p-4 sm:p-6 md:p-15 md:pb-5 py-5 flex flex-col gap-5 justify-center items-center">
-        <FadeInUp>
-          <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
-            Complete Quests,
-            <br />
-            Collect Bones & Earn
-            <br />
-            MetaDawgs Token
-          </h1>
-        </FadeInUp>
-        <FadeInUp>
-          <p className="text-xl text-[#ACACAC] md:leading-[35px] max-w-[560px] text-center">
-            Complete the quest for a chance to earn a guaranteed whitelist spot
-            on TGE and earn MetaDawgs token as an early participant in the
-            ecosystem
-          </p>
-        </FadeInUp>
-        <FadeInUp className="pips flex gap-x-4 gap-y-2 flex-wrap items-center justify-center">
-          <AvatarGroup />
-          <p className="text-xs font-semibold">A Lot Have Participated</p>
-        </FadeInUp>
-      </div> */}
-
             <div className="conquests space-y-16 p-6">
                 <div className="social_quests md:mx-[5%] lg:mx-[18%]">
                     <QuestTopCard />

@@ -51,9 +51,7 @@ function MindShare() {
                 setMeta(response.data.meta);
             } catch (error) {
                 console.error("Failed to fetch posts:", error);
-                setError(
-                    "Submit Post Only and Earn bones! The MindShare feature is currently going through some upgrades to the Dawghouse! Go and participate in the Raider's quests while you wait."
-                );
+                setError(error instanceof Error ? error.message : null);
                 setPosts([]);
                 setMeta(null);
             } finally {
@@ -89,7 +87,7 @@ function MindShare() {
                 <div className="p-4 text-center min-h-[150px] flex flex-col items-center justify-center">
                     <Loader size={48} className="animate-spin text-[#FFBE00]" />
                     <h3 className="text-2xl font-fredoka mt-4">
-                        Loading Quests...
+                        Loading Entries...
                     </h3>
                 </div>
             );
