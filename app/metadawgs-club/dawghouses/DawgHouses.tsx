@@ -34,7 +34,7 @@ function DawgHouses() {
 
     const activeTab = (searchParams.get("tab") as "live" | "past") || "live";
     const contentType =
-        (searchParams.get("type") as "mindshare" | "raiders") || "mindshare";
+        (searchParams.get("type") as "mindshare" | "raiders") || "raiders";
 
     const handleTabChange = useCallback(
         (value: "live" | "past") => {
