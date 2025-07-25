@@ -197,7 +197,14 @@ function PresaleForm({
         } finally {
             setIsLoading(false);
         }
-    }, [publicKey, sendTransaction, signTransaction, connection, amount, searchParams]);
+    }, [
+        publicKey,
+        sendTransaction,
+        signTransaction,
+        connection,
+        amount,
+        searchParams,
+    ]);
 
     useEffect(() => {
         setError("");
@@ -209,8 +216,14 @@ function PresaleForm({
                 const parsedAmount = Number(amount);
 
                 if (isNaN(parsedAmount) || parsedAmount <= 0) return null;
+                if (!publicKey) return null;
 
-                const body = { amountSol: parsedAmount };
+                const refCode = searchParams.get("ref");
+                const body = {
+                    buyerPublicKeyStr: publicKey.toBase58(),
+                    amountSol: parseFloat(amount),
+                    ...(refCode && { referralCode: refCode }),
+                };
 
                 const res = await fetch(
                     `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/calculate`,
@@ -238,7 +251,7 @@ function PresaleForm({
 
         fetchExchangeRate();
         return () => fetchExchangeRate.cancel?.();
-    }, [amount]);
+    }, [amount, publicKey, searchParams]);
 
     useEffect(() => {
         const getWalletBalance = async () => {
