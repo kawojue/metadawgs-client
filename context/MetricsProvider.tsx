@@ -7,6 +7,7 @@ import React, {
     useEffect,
     ReactNode,
 } from "react";
+import { useSocket } from "@/app/SocketProvider";
 
 type Metrics = {
     totalSoldSol: number;
@@ -44,6 +45,8 @@ export function MetricsProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const { socket, isConnected } = useSocket();
+
     const fetchMetrics = async () => {
         try {
             setIsLoading(true);
@@ -72,6 +75,21 @@ export function MetricsProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         fetchMetrics();
     }, []);
+
+    useEffect(() => {
+        if (!socket || !isConnected) return;
+
+        const handleMetricsUpdate = (data: Metrics) => {
+            setMetrics(data);
+            setError(null);
+        };
+
+        socket.on("tge-metrics", handleMetricsUpdate);
+
+        return () => {
+            socket.off("tge-metrics", handleMetricsUpdate);
+        };
+    }, [socket, isConnected]);
 
     const refetchMetrics = async () => {
         await fetchMetrics();
