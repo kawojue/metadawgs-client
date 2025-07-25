@@ -14,7 +14,11 @@ import useMobileMenu from "@/hooks/use-mobile-menu";
 import { useState } from "react";
 import NavLinks from "./NavLinks";
 
-function Navbar() {
+function Navbar({
+    onReferralCodeFetched,
+}: {
+    onReferralCodeFetched?: (referralCode: string) => void;
+}) {
     const { userToken, userProfile, isLoading, logout } = useAuth();
     const { menuIsOpen, toggleMenu, closeMenu } = useMobileMenu();
     const [profileIsOpen, setProfileIsOpen] = useState<boolean>(false);
@@ -72,7 +76,7 @@ function Navbar() {
                         toggleProfile={toggleProfile}
                     />
                 )}
-                <AddressButton />
+                <AddressButton onReferralCodeFetched={onReferralCodeFetched} />
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -132,7 +136,9 @@ function Navbar() {
                             </Button>
                         </Link>
                     )}
-                    <AddressButton />
+                    <AddressButton
+                        onReferralCodeFetched={onReferralCodeFetched}
+                    />
                 </div>
             </div>
 

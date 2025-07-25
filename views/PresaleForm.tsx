@@ -4,6 +4,7 @@ import CountdownTimer from "@/components/custom/Countdown";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import { useState, useCallback, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
     PublicKey,
     Transaction,
@@ -18,21 +19,18 @@ import { debounce, formatNumberWithCommas } from "@/lib/common";
 import NumberInput from "@/components/custom/NumberInput";
 import useLocalStorage from "use-local-storage";
 import { XComingSoonModal } from "@/lib/values";
-// import { SignupAlert } from "@/components/custom/modals/SignupAlert";
-
-type Metrics = {
-    totalSoldSol: number;
-    endTime: string;
-    startTime: string;
-    targetSol: number;
-    minPerWallet: number | null;
-    maxPerWallet: number;
-    tokenMint: string;
-};
+import ReferralCodeDisplay from "@/components/custom/ReferralCodeDisplay";
+import { useMetrics } from "@/context/MetricsProvider";
 
 const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS as string;
 
-function PresaleForm({ isComing }: { isComing: boolean }) {
+function PresaleForm({
+    isComing,
+    referralCode,
+}: {
+    isComing: boolean;
+    referralCode?: string;
+}) {
     const { connection } = useConnection();
     const { setVisible } = useWalletModal();
     const { publicKey, sendTransaction, signTransaction } = useWallet();
@@ -44,11 +42,10 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isPresaleClosed, setIsPresaleClosed] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const [metrics, setMetrics] = useState<Metrics | null>(null);
-    const [isInitializing, setIsInitializing] = useState<boolean>(true);
     const [walletBalance, setWalletBalance] = useState<number>(0);
-    // const [openSignUpAlert, setOpenSignUpAlert] = useState<boolean>(false);
     const [, setComingSoon] = useLocalStorage(XComingSoonModal, false);
+
+    const { metrics, isLoading: isInitializing } = useMetrics();
 
     const handlePurchase = useCallback(async () => {
         if (isComing) {
@@ -77,7 +74,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
         let finalTokenTxSig = null;
 
         try {
-            setStatusMessage("Preparing SOL payment...");
+            setStatusMessage("💰 Preparing SOL payment...");
             const lamportsToSend = BigInt(
                 Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL)
             );
@@ -91,20 +88,24 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                 })
             );
 
-            setStatusMessage("Please approve SOL payment in your wallet...");
+            setStatusMessage("🔐 Please approve SOL payment in your wallet...");
             solTxSig = await sendTransaction(
                 solTransferTransaction,
                 connection
             );
             setStatusMessage(
-                `SOL payment sent. Waiting for confirmation (Don't Quit!)...`
+                `📡 SOL payment sent. Waiting for confirmation (Don't Quit!)...`
             );
 
-            setStatusMessage("Confirming payment...");
+            setStatusMessage("✅ Confirming payment...");
+            const searchParams = useSearchParams();
+            const refCode = searchParams.get("ref");
+
             const payload = {
                 buyerPublicKeyStr: publicKey.toBase58(),
                 solTxSig,
                 amountSol: parseFloat(amount),
+                ...(refCode && { referralCode: refCode }),
             };
 
             const response = await fetch(
@@ -132,12 +133,12 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                 );
             }
 
-            setStatusMessage("Confirmed. Preparing token transaction...");
+            setStatusMessage("🎯 Confirmed. Preparing token transaction...");
 
             partiallySignedTokenTxBase64 = data.partiallySignedTokenTx;
 
             setStatusMessage(
-                "Please approve token claim transaction in your wallet..."
+                "🔐 Please approve token claim transaction in your wallet..."
             );
 
             const txBuffer = Buffer.from(
@@ -148,13 +149,13 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                 VersionedTransaction.deserialize(txBuffer);
 
             const fullySignedTx = await signTransaction(partiallySignedTx);
-            setStatusMessage("Sending token claim transaction...");
+            setStatusMessage("📡 Sending token claim transaction...");
             finalTokenTxSig = await connection.sendTransaction(fullySignedTx, {
                 preflightCommitment: "confirmed",
                 skipPreflight: false,
             });
             setStatusMessage(
-                `Token claim transaction sent. Waiting for confirmation...`
+                `⏳ Token claim transaction sent. Waiting for confirmation...`
             );
 
             await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -174,7 +175,13 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                 throw new Error(`Token claim transaction confirmation failed`);
             }
 
-            setStatusMessage(`Purchase complete! Token transaction confirmed`);
+            setStatusMessage(
+                `🎉 Purchase complete! Token transaction confirmed`
+            );
+
+            setTimeout(() => {
+                setStatusMessage("");
+            }, 3000);
 
             setAmount("");
         } catch (err: unknown) {
@@ -254,37 +261,13 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
     }, [connection, publicKey]);
 
     useEffect(() => {
-        async function getMetrics() {
-            try {
-                setIsInitializing(true);
-
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/metrics`
-                );
-
-                if (!res.ok) {
-                    throw new Error("Couldn't get metrics.");
-                }
-
-                const result = (await res.json()) as {
-                    data: Metrics;
-                };
-
-                const isPresaleClosed =
-                    new Date(result.data.endTime).getTime() < Date.now() ||
-                    result.data.totalSoldSol >= result.data.targetSol;
-                setIsPresaleClosed(isPresaleClosed);
-
-                setMetrics(result.data);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setIsInitializing(false);
-            }
+        if (metrics) {
+            const isPresaleClosed =
+                new Date(metrics.endTime).getTime() < Date.now() ||
+                metrics.totalSoldSol >= metrics.targetSol;
+            setIsPresaleClosed(isPresaleClosed);
         }
-
-        getMetrics();
-    }, []);
+    }, [metrics]);
 
     function connectWallet() {
         setVisible(true);
@@ -328,7 +311,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                     </div>
                     <div className="progress-value">
                         <p className="text-lg">
-                            MetaDawgs:{" "}
+                            Metadawgs:{" "}
                             <strong>
                                 {isComing
                                     ? "TBA"
@@ -347,6 +330,11 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                         </h4>
                         <p className="text-sm">Solana Balance</p>
                     </div>
+                    {referralCode &&
+                        publicKey &&
+                        metrics?.status?.affiliate && (
+                            <ReferralCodeDisplay referralCode={referralCode} />
+                        )}
                     <div className="amount-input flex flex-col gap-2">
                         <div className="flex flex-col items-start gap-0 mb-2">
                             <span className="text-lg font-semibold">
@@ -438,12 +426,18 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                         </Button>
                     )}
                     {statusMessage && !error && (
-                        <p className="line-clamp-2">Status: {statusMessage}</p>
+                        <div className="bg-[#FFBE00]/10 border border-[#FFBE00]/20 rounded-lg p-3">
+                            <p className="text-[#FFBE00] text-sm font-medium line-clamp-2">
+                                {statusMessage}
+                            </p>
+                        </div>
                     )}
                     {error && (
-                        <p className="line-clamp-2" style={{ color: "red" }}>
-                            {error}
-                        </p>
+                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                            <p className="text-red-400 text-sm font-medium line-clamp-2">
+                                {error}
+                            </p>
+                        </div>
                     )}
                     {!publicKey && <p>Please connect your wallet.</p>}
                     {isPresaleClosed && (

@@ -16,6 +16,10 @@ import { cn } from "@/lib/utils";
 import ComingSoonModal from "@/components/custom/modals/ComingSoonModal";
 import CompleteOnboardingModal from "@/components/custom/modals/CompleteOnboardingModal";
 import { AuthProvider } from "@/context/AuthProvider";
+import {
+    ReferralCodeProvider,
+    useReferralCode,
+} from "@/context/ReferralCodeContext";
 
 const IGNORED_ROUTE_PATTERNS = [
     /^\/auth/,
@@ -23,8 +27,9 @@ const IGNORED_ROUTE_PATTERNS = [
     /^\/wherethemagicrestricted(\/.*)?$/,
 ];
 
-function MainLayout({ children }: { children: ReactNode }) {
+function MainLayoutContent({ children }: { children: ReactNode }) {
     const pathname = usePathname();
+    const { setReferralCode } = useReferralCode();
     const [openSignup, setOpenSignup] = useLocalStorage(
         XOpenSignUpModal,
         false
@@ -42,13 +47,17 @@ function MainLayout({ children }: { children: ReactNode }) {
         regex.test(pathname!)
     );
 
+    const handleReferralCodeFetched = (referralCode: string) => {
+        setReferralCode(referralCode);
+    };
+
     return (
-        <AuthProvider>
+        <>
             {isIgnoredRoute ? (
                 <div className="font-sans content min-h-dch">{children}</div>
             ) : (
                 <div className="font-sans">
-                    <Navbar />
+                    <Navbar onReferralCodeFetched={handleReferralCodeFetched} />
                     <div
                         className={cn(
                             "content min-h-dch",
@@ -79,6 +88,16 @@ function MainLayout({ children }: { children: ReactNode }) {
                     <Veil />
                 </div>
             )}
+        </>
+    );
+}
+
+function MainLayout({ children }: { children: ReactNode }) {
+    return (
+        <AuthProvider>
+            <ReferralCodeProvider>
+                <MainLayoutContent>{children}</MainLayoutContent>
+            </ReferralCodeProvider>
         </AuthProvider>
     );
 }
