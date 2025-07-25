@@ -43,7 +43,7 @@ export default function Claim() {
             setStatusMessage("✨ Checking eligibility...");
 
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/claim-airdrop`,
+                `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/presale/claim-airdrop`,
                 {
                     method: "POST",
                     headers: {

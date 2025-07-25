@@ -7,7 +7,8 @@ import React, {
     useEffect,
     ReactNode,
 } from "react";
-import { useSocket } from "@/app/SocketProvider";
+import { getMetricsSocket } from "@/lib/socket";
+import { Socket } from "socket.io-client";
 
 type Metrics = {
     totalSoldSol: number;
@@ -44,8 +45,8 @@ export function MetricsProvider({ children }: { children: ReactNode }) {
     const [metrics, setMetrics] = useState<Metrics | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
-    const { socket, isConnected } = useSocket();
+    const [socket, setSocket] = useState<Socket | null>(null);
+    const [isConnected, setIsConnected] = useState(false);
 
     const fetchMetrics = async () => {
         try {
@@ -74,6 +75,27 @@ export function MetricsProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         fetchMetrics();
+
+        const metricsSocket = getMetricsSocket();
+        setSocket(metricsSocket);
+
+        const handleConnect = () => {
+            setIsConnected(true);
+        };
+
+        const handleDisconnect = () => {
+            setIsConnected(false);
+        };
+
+        setIsConnected(metricsSocket.connected);
+
+        metricsSocket.on("connect", handleConnect);
+        metricsSocket.on("disconnect", handleDisconnect);
+
+        return () => {
+            metricsSocket.off("connect", handleConnect);
+            metricsSocket.off("disconnect", handleDisconnect);
+        };
     }, []);
 
     useEffect(() => {

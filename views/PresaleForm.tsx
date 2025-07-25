@@ -112,7 +112,7 @@ function PresaleForm({
             };
 
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/confirm-purchase-and-prepare-claim`,
+                `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/presale/confirm-purchase-and-prepare-claim`,
                 {
                     method: "POST",
                     headers: {
@@ -231,7 +231,7 @@ function PresaleForm({
                 };
 
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/calculate`,
+                    `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/presale/calculate`,
                     {
                         method: "POST",
                         headers: {

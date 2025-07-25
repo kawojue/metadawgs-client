@@ -86,7 +86,6 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
             socket.off("connect_error", handleConnectError);
             socket.off("reconnect", handleReconnect);
             socket.off("reconnect_error", handleReconnectError);
-            socket.disconnect();
         };
     }, [socket]);
 

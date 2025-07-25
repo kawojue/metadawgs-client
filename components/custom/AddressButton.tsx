@@ -102,7 +102,7 @@ function AddressButton({
 
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/save-wallet`,
+                    `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/presale/save-wallet`,
                     {
                         method: "POST",
                         headers: {
