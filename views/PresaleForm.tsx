@@ -241,7 +241,7 @@ function PresaleForm({
                 }
 
                 const data = (await res.json()) as { tokens: number };
-                setExchangedToken(data.tokens);
+                setExchangedToken(parseFloat(data.tokens.toFixed(2)));
             } catch (err) {
                 console.error("Error fetching exchange rate:", err);
             } finally {
