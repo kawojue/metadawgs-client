@@ -7,7 +7,7 @@ import { useReferralCode } from "@/context/ReferralCodeContext";
 import { MetricsProvider } from "@/context/MetricsProvider";
 
 function Page() {
-    const isComingSoon = true;
+    const isComingSoon = false;
     const { referralCode } = useReferralCode();
 
     return (

@@ -170,7 +170,7 @@ function TopBanner() {
                                     className="bg-[#A078FF] p-1.5 px-2.5 rounded-full cursor-pointer text-sm hover:bg-[#A078FF]/80 flex items-center gap-2"
                                     onClick={() => {
                                         copyToClipboard(
-                                            `https://metadawgs.com/metadawgs-club?ref=${userProfile?.referralCode}`
+                                            `${process.env.NEXT_PUBLIC_FRONTEND_URL}/metadawgs-club?ref=${userProfile?.referralCode}`
                                         );
                                         toast(
                                             "Referral link is saved to the clipboard"
@@ -179,13 +179,13 @@ function TopBanner() {
                                 >
                                     <span className=".5 block sm:hidden">
                                         {hashAddress(
-                                            `https://metadawgs.com/metadawgs-club?ref=${userProfile?.referralCode}`,
+                                            `${process.env.NEXT_PUBLIC_FRONTEND_URL}/metadawgs-club?ref=${userProfile?.referralCode}`,
                                             1
                                         )}
                                     </span>
                                     <span className=".5 sm:block hidden">
                                         {hashAddress(
-                                            `https://metadawgs.com/metadawgs-club?ref=${userProfile?.referralCode}`,
+                                            `${process.env.NEXT_PUBLIC_FRONTEND_URL}/metadawgs-club?ref=${userProfile?.referralCode}`,
                                             8
                                         )}
                                     </span>

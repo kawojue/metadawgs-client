@@ -12,7 +12,7 @@ interface ReferralCodeDisplayProps {
 function ReferralCodeDisplay({ referralCode }: ReferralCodeDisplayProps) {
     const [copied, setCopied] = useState(false);
 
-    const referralLink = `https://metadawgs.com/dawgs-tge?ref=${referralCode}`;
+    const referralLink = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dawgs-tge?ref=${referralCode}`;
     const shortenedLink =
         referralLink.length > 50
             ? `${referralLink.substring(0, 30)}...${referralLink.substring(
