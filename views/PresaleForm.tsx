@@ -46,6 +46,7 @@ function PresaleForm({
     const [, setComingSoon] = useLocalStorage(XComingSoonModal, false);
 
     const { metrics, isLoading: isInitializing } = useMetrics();
+    const searchParams = useSearchParams();
 
     const handlePurchase = useCallback(async () => {
         if (isComing) {
@@ -98,7 +99,6 @@ function PresaleForm({
             );
 
             setStatusMessage("✅ Confirming payment...");
-            const searchParams = useSearchParams();
             const refCode = searchParams.get("ref");
 
             const payload = {
@@ -197,7 +197,7 @@ function PresaleForm({
         } finally {
             setIsLoading(false);
         }
-    }, [publicKey, sendTransaction, signTransaction, connection, amount]);
+    }, [publicKey, sendTransaction, signTransaction, connection, amount, searchParams]);
 
     useEffect(() => {
         setError("");
