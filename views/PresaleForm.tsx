@@ -4,6 +4,7 @@ import CountdownTimer from "@/components/custom/Countdown";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import { useState, useCallback, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import {
     PublicKey,
@@ -44,6 +45,8 @@ function PresaleForm({
     const [error, setError] = useState<string>("");
     const [walletBalance, setWalletBalance] = useState<number>(0);
     const [, setComingSoon] = useLocalStorage(XComingSoonModal, false);
+    const [showSuccessAnimation, setShowSuccessAnimation] =
+        useState<boolean>(false);
 
     const { metrics, isLoading: isInitializing } = useMetrics();
     const searchParams = useSearchParams();
@@ -179,9 +182,11 @@ function PresaleForm({
                 `🎉 Purchase complete! Token transaction confirmed`
             );
 
+            setShowSuccessAnimation(true);
             setTimeout(() => {
                 setStatusMessage("");
-            }, 3000);
+                setShowSuccessAnimation(false);
+            }, 4000);
 
             setAmount("");
         } catch (err: unknown) {
@@ -459,6 +464,88 @@ function PresaleForm({
                         </p>
                     )}
                 </form>
+
+                <AnimatePresence>
+                    {showSuccessAnimation && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
+                        >
+                            <motion.div
+                                initial={{ scale: 0, rotate: -180 }}
+                                animate={{ scale: 1, rotate: 0 }}
+                                exit={{ scale: 0, rotate: 180 }}
+                                transition={{ type: "spring", duration: 0.8 }}
+                                className="bg-gradient-to-r from-[#FFBE00] to-[#F9C580] rounded-full p-8 shadow-2xl"
+                            >
+                                <div className="text-center">
+                                    <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: [0, 1.2, 1] }}
+                                        transition={{
+                                            delay: 0.3,
+                                            duration: 0.6,
+                                        }}
+                                        className="text-6xl mb-4"
+                                    >
+                                        🎉
+                                    </motion.div>
+                                    <motion.h2
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.5 }}
+                                        className="text-2xl font-bold text-black font-fredoka"
+                                    >
+                                        Purchase Complete!
+                                    </motion.h2>
+                                    <motion.p
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.7 }}
+                                        className="text-black/80 mt-2"
+                                    >
+                                        Tokens successfully claimed
+                                    </motion.p>
+                                </div>
+                            </motion.div>
+
+                            {[...Array(12)].map((_, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{
+                                        opacity: 0,
+                                        scale: 0,
+                                        x: 0,
+                                        y: 0,
+                                    }}
+                                    animate={{
+                                        opacity: [0, 1, 0],
+                                        scale: [0, 1, 0.5],
+                                        x:
+                                            Math.cos((i * 30 * Math.PI) / 180) *
+                                            200,
+                                        y:
+                                            Math.sin((i * 30 * Math.PI) / 180) *
+                                            200,
+                                    }}
+                                    transition={{
+                                        duration: 2,
+                                        delay: 0.5 + i * 0.1,
+                                        ease: "easeOut",
+                                    }}
+                                    className="absolute w-4 h-4 bg-[#FFBE00] rounded-full"
+                                    style={{
+                                        left: "50%",
+                                        top: "50%",
+                                        transform: "translate(-50%, -50%)",
+                                    }}
+                                />
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </>
         );
 }

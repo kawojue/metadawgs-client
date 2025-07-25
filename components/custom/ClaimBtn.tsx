@@ -9,6 +9,7 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { VersionedTransaction } from "@solana/web3.js";
 import { Buffer } from "buffer";
 import { useMetrics } from "@/context/MetricsProvider";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Claim() {
     const [open, setOpen] = useState(false);
@@ -16,6 +17,7 @@ export default function Claim() {
     const [statusMessage, setStatusMessage] = useState("");
     const [error, setError] = useState("");
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
 
     const { publicKey, signTransaction } = useWallet();
     const { connection } = useConnection();
@@ -100,10 +102,12 @@ export default function Claim() {
             }
 
             setStatusMessage("🎉 Airdrop claimed successfully!");
+            setShowSuccessAnimation(true);
 
             setTimeout(() => {
                 setStatusMessage("");
-            }, 3000);
+                setShowSuccessAnimation(false);
+            }, 4000);
         } catch (err: unknown) {
             console.error("Airdrop claim error:", err);
             const errorMessage =
@@ -248,6 +252,87 @@ export default function Claim() {
                     </div>
                 </div>
             )}
+
+            <AnimatePresence>
+                {showSuccessAnimation && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.5, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.5, opacity: 0 }}
+                            transition={{ type: "spring", duration: 0.5 }}
+                            className="bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] rounded-2xl p-8 max-w-md w-full mx-4 text-center border border-[#FFBE00]/20"
+                        >
+                            <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{
+                                    delay: 0.2,
+                                    type: "spring",
+                                    duration: 0.6,
+                                }}
+                                className="w-20 h-20 bg-gradient-to-br from-[#FFBE00] to-[#FFD700] rounded-full flex items-center justify-center mx-auto mb-6"
+                            >
+                                <Gift className="w-10 h-10 text-black" />
+                            </motion.div>
+
+                            <motion.h3
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.4 }}
+                                className="text-2xl font-bold text-white mb-2"
+                            >
+                                Airdrop Claimed!
+                            </motion.h3>
+
+                            <motion.p
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.5 }}
+                                className="text-gray-300 mb-6"
+                            >
+                                Your tokens have been successfully claimed and
+                                added to your wallet.
+                            </motion.p>
+
+                            {/* Confetti Effect */}
+                            {[...Array(12)].map((_, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{
+                                        opacity: 0,
+                                        scale: 0,
+                                        x: 0,
+                                        y: 0,
+                                    }}
+                                    animate={{
+                                        opacity: [0, 1, 0],
+                                        scale: [0, 1, 0.5],
+                                        x: Math.random() * 400 - 200,
+                                        y: Math.random() * 400 - 200,
+                                        rotate: Math.random() * 360,
+                                    }}
+                                    transition={{
+                                        duration: 2,
+                                        delay: 0.6 + i * 0.1,
+                                        ease: "easeOut",
+                                    }}
+                                    className="absolute w-3 h-3 bg-gradient-to-br from-[#FFBE00] to-[#FFD700] rounded-full"
+                                    style={{
+                                        left: "50%",
+                                        top: "50%",
+                                    }}
+                                />
+                            ))}
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }
