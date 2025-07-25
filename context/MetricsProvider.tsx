@@ -54,7 +54,7 @@ export function MetricsProvider({ children }: { children: ReactNode }) {
             setError(null);
 
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/metrics`
+                `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/presale/metrics`
             );
 
             if (!res.ok) {
