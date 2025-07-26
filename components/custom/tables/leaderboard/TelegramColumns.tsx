@@ -29,15 +29,6 @@ export const telegram_columns: ColumnDef<TelegramLeaderboardType>[] = [
         ),
     },
     {
-        accessorKey: "invites",
-        header: () => <div className="text-white">Invites</div>,
-        cell: ({ row }) => (
-            <div className="text-white">
-                {formatNumberWithCommas(row.getValue("invites"))}
-            </div>
-        ),
-    },
-    {
         accessorKey: "messages",
         header: () => <div className="text-white">Messages</div>,
         cell: ({ row }) => (
@@ -56,21 +47,27 @@ export const telegram_columns: ColumnDef<TelegramLeaderboardType>[] = [
         ),
     },
     {
-        accessorKey: "points",
-        header: () => <div className="text-white">Bones</div>,
-        cell: ({ row }) => {
-            // const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#A133FF"];
-            // const color = colors[Math.floor(Math.random() * colors.length)];
-
-            return (
-                <div className="flex items-center gap-2">
-                    <span>🍖</span>
-
-                    <span className="text-white">
-                        {formatNumberWithCommas(row.getValue("points"))}
-                    </span>
-                </div>
-            );
-        },
+        accessorKey: "invites",
+        header: () => <div className="text-white">Invites</div>,
+        cell: ({ row }) => (
+            <div className="text-white">
+                {formatNumberWithCommas(row.getValue("invites"))} Dawgs
+            </div>
+        ),
     },
+    // {
+    //     accessorKey: "points",
+    //     header: () => <div className="text-white">Bones</div>,
+    //     cell: ({ row }) => {
+    //         return (
+    //             <div className="flex items-center gap-2">
+    //                 <span>🍖</span>
+
+    //                 <span className="text-white">
+    //                     {formatNumberWithCommas(row.getValue("points"))}
+    //                 </span>
+    //             </div>
+    //         );
+    //     },
+    // },
 ];
