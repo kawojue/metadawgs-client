@@ -22,6 +22,7 @@ import useLocalStorage from "use-local-storage";
 import { XComingSoonModal } from "@/lib/values";
 import ReferralCodeDisplay from "@/components/custom/ReferralCodeDisplay";
 import { useMetrics } from "@/context/MetricsProvider";
+import TokenClaimWaitModal from "@/components/custom/modals/TokenClaimWaitModal";
 
 const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS as string;
 
@@ -47,6 +48,9 @@ function PresaleForm({
     const [, setComingSoon] = useLocalStorage(XComingSoonModal, false);
     const [showSuccessAnimation, setShowSuccessAnimation] =
         useState<boolean>(false);
+    const [showTokenClaimModal, setShowTokenClaimModal] =
+        useState<boolean>(false);
+    const [solTransactionSig, setSolTransactionSig] = useState<string>("");
 
     const { metrics, isLoading: isInitializing } = useMetrics();
     const searchParams = useSearchParams();
@@ -102,6 +106,13 @@ function PresaleForm({
             );
 
             setStatusMessage("✅ Confirming payment...");
+            setSolTransactionSig(solTxSig);
+            setShowTokenClaimModal(true);
+
+            await new Promise<void>((resolve) => {
+                window.tokenClaimResolver = resolve;
+            });
+
             const refCode = searchParams.get("ref");
 
             const payload = {
@@ -291,6 +302,14 @@ function PresaleForm({
         setVisible(true);
     }
 
+    const handleContinueToTokenClaim = () => {
+        setShowTokenClaimModal(false);
+        if (window.tokenClaimResolver) {
+            window.tokenClaimResolver();
+            window.tokenClaimResolver = undefined;
+        }
+    };
+
     if (isInitializing) {
         return <div className="p-4 text-center">Initializing TGE.</div>;
     }
@@ -464,6 +483,12 @@ function PresaleForm({
                         </p>
                     )}
                 </form>
+
+                <TokenClaimWaitModal
+                    isOpen={showTokenClaimModal}
+                    onContinue={handleContinueToTokenClaim}
+                    solTxSig={solTransactionSig}
+                />
 
                 <AnimatePresence>
                     {showSuccessAnimation && (
