@@ -113,14 +113,8 @@ function QuestTopCard() {
                         </div>
                     )}
                     <h3 className="font-semibold font-fredoka text-2xl max-w-sm">
-                        Win $6,000 Weekly by Writing Posts about MetaDawgs on{" "}
-                        <a
-                            href="https://x.com"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            X.com
-                        </a>
+                        Win $6,000 Mega Rewards by creating content about{" "}
+                        <span className="font-extrabold">Metadawgs TGE</span>
                     </h3>
                     {userProfile?.creatorClubVerification === "APPROVED" && (
                         <p className="text-white text-[12px] max-w-md">
