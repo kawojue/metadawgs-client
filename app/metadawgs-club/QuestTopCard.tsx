@@ -113,7 +113,7 @@ function QuestTopCard() {
                         </div>
                     )}
                     <h3 className="font-semibold font-fredoka text-2xl max-w-sm">
-                        Win $6,5000 Weekly by Writing Posts about MetaDawgs on{" "}
+                        Win $6,000 Weekly by Writing Posts about MetaDawgs on{" "}
                         <a
                             href="https://x.com"
                             target="_blank"
