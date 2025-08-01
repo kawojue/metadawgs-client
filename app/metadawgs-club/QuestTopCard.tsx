@@ -113,7 +113,7 @@ function QuestTopCard() {
                         </div>
                     )}
                     <h3 className="font-semibold font-fredoka text-2xl max-w-sm">
-                        Win $6,000 Mega Rewards by creating content about{" "}
+                        Win $10,000 Mega Rewards by creating content about{" "}
                         <span className="font-extrabold">Metadawgs TGE</span>
                     </h3>
                     {userProfile?.creatorClubVerification === "APPROVED" && (
