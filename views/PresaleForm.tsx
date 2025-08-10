@@ -74,10 +74,6 @@ function PresaleForm({
             return;
         }
 
-        if (!canPurchase) {
-            return;
-        }
-
         setIsLoading(true);
         setStatusMessage("Processing purchase...");
         setError("");
@@ -232,11 +228,8 @@ function PresaleForm({
         searchParams,
     ]);
 
-    useEffect(() => {
-        setError("");
-        setStatusMessage("");
-        setIsLoading(false);
-        const fetchExchangeRate = debounce(async () => {
+    const fetchExchangeRate = useCallback(
+        debounce(async () => {
             setExchanging(true);
             setCanPurchase(false);
             try {
@@ -287,11 +280,17 @@ function PresaleForm({
             } finally {
                 setExchanging(false);
             }
-        }, 500);
+        }, 500),
+        [amount, publicKey, searchParams]
+    );
 
+    useEffect(() => {
+        setError("");
+        setStatusMessage("");
+        setIsLoading(false);
         fetchExchangeRate();
         return () => fetchExchangeRate.cancel?.();
-    }, [amount, publicKey, searchParams]);
+    }, [fetchExchangeRate]);
 
     useEffect(() => {
         const getWalletBalance = async () => {
@@ -471,7 +470,7 @@ function PresaleForm({
                             type="button"
                             className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed!"
                             onClick={handlePurchase}
-                            disabled={isLoading || exchanging}
+                            disabled={isLoading || exchanging || !canPurchase}
                         >
                             {isLoading ? "Processing..." : "Enter TGE"}
                             <ArrowUpRightIcon />
