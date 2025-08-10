@@ -74,6 +74,10 @@ function PresaleForm({
             return;
         }
 
+        if (!canPurchase) {
+            return;
+        }
+
         setIsLoading(true);
         setStatusMessage("Processing purchase...");
         setError("");
@@ -271,8 +275,14 @@ function PresaleForm({
                 const data = (await res.json()) as { tokens: number };
                 setExchangedToken(parseFloat(data.tokens.toFixed(2)));
                 setCanPurchase(true);
+                setError("");
             } catch (err) {
                 console.error("Error fetching exchange rate:", err);
+                const displayError =
+                    err instanceof Error && err.message
+                        ? err.message
+                        : "Token calculation failed";
+                setError(`${displayError}`);
                 setCanPurchase(false);
             } finally {
                 setExchanging(false);
