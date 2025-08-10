@@ -45,6 +45,7 @@ function PresaleForm({
     const [isPresaleClosed, setIsPresaleClosed] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [walletBalance, setWalletBalance] = useState<number>(0);
+    const [canPurchase, setCanPurchase] = useState<boolean>(false);
     const [, setComingSoon] = useLocalStorage(XComingSoonModal, false);
     const [showSuccessAnimation, setShowSuccessAnimation] =
         useState<boolean>(false);
@@ -134,7 +135,12 @@ function PresaleForm({
             );
 
             if (!response.ok) {
-                throw new Error("Confirmation failed");
+                const errorData = await response.json().catch(() => null);
+                const backendError =
+                    errorData?.message ||
+                    errorData?.error ||
+                    `HTTP ${response.status}: ${response.statusText}`;
+                throw new Error(backendError);
             }
 
             const data = (await response.json()) as {
@@ -228,6 +234,7 @@ function PresaleForm({
         setIsLoading(false);
         const fetchExchangeRate = debounce(async () => {
             setExchanging(true);
+            setCanPurchase(false);
             try {
                 const parsedAmount = Number(amount);
 
@@ -253,13 +260,20 @@ function PresaleForm({
                 );
 
                 if (!res.ok) {
-                    throw new Error("Error during exchange occurred.");
+                    const errorData = await res.json().catch(() => null);
+                    const backendError =
+                        errorData?.message ||
+                        errorData?.error ||
+                        `HTTP ${res.status}: ${res.statusText}`;
+                    throw new Error(backendError);
                 }
 
                 const data = (await res.json()) as { tokens: number };
                 setExchangedToken(parseFloat(data.tokens.toFixed(2)));
+                setCanPurchase(true);
             } catch (err) {
                 console.error("Error fetching exchange rate:", err);
+                setCanPurchase(false);
             } finally {
                 setExchanging(false);
             }
