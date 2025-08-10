@@ -468,6 +468,7 @@ function PresaleForm({
                     </div>
                     {!!publicKey && (
                         <Button
+                            type="button"
                             className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed!"
                             onClick={handlePurchase}
                             disabled={isLoading || exchanging}
