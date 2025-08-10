@@ -376,7 +376,9 @@ function PresaleForm({
                                 {isComing
                                     ? "TBA"
                                     : formatNumberWithCommas(
-                                          metrics?.totalSoldSol
+                                          Number(
+                                              metrics?.totalSoldSol?.toFixed(4)
+                                          )
                                       )}{" "}
                                 SOL
                             </strong>
