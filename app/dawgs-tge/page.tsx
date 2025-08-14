@@ -25,9 +25,7 @@ function Page() {
 
                         {!isComingSoon && (
                             <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
-                                Buy $MetaDawgs
-                                <br />
-                                Token Now
+                                Metadawgs TGE is coming..
                             </h1>
                         )}
                     </FadeIn>

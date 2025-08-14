@@ -11,24 +11,23 @@ import { getMetricsSocket } from "@/lib/socket";
 import { Socket } from "socket.io-client";
 
 type Metrics = {
-    totalSoldSol: number;
     endTime: string;
-    targetSol: number;
+    hardCap: number;
+    softCap: number;
     startTime: string;
-    minPerWallet: number;
-    maxPerWallet: number;
+    totalSoldSol: number;
+    minSolPerWallet: number;
+    maxSolPerWallet: number;
     tokenMint: string;
     tokensSoldByType: {
-        affiliate: number;
-        whitelist: number;
         public: number;
-        total: number;
+        private: number;
     };
     status: {
         public: boolean;
+        private: boolean;
         airdrop: boolean;
         affiliate: boolean;
-        whitelist: boolean;
     };
 };
 

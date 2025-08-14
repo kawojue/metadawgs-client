@@ -14,14 +14,14 @@ import {
     VersionedTransaction,
 } from "@solana/web3.js";
 import { Buffer } from "buffer";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { debounce, formatNumberWithCommas } from "@/lib/common";
-import NumberInput from "@/components/custom/NumberInput";
 import useLocalStorage from "use-local-storage";
 import { XComingSoonModal } from "@/lib/values";
-import ReferralCodeDisplay from "@/components/custom/ReferralCodeDisplay";
 import { useMetrics } from "@/context/MetricsProvider";
+import NumberInput from "@/components/custom/NumberInput";
+import { debounce, formatNumberWithCommas } from "@/lib/common";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import ReferralCodeDisplay from "@/components/custom/ReferralCodeDisplay";
 import TokenClaimWaitModal from "@/components/custom/modals/TokenClaimWaitModal";
 
 const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS as string;
@@ -298,7 +298,7 @@ function PresaleForm({
 
             try {
                 const balance = await connection.getBalance(publicKey);
-                setWalletBalance(balance / LAMPORTS_PER_SOL); // Convert lamports to SOL
+                setWalletBalance(balance / LAMPORTS_PER_SOL);
             } catch (error) {
                 console.error("Error fetching wallet balance:", error);
             }
@@ -306,17 +306,16 @@ function PresaleForm({
 
         getWalletBalance();
 
-        // Set up an interval to refresh the balance periodically
-        const intervalId = setInterval(getWalletBalance, 30000); // Every 30 seconds
+        const intervalId = setInterval(getWalletBalance, 30000);
 
-        return () => clearInterval(intervalId); // Clean up on unmount
+        return () => clearInterval(intervalId);
     }, [connection, publicKey]);
 
     useEffect(() => {
         if (metrics) {
             const isPresaleClosed =
                 new Date(metrics.endTime).getTime() < Date.now() ||
-                metrics.totalSoldSol >= metrics.targetSol;
+                metrics.totalSoldSol >= metrics.hardCap;
             setIsPresaleClosed(isPresaleClosed);
         }
     }, [metrics]);
@@ -364,14 +363,14 @@ function PresaleForm({
                             style={{
                                 width: `${
                                     (metrics.totalSoldSol * 100) /
-                                    metrics.targetSol
+                                    metrics.softCap
                                 }%`,
                             }}
                         ></div>
                     </div>
                     <div className="progress-value">
                         <p className="text-lg">
-                            Metadawgs:{" "}
+                            Solana Target Raised:{" "}
                             <strong>
                                 {isComing
                                     ? "TBA"
@@ -400,41 +399,99 @@ function PresaleForm({
                     <div className="amount-input flex flex-col gap-2">
                         <div className="flex flex-col items-start gap-0 mb-2">
                             <span className="text-lg font-semibold">
-                                Verified Entry:{" "}
+                                Token Name:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    METADAWGS
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
+                                Total Supply:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    1BILLION
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
+                                TGE Allocation:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    600 million
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
+                                Listing Allocation:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    350 million
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
+                                Airdrop Allocation:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    40 million
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
+                                Minimum Target:{" "}
                                 <span className="font-fredoka font-semibold">
                                     {isComing
                                         ? "TBA"
                                         : formatNumberWithCommas(
-                                              metrics.targetSol || 0
-                                          )}
+                                              metrics.softCap || 0
+                                          )}{" "}
+                                    SOL
                                 </span>
                             </span>
                             <span className="text-lg font-semibold">
-                                Listing Time:{" "}
+                                Maximum Target:{" "}
                                 <span className="font-fredoka font-semibold">
                                     {isComing
                                         ? "TBA"
                                         : formatNumberWithCommas(
-                                              metrics.minPerWallet || 0
-                                          )}
+                                              metrics.hardCap || 0
+                                          )}{" "}
+                                    SOL
                                 </span>
                             </span>
-                            <span className="text-lg font-semibold">
+                            <br />
+                            <p className="text-xl font-semibold">
+                                Whitelist Round
+                            </p>
+                            <span className="font-semibold">
+                                Price:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    {isComing ? "TBA" : 0.00385} SOL
+                                </span>
+                            </span>
+                            <span className="font-semibold">
+                                Minimum Buy:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    {isComing ? "TBA" : 1} SOL
+                                </span>
+                            </span>
+                            <span className="font-semibold">
                                 Maximum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing
-                                        ? "TBA"
-                                        : formatNumberWithCommas(
-                                              metrics.maxPerWallet
-                                          )}
+                                    {isComing ? "TBA" : 5} SOL
                                 </span>
                             </span>
-                            <span className="text-lg font-semibold">
-                                Allocated Token:{" "}
+                            <br />
+                            <p className="text-xl font-semibold">
+                                Public Round
+                            </p>
+                            <span className="font-semibold">
+                                Price:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing
-                                        ? "TBA"
-                                        : formatNumberWithCommas(0)}
+                                    {isComing ? "TBA" : 0.005} SOL
+                                </span>
+                            </span>
+                            <span className="font-semibold">
+                                Minimum Buy:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    {isComing ? "TBA" : 20} USD
+                                </span>
+                            </span>
+                            <span className="font-semibold">
+                                Maximum Buy:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    {isComing ? "TBA" : "1,500"} USD
                                 </span>
                             </span>
                         </div>
@@ -442,8 +499,8 @@ function PresaleForm({
                         <NumberInput
                             value={amount}
                             onChange={setAmount}
-                            minValue={metrics.minPerWallet || 0}
-                            maxValue={metrics.maxPerWallet}
+                            minValue={metrics.minSolPerWallet || 0}
+                            maxValue={metrics.maxSolPerWallet}
                             disabled={
                                 isLoading ||
                                 !publicKey ||
