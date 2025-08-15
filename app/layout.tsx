@@ -8,6 +8,7 @@ import { SocketProvider } from "./SocketProvider";
 import WalletConnectionProvider from "./WalletProvider";
 import siteConfig from "@/lib/siteConfig";
 import { Toaster } from "@/components/ui/sonner";
+import JsonLd from "./json-ld";
 
 const josefinSans = Josefin_Sans({
     variable: "--font-josefin-sans",
@@ -126,38 +127,6 @@ export const metadata: Metadata = {
         "application-name": "MetaDawgs",
         "msapplication-TileColor": "#000000",
         "msapplication-config": "/browserconfig.xml",
-        "ld+json": JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            name: "MetaDawgs",
-            description: siteConfig.description,
-            url: "https://metadawgs.com",
-            applicationCategory: "GameApplication",
-            operatingSystem: "Web Browser",
-            offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
-            },
-            author: {
-                "@type": "Organization",
-                name: "MetaDawgs Team",
-                url: "https://metadawgs.com",
-            },
-            publisher: {
-                "@type": "Organization",
-                name: "MetaDawgs",
-                logo: {
-                    "@type": "ImageObject",
-                    url: "https://res.cloudinary.com/kawojue/image/upload/v1748125049/MD1-1_kf4paa.png",
-                },
-            },
-            sameAs: [
-                "https://x.com/Meta_Dawgs",
-                "https://t.me/Metadawgsportal",
-                "https://www.youtube.com/@MetaDawgs",
-            ],
-        }),
     },
 };
 
@@ -171,6 +140,7 @@ export default function RootLayout({
             <body
                 className={`${josefinSans.variable} ${geistMono.variable} ${fredoka.variable} antialiased`}
             >
+                <JsonLd />
                 <WalletConnectionProvider>
                     <SocketProvider>
                         <MainLayout>{children}</MainLayout>
