@@ -64,7 +64,8 @@ function ReferralCodeDisplay({ referralCode }: ReferralCodeDisplayProps) {
                     </Button>
                 </div>
                 <p className="text-xs text-white/60 text-center">
-                    Share this link and earn up to 10%!
+                    Share your link and invite folks to buy the launch and earn
+                    up to 10% in Solana.
                 </p>
             </div>
         </div>
