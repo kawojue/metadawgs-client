@@ -17,7 +17,7 @@ import ComingSoonModal from "@/components/custom/modals/ComingSoonModal";
 import CompleteOnboardingModal from "@/components/custom/modals/CompleteOnboardingModal";
 import { AuthProvider } from "@/context/AuthProvider";
 import {
-    ReferralCodeProvider,
+    // ReferralCodeProvider,
     useReferralCode,
 } from "@/context/ReferralCodeContext";
 
@@ -95,9 +95,9 @@ function MainLayoutContent({ children }: { children: ReactNode }) {
 function MainLayout({ children }: { children: ReactNode }) {
     return (
         <AuthProvider>
-            <ReferralCodeProvider>
-                <MainLayoutContent>{children}</MainLayoutContent>
-            </ReferralCodeProvider>
+            {/* <ReferralCodeProvider> */}
+            <MainLayoutContent>{children}</MainLayoutContent>
+            {/* </ReferralCodeProvider> */}
         </AuthProvider>
     );
 }
