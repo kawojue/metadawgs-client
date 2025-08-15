@@ -1,5 +1,3 @@
-export const runtime = "edge";
-
 import type { Metadata } from "next";
 import { Geist_Mono, Fredoka, Josefin_Sans } from "next/font/google";
 import "./globals.css";
@@ -8,7 +6,7 @@ import { SocketProvider } from "./SocketProvider";
 import WalletConnectionProvider from "./WalletProvider";
 import siteConfig from "@/lib/siteConfig";
 import { Toaster } from "@/components/ui/sonner";
-// import JsonLd from "./json-ld";
+import JsonLd from "./json-ld";
 
 const josefinSans = Josefin_Sans({
     variable: "--font-josefin-sans",
@@ -140,7 +138,7 @@ export default function RootLayout({
             <body
                 className={`${josefinSans.variable} ${geistMono.variable} ${fredoka.variable} antialiased`}
             >
-                {/* <JsonLd /> */}
+                <JsonLd />
                 <WalletConnectionProvider>
                     <SocketProvider>
                         <MainLayout>{children}</MainLayout>
