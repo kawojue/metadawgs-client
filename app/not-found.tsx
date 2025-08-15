@@ -5,13 +5,13 @@ import { NotFoundSVG } from "@/lib/svgs";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-function page() {
+export default function NotFound() {
     return (
         <div className="w-full grid place-content-center min-h-dch place-items-center p-4 sm:p-6 md:p-10">
             <FadeInUp className="content flex flex-col items-center justify-center text-center gap-4">
                 <h1 className="text-5xl font-bold font-fredoka">Oops!</h1>
                 <p className="text-lg text-[#ACACAC] max-w-sm">
-                    Sorry, the page {"you’re"} looking for {"doesn’t"} exist.
+                    Sorry, the page {"you're"} looking for {"doesn't"} exist.
                 </p>
 
                 <Link
@@ -30,5 +30,3 @@ function page() {
         </div>
     );
 }
-
-export default page;
