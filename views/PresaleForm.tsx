@@ -4,6 +4,8 @@ import CountdownTimer from "@/components/custom/Countdown";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import { useState, useCallback, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 import {
     PublicKey,
     Transaction,
@@ -12,27 +14,25 @@ import {
     VersionedTransaction,
 } from "@solana/web3.js";
 import { Buffer } from "buffer";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { debounce, formatNumberWithCommas } from "@/lib/common";
-import NumberInput from "@/components/custom/NumberInput";
 import useLocalStorage from "use-local-storage";
 import { XComingSoonModal } from "@/lib/values";
-// import { SignupAlert } from "@/components/custom/modals/SignupAlert";
-
-type Metrics = {
-    totalSoldSol: number;
-    endTime: string;
-    startTime: string;
-    targetSol: number;
-    minPerWallet: number | null;
-    maxPerWallet: number;
-    tokenMint: string;
-};
+import { useMetrics } from "@/context/MetricsProvider";
+import NumberInput from "@/components/custom/NumberInput";
+import { debounce, formatNumberWithCommas } from "@/lib/common";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import ReferralCodeDisplay from "@/components/custom/ReferralCodeDisplay";
+import TokenClaimWaitModal from "@/components/custom/modals/TokenClaimWaitModal";
 
 const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS as string;
 
-function PresaleForm({ isComing }: { isComing: boolean }) {
+function PresaleForm({
+    isComing,
+    referralCode,
+}: {
+    isComing: boolean;
+    referralCode?: string;
+}) {
     const { connection } = useConnection();
     const { setVisible } = useWalletModal();
     const { publicKey, sendTransaction, signTransaction } = useWallet();
@@ -44,11 +44,17 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isPresaleClosed, setIsPresaleClosed] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const [metrics, setMetrics] = useState<Metrics | null>(null);
-    const [isInitializing, setIsInitializing] = useState<boolean>(true);
     const [walletBalance, setWalletBalance] = useState<number>(0);
-    // const [openSignUpAlert, setOpenSignUpAlert] = useState<boolean>(false);
+    const [canPurchase, setCanPurchase] = useState<boolean>(false);
     const [, setComingSoon] = useLocalStorage(XComingSoonModal, false);
+    const [showSuccessAnimation, setShowSuccessAnimation] =
+        useState<boolean>(false);
+    const [showTokenClaimModal, setShowTokenClaimModal] =
+        useState<boolean>(false);
+    const [solTransactionSig, setSolTransactionSig] = useState<string>("");
+
+    const { metrics, isLoading: isInitializing } = useMetrics();
+    const searchParams = useSearchParams();
 
     const handlePurchase = useCallback(async () => {
         if (isComing) {
@@ -77,7 +83,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
         let finalTokenTxSig = null;
 
         try {
-            setStatusMessage("Preparing SOL payment...");
+            setStatusMessage("💰 Preparing SOL payment...");
             const lamportsToSend = BigInt(
                 Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL)
             );
@@ -91,24 +97,34 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                 })
             );
 
-            setStatusMessage("Please approve SOL payment in your wallet...");
+            setStatusMessage("🔐 Please approve SOL payment in your wallet...");
             solTxSig = await sendTransaction(
                 solTransferTransaction,
                 connection
             );
             setStatusMessage(
-                `SOL payment sent. Waiting for confirmation (Don't Quit!)...`
+                `📡 SOL payment sent. Waiting for confirmation (Don't Quit!)...`
             );
 
-            setStatusMessage("Confirming payment...");
+            setStatusMessage("✅ Confirming payment...");
+            setSolTransactionSig(solTxSig);
+            setShowTokenClaimModal(true);
+
+            await new Promise<void>((resolve) => {
+                window.tokenClaimResolver = resolve;
+            });
+
+            const refCode = searchParams.get("ref");
+
             const payload = {
                 buyerPublicKeyStr: publicKey.toBase58(),
                 solTxSig,
                 amountSol: parseFloat(amount),
+                ...(refCode && { referralCode: refCode }),
             };
 
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/confirm-purchase-and-prepare-claim`,
+                `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/presale/confirm-purchase-and-prepare-claim`,
                 {
                     method: "POST",
                     headers: {
@@ -119,7 +135,12 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
             );
 
             if (!response.ok) {
-                throw new Error("Confirmation failed");
+                const errorData = await response.json().catch(() => null);
+                const backendError =
+                    errorData?.message ||
+                    errorData?.error ||
+                    `HTTP ${response.status}: ${response.statusText}`;
+                throw new Error(backendError);
             }
 
             const data = (await response.json()) as {
@@ -132,12 +153,12 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                 );
             }
 
-            setStatusMessage("Confirmed. Preparing token transaction...");
+            setStatusMessage("🎯 Confirmed. Preparing token transaction...");
 
             partiallySignedTokenTxBase64 = data.partiallySignedTokenTx;
 
             setStatusMessage(
-                "Please approve token claim transaction in your wallet..."
+                "🔐 Please approve token claim transaction in your wallet..."
             );
 
             const txBuffer = Buffer.from(
@@ -148,13 +169,13 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                 VersionedTransaction.deserialize(txBuffer);
 
             const fullySignedTx = await signTransaction(partiallySignedTx);
-            setStatusMessage("Sending token claim transaction...");
+            setStatusMessage("📡 Sending token claim transaction...");
             finalTokenTxSig = await connection.sendTransaction(fullySignedTx, {
                 preflightCommitment: "confirmed",
                 skipPreflight: false,
             });
             setStatusMessage(
-                `Token claim transaction sent. Waiting for confirmation...`
+                `⏳ Token claim transaction sent. Waiting for confirmation...`
             );
 
             await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -174,7 +195,15 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                 throw new Error(`Token claim transaction confirmation failed`);
             }
 
-            setStatusMessage(`Purchase complete! Token transaction confirmed`);
+            setStatusMessage(
+                `🎉 Purchase complete! Token transaction confirmed`
+            );
+
+            setShowSuccessAnimation(true);
+            setTimeout(() => {
+                setStatusMessage("");
+                setShowSuccessAnimation(false);
+            }, 4000);
 
             setAmount("");
         } catch (err: unknown) {
@@ -190,23 +219,34 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
         } finally {
             setIsLoading(false);
         }
-    }, [publicKey, sendTransaction, signTransaction, connection, amount]);
+    }, [
+        publicKey,
+        sendTransaction,
+        signTransaction,
+        connection,
+        amount,
+        searchParams,
+    ]);
 
-    useEffect(() => {
-        setError("");
-        setStatusMessage("");
-        setIsLoading(false);
-        const fetchExchangeRate = debounce(async () => {
+    const fetchExchangeRate = useCallback(
+        debounce(async () => {
             setExchanging(true);
+            setCanPurchase(false);
             try {
                 const parsedAmount = Number(amount);
 
                 if (isNaN(parsedAmount) || parsedAmount <= 0) return null;
+                if (!publicKey) return null;
 
-                const body = { amountSol: parsedAmount };
+                const refCode = searchParams.get("ref");
+                const body = {
+                    buyerPublicKeyStr: publicKey.toBase58(),
+                    amountSol: parseFloat(amount),
+                    ...(refCode && { referralCode: refCode }),
+                };
 
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/calculate`,
+                    `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/presale/calculate`,
                     {
                         method: "POST",
                         headers: {
@@ -217,21 +257,40 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                 );
 
                 if (!res.ok) {
-                    throw new Error("Error during exchange occurred.");
+                    const errorData = await res.json().catch(() => null);
+                    const backendError =
+                        errorData?.message ||
+                        errorData?.error ||
+                        `HTTP ${res.status}: ${res.statusText}`;
+                    throw new Error(backendError);
                 }
 
                 const data = (await res.json()) as { tokens: number };
-                setExchangedToken(data.tokens);
+                setExchangedToken(parseFloat(data.tokens.toFixed(2)));
+                setCanPurchase(true);
+                setError("");
             } catch (err) {
                 console.error("Error fetching exchange rate:", err);
+                const displayError =
+                    err instanceof Error && err.message
+                        ? err.message
+                        : "Token calculation failed";
+                setError(`${displayError}`);
+                setCanPurchase(false);
             } finally {
                 setExchanging(false);
             }
-        }, 500);
+        }, 500),
+        [amount, publicKey, searchParams]
+    );
 
+    useEffect(() => {
+        setError("");
+        setStatusMessage("");
+        setIsLoading(false);
         fetchExchangeRate();
         return () => fetchExchangeRate.cancel?.();
-    }, [amount]);
+    }, [fetchExchangeRate]);
 
     useEffect(() => {
         const getWalletBalance = async () => {
@@ -239,7 +298,7 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
 
             try {
                 const balance = await connection.getBalance(publicKey);
-                setWalletBalance(balance / LAMPORTS_PER_SOL); // Convert lamports to SOL
+                setWalletBalance(balance / LAMPORTS_PER_SOL);
             } catch (error) {
                 console.error("Error fetching wallet balance:", error);
             }
@@ -247,48 +306,31 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
 
         getWalletBalance();
 
-        // Set up an interval to refresh the balance periodically
-        const intervalId = setInterval(getWalletBalance, 30000); // Every 30 seconds
+        const intervalId = setInterval(getWalletBalance, 30000);
 
-        return () => clearInterval(intervalId); // Clean up on unmount
+        return () => clearInterval(intervalId);
     }, [connection, publicKey]);
 
     useEffect(() => {
-        async function getMetrics() {
-            try {
-                setIsInitializing(true);
-
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/metrics`
-                );
-
-                if (!res.ok) {
-                    throw new Error("Couldn't get metrics.");
-                }
-
-                const result = (await res.json()) as {
-                    data: Metrics;
-                };
-
-                const isPresaleClosed =
-                    new Date(result.data.endTime).getTime() < Date.now() ||
-                    result.data.totalSoldSol >= result.data.targetSol;
-                setIsPresaleClosed(isPresaleClosed);
-
-                setMetrics(result.data);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setIsInitializing(false);
-            }
+        if (metrics) {
+            const isPresaleClosed =
+                new Date(metrics.endTime).getTime() < Date.now() ||
+                metrics.totalSoldSol >= metrics.hardCap;
+            setIsPresaleClosed(isPresaleClosed);
         }
-
-        getMetrics();
-    }, []);
+    }, [metrics]);
 
     function connectWallet() {
         setVisible(true);
     }
+
+    const handleContinueToTokenClaim = () => {
+        setShowTokenClaimModal(false);
+        if (window.tokenClaimResolver) {
+            window.tokenClaimResolver();
+            window.tokenClaimResolver = undefined;
+        }
+    };
 
     if (isInitializing) {
         return <div className="p-4 text-center">Initializing TGE.</div>;
@@ -321,19 +363,21 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                             style={{
                                 width: `${
                                     (metrics.totalSoldSol * 100) /
-                                    metrics.targetSol
+                                    metrics.softCap
                                 }%`,
                             }}
                         ></div>
                     </div>
                     <div className="progress-value">
                         <p className="text-lg">
-                            MetaDawgs:{" "}
+                            Solana Target Raised:{" "}
                             <strong>
                                 {isComing
                                     ? "TBA"
                                     : formatNumberWithCommas(
-                                          metrics?.totalSoldSol
+                                          Number(
+                                              metrics?.totalSoldSol?.toFixed(4)
+                                          )
                                       )}{" "}
                                 SOL
                             </strong>
@@ -347,44 +391,107 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                         </h4>
                         <p className="text-sm">Solana Balance</p>
                     </div>
+                    {referralCode &&
+                        publicKey &&
+                        metrics?.status?.affiliate && (
+                            <ReferralCodeDisplay referralCode={referralCode} />
+                        )}
                     <div className="amount-input flex flex-col gap-2">
                         <div className="flex flex-col items-start gap-0 mb-2">
                             <span className="text-lg font-semibold">
-                                Verified Entry:{" "}
+                                Token Name:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    METADAWGS
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
+                                Total Supply:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    1BILLION
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
+                                TGE Allocation:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    600 million
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
+                                Listing Allocation:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    350 million
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
+                                Airdrop Allocation:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    40 million
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
+                                Minimum Target:{" "}
                                 <span className="font-fredoka font-semibold">
                                     {isComing
                                         ? "TBA"
                                         : formatNumberWithCommas(
-                                              metrics.targetSol || 0
-                                          )}
+                                              metrics.softCap || 0
+                                          )}{" "}
+                                    SOL
                                 </span>
                             </span>
                             <span className="text-lg font-semibold">
-                                Listing Time:{" "}
+                                Maximum Target:{" "}
                                 <span className="font-fredoka font-semibold">
                                     {isComing
                                         ? "TBA"
                                         : formatNumberWithCommas(
-                                              metrics.minPerWallet || 0
-                                          )}
+                                              metrics.hardCap || 0
+                                          )}{" "}
+                                    SOL
                                 </span>
                             </span>
-                            <span className="text-lg font-semibold">
+                            <br />
+                            <p className="text-xl font-semibold">
+                                Whitelist Round
+                            </p>
+                            <span className="font-semibold">
+                                Price:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    {isComing ? "TBA" : 0.00385} SOL
+                                </span>
+                            </span>
+                            <span className="font-semibold">
+                                Minimum Buy:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    {isComing ? "TBA" : 1} SOL
+                                </span>
+                            </span>
+                            <span className="font-semibold">
                                 Maximum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing
-                                        ? "TBA"
-                                        : formatNumberWithCommas(
-                                              metrics.maxPerWallet
-                                          )}
+                                    {isComing ? "TBA" : 5} SOL
                                 </span>
                             </span>
-                            <span className="text-lg font-semibold">
-                                Allocated Token:{" "}
+                            <br />
+                            <p className="text-xl font-semibold">
+                                Public Round
+                            </p>
+                            <span className="font-semibold">
+                                Price:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing
-                                        ? "TBA"
-                                        : formatNumberWithCommas(0)}
+                                    {isComing ? "TBA" : 0.005} SOL
+                                </span>
+                            </span>
+                            <span className="font-semibold">
+                                Minimum Buy:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    {isComing ? "TBA" : 20} USD
+                                </span>
+                            </span>
+                            <span className="font-semibold">
+                                Maximum Buy:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    {isComing ? "TBA" : "1,500"} USD
                                 </span>
                             </span>
                         </div>
@@ -392,8 +499,8 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                         <NumberInput
                             value={amount}
                             onChange={setAmount}
-                            minValue={metrics.minPerWallet || 0}
-                            maxValue={metrics.maxPerWallet}
+                            minValue={metrics.minSolPerWallet || 0}
+                            maxValue={metrics.maxSolPerWallet}
                             disabled={
                                 isLoading ||
                                 !publicKey ||
@@ -419,9 +526,10 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                     </div>
                     {!!publicKey && (
                         <Button
+                            type="button"
                             className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed!"
                             onClick={handlePurchase}
-                            disabled={isLoading || exchanging}
+                            disabled={isLoading || exchanging || !canPurchase}
                         >
                             {isLoading ? "Processing..." : "Enter TGE"}
                             <ArrowUpRightIcon />
@@ -438,12 +546,18 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                         </Button>
                     )}
                     {statusMessage && !error && (
-                        <p className="line-clamp-2">Status: {statusMessage}</p>
+                        <div className="bg-[#FFBE00]/10 border border-[#FFBE00]/20 rounded-lg p-3">
+                            <p className="text-[#FFBE00] text-sm font-medium line-clamp-2">
+                                {statusMessage}
+                            </p>
+                        </div>
                     )}
                     {error && (
-                        <p className="line-clamp-2" style={{ color: "red" }}>
-                            {error}
-                        </p>
+                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                            <p className="text-red-400 text-sm font-medium line-clamp-2">
+                                {error}
+                            </p>
+                        </div>
                     )}
                     {!publicKey && <p>Please connect your wallet.</p>}
                     {isPresaleClosed && (
@@ -452,6 +566,94 @@ function PresaleForm({ isComing }: { isComing: boolean }) {
                         </p>
                     )}
                 </form>
+
+                <TokenClaimWaitModal
+                    isOpen={showTokenClaimModal}
+                    onContinue={handleContinueToTokenClaim}
+                    solTxSig={solTransactionSig}
+                />
+
+                <AnimatePresence>
+                    {showSuccessAnimation && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
+                        >
+                            <motion.div
+                                initial={{ scale: 0, rotate: -180 }}
+                                animate={{ scale: 1, rotate: 0 }}
+                                exit={{ scale: 0, rotate: 180 }}
+                                transition={{ type: "spring", duration: 0.8 }}
+                                className="bg-gradient-to-r from-[#FFBE00] to-[#F9C580] rounded-full p-8 shadow-2xl"
+                            >
+                                <div className="text-center">
+                                    <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: [0, 1.2, 1] }}
+                                        transition={{
+                                            delay: 0.3,
+                                            duration: 0.6,
+                                        }}
+                                        className="text-6xl mb-4"
+                                    >
+                                        🎉
+                                    </motion.div>
+                                    <motion.h2
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.5 }}
+                                        className="text-2xl font-bold text-black font-fredoka"
+                                    >
+                                        Purchase Complete!
+                                    </motion.h2>
+                                    <motion.p
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.7 }}
+                                        className="text-black/80 mt-2"
+                                    >
+                                        Tokens successfully claimed
+                                    </motion.p>
+                                </div>
+                            </motion.div>
+
+                            {[...Array(12)].map((_, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{
+                                        opacity: 0,
+                                        scale: 0,
+                                        x: 0,
+                                        y: 0,
+                                    }}
+                                    animate={{
+                                        opacity: [0, 1, 0],
+                                        scale: [0, 1, 0.5],
+                                        x:
+                                            Math.cos((i * 30 * Math.PI) / 180) *
+                                            200,
+                                        y:
+                                            Math.sin((i * 30 * Math.PI) / 180) *
+                                            200,
+                                    }}
+                                    transition={{
+                                        duration: 2,
+                                        delay: 0.5 + i * 0.1,
+                                        ease: "easeOut",
+                                    }}
+                                    className="absolute w-4 h-4 bg-[#FFBE00] rounded-full"
+                                    style={{
+                                        left: "50%",
+                                        top: "50%",
+                                        transform: "translate(-50%, -50%)",
+                                    }}
+                                />
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </>
         );
 }

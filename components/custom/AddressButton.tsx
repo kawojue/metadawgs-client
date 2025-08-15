@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { WalletIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -12,6 +12,7 @@ import useMobileMenu from "@/hooks/use-mobile-menu";
 import { cn } from "@/lib/utils";
 import { postWithAuth } from "@/lib/api";
 import { toast } from "sonner";
+import { usePathname } from "next/navigation";
 
 function AddressButton({
     label,
@@ -20,6 +21,7 @@ function AddressButton({
     activeClassName,
     onConnect,
     preventAutoClose = false,
+    onReferralCodeFetched,
 }: {
     label?: string | ReactNode;
     connectedLabel?: string | ReactNode;
@@ -28,9 +30,17 @@ function AddressButton({
     onConnected?: () => void;
     onConnect?: () => void;
     preventAutoClose?: boolean;
+    onReferralCodeFetched?: (referralCode: string) => void;
 }) {
-    const { userToken, setUserProfile, userProfile, isLoading: authLoading } = useAuth();
+    const {
+        userToken,
+        setUserProfile,
+        userProfile,
+        isLoading: authLoading,
+    } = useAuth();
     const { setMenuIsOpen } = useMobileMenu();
+    const pathname = usePathname();
+    const [referralCode, setReferralCode] = useState<string | null>(null);
 
     const { publicKey, disconnect } = useWallet();
     const { setVisible } = useWalletModal();
@@ -40,25 +50,8 @@ function AddressButton({
             setMenuIsOpen(false);
         }
 
-        if (!userToken) {
-            toast(
-                "🧭 Wrong path, adventurer. Link your Twitter before summoning Connect Wallet."
-            );
-            return;
-        }
-
         onConnect?.();
-
-        setTimeout(() => {
-            setVisible(true);
-            const checkConnection = setInterval(() => {
-                if (window.solana?.isConnected) {
-                    clearInterval(checkConnection);
-                    window.location.reload();
-                }
-            }, 1000);
-            setTimeout(() => clearInterval(checkConnection), 30000);
-        }, 500);
+        setVisible(true);
     }
 
     function disconnectWallet() {
@@ -102,6 +95,40 @@ function AddressButton({
         updateUserWallet();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [publicKey, userToken]);
+
+    useEffect(() => {
+        async function fetchReferralCode() {
+            if (!publicKey || pathname !== "/dawgs-tge" || referralCode) return;
+
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/presale/save-wallet`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            walletAddress: publicKey.toBase58(),
+                        }),
+                    }
+                );
+
+                if (response.ok) {
+                    const data = (await response.json()) as {
+                        referralCode: string;
+                    };
+                    console.log("Referral code fetched:", data);
+                    setReferralCode(data.referralCode);
+                    onReferralCodeFetched?.(data.referralCode);
+                }
+            } catch (error) {
+                console.error("Failed to fetch referral code:", error);
+            }
+        }
+
+        fetchReferralCode();
+    }, [publicKey, pathname, referralCode, onReferralCodeFetched]);
 
     return (
         <>

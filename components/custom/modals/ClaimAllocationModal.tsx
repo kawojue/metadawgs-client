@@ -1,83 +1,73 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowUpRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ArrowUpRightIcon, Gift, Clock } from "lucide-react";
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-
-function ClaimAllocationModal({
-    open,
-    onClose,
-}: {
+interface ClaimAllocationModalProps {
     open: boolean;
     onClose?: () => void;
-}) {
-    const router = useRouter();
+    canClaim: boolean;
+}
 
+export default function ClaimAllocationModal({
+    open,
+    onClose,
+    canClaim,
+}: ClaimAllocationModalProps) {
     return (
-        <Dialog
-            open={open}
-            onOpenChange={(x) => {
-                if (!x) {
-                    onClose?.();
-                }
-            }}
-        >
-            <DialogContent
-                className="sm:max-w-[456px] bg-black text-white shadow-sm border  border-white/20 rounded-3xl"
-                showCloseButton={false}
-            >
-                <DialogHeader className="flex flex-col justify-center gap-2 items-center">
-                    <div className="circle bg-white rounded-full p-2.5 mb-1">
-                        <Image
-                            src={"/images/man-avatar.png"}
-                            alt="man"
-                            width={100}
-                            height={100}
-                        />
+        <Dialog open={open} onOpenChange={onClose}>
+            <DialogContent className="sm:max-w-md bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+                <DialogHeader className="text-center">
+                    <div className="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-[#FFBE00] to-[#FFD700] rounded-full flex items-center justify-center">
+                        {canClaim ? (
+                            <Gift className="w-8 h-8 text-black" />
+                        ) : (
+                            <Clock className="w-8 h-8 text-black" />
+                        )}
                     </div>
-                    <DialogTitle className="font-fredoka text-2xl text-center">
-                        Claim Your MetaDawg Allocation
+                    <DialogTitle className="text-xl font-bold text-white">
+                        {canClaim ? "Airdrop Ready!" : "Airdrop Coming Soon"}
                     </DialogTitle>
-                    <DialogDescription className="text-center text-white px-6">
-                        Your allocation will go live at TGE. Make sure you
-                        participate in quests to claim your allocation.
+                    <DialogDescription className="text-gray-300 text-base">
+                        {canClaim
+                            ? "Your airdrop allocation is ready to claim. Click the claim button to receive your tokens."
+                            : "Your allocation will be live at TGE (Token Generation Event). Stay tuned for updates!"}
                     </DialogDescription>
                 </DialogHeader>
 
-                <DialogFooter className="w-full flex flex-col sm:flex-col gap-3 sm:justify-start">
+                <div className="space-y-4">
+                    {!canClaim && (
+                        <div className="bg-[#FFBE00]/10 border border-[#FFBE00]/20 rounded-lg p-4">
+                            <div className="flex items-center gap-2 text-[#FFBE00] text-sm font-medium">
+                                <Clock className="w-4 h-4" />
+                                <span>
+                                    Token Generation Event (TGE) Information
+                                </span>
+                            </div>
+                            <p className="text-gray-300 text-xs mt-2">
+                                The airdrop will be available for claiming once
+                                the TGE goes live. Make sure to keep your wallet
+                                connected and check back regularly for updates.
+                            </p>
+                        </div>
+                    )}
+
                     <Button
-                        type="button"
-                        className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
-                        onClick={() => {
-                            router.push("/metadawgs-club");
-                            onClose?.();
-                        }}
+                        onClick={onClose}
+                        className="w-full bg-gradient-to-r from-[#FFBE00] to-[#FFD700] hover:from-[#FFD700] hover:to-[#FFBE00] text-black font-semibold py-3 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
                     >
-                        Go to Quests <ArrowUpRight />
+                        <span>{canClaim ? "Close" : "Got it!"}</span>
+                        <ArrowUpRightIcon className="h-4 w-4" />
                     </Button>
-                    <Button
-                        type="button"
-                        className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black disabled:cursor-not-allowed!"
-                        onClick={() => {
-                            onClose?.();
-                        }}
-                    >
-                        Close
-                    </Button>
-                </DialogFooter>
+                </div>
             </DialogContent>
         </Dialog>
     );
 }
-
-export default ClaimAllocationModal;
