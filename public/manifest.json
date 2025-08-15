@@ -1,0 +1,37 @@
+{
+    "name": "MetaDawgs - Complete Quests & Earn Crypto Rewards",
+    "short_name": "MetaDawgs",
+    "description": "🚀 Join 50,000+ players earning crypto on MetaDawgs! Complete quests, earn tokens, climb leaderboards. The ultimate gamified Web3 experience on Solana.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "en",
+    "categories": ["games", "finance", "entertainment"],
+    "icons": [
+        {
+            "src": "/images/man-icon.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/man-icon.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/man-icon.png",
+            "sizes": "180x180",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/images/man-icon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
