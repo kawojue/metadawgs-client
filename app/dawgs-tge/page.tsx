@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Claim from "@/components/custom/ClaimBtn";
 import { FadeIn } from "@/components/custom/ScrollAnimation";
 import PresaleForm from "@/views/PresaleForm";
@@ -44,10 +45,12 @@ function Page() {
                         <Claim />
                     </div>
                     <div className="box md:p-[8%] p-6 md:pt-[5%] pt-10">
-                        <PresaleForm
-                            isComing={isComingSoon}
-                            referralCode={referralCode}
-                        />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <PresaleForm
+                                isComing={isComingSoon}
+                                referralCode={referralCode}
+                            />
+                        </Suspense>
                     </div>
                 </div>
             </div>

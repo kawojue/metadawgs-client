@@ -499,8 +499,6 @@ function PresaleForm({
                         <NumberInput
                             value={amount}
                             onChange={setAmount}
-                            minValue={metrics.minSolPerWallet || 0}
-                            maxValue={metrics.maxSolPerWallet}
                             disabled={
                                 isLoading ||
                                 !publicKey ||
