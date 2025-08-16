@@ -1,5 +1,3 @@
-export const runtime = "edge";
-
 import { FadeInUp } from "@/components/custom/ScrollAnimation";
 import { NotFoundSVG } from "@/lib/svgs";
 import { ArrowUpRight } from "lucide-react";
