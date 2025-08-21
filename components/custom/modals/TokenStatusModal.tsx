@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -124,10 +124,9 @@ export default function TokenStatusModal({
 }: TokenStatusModalProps) {
     const [status, setStatus] = useState<TokenStatusResponse | null>(null);
     const [isRetrying, setIsRetrying] = useState(false);
-    const [pollCount, setPollCount] = useState(0);
     const maxPolls = 60;
 
-    const fetchTokenStatus = async () => {
+    const fetchTokenStatus = useCallback(async () => {
         try {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/presale/token-status/${solTxSig}`
@@ -153,7 +152,7 @@ export default function TokenStatusModal({
             });
             return "failed";
         }
-    };
+    }, [solTxSig, onSuccess]);
 
     const handleRetry = async () => {
         setIsRetrying(true);
@@ -167,7 +166,6 @@ export default function TokenStatusModal({
 
             if (data.success) {
                 setStatus({ status: "pending" });
-                setPollCount(0); // Reset polling
             } else {
                 setStatus({
                     status: "failed",
@@ -189,12 +187,14 @@ export default function TokenStatusModal({
     useEffect(() => {
         if (!isOpen || !solTxSig) return;
 
-        // Initial fetch
+        let localPollCount = 0;
+
         fetchTokenStatus();
 
-        // Set up polling for pending status
         const pollInterval = setInterval(async () => {
-            if (pollCount >= maxPolls) {
+            localPollCount += 1;
+
+            if (localPollCount >= maxPolls) {
                 clearInterval(pollInterval);
                 setStatus({
                     status: "failed",
@@ -204,15 +204,14 @@ export default function TokenStatusModal({
             }
 
             const currentStatus = await fetchTokenStatus();
-            setPollCount((prev) => prev + 1);
 
             if (currentStatus === "completed" || currentStatus === "failed") {
                 clearInterval(pollInterval);
             }
-        }, 5000); // Poll every 5 seconds
+        }, 10_000);
 
         return () => clearInterval(pollInterval);
-    }, [isOpen, solTxSig, pollCount, fetchTokenStatus]);
+    }, [isOpen, solTxSig, fetchTokenStatus]);
 
     const canRetry =
         status?.status === "failed" || status?.status === "not_found";
