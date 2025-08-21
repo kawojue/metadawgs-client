@@ -90,6 +90,9 @@ function PresaleForm({
             );
             const treasuryPublicKey = new PublicKey(TREASURY_ADDRESS);
 
+            // Get recent blockhash for transaction
+            const { blockhash } = await connection.getLatestBlockhash();
+
             const solTransferTransaction = new Transaction().add(
                 SystemProgram.transfer({
                     fromPubkey: publicKey,
@@ -97,6 +100,9 @@ function PresaleForm({
                     lamports: lamportsToSend,
                 })
             );
+
+            solTransferTransaction.recentBlockhash = blockhash;
+            solTransferTransaction.feePayer = publicKey;
 
             setStatusMessage("🔐 Please approve SOL payment in your wallet...");
 
@@ -206,13 +212,12 @@ function PresaleForm({
 
             await new Promise((resolve) => setTimeout(resolve, 5000));
 
+            const latestBlockhash = await connection.getLatestBlockhash();
             const confirmation = await connection.confirmTransaction(
                 {
                     signature: finalTokenTxSig,
-                    blockhash: fullySignedTx.message.recentBlockhash,
-                    lastValidBlockHeight: (
-                        await connection.getLatestBlockhash()
-                    ).lastValidBlockHeight,
+                    blockhash: latestBlockhash.blockhash,
+                    lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
                 },
                 "confirmed"
             );
