@@ -212,12 +212,13 @@ function PresaleForm({
 
             await new Promise((resolve) => setTimeout(resolve, 5000));
 
-            const latestBlockhash = await connection.getLatestBlockhash();
             const confirmation = await connection.confirmTransaction(
                 {
                     signature: finalTokenTxSig,
-                    blockhash: latestBlockhash.blockhash,
-                    lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+                    blockhash: fullySignedTx.message.recentBlockhash,
+                    lastValidBlockHeight: (
+                        await connection.getLatestBlockhash()
+                    ).lastValidBlockHeight,
                 },
                 "confirmed"
             );
