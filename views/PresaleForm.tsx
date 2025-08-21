@@ -1,5 +1,8 @@
 "use client";
 
+// 🔧 Fixed: Using Phantom's signAndSendTransaction for secure transaction handling
+// instead of manual signing and sending to prevent security vulnerabilities
+
 import CountdownTimer from "@/components/custom/Countdown";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
@@ -35,7 +38,7 @@ function PresaleForm({
 }) {
     const { connection } = useConnection();
     const { setVisible } = useWalletModal();
-    const { publicKey, sendTransaction, signTransaction } = useWallet();
+    const { publicKey, sendTransaction, signTransaction, wallet } = useWallet();
 
     const [amount, setAmount] = useState<string>("");
     const [exchangedToken, setExchangedToken] = useState<number>(0);
@@ -62,10 +65,8 @@ function PresaleForm({
             return;
         }
 
-        if (!publicKey || !sendTransaction || !signTransaction) {
-            setError(
-                "Wallet not connected or sign/send functions unavailable."
-            );
+        if (!publicKey || !wallet?.adapter) {
+            setError("Wallet not connected or adapter unavailable.");
             return;
         }
 
@@ -98,10 +99,21 @@ function PresaleForm({
             );
 
             setStatusMessage("🔐 Please approve SOL payment in your wallet...");
-            solTxSig = await sendTransaction(
-                solTransferTransaction,
-                connection
-            );
+
+            // Use provider's signAndSendTransaction for better security
+            const provider = (window as any).phantom?.solana;
+            if (provider && provider.signAndSendTransaction) {
+                const { signature } = await provider.signAndSendTransaction(
+                    solTransferTransaction
+                );
+                solTxSig = signature;
+            } else {
+                // Fallback to traditional method
+                solTxSig = await sendTransaction(
+                    solTransferTransaction,
+                    connection
+                );
+            }
             setStatusMessage(
                 `📡 SOL payment sent. Waiting for confirmation (Don't Quit!)...`
             );
@@ -168,12 +180,26 @@ function PresaleForm({
             const partiallySignedTx =
                 VersionedTransaction.deserialize(txBuffer);
 
-            const fullySignedTx = await signTransaction(partiallySignedTx);
-            setStatusMessage("📡 Sending token claim transaction...");
-            finalTokenTxSig = await connection.sendTransaction(fullySignedTx, {
-                preflightCommitment: "confirmed",
-                skipPreflight: false,
-            });
+            // Use provider's signAndSendTransaction for token claim as well
+            if (provider && provider.signAndSendTransaction) {
+                const { signature } = await provider.signAndSendTransaction(
+                    partiallySignedTx
+                );
+                finalTokenTxSig = signature;
+            } else if (signTransaction) {
+                // Fallback to traditional method with null check
+                const fullySignedTx = await signTransaction(partiallySignedTx);
+                setStatusMessage("📡 Sending token claim transaction...");
+                finalTokenTxSig = await connection.sendTransaction(
+                    fullySignedTx,
+                    {
+                        preflightCommitment: "confirmed",
+                        skipPreflight: false,
+                    }
+                );
+            } else {
+                throw new Error("No signing method available");
+            }
             setStatusMessage(
                 `⏳ Token claim transaction sent. Waiting for confirmation...`
             );
@@ -225,6 +251,7 @@ function PresaleForm({
         connection,
         amount,
         searchParams,
+        wallet,
     ]);
 
     const fetchExchangeRate = useCallback(
