@@ -188,29 +188,39 @@ export default function TokenStatusModal({
         if (!isOpen || !solTxSig) return;
 
         let localPollCount = 0;
+        let initialTimeout: NodeJS.Timeout;
+        let pollInterval: NodeJS.Timeout;
 
-        fetchTokenStatus();
+        initialTimeout = setTimeout(() => {
+            fetchTokenStatus();
 
-        const pollInterval = setInterval(async () => {
-            localPollCount += 1;
+            pollInterval = setInterval(async () => {
+                localPollCount += 1;
 
-            if (localPollCount >= maxPolls) {
-                clearInterval(pollInterval);
-                setStatus({
-                    status: "failed",
-                    error: "Token transfer is taking longer than expected. Please try the retry button.",
-                });
-                return;
-            }
+                if (localPollCount >= maxPolls) {
+                    clearInterval(pollInterval);
+                    setStatus({
+                        status: "failed",
+                        error: "Token transfer is taking longer than expected. Please try the retry button.",
+                    });
+                    return;
+                }
 
-            const currentStatus = await fetchTokenStatus();
+                const currentStatus = await fetchTokenStatus();
 
-            if (currentStatus === "completed" || currentStatus === "failed") {
-                clearInterval(pollInterval);
-            }
-        }, 10_000);
+                if (
+                    currentStatus === "completed" ||
+                    currentStatus === "failed"
+                ) {
+                    clearInterval(pollInterval);
+                }
+            }, 10_000);
+        }, 2000);
 
-        return () => clearInterval(pollInterval);
+        return () => {
+            clearTimeout(initialTimeout);
+            clearInterval(pollInterval);
+        };
     }, [isOpen, solTxSig, fetchTokenStatus]);
 
     const canRetry =
