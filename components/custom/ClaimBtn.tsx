@@ -1,5 +1,7 @@
 "use client";
 
+// 🔧 Fixed: Using Phantom's signAndSendTransaction for secure transaction handling
+
 import { ArrowUpRightIcon, Gift, Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import ClaimAllocationModal from "./modals/ClaimAllocationModal";
@@ -73,14 +75,36 @@ export default function Claim() {
             const txBuffer = Buffer.from(data.partiallySignedTokenTx, "base64");
             const partiallySignedTx =
                 VersionedTransaction.deserialize(txBuffer);
-            const fullySignedTx = await signTransaction(partiallySignedTx);
 
-            setStatusMessage("📡 Broadcasting transaction...");
+            // Use provider's signAndSendTransaction for better security
+            interface PhantomProvider {
+                signAndSendTransaction?: (
+                    transaction: VersionedTransaction
+                ) => Promise<{ signature: string }>;
+            }
+            const provider = (
+                window as unknown as { phantom?: { solana?: PhantomProvider } }
+            ).phantom?.solana;
+            let finalTxSig: string;
+            let transactionForConfirmation = partiallySignedTx;
 
-            const finalTxSig = await connection.sendTransaction(fullySignedTx, {
-                preflightCommitment: "confirmed",
-                skipPreflight: false,
-            });
+            if (provider && provider.signAndSendTransaction) {
+                const { signature } = await provider.signAndSendTransaction(
+                    partiallySignedTx
+                );
+                finalTxSig = signature;
+            } else if (signTransaction) {
+                // Fallback to traditional method with null check
+                const fullySignedTx = await signTransaction(partiallySignedTx);
+                transactionForConfirmation = fullySignedTx;
+                setStatusMessage("📡 Broadcasting transaction...");
+                finalTxSig = await connection.sendTransaction(fullySignedTx, {
+                    preflightCommitment: "confirmed",
+                    skipPreflight: false,
+                });
+            } else {
+                throw new Error("No signing method available");
+            }
 
             setStatusMessage("⏳ Confirming transaction...");
 
@@ -89,7 +113,8 @@ export default function Claim() {
             const confirmation = await connection.confirmTransaction(
                 {
                     signature: finalTxSig,
-                    blockhash: fullySignedTx.message.recentBlockhash,
+                    blockhash:
+                        transactionForConfirmation.message.recentBlockhash,
                     lastValidBlockHeight: (
                         await connection.getLatestBlockhash()
                     ).lastValidBlockHeight,
