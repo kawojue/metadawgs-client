@@ -354,7 +354,7 @@ function PresaleForm({
                 >
                     <CountdownTimer
                         targetDate={metrics?.endTime}
-                        isComing={isComing}
+                        isComing={false}
                     />
                     <div className="progress w-full bg-white rounded-full h-4 overflow-hidden">
                         <div
