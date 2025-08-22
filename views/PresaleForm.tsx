@@ -1,8 +1,5 @@
 "use client";
 
-// 🔧 Fixed: Using Phantom's signAndSendTransaction for secure transaction handling
-// instead of manual signing and sending to prevent security vulnerabilities
-
 import CountdownTimer from "@/components/custom/Countdown";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
@@ -86,7 +83,6 @@ function PresaleForm({
             );
             const treasuryPublicKey = new PublicKey(TREASURY_ADDRESS);
 
-            // Get recent blockhash for transaction
             const { blockhash } = await connection.getLatestBlockhash();
 
             const solTransferTransaction = new Transaction().add(
@@ -104,7 +100,6 @@ function PresaleForm({
                 "🔐 Please approve the SOL payment in your wallet..."
             );
 
-            // Use provider's signAndSendTransaction for better security
             const provider = (window as any).phantom?.solana;
             if (provider && provider.signAndSendTransaction) {
                 const { signature } = await provider.signAndSendTransaction(
@@ -185,7 +180,6 @@ function PresaleForm({
                     ? err.message
                     : "An unknown error occurred.";
 
-            // Better error categorization for user understanding
             let userFriendlyError = displayError;
             if (
                 displayError.includes("User rejected") ||
