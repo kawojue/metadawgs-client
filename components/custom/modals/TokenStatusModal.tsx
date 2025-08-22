@@ -144,8 +144,8 @@ export default function TokenStatusModal({
             }
 
             return data.status;
-        } catch (error) {
-            console.error("Error fetching token status:", error);
+        } catch (e) {
+            console.error("Error fetching token status:", e);
             setStatus({
                 status: "failed",
                 error: "Failed to check token status. Please try again.",
@@ -173,8 +173,8 @@ export default function TokenStatusModal({
                         data.message || "Retry failed. Please contact support.",
                 });
             }
-        } catch (error) {
-            console.error("Error retrying token transfer:", error);
+        } catch (e) {
+            console.error("Error retrying token transfer:", e);
             setStatus({
                 status: "failed",
                 error: "Network error during retry. Please try again.",
@@ -188,10 +188,9 @@ export default function TokenStatusModal({
         if (!isOpen || !solTxSig) return;
 
         let localPollCount = 0;
-        let initialTimeout: NodeJS.Timeout;
         let pollInterval: NodeJS.Timeout;
 
-        initialTimeout = setTimeout(() => {
+        const initialTimeout = setTimeout(() => {
             fetchTokenStatus();
 
             pollInterval = setInterval(async () => {
