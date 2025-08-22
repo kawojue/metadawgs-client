@@ -371,13 +371,7 @@ function PresaleForm({
                         <p className="text-lg">
                             Solana Target Raised:{" "}
                             <strong>
-                                {isComing
-                                    ? "TBA"
-                                    : formatNumberWithCommas(
-                                          Number(
-                                              metrics?.totalSoldSol?.toFixed(4)
-                                          )
-                                      )}{" "}
+                                {isComing ? "TBA" : "0"}
                                 SOL
                             </strong>
                         </p>
@@ -526,7 +520,7 @@ function PresaleForm({
                             type="button"
                             className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed!"
                             onClick={handlePurchase}
-                            disabled={isLoading || exchanging || !canPurchase}
+                            disabled={true}
                         >
                             {isLoading ? "Processing..." : "Enter TGE"}
                             <ArrowUpRightIcon />
