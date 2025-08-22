@@ -7,6 +7,7 @@ import {
     GrindersLeaderboardType,
     TelegramLeaderboardType,
     ReferralsLeaderboardType,
+    AffiliateLeaderboardType,
 } from "@/lib/type";
 import { Loader } from "lucide-react";
 import { DataTable } from "./DataTable";
@@ -16,6 +17,7 @@ import { useSocket } from "@/app/SocketProvider";
 import DarkPagination from "../../DarkPagination";
 import { useNumberQuery } from "@/hooks/use-query";
 import { telegram_columns } from "./TelegramColumns";
+import { affiliate_columns } from "./AffiliateColumns";
 import { x_columns as overall_columns } from "./OverallColumns";
 import { x_columns as grinders_columns } from "./GrindersColumns";
 import { x_columns as creators_columns } from "./CreatorsColumns";
@@ -548,6 +550,84 @@ export function GrindersLeaderboardTable() {
                     }}
                 />
             )}
+        </div>
+    );
+}
+
+export function AffiliateLeaderboardTable() {
+    const [state, setState] = useState<
+        LeaderboardState<AffiliateLeaderboardType>
+    >(initialLeaderboardState);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        async function getLeaderboard() {
+            try {
+                setState((prev) => ({ ...prev, loading: true, error: null }));
+
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_PRESALE_API_ENDPOINT}/analytics/leaderboard`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch affiliate leaderboard");
+                }
+
+                const { data } = await response.json();
+
+                if (isMounted) {
+                    setState({ data, loading: false, error: null });
+                }
+            } catch (error) {
+                console.error("Error fetching affiliate leaderboard:", error);
+                if (isMounted) {
+                    setState((prev) => ({
+                        ...prev,
+                        loading: false,
+                        error: "Failed to fetch affiliate leaderboard. Please try again.",
+                    }));
+                }
+            }
+        }
+
+        getLeaderboard();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    if (state.loading) {
+        return (
+            <div className="w-full max-w-4xl space-y-8 flex justify-center items-center min-h-[200px]">
+                <Loader size={48} className="animate-spin text-[#FFBE00]" />
+            </div>
+        );
+    }
+
+    if (state.error) {
+        return (
+            <div className="w-full max-w-4xl space-y-8 text-center min-h-[200px] flex flex-col justify-center items-center">
+                <p className="text-red-500 text-lg">{state.error}</p>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="mt-4 px-4 py-2 bg-[#FFBE00] text-black rounded-full hover:bg-[#FFBE00]/80 transition-colors"
+                >
+                    Try Again
+                </button>
+            </div>
+        );
+    }
+
+    return (
+        <div className="w-full max-w-4xl space-y-8">
+            <DataTable
+                columns={affiliate_columns}
+                data={state.data}
+                isLoading={false}
+                error={null}
+            />
         </div>
     );
 }
