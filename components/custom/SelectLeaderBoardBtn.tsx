@@ -9,6 +9,7 @@ import { LeaderboardType } from "@/lib/type";
 const options: LeaderboardType[] = [
     "overall",
     "referrals",
+    "affiliate",
     "grinders",
     "creators",
     "telegram",

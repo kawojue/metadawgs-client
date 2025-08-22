@@ -8,6 +8,7 @@ import {
     OverallLeaderboardTable,
     TelegramLeaderboardTable,
     ReferralsLeaderboardTable,
+    AffiliateLeaderboardTable,
 } from "@/components/custom/tables/leaderboard";
 import { useStringQuery } from "@/hooks/use-query";
 import { LeaderboardType } from "@/lib/type";
@@ -46,6 +47,9 @@ function Leaderboard() {
                 {leaderboardType === "telegram" && <TelegramLeaderboardTable />}
                 {leaderboardType === "referrals" && (
                     <ReferralsLeaderboardTable />
+                )}
+                {leaderboardType === "affiliate" && (
+                    <AffiliateLeaderboardTable />
                 )}
             </FadeInUp>
         </div>

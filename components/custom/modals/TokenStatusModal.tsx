@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { CheckCircle, XCircle, Clock, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 interface TokenStatusResponse {
     status: "pending" | "completed" | "failed" | "not_found";
@@ -228,15 +229,44 @@ export default function TokenStatusModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle>Token Transfer Status</DialogTitle>
-                    <DialogDescription>
-                        Tracking your METADAWGS token delivery
+            <DialogContent className="sm:max-w-md bg-gradient-to-br from-slate-50 to-blue-50 border-2 border-blue-200">
+                <DialogHeader className="text-center">
+                    <div className="flex justify-center mb-4">
+                        <div className="relative">
+                            <Image
+                                src="/images/logo.svg"
+                                alt="MetaDawgs Logo"
+                                width={60}
+                                height={60}
+                                className="drop-shadow-lg"
+                            />
+                            <motion.div
+                                className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full"
+                                animate={{ scale: [1, 1.2, 1] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                            />
+                        </div>
+                    </div>
+                    <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        METADAWGS Token Status
+                    </DialogTitle>
+                    <DialogDescription className="text-slate-600 font-medium">
+                        🚀 Tracking your exclusive METADAWGS token delivery
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="flex flex-col items-center space-y-6 py-6">
+                <div className="flex flex-col items-center space-y-6 py-6 relative">
+                    {/* Subtle background pattern */}
+                    <div className="absolute inset-0 opacity-5">
+                        <div className="grid grid-cols-8 gap-2 h-full">
+                            {Array.from({ length: 32 }).map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="bg-blue-500 rounded-full w-1 h-1"
+                                />
+                            ))}
+                        </div>
+                    </div>
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={status?.status}
@@ -249,29 +279,37 @@ export default function TokenStatusModal({
                         </motion.div>
                     </AnimatePresence>
 
-                    <StatusMessage
-                        status={status?.status || "pending"}
-                        error={status?.error}
-                    />
+                    <div className="relative z-10">
+                        <StatusMessage
+                            status={status?.status || "pending"}
+                            error={status?.error}
+                        />
+                    </div>
 
                     {status?.tokenTxSig && (
-                        <div className="text-center">
-                            <p className="text-sm text-gray-500 mb-2">
-                                Token Transaction:
+                        <div className="text-center bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-blue-200">
+                            <p className="text-sm text-blue-600 mb-2 font-semibold flex items-center justify-center gap-2">
+                                <Image
+                                    src="/images/check.svg"
+                                    alt="Success"
+                                    width={16}
+                                    height={16}
+                                />
+                                Token Transaction Signature:
                             </p>
-                            <code className="text-xs bg-gray-100 p-2 rounded break-all">
+                            <code className="text-xs bg-blue-50 text-blue-800 p-3 rounded-lg break-all block border border-blue-200">
                                 {status.tokenTxSig}
                             </code>
                         </div>
                     )}
 
-                    <div className="flex gap-3 w-full">
+                    <div className="flex gap-3 w-full relative z-10">
                         {canRetry && (
                             <Button
                                 onClick={handleRetry}
                                 disabled={isRetrying}
                                 variant="outline"
-                                className="flex-1"
+                                className="flex-1 border-2 border-orange-300 text-orange-600 hover:bg-orange-50 font-semibold"
                             >
                                 {isRetrying ? (
                                     <>
@@ -290,9 +328,13 @@ export default function TokenStatusModal({
                         <Button
                             onClick={onClose}
                             variant={isCompleted ? "default" : "secondary"}
-                            className="flex-1"
+                            className={`flex-1 font-semibold ${
+                                isCompleted
+                                    ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white border-0"
+                                    : "bg-slate-200 hover:bg-slate-300 text-slate-700"
+                            }`}
                         >
-                            {isCompleted ? "Awesome!" : "Close"}
+                            {isCompleted ? "🎉 Awesome!" : "Close"}
                         </Button>
                     </div>
                 </div>
