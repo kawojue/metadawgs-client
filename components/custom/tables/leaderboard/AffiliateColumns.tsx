@@ -74,8 +74,8 @@ export const affiliate_columns: ColumnDef<AffiliateLeaderboardType>[] = [
                     <span className="font-semibold">
                         $
                         {totalEarned.toLocaleString("en-US", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
+                            minimumFractionDigits: 4,
+                            maximumFractionDigits: 4,
                         })}
                     </span>
                 </div>
