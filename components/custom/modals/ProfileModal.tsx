@@ -78,8 +78,8 @@ function ProfileSidebar({
                     ? Number(userProfile?.airdropTokens)?.toLocaleString(
                           "en-US",
                           {
-                              maximumFractionDigits: 2,
-                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 3,
+                              minimumFractionDigits: 3,
                           }
                       )
                     : "TBA",
