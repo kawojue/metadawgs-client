@@ -254,16 +254,10 @@ function ProfileSidebar({
                                                 <span className="font-semibold text-lg">
                                                     {stat.value}
                                                 </span>
-                                                <span className="text-xs">
+                                                <span className="text-sm">
                                                     {stat.label}
                                                 </span>
                                             </div>
-                                            <Button
-                                                disabled
-                                                className="bg-[#A078FF] text-white hover:bg-[#A078FF]/80 px-4 py-1.5 text-sm rounded-full cursor-not-allowed opacity-50"
-                                            >
-                                                Claim
-                                            </Button>
                                         </>
                                     ) : (
                                         <>
