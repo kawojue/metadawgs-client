@@ -249,16 +249,14 @@ function ProfileSidebar({
                                     )}
                                 >
                                     {stat.isAirdrop ? (
-                                        <>
-                                            <div className="flex flex-col items-start gap-1">
-                                                <span className="font-semibold text-lg">
-                                                    {stat.value}
-                                                </span>
-                                                <span className="text-sm">
-                                                    {stat.label}
-                                                </span>
-                                            </div>
-                                        </>
+                                        <div className="flex flex-col items-start gap-1">
+                                            <span className="font-semibold text-lg">
+                                                {stat.value}
+                                            </span>
+                                            <span className="text-sm">
+                                                {stat.label}
+                                            </span>
+                                        </div>
                                     ) : (
                                         <>
                                             <span className="font-semibold text-lg">
