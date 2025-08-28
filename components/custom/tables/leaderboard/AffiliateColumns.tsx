@@ -72,7 +72,6 @@ export const affiliate_columns: ColumnDef<AffiliateLeaderboardType>[] = [
                 <div className="text-white flex items-center gap-2">
                     <span>💰</span>
                     <span className="font-semibold">
-                        $
                         {totalEarned.toLocaleString("en-US", {
                             minimumFractionDigits: 4,
                             maximumFractionDigits: 4,
