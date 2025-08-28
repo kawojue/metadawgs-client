@@ -9,14 +9,13 @@ import { SubmitQuestAlert } from "./modals/SubmitQuestAlert";
 import { patchWithAuth } from "@/lib/api";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import useAuth from "@/hooks/use-auth";
+
 import VerifyQuestCode from "./modals/VerifyQuestCode";
 import { XUserToken } from "@/lib/values";
 import { QuestErrorAlert } from "./modals/QuestErrorAlert";
 import { ViewWarningModal } from "./modals/ViewWarningModal";
 
 const PostCard = ({ post }: { post: PostType }) => {
-    const { refetchProfile } = useAuth();
     const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false);
     const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -78,8 +77,6 @@ const PostCard = ({ post }: { post: PostType }) => {
         setViewing(true);
         try {
             await patchWithAuth(`/posts/${post.id}/click`, {});
-
-            await refetchProfile();
         } catch (error: unknown) {
             toast(error instanceof Error ? error.message : "Failed to view.");
             console.error("Failed to view:", error);
@@ -96,11 +93,7 @@ const PostCard = ({ post }: { post: PostType }) => {
 
     const proceedWithView = () => {
         handleView();
-        window.open(
-            post?.postUrl,
-            "_blank",
-            "noopener,noreferrer"
-        );
+        window.open(post?.postUrl, "_blank", "noopener,noreferrer");
     };
 
     return (

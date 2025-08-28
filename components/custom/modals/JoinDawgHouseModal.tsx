@@ -30,7 +30,7 @@ function JoinDawgHouseModal({
     onClose?: () => void;
     dawgHouse: IDawghouse;
 }) {
-    const { logout, refetchProfile } = useAuth();
+    const { logout } = useAuth();
     const router = useRouter();
 
     const [, setRefreshHouse] = useLocalStorage<string>(XRefreshHouse, "");
@@ -76,7 +76,6 @@ function JoinDawgHouseModal({
         }
 
         setRefreshHouse(generateRandomString(10));
-        refetchProfile();
         onClose?.();
         setSuccess(true);
         setLoading(false);

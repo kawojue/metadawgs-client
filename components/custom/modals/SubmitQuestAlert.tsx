@@ -9,7 +9,6 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import useAuth from "@/hooks/use-auth";
 import Image from "next/image";
 
 export function SubmitQuestAlert({
@@ -21,14 +20,12 @@ export function SubmitQuestAlert({
     onClose?: () => void;
     message?: string;
 }) {
-    const { refetchProfile } = useAuth();
 
     return (
         <AlertDialog
             open={open}
             onOpenChange={(x) => {
                 if (!x) {
-                    refetchProfile();
                     onClose?.();
                 }
             }}
@@ -55,7 +52,6 @@ export function SubmitQuestAlert({
                     <AlertDialogCancel
                         className="w-full py-6! rounded-full cursor-pointer bg-[white] text-black shadow-[black]/40"
                         onClick={() => {
-                            refetchProfile();
                             onClose?.();
                             // window.location.reload();
                         }}

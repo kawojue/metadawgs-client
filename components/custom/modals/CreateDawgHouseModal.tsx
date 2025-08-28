@@ -26,7 +26,7 @@ function CreateDawgHouseModal({
     open: boolean;
     onClose?: () => void;
 }) {
-    const { logout, userProfile, refetchProfile } = useAuth();
+    const { logout, userProfile } = useAuth();
     const router = useRouter();
     const [name, setName] = useState<string>("");
     const [identifier, setIdentifier] = useState<string>(
@@ -76,7 +76,6 @@ function CreateDawgHouseModal({
         }
 
         setRefreshHouse(generateRandomString(10));
-        refetchProfile();
         setSuccess(true);
         setLoading(false);
         onClose?.();

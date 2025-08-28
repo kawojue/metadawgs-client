@@ -8,14 +8,12 @@ import { SubmitQuestAlert } from "./modals/SubmitQuestAlert";
 import { patchWithAuth } from "@/lib/api";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import useAuth from "@/hooks/use-auth";
 import { QuestErrorAlert } from "./modals/QuestErrorAlert";
 import { ViewWarningModal } from "./modals/ViewWarningModal";
 import { TikTokIcon, TwitterIcon, YoutubeIcon } from "@/lib/icons";
 import { XUserToken } from "@/lib/values";
 
 const MindCard = ({ post }: { post: MindShareType }) => {
-    const { refetchProfile } = useAuth();
     const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false);
     const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
     const [viewing, setViewing] = useState<boolean>(false);
@@ -62,7 +60,6 @@ const MindCard = ({ post }: { post: MindShareType }) => {
             return;
         } else {
             setSubmitted(true);
-            await refetchProfile();
             return;
         }
     };
@@ -100,7 +97,6 @@ const MindCard = ({ post }: { post: MindShareType }) => {
             }
             return;
         } else {
-            await refetchProfile();
             toast("Report sent. Thank you!");
             return;
         }
@@ -120,8 +116,6 @@ const MindCard = ({ post }: { post: MindShareType }) => {
             await patchWithAuth(`/posts/mindshare/entries/${post.id}`, {
                 action: "View",
             });
-
-            await refetchProfile();
         } catch (error: unknown) {
             toast(error instanceof Error ? error.message : "Failed to view.");
             console.error("Failed to view:", error);

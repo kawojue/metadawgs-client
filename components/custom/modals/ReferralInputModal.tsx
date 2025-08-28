@@ -14,8 +14,6 @@ import { SubmitReferralAlert } from "@/components/custom/modals/SubmitReferralAl
 import useLocalStorage from "use-local-storage";
 import { XNoCode } from "@/lib/values";
 import Image from "next/image";
-import useAuth from "@/hooks/use-auth";
-
 function ReferralInputModal({
   open,
   onClose,
@@ -27,7 +25,6 @@ function ReferralInputModal({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { refetchProfile } = useAuth();
   const [, setNoCode] = useLocalStorage<boolean>(XNoCode, false);
 
   async function validateCode() {
@@ -38,7 +35,7 @@ function ReferralInputModal({
       });
       setSuccess(true);
 
-      await refetchProfile();
+
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import { useState, useCallback, useEffect } from "react";
-import useAuth from "@/hooks/use-auth";
+
 import { postWithAuth } from "@/lib/api";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -33,7 +33,6 @@ function JoinCreatorsClub({ open, onClose }: JoinCreatorsClubProps) {
     });
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const { refetchProfile } = useAuth();
 
     const resetForm = useCallback(() => {
         setFormData({ about: "", contribute: "" });
@@ -78,7 +77,6 @@ function JoinCreatorsClub({ open, onClose }: JoinCreatorsClubProps) {
                 answer2: formData.contribute,
             });
 
-            await refetchProfile();
             onClose?.();
         } catch (error) {
             setError(
@@ -89,7 +87,7 @@ function JoinCreatorsClub({ open, onClose }: JoinCreatorsClubProps) {
         } finally {
             setLoading(false);
         }
-    }, [formData, validateForm, refetchProfile, onClose]);
+    }, [formData, validateForm, onClose]);
 
     const handleClose = useCallback(() => {
         resetForm();
