@@ -11,9 +11,7 @@ import {
     Transaction,
     SystemProgram,
     LAMPORTS_PER_SOL,
-    VersionedTransaction,
 } from "@solana/web3.js";
-import { Buffer } from "buffer";
 import useLocalStorage from "use-local-storage";
 import { XComingSoonModal } from "@/lib/values";
 import { useMetrics } from "@/context/MetricsProvider";
@@ -22,7 +20,7 @@ import { debounce, formatNumberWithCommas } from "@/lib/common";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import ReferralCodeDisplay from "@/components/custom/ReferralCodeDisplay";
-import TokenClaimWaitModal from "@/components/custom/modals/TokenClaimWaitModal";
+import TokenStatusModal from "@/components/custom/modals/TokenStatusModal";
 
 const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS as string;
 
@@ -35,7 +33,7 @@ function PresaleForm({
 }) {
     const { connection } = useConnection();
     const { setVisible } = useWalletModal();
-    const { publicKey, sendTransaction, signTransaction } = useWallet();
+    const { publicKey, sendTransaction } = useWallet();
 
     const [amount, setAmount] = useState<string>("");
     const [exchangedToken, setExchangedToken] = useState<number>(0);
@@ -49,7 +47,7 @@ function PresaleForm({
     const [, setComingSoon] = useLocalStorage(XComingSoonModal, false);
     const [showSuccessAnimation, setShowSuccessAnimation] =
         useState<boolean>(false);
-    const [showTokenClaimModal, setShowTokenClaimModal] =
+    const [showTokenStatusModal, setShowTokenStatusModal] =
         useState<boolean>(false);
     const [solTransactionSig, setSolTransactionSig] = useState<string>("");
 
@@ -62,10 +60,8 @@ function PresaleForm({
             return;
         }
 
-        if (!publicKey || !sendTransaction || !signTransaction) {
-            setError(
-                "Wallet not connected or sign/send functions unavailable."
-            );
+        if (!publicKey) {
+            setError("Wallet not connected.");
             return;
         }
 
@@ -79,15 +75,15 @@ function PresaleForm({
         setError("");
 
         let solTxSig = null;
-        let partiallySignedTokenTxBase64 = null;
-        let finalTokenTxSig = null;
 
         try {
-            setStatusMessage("💰 Preparing SOL payment...");
+            setStatusMessage("💰 Preparing SOL payment transaction...");
             const lamportsToSend = BigInt(
                 Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL)
             );
             const treasuryPublicKey = new PublicKey(TREASURY_ADDRESS);
+
+            const { blockhash } = await connection.getLatestBlockhash();
 
             const solTransferTransaction = new Transaction().add(
                 SystemProgram.transfer({
@@ -97,22 +93,39 @@ function PresaleForm({
                 })
             );
 
-            setStatusMessage("🔐 Please approve SOL payment in your wallet...");
-            solTxSig = await sendTransaction(
-                solTransferTransaction,
-                connection
-            );
+            solTransferTransaction.recentBlockhash = blockhash;
+            solTransferTransaction.feePayer = publicKey;
+
             setStatusMessage(
-                `📡 SOL payment sent. Waiting for confirmation (Don't Quit!)...`
+                "🔐 Please approve the SOL payment in your wallet..."
             );
 
-            setStatusMessage("✅ Confirming payment...");
-            setSolTransactionSig(solTxSig);
-            setShowTokenClaimModal(true);
+            const provider = (window as any).phantom?.solana;
+            if (provider && provider.signAndSendTransaction) {
+                const { signature } = await provider.signAndSendTransaction(
+                    solTransferTransaction
+                );
+                solTxSig = signature;
+            } else {
+                // Fallback to traditional method
+                solTxSig = await sendTransaction(
+                    solTransferTransaction,
+                    connection
+                );
+            }
+            setStatusMessage(
+                `📡 SOL payment sent! Confirming on blockchain... (Please don't close this window)`
+            );
 
-            await new Promise<void>((resolve) => {
-                window.tokenClaimResolver = resolve;
-            });
+            setStatusMessage(
+                "✅ Payment confirmed! Preparing token transfer..."
+            );
+            setSolTransactionSig(solTxSig);
+
+            // Small delay to show confirmation message
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+
+            setShowTokenStatusModal(true);
 
             const refCode = searchParams.get("ref");
 
@@ -144,65 +157,20 @@ function PresaleForm({
             }
 
             const data = (await response.json()) as {
-                partiallySignedTokenTx: string;
+                success: boolean;
+                message: string;
+                solTxSig: string;
+                tokensToReceive: number;
             };
 
-            if (!data?.partiallySignedTokenTx) {
+            if (!data?.success) {
                 throw new Error(
-                    "Confirmation failed: Missing token transaction"
+                    data?.message || "Purchase confirmation failed"
                 );
             }
 
-            setStatusMessage("🎯 Confirmed. Preparing token transaction...");
-
-            partiallySignedTokenTxBase64 = data.partiallySignedTokenTx;
-
-            setStatusMessage(
-                "🔐 Please approve token claim transaction in your wallet..."
-            );
-
-            const txBuffer = Buffer.from(
-                partiallySignedTokenTxBase64,
-                "base64"
-            );
-            const partiallySignedTx =
-                VersionedTransaction.deserialize(txBuffer);
-
-            const fullySignedTx = await signTransaction(partiallySignedTx);
-            setStatusMessage("📡 Sending token claim transaction...");
-            finalTokenTxSig = await connection.sendTransaction(fullySignedTx, {
-                preflightCommitment: "confirmed",
-                skipPreflight: false,
-            });
-            setStatusMessage(
-                `⏳ Token claim transaction sent. Waiting for confirmation...`
-            );
-
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-
-            const latestBlockhash = await connection.getLatestBlockhash();
-            const confirmation = await connection.confirmTransaction(
-                {
-                    signature: finalTokenTxSig,
-                    blockhash: latestBlockhash.blockhash,
-                    lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-                },
-                "confirmed"
-            );
-
-            if (confirmation.value.err) {
-                throw new Error(`Token claim transaction confirmation failed`);
-            }
-
-            setStatusMessage(
-                `🎉 Purchase complete! Token transaction confirmed`
-            );
-
-            setShowSuccessAnimation(true);
-            setTimeout(() => {
-                setStatusMessage("");
-                setShowSuccessAnimation(false);
-            }, 4000);
+            // Status will be handled by TokenStatusModal
+            setStatusMessage("");
 
             setAmount("");
         } catch (err: unknown) {
@@ -211,21 +179,34 @@ function PresaleForm({
                 err instanceof Error && err.message
                     ? err.message
                     : "An unknown error occurred.";
-            setError(`Purchase failed: ${displayError}`);
+
+            let userFriendlyError = displayError;
+            if (
+                displayError.includes("User rejected") ||
+                displayError.includes("rejected")
+            ) {
+                userFriendlyError =
+                    "Transaction was cancelled. Please try again when ready.";
+            } else if (displayError.includes("Insufficient")) {
+                userFriendlyError =
+                    "Insufficient SOL balance. Please add more SOL to your wallet.";
+            } else if (
+                displayError.includes("Network") ||
+                displayError.includes("timeout")
+            ) {
+                userFriendlyError =
+                    "Network error. Please check your connection and try again.";
+            }
+
+            setError(`Purchase failed: ${userFriendlyError}`);
             if (solTxSig) console.error("SOL Tx Sig:", solTxSig);
-            if (finalTokenTxSig)
-                console.error("Token Tx Sig:", finalTokenTxSig);
+
+            // Reset status message on error
+            setStatusMessage("");
         } finally {
             setIsLoading(false);
         }
-    }, [
-        publicKey,
-        sendTransaction,
-        signTransaction,
-        connection,
-        amount,
-        searchParams,
-    ]);
+    }, [publicKey, sendTransaction, connection, amount, searchParams]);
 
     const fetchExchangeRate = useCallback(
         debounce(async () => {
@@ -323,12 +304,18 @@ function PresaleForm({
         setVisible(true);
     }
 
-    const handleContinueToTokenClaim = () => {
-        setShowTokenClaimModal(false);
-        if (window.tokenClaimResolver) {
-            window.tokenClaimResolver();
-            window.tokenClaimResolver = undefined;
-        }
+    const handleTokenSuccess = (tokenTxSig: string) => {
+        console.log("Token transfer successful:", tokenTxSig);
+        setShowSuccessAnimation(true);
+        setTimeout(() => {
+            setShowSuccessAnimation(false);
+            setAmount("");
+        }, 4000);
+    };
+
+    const handleCloseTokenStatus = () => {
+        setShowTokenStatusModal(false);
+        setStatusMessage("");
     };
 
     if (isInitializing) {
@@ -518,12 +505,33 @@ function PresaleForm({
                     {!!publicKey && (
                         <Button
                             type="button"
-                            className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed!"
+                            className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-50!"
                             onClick={handlePurchase}
                             disabled={true}
                         >
-                            {isLoading ? "Processing..." : "Enter TGE"}
-                            <ArrowUpRightIcon />
+                            {isLoading ? (
+                                <>
+                                    <motion.div
+                                        animate={{ rotate: 360 }}
+                                        transition={{
+                                            duration: 1,
+                                            repeat: Infinity,
+                                            ease: "linear",
+                                        }}
+                                        className="w-4 h-4 border-2 border-black border-t-transparent rounded-full mr-2"
+                                    />
+                                    Processing Purchase...
+                                </>
+                            ) : exchanging ? (
+                                "Calculating tokens..."
+                            ) : isComing ? (
+                                "Coming Soon"
+                            ) : (
+                                <>
+                                    Enter TGE
+                                    <ArrowUpRightIcon />
+                                </>
+                            )}
                         </Button>
                     )}
                     {!publicKey && (
@@ -558,10 +566,11 @@ function PresaleForm({
                     )}
                 </form>
 
-                <TokenClaimWaitModal
-                    isOpen={showTokenClaimModal}
-                    onContinue={handleContinueToTokenClaim}
+                <TokenStatusModal
+                    isOpen={showTokenStatusModal}
+                    onClose={handleCloseTokenStatus}
                     solTxSig={solTransactionSig}
+                    onSuccess={handleTokenSuccess}
                 />
 
                 <AnimatePresence>

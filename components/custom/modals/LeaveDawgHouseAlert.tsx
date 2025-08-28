@@ -26,7 +26,7 @@ export function LeaveDawgHouseAlert({
     open?: boolean;
     onClose?: () => void;
 }) {
-    const { logout, refetchProfile } = useAuth();
+    const { logout } = useAuth();
     const [, setRefreshPosts] = useLocalStorage<string>(XRefreshPosts, "");
     const [, setRefreshHouse] = useLocalStorage<string>(XRefreshHouse, "");
 
@@ -70,7 +70,6 @@ export function LeaveDawgHouseAlert({
         onClose?.();
         setLoading(false);
 
-        refetchProfile();
         setRefreshHouse(generateRandomString(10));
         setRefreshPosts(generateRandomString(10));
     }

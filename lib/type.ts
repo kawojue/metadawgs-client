@@ -118,6 +118,12 @@ export interface ReferralsLeaderboardType {
     referralCount: number;
 }
 
+export interface AffiliateLeaderboardType {
+    address: string;
+    referralCount: number;
+    totalEarned: number;
+}
+
 export interface MetaType {
     size: number;
     hasNext: boolean;
@@ -209,7 +215,8 @@ export type LeaderboardType =
     | "grinders"
     | "telegram"
     | "creators"
-    | "referrals";
+    | "referrals"
+    | "affiliate";
 
 export type Approval = {
     id: string;
