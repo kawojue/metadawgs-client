@@ -443,7 +443,7 @@ function PresaleForm({
                             <span className="font-semibold">
                                 Minimum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 2} SOL
+                                    {isComing ? "TBA" : 1} SOL
                                 </span>
                             </span>
                             <span className="font-semibold">
