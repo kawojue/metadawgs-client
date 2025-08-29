@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import Claim from "@/components/custom/ClaimBtn";
+// import Claim from "@/components/custom/ClaimBtn";
 import { FadeIn } from "@/components/custom/ScrollAnimation";
 import PresaleForm from "@/views/PresaleForm";
 import { useReferralCode } from "@/context/ReferralCodeContext";
@@ -36,14 +36,14 @@ function Page() {
 
                             {!isComingSoon && (
                                 <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
-                                    Metadawgs TGE is coming..
+                                    Metadawgs KOL Round
                                 </h1>
                             )}
                         </FadeIn>
                     </div>
-                    <div className="flex items-center justify-center">
+                    {/* <div className="flex items-center justify-center">
                         <Claim />
-                    </div>
+                    </div> */}
                     <div className="box md:p-[8%] p-6 md:pt-[5%] pt-10">
                         <Suspense fallback={<div>Loading...</div>}>
                             <PresaleForm

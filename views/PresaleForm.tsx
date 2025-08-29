@@ -1,6 +1,6 @@
 "use client";
 
-import CountdownTimer from "@/components/custom/Countdown";
+// import CountdownTimer from "@/components/custom/Countdown";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightIcon } from "lucide-react";
 import { useState, useCallback, useEffect } from "react";
@@ -339,10 +339,10 @@ function PresaleForm({
                         setExchangedToken(0);
                     }}
                 >
-                    <CountdownTimer
+                    {/* <CountdownTimer
                         targetDate={metrics?.endTime}
                         isComing={isComing}
-                    />
+                    /> */}
                     <div className="progress w-full bg-white rounded-full h-4 overflow-hidden">
                         <div
                             className="bg-[#F9C580] h-full"
@@ -409,12 +409,6 @@ function PresaleForm({
                                 </span>
                             </span>
                             <span className="text-lg font-semibold">
-                                Airdrop Allocation:{" "}
-                                <span className="font-fredoka font-semibold">
-                                    40 million
-                                </span>
-                            </span>
-                            <span className="text-lg font-semibold">
                                 Minimum Target:{" "}
                                 <span className="font-fredoka font-semibold">
                                     {isComing
@@ -438,46 +432,24 @@ function PresaleForm({
                             </span>
                             <br />
                             <p className="text-xl font-semibold">
-                                Whitelist Round
+                                KOL Private Round
                             </p>
                             <span className="font-semibold">
                                 Price:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 0.00385} SOL
+                                    {isComing ? "TBA" : 0.0025} USD
                                 </span>
                             </span>
                             <span className="font-semibold">
                                 Minimum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 1} SOL
+                                    {isComing ? "TBA" : 2} SOL
                                 </span>
                             </span>
                             <span className="font-semibold">
                                 Maximum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 5} SOL
-                                </span>
-                            </span>
-                            <br />
-                            <p className="text-xl font-semibold">
-                                Public Round
-                            </p>
-                            <span className="font-semibold">
-                                Price:{" "}
-                                <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 0.005} SOL
-                                </span>
-                            </span>
-                            <span className="font-semibold">
-                                Minimum Buy:{" "}
-                                <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 20} USD
-                                </span>
-                            </span>
-                            <span className="font-semibold">
-                                Maximum Buy:{" "}
-                                <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : "1,500"} USD
+                                    {isComing ? "TBA" : 10} SOL
                                 </span>
                             </span>
                         </div>
