@@ -517,13 +517,12 @@ function PresaleForm({
                             type="button"
                             className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-50!"
                             onClick={handlePurchase}
-                            // disabled={
-                            //     isLoading ||
-                            //     exchanging ||
-                            //     !canPurchase ||
-                            //     isPresaleClosed
-                            // }
-                            disabled={true}
+                            disabled={
+                                isLoading ||
+                                exchanging ||
+                                !canPurchase ||
+                                isPresaleClosed
+                            }
                         >
                             {isLoading ? (
                                 <>
