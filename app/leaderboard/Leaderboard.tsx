@@ -16,7 +16,7 @@ import { LeaderboardType } from "@/lib/type";
 function Leaderboard() {
     const [leaderboardType] = useStringQuery<LeaderboardType>(
         "type",
-        "overall"
+        "affiliate"
     );
 
     return (
