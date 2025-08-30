@@ -83,18 +83,19 @@ function PresaleForm({
             );
             const treasuryPublicKey = new PublicKey(TREASURY_ADDRESS);
 
-            const { blockhash } = await connection.getLatestBlockhash();
+            const { blockhash, lastValidBlockHeight } =
+                await connection.getLatestBlockhash();
 
-            const solTransferTransaction = new Transaction().add(
+            const solTransferTransaction = new Transaction({
+                feePayer: publicKey,
+                recentBlockhash: blockhash,
+            }).add(
                 SystemProgram.transfer({
                     fromPubkey: publicKey,
                     toPubkey: treasuryPublicKey,
                     lamports: lamportsToSend,
                 })
             );
-
-            solTransferTransaction.recentBlockhash = blockhash;
-            solTransferTransaction.feePayer = publicKey;
 
             setStatusMessage(
                 "🔐 Please approve the SOL payment in your wallet..."
@@ -109,7 +110,14 @@ function PresaleForm({
                 `📡 SOL payment sent! Confirming on blockchain... (Please don't close this window)`
             );
 
-            await connection.confirmTransaction(solTxSig, "confirmed");
+            await connection.confirmTransaction(
+                {
+                    signature: solTxSig,
+                    blockhash,
+                    lastValidBlockHeight,
+                },
+                "confirmed"
+            );
 
             setStatusMessage(
                 "✅ Payment confirmed! Preparing token transfer..."
