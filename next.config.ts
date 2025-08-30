@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
             config.resolve.fallback = {
                 ...config.resolve.fallback,
                 crypto: require.resolve("crypto-browserify"),
-                stream: require.resolve("stream-browserify"),
+                stream: require.resolve("readable-stream"),
                 buffer: require.resolve("buffer"),
                 process: require.resolve("process/browser"),
                 util: require.resolve("util"),
@@ -26,6 +26,8 @@ const nextConfig: NextConfig = {
                 zlib: require.resolve("browserify-zlib"),
                 path: require.resolve("path-browserify"),
                 string_decoder: require.resolve("string_decoder"),
+                "stream/transform": require.resolve("readable-stream"),
+                "readable-stream": require.resolve("readable-stream"),
                 fs: false,
                 net: false,
                 tls: false,
@@ -33,8 +35,9 @@ const nextConfig: NextConfig = {
 
             config.resolve.alias = {
                 ...config.resolve.alias,
-                stream: "stream-browserify",
+                stream: "readable-stream",
                 crypto: "crypto-browserify",
+                "readable-stream": "readable-stream",
             };
 
             config.plugins.push(

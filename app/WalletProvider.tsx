@@ -8,6 +8,9 @@ import {
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
 import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare";
+import { CoinbaseWalletAdapter } from "@solana/wallet-adapter-coinbase";
+import { TrustWalletAdapter } from "@solana/wallet-adapter-trust";
+import { MathWalletAdapter } from "@solana/wallet-adapter-mathwallet";
 
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
@@ -16,11 +19,11 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 const WalletConnectionProvider: FC<{ children: ReactNode }> = ({
     children,
 }) => {
-    const network = WalletAdapterNetwork.Devnet;
+    const network = WalletAdapterNetwork.Mainnet;
     const endpoint = useMemo(
         () =>
             process.env.NEXT_PUBLIC_SOLANA_RPC_ENDPOINT ||
-            "https://api.devnet.solana.com",
+            "https://api.mainnet-beta.solana.com",
         []
     );
 
@@ -28,6 +31,9 @@ const WalletConnectionProvider: FC<{ children: ReactNode }> = ({
         () => [
             new PhantomWalletAdapter(),
             new SolflareWalletAdapter({ network }),
+            new CoinbaseWalletAdapter(),
+            new TrustWalletAdapter(),
+            new MathWalletAdapter(),
         ],
         [network]
     );
