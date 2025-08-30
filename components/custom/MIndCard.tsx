@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { QuestErrorAlert } from "./modals/QuestErrorAlert";
 import { ViewWarningModal } from "./modals/ViewWarningModal";
+import { TGEModal } from "./modals/TGEModal";
 import { TikTokIcon, TwitterIcon, YoutubeIcon } from "@/lib/icons";
 import { XUserToken } from "@/lib/values";
 
@@ -18,50 +19,15 @@ const MindCard = ({ post }: { post: MindShareType }) => {
     const [showEntryAlert, setShowEntryAlert] = useState<boolean>(false);
     const [viewing, setViewing] = useState<boolean>(false);
     const [ignoring, setIgnoring] = useState<boolean>(false);
-    const [submitted, setSubmitted] = useState<boolean>(post.hasEngaged);
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [isSubmitting] = useState<boolean>(false);
     const [alertMessage, setAlertMessage] = useState<string>("");
     const [showViewWarning, setShowViewWarning] = useState<boolean>(false);
+    const [showTGEModal, setShowTGEModal] = useState<boolean>(false);
 
     const handleClaim = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-
-        const token = localStorage.getItem(XUserToken);
-        if (!token) return;
-
-        setIsSubmitting(true);
-
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/posts/mindshare/entries/${post.id}`,
-            {
-                method: "PATCH",
-                headers: {
-                    Authorization: `Bearer ${JSON.parse(token)}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    action: "Claim",
-                }),
-            }
-        );
-
-        const { message } = await res.json();
-
-        setIsSubmitting(false);
-        setAlertMessage(message);
-
-        if (!res.ok) {
-            if ([409, 429].includes(res.status)) {
-                setShowErrorAlert(true);
-            } else {
-                toast(message || "Failed to claim.");
-            }
-            return;
-        } else {
-            setSubmitted(true);
-            return;
-        }
+        setShowTGEModal(true);
     };
 
     const handleReport = async () => {
@@ -204,7 +170,7 @@ const MindCard = ({ post }: { post: MindShareType }) => {
                                         isSubmitting && "cursor-wait"
                                     )}
                                     onClick={(e) => handleClaim(e)}
-                                    disabled={submitted || isSubmitting}
+                                    disabled={false}
                                 >
                                     {isSubmitting ? "Claiming..." : "Claim"}
                                 </Button>
@@ -255,6 +221,11 @@ const MindCard = ({ post }: { post: MindShareType }) => {
                 open={showViewWarning}
                 onClose={() => setShowViewWarning(false)}
                 onProceed={proceedWithView}
+            />
+
+            <TGEModal
+                open={showTGEModal}
+                onClose={() => setShowTGEModal(false)}
             />
         </div>
     );

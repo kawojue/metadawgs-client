@@ -12,10 +12,10 @@ import {
 import { Loader } from "lucide-react";
 import { DataTable } from "./DataTable";
 import { fetchWithAuth } from "@/lib/api";
-import { useEffect, useState } from "react";
 import { useSocket } from "@/app/SocketProvider";
 import DarkPagination from "../../DarkPagination";
 import { useNumberQuery } from "@/hooks/use-query";
+import { useEffect, useState, useMemo } from "react";
 import { telegram_columns } from "./TelegramColumns";
 import { affiliate_columns } from "./AffiliateColumns";
 import { x_columns as overall_columns } from "./OverallColumns";
@@ -128,7 +128,7 @@ export function TelegramLeaderboardTable() {
             socket.off("leaderboard", handleTgLeaderboard);
             socket.off("error", handleError);
         };
-    }, [socket, isConnected, isConnecting, socketError]);
+    }, [socket, isConnected, isConnecting, socketError, page]);
 
     useEffect(() => {
         if (allData.length > 0) {
@@ -151,7 +151,7 @@ export function TelegramLeaderboardTable() {
 
             setState((prev) => ({ ...prev, data: paginatedData, meta }));
         }
-    }, [page, allData]);
+    }, [allData, page]);
 
     if (state.loading || isConnecting) {
         return (
@@ -622,7 +622,22 @@ export function AffiliateLeaderboardTable() {
         return () => {
             isMounted = false;
         };
-    }, []);
+    }, [page]);
+
+    const meta = useMemo(() => {
+        const totalPages = Math.ceil(allData.length / ITEMS_PER_PAGE);
+        return {
+            currentPage: page,
+            totalPages,
+            totalItems: allData.length,
+            size: ITEMS_PER_PAGE,
+            hasNext: page < totalPages,
+            hasPrev: page > 1,
+            offset: (page - 1) * ITEMS_PER_PAGE,
+            nextPage: page < totalPages ? page + 1 : null,
+            previousPage: page > 1 ? page - 1 : null,
+        };
+    }, [allData, page]);
 
     useEffect(() => {
         if (allData.length > 0) {
@@ -630,22 +645,9 @@ export function AffiliateLeaderboardTable() {
             const endIndex = startIndex + ITEMS_PER_PAGE;
             const paginatedData = allData.slice(startIndex, endIndex);
 
-            const totalPages = Math.ceil(allData.length / ITEMS_PER_PAGE);
-            const meta = {
-                currentPage: page,
-                totalPages,
-                totalItems: allData.length,
-                size: ITEMS_PER_PAGE,
-                hasNext: page < totalPages,
-                hasPrev: page > 1,
-                offset: (page - 1) * ITEMS_PER_PAGE,
-                nextPage: page < totalPages ? page + 1 : null,
-                previousPage: page > 1 ? page - 1 : null,
-            };
-
             setState((prev) => ({ ...prev, data: paginatedData, meta }));
         }
-    }, [page, allData]);
+    }, [allData, page, meta]);
 
     if (state.loading) {
         return (
