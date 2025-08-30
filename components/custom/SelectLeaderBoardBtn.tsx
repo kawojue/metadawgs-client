@@ -18,7 +18,7 @@ const options: LeaderboardType[] = [
 export default function SelectLeaderboardBtn() {
     const [selected, setSelected] = useStringQuery<LeaderboardType>(
         "type",
-        "overall"
+        "affiliate"
     );
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
