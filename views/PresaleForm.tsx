@@ -100,22 +100,16 @@ function PresaleForm({
                 "🔐 Please approve the SOL payment in your wallet..."
             );
 
-            const provider = (window as any).phantom?.solana;
-            if (provider && provider.signAndSendTransaction) {
-                const { signature } = await provider.signAndSendTransaction(
-                    solTransferTransaction
-                );
-                solTxSig = signature;
-            } else {
-                // Fallback to traditional method
-                solTxSig = await sendTransaction(
-                    solTransferTransaction,
-                    connection
-                );
-            }
+            solTxSig = await sendTransaction(
+                solTransferTransaction,
+                connection
+            );
+
             setStatusMessage(
                 `📡 SOL payment sent! Confirming on blockchain... (Please don't close this window)`
             );
+
+            await connection.confirmTransaction(solTxSig, "confirmed");
 
             setStatusMessage(
                 "✅ Payment confirmed! Preparing token transfer..."
