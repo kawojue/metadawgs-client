@@ -511,7 +511,7 @@ function PresaleForm({
                                 "Coming Soon"
                             ) : (
                                 <>
-                                    Enter TGE
+                                    Buy $MDAWGS Token
                                     <ArrowUpRightIcon />
                                 </>
                             )}
