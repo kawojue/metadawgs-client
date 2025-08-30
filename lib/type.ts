@@ -122,6 +122,7 @@ export interface AffiliateLeaderboardType {
     address: string;
     referralCount: number;
     totalEarned: number;
+    totalEarnedUsd: number;
 }
 
 export interface MetaType {

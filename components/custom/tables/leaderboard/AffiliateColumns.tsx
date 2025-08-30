@@ -67,7 +67,7 @@ export const affiliate_columns: ColumnDef<AffiliateLeaderboardType>[] = [
         accessorKey: "totalEarned",
         header: () => <div className="text-white">Total Earnings</div>,
         cell: ({ row }) => {
-            const totalEarned = row.getValue("totalEarned") as number;
+            const totalEarned = row.getValue("totalEarnedUsd") as number;
             return (
                 <div className="text-white flex items-center gap-2">
                     <span>💰</span>
