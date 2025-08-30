@@ -544,7 +544,7 @@ function PresaleForm({
                                 "Coming Soon"
                             ) : (
                                 <>
-                                    Buy MDAWGS TOKEN
+                                    Buy $MDAWGS TOKEN
                                     <ArrowUpRightIcon />
                                 </>
                             )}
