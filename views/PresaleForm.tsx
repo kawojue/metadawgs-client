@@ -358,7 +358,11 @@ function PresaleForm({
                         <p className="text-lg">
                             Solana Target Raised:{" "}
                             <strong>
-                                {isComing ? "TBA" : "0"}
+                                {isComing
+                                    ? "TBA"
+                                    : formatNumberWithCommas(
+                                          metrics.totalSoldSol
+                                      )}{" "}
                                 SOL
                             </strong>
                         </p>
@@ -385,9 +389,15 @@ function PresaleForm({
                                 </span>
                             </span>
                             <span className="text-lg font-semibold">
+                                Token Ticker:{" "}
+                                <span className="font-fredoka font-semibold">
+                                    $MDAWGS
+                                </span>
+                            </span>
+                            <span className="text-lg font-semibold">
                                 Total Supply:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    1BILLION
+                                    1 Billion
                                 </span>
                             </span>
                             <span className="text-lg font-semibold">
@@ -402,12 +412,12 @@ function PresaleForm({
                                     350 million
                                 </span>
                             </span>
-                            <span className="text-lg font-semibold">
+                            {/* <span className="text-lg font-semibold">
                                 Airdrop Allocation:{" "}
                                 <span className="font-fredoka font-semibold">
                                     40 million
                                 </span>
-                            </span>
+                            </span> */}
                             <span className="text-lg font-semibold">
                                 Minimum Target:{" "}
                                 <span className="font-fredoka font-semibold">
@@ -437,7 +447,7 @@ function PresaleForm({
                             <span className="font-semibold">
                                 Price:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 0.00385} SOL
+                                    {isComing ? "TBA" : 0.00385} USD
                                 </span>
                             </span>
                             <span className="font-semibold">
@@ -449,11 +459,11 @@ function PresaleForm({
                             <span className="font-semibold">
                                 Maximum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 5} SOL
+                                    {isComing ? "TBA" : 10} SOL
                                 </span>
                             </span>
                             <br />
-                            <p className="text-xl font-semibold">
+                            {/* <p className="text-xl font-semibold">
                                 Public Round
                             </p>
                             <span className="font-semibold">
@@ -473,7 +483,7 @@ function PresaleForm({
                                 <span className="font-fredoka font-semibold">
                                     {isComing ? "TBA" : "1,500"} USD
                                 </span>
-                            </span>
+                            </span> */}
                         </div>
                         <label htmlFor="amount">Amount</label>
                         <NumberInput
@@ -507,7 +517,12 @@ function PresaleForm({
                             type="button"
                             className="bg-[#FFBE00] text-black !py-6 rounded-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-50!"
                             onClick={handlePurchase}
-                            disabled={true}
+                            disabled={
+                                isLoading ||
+                                exchanging ||
+                                !canPurchase ||
+                                isPresaleClosed
+                            }
                         >
                             {isLoading ? (
                                 <>
