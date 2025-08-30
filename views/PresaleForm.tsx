@@ -33,7 +33,7 @@ function PresaleForm({
 }) {
     const { connection } = useConnection();
     const { setVisible } = useWalletModal();
-    const { publicKey, sendTransaction } = useWallet();
+    const { publicKey, sendTransaction, signTransaction } = useWallet();
 
     const [amount, setAmount] = useState<string>("");
     const [exchangedToken, setExchangedToken] = useState<number>(0);
@@ -124,16 +124,44 @@ function PresaleForm({
                 "🔐 Please approve the SOL payment in your wallet..."
             );
 
+            interface PhantomProvider {
+                signAndSendTransaction?: (
+                    transaction: Transaction
+                ) => Promise<{ signature: string }>;
+            }
+            const provider = (
+                window as unknown as { phantom?: { solana?: PhantomProvider } }
+            ).phantom?.solana;
+
             try {
-                solTxSig = await sendTransaction(
-                    solTransferTransaction,
-                    connection,
-                    {
-                        skipPreflight: false,
-                        preflightCommitment: "processed",
-                        maxRetries: 3,
-                    }
-                );
+                if (provider && provider.signAndSendTransaction) {
+                    const { signature } = await provider.signAndSendTransaction(
+                        solTransferTransaction
+                    );
+                    solTxSig = signature;
+                } else if (signTransaction) {
+                    const signedTx = await signTransaction(
+                        solTransferTransaction
+                    );
+                    solTxSig = await connection.sendRawTransaction(
+                        signedTx.serialize(),
+                        {
+                            skipPreflight: false,
+                            preflightCommitment: "processed",
+                            maxRetries: 3,
+                        }
+                    );
+                } else {
+                    solTxSig = await sendTransaction(
+                        solTransferTransaction,
+                        connection,
+                        {
+                            skipPreflight: false,
+                            preflightCommitment: "processed",
+                            maxRetries: 3,
+                        }
+                    );
+                }
 
                 if (!solTxSig) {
                     throw new Error(
