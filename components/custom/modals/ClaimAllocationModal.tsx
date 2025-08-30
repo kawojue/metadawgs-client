@@ -52,9 +52,10 @@ export default function ClaimAllocationModal({
                                 </span>
                             </div>
                             <p className="text-gray-300 text-xs mt-2">
-                                The airdrop will be available for claiming once
-                                the TGE goes live. Make sure to keep your wallet
-                                connected and check back regularly for updates.
+                                The airdrop will be available for claiming on
+                                the 10th of September, 2025. Make sure to keep
+                                your wallet connected and check back regularly
+                                for updates.
                             </p>
                         </div>
                     )}
