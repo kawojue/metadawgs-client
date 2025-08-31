@@ -346,10 +346,8 @@ function PresaleForm({
                     "Network error. Please check your connection and try again.";
             }
 
-            setError(`Purchase failed: ${userFriendlyError}`);
+            setError(`${userFriendlyError}`);
             if (solTxSig) console.error("SOL Tx Sig:", solTxSig);
-
-            // Reset status message on error
             setStatusMessage("");
         } finally {
             setIsLoading(false);
