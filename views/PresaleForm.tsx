@@ -596,19 +596,19 @@ function PresaleForm({
                             <span className="font-semibold">
                                 Price:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 0.00385} USD
+                                    {isComing ? "TBA" : 0.005} USD
                                 </span>
                             </span>
                             <span className="font-semibold">
                                 Minimum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 0.5} SOL
+                                    {isComing ? "TBA" : 0.1} SOL
                                 </span>
                             </span>
                             <span className="font-semibold">
                                 Maximum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 10} SOL
+                                    {isComing ? "TBA" : 7} SOL
                                 </span>
                             </span>
                             <br />
