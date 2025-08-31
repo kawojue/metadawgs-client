@@ -16,19 +16,23 @@ export function MobileWalletModal({ open, onClose }: MobileWalletModalProps) {
     const [copied, setCopied] = useState(false);
 
     const handleCopyLink = async () => {
-        // Immediate visual feedback
         setCopied(true);
 
         try {
-            await navigator.clipboard.writeText(
-                "https://metadawgs.com/dawgs-tge"
-            );
+            const urlParams = new URLSearchParams(window.location.search);
+            const refParam = urlParams.get("ref");
+
+            const baseUrl = "https://metadawgs.com/dawgs-tge";
+            const linkToCopy = refParam
+                ? `${baseUrl}?ref=${refParam}`
+                : baseUrl;
+
+            await navigator.clipboard.writeText(linkToCopy);
             toast("Link copied to clipboard!");
         } catch {
             toast("Failed to copy link");
         }
 
-        // Reset after shorter duration
         setTimeout(() => setCopied(false), 1500);
     };
 
@@ -160,7 +164,19 @@ export function MobileWalletModal({ open, onClose }: MobileWalletModalProps) {
                         {/* Footer note */}
                         <div className="text-center">
                             <p className="text-[#ACACAC] text-xs break-all">
-                                Link: https://metadawgs.com/dawgs-tge
+                                Link:{" "}
+                                {(() => {
+                                    if (typeof window !== "undefined") {
+                                        const urlParams = new URLSearchParams(
+                                            window.location.search
+                                        );
+                                        const refParam = urlParams.get("ref");
+                                        return refParam
+                                            ? `https://metadawgs.com/dawgs-tge?ref=${refParam}`
+                                            : "https://metadawgs.com/dawgs-tge";
+                                    }
+                                    return "https://metadawgs.com/dawgs-tge";
+                                })()}
                             </p>
                         </div>
                     </div>
