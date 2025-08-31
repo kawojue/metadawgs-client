@@ -147,7 +147,6 @@ function PresaleForm({
                         signedTx.serialize(),
                         {
                             skipPreflight: false,
-                            preflightCommitment: "processed",
                             maxRetries: 3,
                         }
                     );
