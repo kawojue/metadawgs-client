@@ -591,7 +591,7 @@ function PresaleForm({
                             </span>
                             <br />
                             <p className="text-xl font-semibold">
-                                Whitelist Round
+                                Public Sale Round
                             </p>
                             <span className="font-semibold">
                                 Price:{" "}
