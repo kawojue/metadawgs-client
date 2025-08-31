@@ -578,7 +578,7 @@ function PresaleForm({
                             </span>
                             <br />
                             <p className="text-xl font-semibold">
-                                KOL Private Round
+                                Public Sale Round
                             </p>
                             <span className="font-semibold">
                                 Price:{" "}
