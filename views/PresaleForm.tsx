@@ -10,8 +10,7 @@ import {
     PublicKey,
     SystemProgram,
     LAMPORTS_PER_SOL,
-    TransactionMessage,
-    VersionedTransaction,
+    Transaction,
 } from "@solana/web3.js";
 import useLocalStorage from "use-local-storage";
 import { XComingSoonModal } from "@/lib/values";
@@ -94,12 +93,11 @@ function PresaleForm({
                     lamports: lamportsToSend,
                 }),
             ];
-            const messageV0 = new TransactionMessage({
-                payerKey: publicKey,
-                recentBlockhash: blockhash,
-                instructions,
-            }).compileToV0Message();
-            const solTransferTransaction = new VersionedTransaction(messageV0);
+            const solTransferTransaction = new Transaction();
+            solTransferTransaction.add(...instructions);
+            solTransferTransaction.feePayer = publicKey;
+            solTransferTransaction.recentBlockhash = blockhash;
+            console.log("Transaction before signing:", solTransferTransaction);
 
             setStatusMessage("🧪 Simulating transaction...");
             try {
@@ -130,7 +128,7 @@ function PresaleForm({
 
             interface PhantomProvider {
                 signAndSendTransaction?: (
-                    transaction: VersionedTransaction
+                    transaction: Transaction
                 ) => Promise<{ signature: string }>;
             }
             const provider = (
@@ -147,8 +145,15 @@ function PresaleForm({
                     const signedTx = await signTransaction(
                         solTransferTransaction
                     );
+                    console.log("Signed transaction:", signedTx);
+                    console.log(
+                        "Signed transaction signatures:",
+                        signedTx.signatures
+                    );
+                    const serializedTx = signedTx.serialize();
+                    console.log("Serialized transaction:", serializedTx);
                     solTxSig = await connection.sendRawTransaction(
-                        signedTx.serialize(),
+                        serializedTx,
                         {
                             skipPreflight: false,
                             maxRetries: 3,
@@ -162,6 +167,10 @@ function PresaleForm({
                             skipPreflight: false,
                             maxRetries: 3,
                         }
+                    );
+                    console.log(
+                        "Transaction sent via sendTransaction:",
+                        solTxSig
                     );
                 }
 
