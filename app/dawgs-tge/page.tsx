@@ -1,15 +1,26 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Claim from "@/components/custom/ClaimBtn";
 import { FadeIn } from "@/components/custom/ScrollAnimation";
 import PresaleForm from "@/views/PresaleForm";
 import { useReferralCode } from "@/context/ReferralCodeContext";
 import { MetricsProvider } from "@/context/MetricsProvider";
+import { MobileWalletModal } from "@/components/custom/modals/MobileWalletModal";
 
 function Page() {
     const isComingSoon = false;
     const { referralCode } = useReferralCode();
+    const [showMobileModal, setShowMobileModal] = useState(false);
+
+    useEffect(() => {
+        // Show modal after page loads with reduced delay
+        const timer = setTimeout(() => {
+            setShowMobileModal(true);
+        }, 800);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <MetricsProvider>
@@ -53,6 +64,11 @@ function Page() {
                         </Suspense>
                     </div>
                 </div>
+
+                <MobileWalletModal
+                    open={showMobileModal}
+                    onClose={() => setShowMobileModal(false)}
+                />
             </div>
         </MetricsProvider>
     );
