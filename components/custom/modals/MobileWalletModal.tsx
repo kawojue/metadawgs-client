@@ -34,7 +34,7 @@ export function MobileWalletModal({ open, onClose }: MobileWalletModalProps) {
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="max-w-lg mx-auto bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] border-2 border-[#FFBE00]/30 rounded-3xl p-0 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200">
+            <DialogContent className="max-w-lg mx-auto max-h-[90vh] overflow-y-auto bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] border-2 border-[#FFBE00]/30 rounded-3xl p-0 animate-in fade-in-0 zoom-in-95 duration-200 sm:max-w-lg w-[95vw] sm:w-auto">
                 <div className="relative">
                     {/* Close button */}
                     <button
@@ -45,7 +45,7 @@ export function MobileWalletModal({ open, onClose }: MobileWalletModalProps) {
                     </button>
 
                     {/* Header with logo and paws */}
-                    <div className="relative bg-gradient-to-r from-[#FFBE00] to-[#229EFF] p-6 text-center">
+                    <div className="relative bg-gradient-to-r from-[#FFBE00] to-[#229EFF] p-4 sm:p-6 text-center">
                         <div className="absolute top-2 left-4 opacity-30">
                             <Image
                                 src="/images/paw.svg"
@@ -76,34 +76,36 @@ export function MobileWalletModal({ open, onClose }: MobileWalletModalProps) {
                                 priority
                             />
                         </div>
-                        <h2 className="text-2xl font-bold text-black font-fredoka">
+                        <h2 className="text-xl sm:text-2xl font-bold text-black font-fredoka">
                             Mobile Purchase Guide 📱
                         </h2>
                     </div>
 
                     {/* Content */}
-                    <div className="p-6 space-y-6 animate-in slide-in-from-bottom-4 duration-300 delay-100">
-                        <div className="text-center space-y-3">
-                            <p className="text-white text-lg font-medium">
+                    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 animate-in slide-in-from-bottom-4 duration-300 delay-100">
+                        <div className="text-center space-y-2 sm:space-y-3">
+                            <p className="text-white text-base sm:text-lg font-medium">
                                 Having trouble with Phantom on mobile?
                             </p>
-                            <p className="text-[#ACACAC] text-sm leading-relaxed">
-                                We&apos;ve received reports about mobile
-                                purchase issues with Phantom wallet. Here are
-                                our recommended solutions for seamless
-                                transactions:
+                            <p className="text-[#ACACAC] text-xs sm:text-sm leading-relaxed">
+                                We've received reports about mobile purchase
+                                issues with Phantom wallet. Here are our
+                                recommended solutions for seamless transactions:
                             </p>
                         </div>
 
                         {/* Option 1 - PC */}
-                        <div className="bg-gradient-to-r from-[#FFBE00]/10 to-[#229EFF]/10 border border-[#FFBE00]/30 rounded-2xl p-4 transition-all duration-200 hover:border-[#FFBE00]/50 hover:shadow-lg">
-                            <div className="flex items-center gap-3 mb-3">
-                                <Monitor size={24} className="text-[#FFBE00]" />
-                                <span className="text-[#FFBE00] font-bold text-lg">
+                        <div className="bg-gradient-to-r from-[#FFBE00]/10 to-[#229EFF]/10 border border-[#FFBE00]/30 rounded-2xl p-3 sm:p-4 transition-all duration-200 hover:border-[#FFBE00]/50 hover:shadow-lg">
+                            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                                <Monitor
+                                    size={20}
+                                    className="text-[#FFBE00] sm:w-6 sm:h-6"
+                                />
+                                <span className="text-[#FFBE00] font-bold text-base sm:text-lg">
                                     Option 1: Use PC/Desktop
                                 </span>
                             </div>
-                            <p className="text-white text-sm leading-relaxed">
+                            <p className="text-white text-xs sm:text-sm leading-relaxed">
                                 Buy on PC using any Solana wallet extension like
                                 Phantom, Solflare, or Coinbase Wallet for the
                                 best experience.
@@ -111,25 +113,25 @@ export function MobileWalletModal({ open, onClose }: MobileWalletModalProps) {
                         </div>
 
                         {/* Option 2 - Mobile Solflare */}
-                        <div className="bg-gradient-to-r from-[#229EFF]/10 to-[#FFBE00]/10 border border-[#229EFF]/30 rounded-2xl p-4 transition-all duration-200 hover:border-[#229EFF]/50 hover:shadow-lg">
-                            <div className="flex items-center gap-3 mb-3">
+                        <div className="bg-gradient-to-r from-[#229EFF]/10 to-[#FFBE00]/10 border border-[#229EFF]/30 rounded-2xl p-3 sm:p-4 transition-all duration-200 hover:border-[#229EFF]/50 hover:shadow-lg">
+                            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                                 <Smartphone
-                                    size={24}
-                                    className="text-[#229EFF]"
+                                    size={20}
+                                    className="text-[#229EFF] sm:w-6 sm:h-6"
                                 />
-                                <span className="text-[#229EFF] font-bold text-lg">
+                                <span className="text-[#229EFF] font-bold text-base sm:text-lg">
                                     Option 2: Mobile with Solflare
                                 </span>
                             </div>
                             <div className="space-y-2">
-                                <p className="text-white text-sm leading-relaxed">
+                                <p className="text-white text-xs sm:text-sm leading-relaxed">
                                     For mobile users, we recommend using{" "}
                                     <span className="text-[#229EFF] font-semibold">
                                         Solflare wallet
                                     </span>
                                     :
                                 </p>
-                                <ol className="text-[#ACACAC] text-sm space-y-1 ml-4">
+                                <ol className="text-[#ACACAC] text-xs sm:text-sm space-y-1 ml-3 sm:ml-4">
                                     <li>1. Download Solflare wallet app</li>
                                     <li>
                                         2. Copy the link below and paste it in
@@ -146,7 +148,7 @@ export function MobileWalletModal({ open, onClose }: MobileWalletModalProps) {
                         {/* Copy link button */}
                         <Button
                             onClick={handleCopyLink}
-                            className="w-full bg-gradient-to-r from-[#FFBE00] to-[#229EFF] hover:from-[#FFBE00]/90 hover:to-[#229EFF]/90 text-black font-semibold py-3 rounded-full transition-all duration-200 transform hover:scale-105 active:scale-95"
+                            className="w-full bg-gradient-to-r from-[#FFBE00] to-[#229EFF] hover:from-[#FFBE00]/90 hover:to-[#229EFF]/90 text-black font-semibold py-2.5 sm:py-3 text-sm sm:text-base rounded-full transition-all duration-200 transform hover:scale-105 active:scale-95"
                         >
                             <Copy size={16} className="mr-2" />
                             <span>
@@ -156,7 +158,7 @@ export function MobileWalletModal({ open, onClose }: MobileWalletModalProps) {
 
                         {/* Footer note */}
                         <div className="text-center">
-                            <p className="text-[#ACACAC] text-xs">
+                            <p className="text-[#ACACAC] text-xs break-all">
                                 Link: https://metadawgs.com/dawgs-tge
                             </p>
                         </div>
