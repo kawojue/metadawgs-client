@@ -506,9 +506,12 @@ function PresaleForm({
                             <strong>
                                 {isComing
                                     ? "TBA"
-                                    : formatNumberWithCommas(
+                                    : Number(
                                           metrics.totalSoldSol
-                                      )}{" "}
+                                      )?.toLocaleString("en-US", {
+                                          minimumFractionDigits: 2,
+                                          maximumFractionDigits: 2,
+                                      })}{" "}
                                 SOL
                             </strong>
                         </p>
