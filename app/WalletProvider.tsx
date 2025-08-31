@@ -15,6 +15,7 @@ import { MathWalletAdapter } from "@solana/wallet-adapter-mathwallet";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const WalletConnectionProvider: FC<{ children: ReactNode }> = ({
     children,
@@ -38,9 +39,11 @@ const WalletConnectionProvider: FC<{ children: ReactNode }> = ({
         [network]
     );
 
+    const isMobile = useIsMobile();
+
     return (
         <ConnectionProvider endpoint={endpoint}>
-            <WalletProvider wallets={wallets} autoConnect>
+            <WalletProvider wallets={wallets} autoConnect={!isMobile}>
                 <WalletModalProvider>{children}</WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
