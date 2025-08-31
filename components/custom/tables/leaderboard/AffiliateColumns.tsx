@@ -53,7 +53,7 @@ export const affiliate_columns: ColumnDef<AffiliateLeaderboardType>[] = [
     },
     {
         accessorKey: "referralCount",
-        header: () => <div className="text-white">Referrals</div>,
+        header: () => <div className="text-white">Users Clicked</div>,
         cell: ({ row }) => (
             <div className="text-white flex items-center gap-2">
                 <span>🔗</span>
