@@ -88,9 +88,10 @@ export function MobileWalletModal({ open, onClose }: MobileWalletModalProps) {
                                 Having trouble with Phantom on mobile?
                             </p>
                             <p className="text-[#ACACAC] text-xs sm:text-sm leading-relaxed">
-                                We've received reports about mobile purchase
-                                issues with Phantom wallet. Here are our
-                                recommended solutions for seamless transactions:
+                                We&apos;ve received reports about mobile
+                                purchase issues with Phantom wallet. Here are
+                                our recommended solutions for seamless
+                                transactions:
                             </p>
                         </div>
 
