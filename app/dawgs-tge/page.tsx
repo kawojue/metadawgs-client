@@ -47,7 +47,7 @@ function Page() {
 
                             {!isComingSoon && (
                                 <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
-                                    METADAWGS WHITELIST ROUND IS LIVE..
+                                    METADAWGS PUBLIC SALE IS LIVE..
                                 </h1>
                             )}
                         </FadeIn>
