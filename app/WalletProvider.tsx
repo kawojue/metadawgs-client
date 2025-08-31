@@ -20,7 +20,6 @@ import {
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const WalletConnectionProvider: FC<{ children: ReactNode }> = ({
     children,
@@ -35,11 +34,11 @@ const WalletConnectionProvider: FC<{ children: ReactNode }> = ({
 
     const wallets = useMemo(
         () => [
-            new PhantomWalletAdapter(),
+            new PhantomWalletAdapter({ network }),
             new SolflareWalletAdapter({ network }),
-            new CoinbaseWalletAdapter(),
-            new TrustWalletAdapter(),
-            new MathWalletAdapter(),
+            new CoinbaseWalletAdapter({ network }),
+            new TrustWalletAdapter({ network }),
+            new MathWalletAdapter({ network }),
             new SolanaMobileWalletAdapter({
                 addressSelector: createDefaultAddressSelector(),
                 appIdentity: {
@@ -56,11 +55,9 @@ const WalletConnectionProvider: FC<{ children: ReactNode }> = ({
         [network]
     );
 
-    const isMobile = useIsMobile();
-
     return (
         <ConnectionProvider endpoint={endpoint}>
-            <WalletProvider wallets={wallets} autoConnect={!isMobile}>
+            <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>{children}</WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
