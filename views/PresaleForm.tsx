@@ -8,9 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import {
     PublicKey,
-    Transaction,
     SystemProgram,
     LAMPORTS_PER_SOL,
+    TransactionMessage,
+    VersionedTransaction,
 } from "@solana/web3.js";
 import useLocalStorage from "use-local-storage";
 import { XComingSoonModal } from "@/lib/values";
@@ -86,16 +87,19 @@ function PresaleForm({
             const { blockhash, lastValidBlockHeight } =
                 await connection.getLatestBlockhash();
 
-            const solTransferTransaction = new Transaction({
-                feePayer: publicKey,
-                recentBlockhash: blockhash,
-            }).add(
+            const instructions = [
                 SystemProgram.transfer({
                     fromPubkey: publicKey,
                     toPubkey: treasuryPublicKey,
                     lamports: lamportsToSend,
-                })
-            );
+                }),
+            ];
+            const messageV0 = new TransactionMessage({
+                payerKey: publicKey,
+                recentBlockhash: blockhash,
+                instructions,
+            }).compileToV0Message();
+            const solTransferTransaction = new VersionedTransaction(messageV0);
 
             setStatusMessage("🧪 Simulating transaction...");
             try {
@@ -126,7 +130,7 @@ function PresaleForm({
 
             interface PhantomProvider {
                 signAndSendTransaction?: (
-                    transaction: Transaction
+                    transaction: VersionedTransaction
                 ) => Promise<{ signature: string }>;
             }
             const provider = (
@@ -156,7 +160,6 @@ function PresaleForm({
                         connection,
                         {
                             skipPreflight: false,
-                            preflightCommitment: "processed",
                             maxRetries: 3,
                         }
                     );
