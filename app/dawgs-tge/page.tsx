@@ -1,15 +1,26 @@
 "use client";
 
-import { Suspense } from "react";
-// import Claim from "@/components/custom/ClaimBtn";
+import { Suspense, useState, useEffect } from "react";
+import Claim from "@/components/custom/ClaimBtn";
 import { FadeIn } from "@/components/custom/ScrollAnimation";
 import PresaleForm from "@/views/PresaleForm";
 import { useReferralCode } from "@/context/ReferralCodeContext";
 import { MetricsProvider } from "@/context/MetricsProvider";
+import { MobileWalletModal } from "@/components/custom/modals/MobileWalletModal";
 
 function Page() {
     const isComingSoon = false;
     const { referralCode } = useReferralCode();
+    const [showMobileModal, setShowMobileModal] = useState(false);
+
+    useEffect(() => {
+        // Show modal after page loads with reduced delay
+        const timer = setTimeout(() => {
+            setShowMobileModal(true);
+        }, 800);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <MetricsProvider>
@@ -36,14 +47,14 @@ function Page() {
 
                             {!isComingSoon && (
                                 <h1 className="title md:text-[76px] sm:text-6xl text-4xl tracking-[-2px] font-fredoka font-bold uppercase text-center">
-                                    Metadawgs KOL Round
+                                    METADAWGS WHITELIST ROUND IS LIVE..
                                 </h1>
                             )}
                         </FadeIn>
                     </div>
-                    {/* <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center">
                         <Claim />
-                    </div> */}
+                    </div>
                     <div className="box md:p-[8%] p-6 md:pt-[5%] pt-10">
                         <Suspense fallback={<div>Loading...</div>}>
                             <PresaleForm
@@ -53,6 +64,11 @@ function Page() {
                         </Suspense>
                     </div>
                 </div>
+
+                <MobileWalletModal
+                    open={showMobileModal}
+                    onClose={() => setShowMobileModal(false)}
+                />
             </div>
         </MetricsProvider>
     );

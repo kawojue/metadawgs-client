@@ -33,7 +33,7 @@ function PresaleForm({
 }) {
     const { connection } = useConnection();
     const { setVisible } = useWalletModal();
-    const { publicKey, sendTransaction } = useWallet();
+    const { publicKey, sendTransaction, signTransaction } = useWallet();
 
     const [amount, setAmount] = useState<string>("");
     const [exchangedToken, setExchangedToken] = useState<number>(0);
@@ -83,39 +83,187 @@ function PresaleForm({
             );
             const treasuryPublicKey = new PublicKey(TREASURY_ADDRESS);
 
-            const { blockhash } = await connection.getLatestBlockhash();
+            const { blockhash, lastValidBlockHeight } =
+                await connection.getLatestBlockhash();
 
-            const solTransferTransaction = new Transaction().add(
+            const instructions = [
                 SystemProgram.transfer({
                     fromPubkey: publicKey,
                     toPubkey: treasuryPublicKey,
                     lamports: lamportsToSend,
-                })
-            );
-
-            solTransferTransaction.recentBlockhash = blockhash;
+                }),
+            ];
+            const solTransferTransaction = new Transaction();
+            solTransferTransaction.add(...instructions);
             solTransferTransaction.feePayer = publicKey;
+            solTransferTransaction.recentBlockhash = blockhash;
+            console.log("Transaction before signing:", solTransferTransaction);
+
+            setStatusMessage("🧪 Simulating transaction...");
+            try {
+                const simulation = await connection.simulateTransaction(
+                    solTransferTransaction
+                );
+                if (simulation.value.err) {
+                    throw new Error(
+                        `Transaction simulation failed: ${JSON.stringify(
+                            simulation.value.err
+                        )}`
+                    );
+                }
+                console.log(
+                    "Transaction simulation successful:",
+                    simulation.value
+                );
+            } catch (simError) {
+                console.warn(
+                    "Transaction simulation failed, proceeding anyway:",
+                    simError
+                );
+            }
 
             setStatusMessage(
                 "🔐 Please approve the SOL payment in your wallet..."
             );
 
-            const provider = (window as any).phantom?.solana;
-            if (provider && provider.signAndSendTransaction) {
-                const { signature } = await provider.signAndSendTransaction(
-                    solTransferTransaction
-                );
-                solTxSig = signature;
-            } else {
-                // Fallback to traditional method
-                solTxSig = await sendTransaction(
-                    solTransferTransaction,
-                    connection
-                );
+            interface PhantomProvider {
+                signAndSendTransaction?: (
+                    transaction: Transaction
+                ) => Promise<{ signature: string }>;
             }
+            const provider = (
+                window as unknown as { phantom?: { solana?: PhantomProvider } }
+            ).phantom?.solana;
+
+            try {
+                if (provider && provider.signAndSendTransaction) {
+                    const { signature } = await provider.signAndSendTransaction(
+                        solTransferTransaction
+                    );
+                    solTxSig = signature;
+                } else if (signTransaction) {
+                    const signedTx = await signTransaction(
+                        solTransferTransaction
+                    );
+                    console.log("Signed transaction:", signedTx);
+                    console.log(
+                        "Signed transaction signatures:",
+                        signedTx.signatures
+                    );
+                    const serializedTx = signedTx.serialize();
+                    console.log("Serialized transaction:", serializedTx);
+                    solTxSig = await connection.sendRawTransaction(
+                        serializedTx,
+                        {
+                            skipPreflight: false,
+                            maxRetries: 3,
+                        }
+                    );
+                } else {
+                    solTxSig = await sendTransaction(
+                        solTransferTransaction,
+                        connection,
+                        {
+                            skipPreflight: false,
+                            maxRetries: 3,
+                        }
+                    );
+                    console.log(
+                        "Transaction sent via sendTransaction:",
+                        solTxSig
+                    );
+                }
+
+                if (!solTxSig) {
+                    throw new Error(
+                        "Transaction signature is null or undefined"
+                    );
+                }
+
+                console.log("Transaction sent successfully:", solTxSig);
+            } catch (sendError: any) {
+                console.error("Transaction send error:", sendError);
+
+                if (sendError.message?.includes("User rejected")) {
+                    throw new Error("Transaction was rejected by user");
+                } else if (sendError.message?.includes("insufficient funds")) {
+                    throw new Error("Insufficient SOL balance for transaction");
+                } else if (sendError.message?.includes("blockhash not found")) {
+                    throw new Error("Transaction expired, please try again");
+                } else {
+                    throw new Error(
+                        `Transaction failed: ${sendError.message || sendError}`
+                    );
+                }
+            }
+
             setStatusMessage(
                 `📡 SOL payment sent! Confirming on blockchain... (Please don't close this window)`
             );
+
+            // Enhanced confirmation with retry logic
+            let confirmed = false;
+            let attempts = 0;
+            const maxAttempts = 3;
+
+            while (!confirmed && attempts < maxAttempts) {
+                try {
+                    attempts++;
+                    setStatusMessage(
+                        `🔄 Confirming transaction (attempt ${attempts}/${maxAttempts})...`
+                    );
+
+                    const confirmation = await connection.confirmTransaction(
+                        {
+                            signature: solTxSig,
+                            blockhash,
+                            lastValidBlockHeight,
+                        },
+                        "finalized"
+                    );
+
+                    if (confirmation.value.err) {
+                        throw new Error(
+                            `Transaction failed: ${confirmation.value.err}`
+                        );
+                    }
+
+                    confirmed = true;
+                } catch (error) {
+                    console.warn(
+                        `Confirmation attempt ${attempts} failed:`,
+                        error
+                    );
+
+                    if (attempts >= maxAttempts) {
+                        // Final attempt - try with different commitment level
+                        try {
+                            const finalConfirmation =
+                                await connection.getSignatureStatus(solTxSig);
+                            if (
+                                finalConfirmation.value?.confirmationStatus ===
+                                    "confirmed" ||
+                                finalConfirmation.value?.confirmationStatus ===
+                                    "finalized"
+                            ) {
+                                confirmed = true;
+                            } else {
+                                throw new Error(
+                                    "Transaction confirmation failed after multiple attempts"
+                                );
+                            }
+                        } catch (finalError) {
+                            throw new Error(
+                                `Transaction verification failed: ${finalError}`
+                            );
+                        }
+                    } else {
+                        await new Promise((resolve) =>
+                            setTimeout(resolve, 2000)
+                        );
+                    }
+                }
+            }
 
             setStatusMessage(
                 "✅ Payment confirmed! Preparing token transfer..."
@@ -198,10 +346,8 @@ function PresaleForm({
                     "Network error. Please check your connection and try again.";
             }
 
-            setError(`Purchase failed: ${userFriendlyError}`);
+            setError(`${userFriendlyError}`);
             if (solTxSig) console.error("SOL Tx Sig:", solTxSig);
-
-            // Reset status message on error
             setStatusMessage("");
         } finally {
             setIsLoading(false);
