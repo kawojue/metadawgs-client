@@ -20,6 +20,7 @@
         "@radix-ui/react-separator": "^1.1.4",
         "@radix-ui/react-slot": "^1.2.0",
         "@radix-ui/react-tooltip": "^1.2.4",
+        "@solana-mobile/wallet-adapter-mobile": "^2.2.3",
         "@solana/wallet-adapter-coinbase": "^0.1.23",
         "@solana/wallet-adapter-mathwallet": "^0.9.22",
         "@solana/wallet-adapter-phantom": "^0.9.28",
