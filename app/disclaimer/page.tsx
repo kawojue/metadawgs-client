@@ -215,7 +215,8 @@ function DisclaimerPage() {
                     <FadeInUp>
                         <div className="border-t border-gray-700 pt-8 mt-12">
                             <p className="text-sm text-[#ACACAC] text-center">
-                                Last updated: {new Date().toLocaleDateString()}
+                                Last updated:{" "}
+                                {new Date(2025, 5, 24).toLocaleDateString()}
                             </p>
                         </div>
                     </FadeInUp>
