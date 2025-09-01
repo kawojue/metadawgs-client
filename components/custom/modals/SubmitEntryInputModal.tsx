@@ -30,7 +30,11 @@ function SubmitEntryInputModal({
 }) {
     const { logout } = useAuth();
     const [link, setLink] = useState<string>("");
+    const [affiliateLink, setAffiliateLink] = useState<string>("");
     const [validationError, setValidationError] = useState<string | null>(null);
+    const [affiliateLinkError, setAffiliateLinkError] = useState<string | null>(
+        null
+    );
     const [apiError, setApiError] = useState<string | null>(null);
     const [isRobo, setIsRobo] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
@@ -43,7 +47,7 @@ function SubmitEntryInputModal({
 
         setLoading(true);
 
-        const body = { url: link };
+        const body = { url: link, affiliateLink };
 
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/posts/entry`,
@@ -85,6 +89,20 @@ function SubmitEntryInputModal({
             setValidationError(null);
         }
     }, [link, isMindShare]);
+
+    useEffect(() => {
+        if (affiliateLink.trim() === "") {
+            setAffiliateLinkError(null);
+        } else if (
+            !affiliateLink.startsWith("https://metadawgs.com/dawgs-tge?ref=")
+        ) {
+            setAffiliateLinkError(
+                "Affiliate link must start with https://metadawgs.com/dawgs-tge?ref="
+            );
+        } else {
+            setAffiliateLinkError(null);
+        }
+    }, [affiliateLink]);
 
     return (
         <>
@@ -146,12 +164,40 @@ function SubmitEntryInputModal({
                                     </p>
                                 )}
                             </div>
+                            <div className="row flex flex-col gap-2">
+                                <label
+                                    htmlFor="affiliateLink"
+                                    className="text-sm"
+                                >
+                                    Affiliate Link (Required)
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="https://metadawgs.com/dawgs-tge?ref=your_code"
+                                    value={affiliateLink}
+                                    onChange={(x) =>
+                                        setAffiliateLink(x.target.value)
+                                    }
+                                    className="h-12 rounded-full w-full p-4 border border-[#9C9C9C] bg-white/10"
+                                />
+                                {!!affiliateLinkError && (
+                                    <p className="error text-red-500 text-sm">
+                                        {affiliateLinkError}
+                                    </p>
+                                )}
+                            </div>
                         </div>
                         <DialogFooter className="">
                             <Button
                                 type="button"
                                 className="w-full py-6! rounded-full cursor-pointer bg-[#FFBE00] text-black disabled:cursor-not-allowed!"
-                                disabled={!!validationError || !link || loading}
+                                disabled={
+                                    !!validationError ||
+                                    !!affiliateLinkError ||
+                                    !link ||
+                                    !affiliateLink ||
+                                    loading
+                                }
                                 onClick={submitEntry}
                             >
                                 {!loading ? "Submit" : "Submitting"}
