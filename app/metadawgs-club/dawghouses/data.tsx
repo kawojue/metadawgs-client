@@ -47,9 +47,9 @@ export const dawghouseCards: StatsCard[] = [
         type: "text",
     },
     {
-        id: "bonesReward",
-        title: "Tournament Bones Reward",
-        icon: "🍖",
+        id: "earningsReward",
+        title: "💰 Earnings Reward",
+        icon: <DollarSign className="text-emerald-400" size={32} />,
         type: "component",
     },
 ];
@@ -63,9 +63,9 @@ export const elseCards: StatsCard[] = [
         type: "text",
     },
     {
-        id: "bonesReward",
-        title: "Bones Reward",
-        icon: "🍖",
+        id: "earningsReward",
+        title: "💰 Earnings Reward",
+        icon: <DollarSign className="text-emerald-400" size={32} />,
         type: "component",
     },
     {

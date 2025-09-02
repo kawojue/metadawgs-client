@@ -55,6 +55,11 @@ const transformStatsData = (
         bonesTotal: (value) => formatValue(value),
         superBones: (value) => formatValue(value),
         superBonesTotal: (value) => formatValue(value),
+        earningsReward: (value) => (
+            <div className="bg-gradient-to-r from-emerald-500 to-green-400 text-white px-3 py-1.5 rounded-lg font-bold text-sm border-2 border-emerald-300 shadow-lg">
+                {value}
+            </div>
+        ),
         referral: (value) => {
             if (!utils?.userProfile) {
                 return value || "N/A";

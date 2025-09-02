@@ -396,6 +396,7 @@ export type TournamentDuration = {
 export type DawghouseMetrics = {
     type: "dawghouse";
     tournamentDuration: TournamentDuration;
+    earningsReward: number;
     bonesReward: number;
     totalReferrals: number;
     referralsGoal: number;
@@ -423,6 +424,7 @@ export type IndividualMetrics = {
     type: "individual";
     tournamentDuration: TournamentDuration;
     bonesReward: number;
+    earningsReward: number;
     postEntries: number;
     engagements: number;
     superBones: number;

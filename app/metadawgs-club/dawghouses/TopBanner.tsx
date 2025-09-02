@@ -143,16 +143,16 @@ function TopBanner({
                                       userStats.totalParticipants
                                   ),
                                   dawghouseRank: userStats.dawghouseRank,
-                                  bonesReward: formatNumberWithCommas(
-                                      userStats.bonesReward
-                                  ),
+                                  earningsReward: `$${formatNumberWithCommas(
+                                      userStats.earningsReward
+                                  )}`,
                                   // referral: "referral_link",
                               }
                             : {
                                   tournamentDuration: formatTime(timeLeft),
-                                  bonesReward: formatNumberWithCommas(
-                                      userStats?.bonesReward ?? 0
-                                  ),
+                                  earningsReward: `$${formatNumberWithCommas(
+                                      userStats?.earningsReward ?? 0
+                                  )}`,
                                   posts: formatNumberWithCommas(
                                       userStats?.postEntries ?? 0
                                   ),
