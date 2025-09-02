@@ -526,7 +526,8 @@ function PresaleForm({
                     </div>
                     {referralCode &&
                         publicKey &&
-                        metrics?.status?.affiliate && (
+                        metrics?.status?.affiliate &&
+                        !searchParams.get("ref") && (
                             <ReferralCodeDisplay referralCode={referralCode} />
                         )}
                     <div className="amount-input flex flex-col gap-2">
