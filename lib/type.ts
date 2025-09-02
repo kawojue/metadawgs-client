@@ -412,6 +412,11 @@ export type DawghouseMetrics = {
         name: string;
         identifier: string;
     };
+    earningsGoal: number;
+    earnings: {
+        totalEarnedSol: number;
+        totalEarnedUsd: number;
+    };
 };
 
 export type IndividualMetrics = {
@@ -425,6 +430,11 @@ export type IndividualMetrics = {
         referrals: number;
         bones: number;
         engagements: number;
+    };
+    earnings: {
+        earnings: 5_000;
+        totalEarnedSol: number;
+        totalEarnedUsd: number;
     };
 };
 

@@ -126,24 +126,12 @@ function TopBanner({
                     data={
                         userStats?.type === "dawghouse"
                             ? {
-                                  totalReferrals: formatNumberWithCommas(
-                                      userStats.totalReferrals
-                                  ),
-                                  totalReferralsTotal: formatNumberWithCommas(
-                                      userStats.referralsGoal
-                                  ),
-                                  totalEngagements: formatNumberWithCommas(
-                                      userStats.totalEngagements
-                                  ),
-                                  totalEngagementsTotal: formatNumberWithCommas(
-                                      userStats.engagementsGoal
-                                  ),
-                                  totalBones: formatNumberWithCommas(
-                                      userStats?.totalBones
-                                  ),
-                                  totalBonesTotal: formatNumberWithCommas(
-                                      userStats.bonesGoal
-                                  ),
+                                  totalEarnings: `$${formatNumberWithCommas(
+                                      userStats.earnings.totalEarnedUsd
+                                  )}`,
+                                  earningsGoal: `$${formatNumberWithCommas(
+                                      userStats.earningsGoal
+                                  )}`,
                                   tournamentDuration: formatTime(timeLeft),
                                   twitterPosts: formatNumberWithCommas(
                                       userStats?.totalTwitterPosts
@@ -168,21 +156,12 @@ function TopBanner({
                                   posts: formatNumberWithCommas(
                                       userStats?.postEntries ?? 0
                                   ),
-                                  engagements: formatNumberWithCommas(
-                                      userStats?.engagements ?? 0
-                                  ),
-                                  superBones: formatNumberWithCommas(
-                                      userStats?.superBones ?? 0
-                                  ),
-                                  referralsGoal: formatNumberWithCommas(
-                                      userStats?.goals.referrals ?? 0
-                                  ),
-                                  bonesGoal: formatNumberWithCommas(
-                                      userStats?.goals.bones ?? 0
-                                  ),
-                                  engagementsGoal: formatNumberWithCommas(
-                                      userStats?.goals.engagements ?? 0
-                                  ),
+                                  totalEarnings: `$${formatNumberWithCommas(
+                                      userStats?.earnings.totalEarnedUsd ?? 0
+                                  )}`,
+                                  earningsGoal: `$${formatNumberWithCommas(
+                                      userStats?.earnings.earnings ?? 0
+                                  )}`,
                               }
                     }
                     statsCards={inDawgsHouse ? dawghouseCards : elseCards}
