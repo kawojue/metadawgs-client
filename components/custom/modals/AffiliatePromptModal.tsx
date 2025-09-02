@@ -42,7 +42,7 @@ export function AffiliatePromptModal({
             >
                 <DialogHeader className="flex flex-row justify-between gap-4 items-center">
                     <DialogTitle className="font-fredoka text-2xl text-center">
-                        Earn Your First $1000 USD! 💰
+                        Earn $1000 USD! 💰
                     </DialogTitle>
                     <button className="cursor-pointer p-1" onClick={onClose}>
                         <CircleX size={18} />
