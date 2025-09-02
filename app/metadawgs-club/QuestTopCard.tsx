@@ -117,7 +117,7 @@ function QuestTopCard() {
                         <span className="font-extrabold">Metadawgs TGE</span>
                     </h3>
                     {userProfile?.creatorClubVerification === "APPROVED" && (
-                        <p className="text-white text-[12px] max-w-md">
+                        <p className="text-white text-[15px] max-w-md">
                             Your content creation submission must have your
                             affiliate link there. That’s what our portal is
                             tracking. $MDAWGS
