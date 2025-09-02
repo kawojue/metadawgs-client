@@ -118,9 +118,9 @@ function QuestTopCard() {
                     </h3>
                     {userProfile?.creatorClubVerification === "APPROVED" && (
                         <p className="text-white text-[12px] max-w-md">
-                            If it&apos;s an X post, you must mention either
-                            @Meta_Dawgs, or include your referral link in the
-                            Tweet
+                            Your content creation submission must have your
+                            affiliate link there. That’s what our portal is
+                            tracking. $MDAWGS
                         </p>
                     )}
 
