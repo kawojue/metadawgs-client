@@ -603,13 +603,13 @@ function PresaleForm({
                             <span className="font-semibold">
                                 Minimum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 0.1} SOL
+                                    {isComing ? "TBA" : 0.1} SOL ($20 USD)
                                 </span>
                             </span>
                             <span className="font-semibold">
                                 Maximum Buy:{" "}
                                 <span className="font-fredoka font-semibold">
-                                    {isComing ? "TBA" : 7} SOL
+                                    {isComing ? "TBA" : 7} SOL ($1400 USD)
                                 </span>
                             </span>
                             <br />
